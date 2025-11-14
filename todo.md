@@ -36,3 +36,11 @@
 - [x] Aplicar paleta de cores da marca
 - [x] Ajustes finais de UX
 - [x] Testes de responsividade
+
+## Novas Funcionalidades Solicitadas
+
+- [x] Transformar números de telefone em links clicáveis para WhatsApp
+- [x] Adicionar botão para exportar lista de credenciados em PDF
+- [x] Implementar botão de encaminhamento médico com formulário
+- [x] Formulário deve incluir: Especialista, Telefone, Endereço, Cidade, Motivo
+- [x] Gerar documento de encaminhamento formatado para impressão

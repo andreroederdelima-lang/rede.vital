@@ -7,7 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Phone, MapPin, Percent, User, Building2, Search, X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText } from "lucide-react";
+import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 
 export default function Home() {
@@ -17,6 +21,9 @@ export default function Home() {
   const [categoria, setCategoria] = useState<string>("");
   const [descontoMinimo, setDescontoMinimo] = useState<number | undefined>();
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "instituicoes">("medicos");
+  const [encaminhamentoDialog, setEncaminhamentoDialog] = useState(false);
+  const [medicoSelecionado, setMedicoSelecionado] = useState<any>(null);
+  const [motivoEncaminhamento, setMotivoEncaminhamento] = useState("");
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -47,6 +54,178 @@ export default function Home() {
     return !!(busca || especialidade || municipio || categoria || descontoMinimo);
   }, [busca, especialidade, municipio, categoria, descontoMinimo]);
 
+  const exportarParaPDF = () => {
+    const dados = tipoCredenciado === "medicos" ? medicos : instituicoes;
+    const tipo = tipoCredenciado === "medicos" ? "Médicos" : "Instituições";
+    
+    // Criar conteúdo HTML para impressão
+    let html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Lista de Credenciados - ${tipo}</title>
+        <style>
+          @page { size: A4; margin: 2cm; }
+          body { font-family: Arial, sans-serif; font-size: 10pt; }
+          h1 { color: #2d7a7a; text-align: center; margin-bottom: 20px; }
+          .header { text-align: center; margin-bottom: 30px; }
+          .item { margin-bottom: 15px; page-break-inside: avoid; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+          .nome { font-weight: bold; font-size: 12pt; color: #2d7a7a; }
+          .info { margin: 5px 0; }
+          .badge { display: inline-block; padding: 2px 8px; background: #e0e0e0; border-radius: 4px; font-size: 9pt; margin-right: 5px; }
+          .desconto { background: #d4af37; color: white; }
+          @media print { .no-print { display: none; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>Guia de Credenciados - Sua Saúde Vital</h1>
+          <p><strong>${tipo} Credenciados</strong></p>
+          <p>Gerado em: ${new Date().toLocaleDateString('pt-BR')}</p>
+        </div>
+    `;
+
+    if (tipoCredenciado === "medicos") {
+      medicos.forEach((medico: any) => {
+        html += `
+          <div class="item">
+            <div class="nome">${medico.nome}</div>
+            <div class="info"><strong>Especialidade:</strong> ${medico.especialidade}${medico.subespecialidade ? ` • ${medico.subespecialidade}` : ''}</div>
+            <div class="info"><strong>Município:</strong> ${medico.municipio}</div>
+            <div class="info"><strong>Endereço:</strong> ${medico.endereco}</div>
+            ${medico.telefone || medico.whatsapp ? `<div class="info"><strong>Telefone:</strong> ${medico.telefone || medico.whatsapp}</div>` : ''}
+            <div class="info">
+              <span class="badge">${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}</span>
+              ${medico.descontoPercentual > 0 ? `<span class="badge desconto">${medico.descontoPercentual}% desconto</span>` : ''}
+            </div>
+            ${medico.observacoes ? `<div class="info"><em>${medico.observacoes}</em></div>` : ''}
+          </div>
+        `;
+      });
+    } else {
+      instituicoes.forEach((inst: any) => {
+        html += `
+          <div class="item">
+            <div class="nome">${inst.nome}</div>
+            <div class="info"><strong>Categoria:</strong> ${inst.categoria.charAt(0).toUpperCase() + inst.categoria.slice(1)}</div>
+            <div class="info"><strong>Município:</strong> ${inst.municipio}</div>
+            <div class="info"><strong>Endereço:</strong> ${inst.endereco}</div>
+            ${inst.telefone ? `<div class="info"><strong>Telefone:</strong> ${inst.telefone}</div>` : ''}
+            ${inst.email ? `<div class="info"><strong>E-mail:</strong> ${inst.email}</div>` : ''}
+            ${inst.descontoPercentual > 0 ? `<div class="info"><span class="badge desconto">${inst.descontoPercentual}% desconto</span></div>` : ''}
+            ${inst.observacoes ? `<div class="info"><em>${inst.observacoes}</em></div>` : ''}
+          </div>
+        `;
+      });
+    }
+
+    html += `
+        <div style="margin-top: 30px; text-align: center; font-size: 9pt; color: #666;">
+          <p>© 2025 Sua Saúde Vital - Todos os direitos reservados</p>
+          <p>Atendendo Timbó, Indaial, Pomerode, Rodeio, Benedito Novo, Rio dos Cedros, Apiúna e Ascurra</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    // Abrir janela de impressão
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(html);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+  };
+
+  const gerarEncaminhamento = () => {
+    if (!medicoSelecionado || !motivoEncaminhamento.trim()) {
+      alert("Por favor, preencha o motivo do encaminhamento.");
+      return;
+    }
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Encaminhamento Médico</title>
+        <style>
+          @page { size: A4; margin: 3cm; }
+          body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; }
+          .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #2d7a7a; padding-bottom: 20px; }
+          .header h1 { color: #2d7a7a; margin: 0; font-size: 20pt; }
+          .header p { margin: 5px 0; color: #666; }
+          .content { margin: 30px 0; }
+          .field { margin: 20px 0; }
+          .field label { font-weight: bold; color: #2d7a7a; display: block; margin-bottom: 5px; }
+          .field .value { border-bottom: 1px solid #333; padding: 5px 0; min-height: 25px; }
+          .motivo { margin-top: 30px; }
+          .motivo .value { border: 1px solid #333; padding: 15px; min-height: 150px; border-radius: 4px; }
+          .footer { margin-top: 60px; text-align: center; font-style: italic; color: #666; }
+          @media print { body { margin: 0; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>ENCAMINHAMENTO MÉDICO</h1>
+          <p>Ambulatório - Hospital Censit</p>
+          <p>Data: ${new Date().toLocaleDateString('pt-BR')}</p>
+        </div>
+        
+        <div class="content">
+          <div class="field">
+            <label>Especialista:</label>
+            <div class="value">${medicoSelecionado.nome} - ${medicoSelecionado.especialidade}${medicoSelecionado.subespecialidade ? ` / ${medicoSelecionado.subespecialidade}` : ''}</div>
+          </div>
+          
+          <div class="field">
+            <label>Telefone da clínica (somente fixo):</label>
+            <div class="value">${medicoSelecionado.telefone || '_______________________'}</div>
+          </div>
+          
+          <div class="field">
+            <label>Endereço:</label>
+            <div class="value">${medicoSelecionado.endereco}</div>
+          </div>
+          
+          <div class="field">
+            <label>Cidade:</label>
+            <div class="value">${medicoSelecionado.municipio}</div>
+          </div>
+          
+          <div class="motivo">
+            <label>Motivo do encaminhamento:</label>
+            <div class="value">${motivoEncaminhamento.replace(/\n/g, '<br>')}</div>
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>Agradecemos a parceria no cuidado ao paciente.</p>
+          <p><strong>Ambulatório - Hospital Censit</strong></p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(html);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
+
+    // Limpar e fechar diálogo
+    setMotivoEncaminhamento("");
+    setEncaminhamentoDialog(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
       {/* Header */}
@@ -61,7 +240,11 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="mt-4 flex justify-end">
+          <div className="mt-4 flex justify-end gap-2">
+            <Button variant="secondary" size="sm" onClick={exportarParaPDF}>
+              <FileDown className="h-4 w-4 mr-2" />
+              Exportar PDF
+            </Button>
             <Link href="/admin">
               <Button variant="secondary" size="sm">
                 <User className="h-4 w-4 mr-2" />
@@ -232,10 +415,21 @@ export default function Home() {
                             <span>{medico.endereco}</span>
                           </p>
                           {(medico.telefone || medico.whatsapp) && (
-                            <p className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
                               <Phone className="h-4 w-4 text-muted-foreground" />
                               <span>{medico.telefone || medico.whatsapp}</span>
-                            </p>
+                              {medico.whatsapp && (
+                                <a
+                                  href={formatWhatsAppLink(medico.whatsapp)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                >
+                                  <MessageCircle className="h-3 w-3" />
+                                  WhatsApp
+                                </a>
+                              )}
+                            </div>
                           )}
                         </div>
 
@@ -250,6 +444,20 @@ export default function Home() {
                             Parceria: {medico.contatoParceria}
                           </p>
                         )}
+                      </div>
+                      
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          variant="default"
+                          size="sm"
+                          onClick={() => {
+                            setMedicoSelecionado(medico);
+                            setEncaminhamentoDialog(true);
+                          }}
+                        >
+                          <FileText className="h-4 w-4 mr-2" />
+                          Gerar Encaminhamento
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -301,10 +509,19 @@ export default function Home() {
                             <span>{inst.endereco}</span>
                           </p>
                           {inst.telefone && (
-                            <p className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
                               <Phone className="h-4 w-4 text-muted-foreground" />
                               <span>{inst.telefone}</span>
-                            </p>
+                              <a
+                                href={formatWhatsAppLink(inst.telefone)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                              >
+                                <MessageCircle className="h-3 w-3" />
+                                WhatsApp
+                              </a>
+                            </div>
                           )}
                           {inst.email && (
                             <p className="text-sm">
@@ -333,6 +550,57 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      {/* Diálogo de Encaminhamento Médico */}
+      <Dialog open={encaminhamentoDialog} onOpenChange={setEncaminhamentoDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Gerar Encaminhamento Médico</DialogTitle>
+          </DialogHeader>
+          
+          {medicoSelecionado && (
+            <div className="space-y-4">
+              <div className="bg-muted p-4 rounded-lg space-y-2">
+                <p><strong>Especialista:</strong> {medicoSelecionado.nome}</p>
+                <p><strong>Especialidade:</strong> {medicoSelecionado.especialidade}
+                  {medicoSelecionado.subespecialidade && ` / ${medicoSelecionado.subespecialidade}`}
+                </p>
+                <p><strong>Telefone:</strong> {medicoSelecionado.telefone || "Não informado"}</p>
+                <p><strong>Endereço:</strong> {medicoSelecionado.endereco}</p>
+                <p><strong>Cidade:</strong> {medicoSelecionado.municipio}</p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="motivo">Motivo do encaminhamento *</Label>
+                <Textarea
+                  id="motivo"
+                  placeholder="Descreva o motivo do encaminhamento..."
+                  value={motivoEncaminhamento}
+                  onChange={(e) => setMotivoEncaminhamento(e.target.value)}
+                  rows={6}
+                  className="resize-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setEncaminhamentoDialog(false);
+                    setMotivoEncaminhamento("");
+                  }}
+                >
+                  Cancelar
+                </Button>
+                <Button onClick={gerarEncaminhamento}>
+                  <FileText className="h-4 w-4 mr-2" />
+                  Gerar e Imprimir
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="bg-muted mt-12 py-6">
