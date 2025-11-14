@@ -89,4 +89,149 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+import { medicos, instituicoes, Medico, Instituicao, InsertMedico, InsertInstituicao } from "../drizzle/schema";
+import { and, like, or, gte } from "drizzle-orm";
+
+// ========== MÉDICOS ==========
+
+export async function listarMedicos(filtros?: {
+  busca?: string;
+  especialidade?: string;
+  municipio?: string;
+  descontoMinimo?: number;
+}) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const condicoes = [eq(medicos.ativo, 1)];
+
+  if (filtros?.busca) {
+    condicoes.push(
+      or(
+        like(medicos.nome, `%${filtros.busca}%`),
+        like(medicos.especialidade, `%${filtros.busca}%`),
+        like(medicos.endereco, `%${filtros.busca}%`)
+      )!
+    );
+  }
+
+  if (filtros?.especialidade) {
+    condicoes.push(eq(medicos.especialidade, filtros.especialidade));
+  }
+
+  if (filtros?.municipio) {
+    condicoes.push(eq(medicos.municipio, filtros.municipio));
+  }
+
+  if (filtros?.descontoMinimo !== undefined) {
+    condicoes.push(gte(medicos.descontoPercentual, filtros.descontoMinimo));
+  }
+
+  return db.select().from(medicos).where(and(...condicoes));
+}
+
+export async function obterMedicoPorId(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(medicos).where(eq(medicos.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function criarMedico(data: InsertMedico) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(medicos).values(data);
+  return result;
+}
+
+export async function atualizarMedico(id: number, data: Partial<InsertMedico>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(medicos).set(data).where(eq(medicos.id, id));
+}
+
+export async function excluirMedico(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(medicos).set({ ativo: 0 }).where(eq(medicos.id, id));
+}
+
+export async function listarEspecialidades() {
+  const db = await getDb();
+  if (!db) return [];
+  const result = await db.selectDistinct({ especialidade: medicos.especialidade }).from(medicos).where(eq(medicos.ativo, 1));
+  return result.map(r => r.especialidade);
+}
+
+// ========== INSTITUIÇÕES ==========
+
+export async function listarInstituicoes(filtros?: {
+  busca?: string;
+  categoria?: string;
+  municipio?: string;
+  descontoMinimo?: number;
+}) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const condicoes = [eq(instituicoes.ativo, 1)];
+
+  if (filtros?.busca) {
+    condicoes.push(
+      or(
+        like(instituicoes.nome, `%${filtros.busca}%`),
+        like(instituicoes.endereco, `%${filtros.busca}%`)
+      )!
+    );
+  }
+
+  if (filtros?.categoria) {
+    condicoes.push(eq(instituicoes.categoria, filtros.categoria as any));
+  }
+
+  if (filtros?.municipio) {
+    condicoes.push(eq(instituicoes.municipio, filtros.municipio));
+  }
+
+  if (filtros?.descontoMinimo !== undefined) {
+    condicoes.push(gte(instituicoes.descontoPercentual, filtros.descontoMinimo));
+  }
+
+  return db.select().from(instituicoes).where(and(...condicoes));
+}
+
+export async function obterInstituicaoPorId(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(instituicoes).where(eq(instituicoes.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function criarInstituicao(data: InsertInstituicao) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(instituicoes).values(data);
+  return result;
+}
+
+export async function atualizarInstituicao(id: number, data: Partial<InsertInstituicao>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(instituicoes).set(data).where(eq(instituicoes.id, id));
+}
+
+export async function excluirInstituicao(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(instituicoes).set({ ativo: 0 }).where(eq(instituicoes.id, id));
+}
+
+export async function listarMunicipios() {
+  const db = await getDb();
+  if (!db) return [];
+  const medicosMunicipios = await db.selectDistinct({ municipio: medicos.municipio }).from(medicos).where(eq(medicos.ativo, 1));
+  const instituicoesMunicipios = await db.selectDistinct({ municipio: instituicoes.municipio }).from(instituicoes).where(eq(instituicoes.ativo, 1));
+  const todos = [...medicosMunicipios.map(m => m.municipio), ...instituicoesMunicipios.map(i => i.municipio)];
+  const unicos = Array.from(new Set(todos));
+  return unicos.sort();
+}

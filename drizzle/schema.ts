@@ -25,4 +25,48 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Tabela de médicos credenciados
+ */
+export const medicos = mysqlTable("medicos", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  especialidade: varchar("especialidade", { length: 255 }).notNull(),
+  subespecialidade: varchar("subespecialidade", { length: 255 }),
+  municipio: varchar("municipio", { length: 100 }).notNull(),
+  endereco: text("endereco").notNull(),
+  telefone: varchar("telefone", { length: 100 }),
+  whatsapp: varchar("whatsapp", { length: 100 }),
+  tipoAtendimento: mysqlEnum("tipoAtendimento", ["presencial", "telemedicina", "ambos"]).default("presencial").notNull(),
+  descontoPercentual: int("descontoPercentual").notNull().default(0),
+  observacoes: text("observacoes"),
+  contatoParceria: varchar("contatoParceria", { length: 255 }),
+  ativo: int("ativo").notNull().default(1),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Medico = typeof medicos.$inferSelect;
+export type InsertMedico = typeof medicos.$inferInsert;
+
+/**
+ * Tabela de instituições parceiras (clínicas, farmácias, laboratórios, academias, etc)
+ */
+export const instituicoes = mysqlTable("instituicoes", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  categoria: mysqlEnum("categoria", ["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]).notNull(),
+  municipio: varchar("municipio", { length: 100 }).notNull(),
+  endereco: text("endereco").notNull(),
+  telefone: varchar("telefone", { length: 100 }),
+  email: varchar("email", { length: 255 }),
+  descontoPercentual: int("descontoPercentual").notNull().default(0),
+  observacoes: text("observacoes"),
+  contatoParceria: varchar("contatoParceria", { length: 255 }),
+  ativo: int("ativo").notNull().default(1),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Instituicao = typeof instituicoes.$inferSelect;
+export type InsertInstituicao = typeof instituicoes.$inferInsert;
