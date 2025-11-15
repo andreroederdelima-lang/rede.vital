@@ -163,6 +163,84 @@ export const appRouter = router({
       return listarMunicipios();
     }),
   }),
+
+  parceria: router({
+    // Endpoint público para criar solicitação de parceria
+    solicitar: publicProcedure
+      .input(z.object({
+        nomeResponsavel: z.string().min(1, "Nome do responsável é obrigatório"),
+        nomeEstabelecimento: z.string().min(1, "Nome do estabelecimento é obrigatório"),
+        categoria: z.enum(["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]),
+        endereco: z.string().min(1, "Endereço é obrigatório"),
+        cidade: z.string().min(1, "Cidade é obrigatória"),
+        telefone: z.string().min(1, "Telefone é obrigatório"),
+        descontoPercentual: z.number().min(0).max(100),
+        imagemUrl: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarSolicitacaoParceria } = await import("./db");
+        const { enviarEmailNovaParceria } = await import("./_core/email");
+        
+        // Criar solicitação no banco
+        await criarSolicitacaoParceria({
+          ...input,
+          status: "pendente",
+        });
+        
+        // Enviar e-mail de notificação
+        await enviarEmailNovaParceria(input);
+        
+        return { success: true };
+      }),
+
+    // Endpoints administrativos
+    listar: protectedProcedure
+      .input(z.object({
+        status: z.enum(["pendente", "aprovado", "rejeitado"]).optional(),
+      }).optional())
+      .query(async ({ input }) => {
+        const { listarSolicitacoesParceria } = await import("./db");
+        return listarSolicitacoesParceria(input?.status);
+      }),
+
+    aprovar: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao } = await import("./db");
+        
+        // Obter solicitação
+        const solicitacao = await obterSolicitacaoParceriaPorId(input);
+        if (!solicitacao) throw new Error("Solicitação não encontrada");
+        
+        // Criar instituição na rede credenciada
+        await criarInstituicao({
+          nome: solicitacao.nomeEstabelecimento,
+          categoria: solicitacao.categoria,
+          municipio: solicitacao.cidade,
+          endereco: solicitacao.endereco,
+          telefone: solicitacao.telefone,
+          descontoPercentual: solicitacao.descontoPercentual,
+          contatoParceria: solicitacao.nomeResponsavel,
+          ativo: 1,
+        });
+        
+        // Atualizar status da solicitação
+        await atualizarStatusSolicitacao(input, "aprovado");
+        
+        return { success: true };
+      }),
+
+    rejeitar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        motivo: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarStatusSolicitacao } = await import("./db");
+        await atualizarStatusSolicitacao(input.id, "rejeitado", input.motivo);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

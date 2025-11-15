@@ -44,3 +44,14 @@
 - [x] Implementar botão de encaminhamento médico com formulário
 - [x] Formulário deve incluir: Especialista, Telefone, Endereço, Cidade, Motivo
 - [x] Gerar documento de encaminhamento formatado para impressão
+
+## Página de Cadastro de Parceiros
+
+- [x] Criar tabela de solicitações de parceria no banco de dados
+- [x] Adicionar campo de status (pendente/aprovado/rejeitado)
+- [x] Implementar upload de imagem para S3
+- [x] Criar endpoint de envio de e-mail para administrativo@suasaudevital.com.br
+- [x] Criar página de apresentação dos benefícios para parceiros
+- [x] Criar formulário de cadastro completo com todos os campos
+- [x] Implementar painel administrativo para aprovar/rejeitar parceiros
+- [x] Ao aprovar, migrar dados para tabela de instituições ativas

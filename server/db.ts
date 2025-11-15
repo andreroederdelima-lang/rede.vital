@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -234,4 +234,43 @@ export async function listarMunicipios() {
   const todos = [...medicosMunicipios.map(m => m.municipio), ...instituicoesMunicipios.map(i => i.municipio)];
   const unicos = Array.from(new Set(todos));
   return unicos.sort();
+}
+
+// ========== Solicitações de Parceria ==========
+
+export async function criarSolicitacaoParceria(data: InsertSolicitacaoParceria) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(solicitacoesParceria).values(data);
+  return result;
+}
+
+export async function listarSolicitacoesParceria(status?: "pendente" | "aprovado" | "rejeitado") {
+  const db = await getDb();
+  if (!db) return [];
+  
+  if (status) {
+    return await db.select().from(solicitacoesParceria).where(eq(solicitacoesParceria.status, status)).orderBy(solicitacoesParceria.createdAt);
+  }
+  
+  return await db.select().from(solicitacoesParceria).orderBy(solicitacoesParceria.createdAt);
+}
+
+export async function obterSolicitacaoParceriaPorId(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(solicitacoesParceria).where(eq(solicitacoesParceria.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function atualizarStatusSolicitacao(id: number, status: "pendente" | "aprovado" | "rejeitado", motivoRejeicao?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const updateData: any = { status };
+  if (motivoRejeicao) {
+    updateData.motivoRejeicao = motivoRejeicao;
+  }
+  
+  await db.update(solicitacoesParceria).set(updateData).where(eq(solicitacoesParceria.id, id));
 }

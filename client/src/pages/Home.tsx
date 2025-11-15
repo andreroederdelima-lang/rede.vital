@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 
@@ -245,6 +245,12 @@ export default function Home() {
               <FileDown className="h-4 w-4 mr-2" />
               Exportar PDF
             </Button>
+            <Link href="/parceiros">
+              <Button variant="secondary" size="sm">
+                <Handshake className="h-4 w-4 mr-2" />
+                Seja Parceiro
+              </Button>
+            </Link>
             <Link href="/admin">
               <Button variant="secondary" size="sm">
                 <User className="h-4 w-4 mr-2" />

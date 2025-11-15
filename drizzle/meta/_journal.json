@@ -15,6 +15,13 @@
       "when": 1763095793283,
       "tag": "0001_jazzy_snowbird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1763218324772,
+      "tag": "0002_thin_the_anarchist",
+      "breakpoints": true
     }
   ]
 }

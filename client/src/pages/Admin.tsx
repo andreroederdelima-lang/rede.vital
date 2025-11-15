@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
@@ -208,9 +208,10 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
             <TabsTrigger value="instituicoes">Instituições</TabsTrigger>
+            <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
           </TabsList>
 
           {/* Tab Médicos */}
@@ -399,6 +400,11 @@ export default function Admin() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Tab Solicitações de Parceria */}
+          <TabsContent value="solicitacoes">
+            <SolicitacoesTab />
           </TabsContent>
         </Tabs>
       </main>
@@ -708,5 +714,219 @@ function InstituicaoFormDialog({
         <Button type="submit">Salvar</Button>
       </DialogFooter>
     </form>
+  );
+}
+
+function SolicitacoesTab() {
+  const utils = trpc.useUtils();
+  const [detalhesDialogOpen, setDetalhesDialogOpen] = useState(false);
+  const [solicitacaoSelecionada, setSolicitacaoSelecionada] = useState<any>(null);
+  const [motivoRejeicao, setMotivoRejeicao] = useState("");
+
+  const { data: solicitacoes, isLoading } = trpc.parceria.listar.useQuery({ status: "pendente" });
+
+  const aprovarMutation = trpc.parceria.aprovar.useMutation({
+    onSuccess: () => {
+      toast.success("Parceiro aprovado com sucesso!");
+      utils.parceria.listar.invalidate();
+      utils.instituicoes.listar.invalidate();
+      setDetalhesDialogOpen(false);
+      setSolicitacaoSelecionada(null);
+    },
+    onError: (error) => {
+      toast.error("Erro ao aprovar parceiro", { description: error.message });
+    },
+  });
+
+  const rejeitarMutation = trpc.parceria.rejeitar.useMutation({
+    onSuccess: () => {
+      toast.success("Solicitação rejeitada");
+      utils.parceria.listar.invalidate();
+      setDetalhesDialogOpen(false);
+      setSolicitacaoSelecionada(null);
+      setMotivoRejeicao("");
+    },
+    onError: (error) => {
+      toast.error("Erro ao rejeitar solicitação", { description: error.message });
+    },
+  });
+
+  const handleAprovar = (id: number) => {
+    if (confirm("Deseja aprovar este parceiro? Ele será adicionado à rede credenciada.")) {
+      aprovarMutation.mutate(id);
+    }
+  };
+
+  const handleRejeitar = (id: number) => {
+    rejeitarMutation.mutate({ id, motivo: motivoRejeicao });
+  };
+
+  const getCategoriaLabel = (categoria: string) => {
+    const labels: Record<string, string> = {
+      clinica: "Clínica",
+      farmacia: "Farmácia",
+      laboratorio: "Laboratório",
+      academia: "Academia",
+      hospital: "Hospital",
+      outro: "Outro",
+    };
+    return labels[categoria] || categoria;
+  };
+
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Solicitações Pendentes de Parceria
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="text-center py-8 text-muted-foreground">Carregando...</div>
+          ) : !solicitacoes || solicitacoes.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Nenhuma solicitação pendente
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Estabelecimento</TableHead>
+                    <TableHead>Responsável</TableHead>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead>Cidade</TableHead>
+                    <TableHead>Desconto</TableHead>
+                    <TableHead>Data</TableHead>
+                    <TableHead className="text-right">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {solicitacoes.map((sol: any) => (
+                    <TableRow key={sol.id}>
+                      <TableCell className="font-medium">{sol.nomeEstabelecimento}</TableCell>
+                      <TableCell>{sol.nomeResponsavel}</TableCell>
+                      <TableCell>{getCategoriaLabel(sol.categoria)}</TableCell>
+                      <TableCell>{sol.cidade}</TableCell>
+                      <TableCell>{sol.descontoPercentual}%</TableCell>
+                      <TableCell>{new Date(sol.createdAt).toLocaleDateString('pt-BR')}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              setSolicitacaoSelecionada(sol);
+                              setDetalhesDialogOpen(true);
+                            }}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="default"
+                            onClick={() => handleAprovar(sol.id)}
+                            disabled={aprovarMutation.isPending}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Diálogo de Detalhes */}
+      <Dialog open={detalhesDialogOpen} onOpenChange={setDetalhesDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Detalhes da Solicitação</DialogTitle>
+          </DialogHeader>
+          {solicitacaoSelecionada && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-muted-foreground">Estabelecimento</Label>
+                  <p className="font-medium">{solicitacaoSelecionada.nomeEstabelecimento}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Responsável</Label>
+                  <p className="font-medium">{solicitacaoSelecionada.nomeResponsavel}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Categoria</Label>
+                  <p className="font-medium">{getCategoriaLabel(solicitacaoSelecionada.categoria)}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Cidade</Label>
+                  <p className="font-medium">{solicitacaoSelecionada.cidade}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Telefone</Label>
+                  <p className="font-medium">{solicitacaoSelecionada.telefone}</p>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Desconto Oferecido</Label>
+                  <p className="font-medium">{solicitacaoSelecionada.descontoPercentual}%</p>
+                </div>
+                <div className="col-span-2">
+                  <Label className="text-muted-foreground">Endereço</Label>
+                  <p className="font-medium">{solicitacaoSelecionada.endereco}</p>
+                </div>
+              </div>
+
+              {solicitacaoSelecionada.imagemUrl && (
+                <div>
+                  <Label className="text-muted-foreground">Imagem do Estabelecimento</Label>
+                  <img 
+                    src={solicitacaoSelecionada.imagemUrl} 
+                    alt="Estabelecimento" 
+                    className="mt-2 max-w-full rounded-lg border"
+                  />
+                </div>
+              )}
+
+              <div className="border-t pt-4">
+                <Label htmlFor="motivoRejeicao">Motivo da Rejeição (opcional)</Label>
+                <Textarea
+                  id="motivoRejeicao"
+                  value={motivoRejeicao}
+                  onChange={(e) => setMotivoRejeicao(e.target.value)}
+                  placeholder="Descreva o motivo caso vá rejeitar..."
+                  rows={3}
+                  className="mt-2"
+                />
+              </div>
+
+              <DialogFooter className="gap-2">
+                <Button
+                  variant="destructive"
+                  onClick={() => handleRejeitar(solicitacaoSelecionada.id)}
+                  disabled={rejeitarMutation.isPending}
+                >
+                  <XCircle className="h-4 w-4 mr-2" />
+                  Rejeitar
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={() => handleAprovar(solicitacaoSelecionada.id)}
+                  disabled={aprovarMutation.isPending}
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Aprovar e Adicionar à Rede
+                </Button>
+              </DialogFooter>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

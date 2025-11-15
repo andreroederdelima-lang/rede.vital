@@ -70,3 +70,25 @@ export const instituicoes = mysqlTable("instituicoes", {
 
 export type Instituicao = typeof instituicoes.$inferSelect;
 export type InsertInstituicao = typeof instituicoes.$inferInsert;
+
+/**
+ * Tabela de solicitações de parceria (aguardando aprovação)
+ */
+export const solicitacoesParceria = mysqlTable("solicitacoesParceria", {
+  id: int("id").autoincrement().primaryKey(),
+  nomeResponsavel: varchar("nomeResponsavel", { length: 255 }).notNull(),
+  nomeEstabelecimento: varchar("nomeEstabelecimento", { length: 255 }).notNull(),
+  categoria: mysqlEnum("categoria", ["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]).notNull(),
+  endereco: text("endereco").notNull(),
+  cidade: varchar("cidade", { length: 100 }).notNull(),
+  telefone: varchar("telefone", { length: 100 }).notNull(),
+  descontoPercentual: int("descontoPercentual").notNull(),
+  imagemUrl: text("imagemUrl"),
+  status: mysqlEnum("status", ["pendente", "aprovado", "rejeitado"]).default("pendente").notNull(),
+  motivoRejeicao: text("motivoRejeicao"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SolicitacaoParceria = typeof solicitacoesParceria.$inferSelect;
+export type InsertSolicitacaoParceria = typeof solicitacoesParceria.$inferInsert;
