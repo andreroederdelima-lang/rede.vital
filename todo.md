@@ -55,3 +55,13 @@
 - [x] Criar formulário de cadastro completo com todos os campos
 - [x] Implementar painel administrativo para aprovar/rejeitar parceiros
 - [x] Ao aprovar, migrar dados para tabela de instituições ativas
+
+## Ajustes na Página de Parceiros
+
+- [x] Remover benefício "Gestão simplificada e transparente" (não fazemos intermediação)
+- [x] Remover benefício "Integração com planos empresariais" (não aplicável)
+- [x] Adicionar benefício "Aumento de visualização"
+- [x] Adicionar benefício "Ecossistema Vital"
+- [x] Adicionar benefício "Crescimento conjunto com atendimento domiciliar"
+- [x] Adicionar benefício "Clientes particulares pagantes com valor reduzido"
+- [x] Tornar chamado mais motivador: "Venha ser Vital e cresça conosco!"

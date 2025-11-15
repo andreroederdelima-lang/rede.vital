@@ -18,7 +18,11 @@ import {
   ArrowRight,
   Building2,
   Upload,
-  Loader2
+  Loader2,
+  Eye,
+  Network,
+  Home as HomeIcon,
+  Wallet
 } from "lucide-react";
 import { toast } from "sonner";
 import { storagePut } from "../../../server/storage";
@@ -125,29 +129,29 @@ export default function Parceiros() {
 
   const beneficios = [
     {
+      icon: Eye,
+      titulo: "Aumento de Visibilidade",
+      descricao: "Seu estabelecimento será divulgado em nossa plataforma digital e materiais de comunicação, alcançando milhares de clientes Vital."
+    },
+    {
       icon: Users,
-      titulo: "Mais pacientes, sem custo de captação",
-      descricao: "O cliente Vital busca diretamente os serviços da rede, ampliando o fluxo de atendimentos para sua clínica."
+      titulo: "Mais Pacientes e Clientes Particulares",
+      descricao: "Receba clientes Vital que pagam com valor reduzido, ampliando seu fluxo de atendimentos sem custo de captação."
     },
     {
-      icon: Megaphone,
-      titulo: "Divulgação institucional gratuita",
-      descricao: "A Vital promove continuamente seus parceiros em campanhas digitais e materiais impressos."
+      icon: Network,
+      titulo: "Faça Parte do Ecossistema Vital",
+      descricao: "Integre uma rede colaborativa de saúde que une qualidade, confiança e crescimento sustentável."
     },
     {
-      icon: Shield,
-      titulo: "Gestão simplificada e transparente",
-      descricao: "A Vital faz a intermediação de agendamentos e pagamentos, oferecendo segurança e controle para o parceiro."
+      icon: HomeIcon,
+      titulo: "Crescimento com Atendimento Domiciliar",
+      descricao: "Cresça junto com nosso ecossistema de atendimento domiciliar e geração de benefícios integrados."
     },
     {
-      icon: Building2,
-      titulo: "Integração com planos empresariais",
-      descricao: "Os colaboradores das empresas conveniadas tornam-se clientes ativos da rede credenciada."
-    },
-    {
-      icon: HeadphonesIcon,
-      titulo: "Suporte e relacionamento contínuo",
-      descricao: "Nossa equipe acompanha de perto cada parceiro, garantindo alinhamento e fortalecimento da rede."
+      icon: Handshake,
+      titulo: "Parceria de Verdade",
+      descricao: "Não somos intermediários. Somos parceiros que cuidam com o mesmo coração Vital e crescem juntos."
     },
   ];
 
@@ -333,10 +337,10 @@ export default function Parceiros() {
             <div className="space-y-6">
               <img src={APP_LOGO} alt="Vital Logo" className="h-16" />
               <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                Seja parte da rede que está transformando o acesso à saúde
+                Venha ser Vital e cresça conosco!
               </h1>
               <p className="text-xl opacity-90">
-                Parceira de quem cuida com propósito
+                Faça parte do ecossistema que está revolucionando a saúde no Vale do Itajaí
               </p>
               <Button 
                 size="lg" 
@@ -344,7 +348,7 @@ export default function Parceiros() {
                 onClick={() => setMostrarFormulario(true)}
                 className="text-lg px-8"
               >
-                Quero ser Parceiro
+                Quero Crescer com a Vital!
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -468,7 +472,7 @@ export default function Parceiros() {
             <span className="text-primary">para o Parceiro</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Mais do que descontos, <strong>Sua Saúde Vital é um ecossistema colaborativo</strong>
+            <strong>Venha ser Vital!</strong> Juntos, crescemos e transformamos a saúde no Vale do Itajaí
           </p>
         </div>
 
@@ -493,7 +497,7 @@ export default function Parceiros() {
             className="text-lg px-8"
           >
             <Handshake className="mr-2 h-5 w-5" />
-            Solicitar Parceria Agora
+            Quero Fazer Parte do Ecossistema Vital!
           </Button>
         </div>
       </section>
