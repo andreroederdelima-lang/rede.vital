@@ -78,3 +78,11 @@
 - [x] Ajustar cor de fundo do header para verde mais claro (melhor contraste)
 - [x] Aumentar tamanho da logo para melhor visibilidade
 - [x] Garantir logo bem visível com tamanho moderno
+
+## Redesign Completo - Paleta Vital
+
+- [x] Atualizar cor primary para verde turquesa vibrante (#1A9B8E / oklch)
+- [x] Adicionar cor secondary bege/dourado claro
+- [x] Mudar fundo para branco/claro
+- [x] Redesenhar header com estilo moderno e clean
+- [x] Ajustar cards e elementos para seguir identidade visual

@@ -227,36 +227,38 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-primary text-primary-foreground shadow-lg">
+      <header className="bg-white border-b-4 border-primary shadow-sm">
         <div className="container py-6">
-          <div className="flex items-center gap-4">
-            <img src={APP_LOGO} alt="Vital Logo" className="h-32 w-auto" />
-            <div>
-              <h1 className="text-3xl font-bold">Guia de Credenciados</h1>
-              <p className="text-primary-foreground/90 text-sm mt-1">
-                Rede credenciada para encaminhamentos e orientações médicas
-              </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-20 w-auto" />
+              <div>
+                <h1 className="text-3xl font-bold text-primary">Guia de Credenciados</h1>
+                <p className="text-muted-foreground text-sm mt-1">
+                  Rede credenciada para encaminhamentos e orientações médicas
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="mt-4 flex justify-end gap-2">
-            <Button variant="secondary" size="sm" onClick={exportarParaPDF}>
-              <FileDown className="h-4 w-4 mr-2" />
-              Exportar PDF
-            </Button>
-            <Link href="/parceiros">
-              <Button variant="secondary" size="sm">
-                <Handshake className="h-4 w-4 mr-2" />
-                Seja Parceiro
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={exportarParaPDF} className="border-primary text-primary hover:bg-primary hover:text-white">
+                <FileDown className="h-4 w-4 mr-2" />
+                Exportar PDF
               </Button>
-            </Link>
-            <Link href="/admin">
-              <Button variant="secondary" size="sm">
-                <User className="h-4 w-4 mr-2" />
-                Área Administrativa
-              </Button>
-            </Link>
+              <Link href="/parceiros">
+                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+                  <Handshake className="h-4 w-4 mr-2" />
+                  Seja Parceiro
+                </Button>
+              </Link>
+              <Link href="/admin">
+                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
+                  <User className="h-4 w-4 mr-2" />
+                  Área Administrativa
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
