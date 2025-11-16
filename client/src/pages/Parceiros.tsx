@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { storagePut } from "../../../server/storage";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export default function Parceiros() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -165,18 +166,19 @@ export default function Parceiros() {
 
   if (mostrarFormulario) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
-        <header className="bg-primary text-primary-foreground py-6">
+      <div className="min-h-screen bg-background">
+        <FloatingWhatsApp />
+        <header className="bg-white border-b-4 border-primary shadow-sm">
           <div className="container">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <img src={APP_LOGO} alt="Vital Logo" className="h-12" />
+                <img src={APP_LOGO} alt="Vital Logo" className="h-20" />
                 <div>
-                  <h1 className="text-2xl font-bold">Seja Nosso Parceiro</h1>
-                  <p className="text-sm opacity-90">Preencha o formulário abaixo</p>
+                  <h1 className="text-2xl font-bold text-primary">Seja Nosso Parceiro</h1>
+                  <p className="text-sm text-muted-foreground">Preencha o formulário abaixo</p>
                 </div>
               </div>
-              <Button variant="secondary" onClick={() => setMostrarFormulario(false)}>
+              <Button variant="outline" onClick={() => setMostrarFormulario(false)} className="border-primary text-primary hover:bg-primary hover:text-white">
                 Voltar
               </Button>
             </div>
@@ -328,18 +330,19 @@ export default function Parceiros() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
+    <div className="min-h-screen bg-background">
+      <FloatingWhatsApp />
       {/* Hero Section */}
-      <section className="relative bg-primary text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-primary/80" />
+      <section className="relative bg-white border-b-4 border-primary overflow-hidden">
+
         <div className="container relative py-20">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-16" />
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-24" />
+              <h1 className="text-4xl md:text-5xl font-bold leading-tight text-primary">
                 Venha ser Vital e cresça conosco!
               </h1>
-              <p className="text-xl opacity-90">
+              <p className="text-xl text-muted-foreground">
                 Faça parte do ecossistema que está revolucionando a saúde no Vale do Itajaí
               </p>
               <Button 

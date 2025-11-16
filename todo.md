@@ -90,3 +90,13 @@
 ## Ajuste de Tamanho da Logo
 
 - [x] Aumentar significativamente o tamanho da logo no header
+
+## Atualização de Logo e Página de Parceiros
+
+- [x] Copiar nova logo oficial para pasta pública
+- [x] Atualizar const.ts com caminho da nova logo
+- [x] Verificar se logo aparece em todas as páginas (Home, Admin, Parceiros)
+- [x] Revisar design da página de parceiros
+- [x] Embelezar formulário de cadastro de parceiros
+- [x] Adicionar botão flutuante de WhatsApp
+- [x] Fornecer link de convite para parceiros

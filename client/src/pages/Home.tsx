@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO, APP_TITLE } from "@/const";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -228,6 +229,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
+      <FloatingWhatsApp />
       {/* Header */}
       <header className="bg-white border-b-4 border-primary shadow-sm">
         <div className="container py-6">
