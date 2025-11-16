@@ -65,3 +65,10 @@
 - [x] Adicionar benefício "Crescimento conjunto com atendimento domiciliar"
 - [x] Adicionar benefício "Clientes particulares pagantes com valor reduzido"
 - [x] Tornar chamado mais motivador: "Venha ser Vital e cresça conosco!"
+
+## Ajustes de Logo e Busca
+
+- [x] Remover fundo branco da logo
+- [x] Aumentar tamanho da logo na página inicial
+- [x] Adicionar campo de busca livre nas instituições (Pet Shop, Jiu-jitsu, etc)
+- [x] Ajustar filtros para buscar em observações/descrição das instituições

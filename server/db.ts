@@ -180,7 +180,8 @@ export async function listarInstituicoes(filtros?: {
     condicoes.push(
       or(
         like(instituicoes.nome, `%${filtros.busca}%`),
-        like(instituicoes.endereco, `%${filtros.busca}%`)
+        like(instituicoes.endereco, `%${filtros.busca}%`),
+        like(instituicoes.observacoes, `%${filtros.busca}%`)
       )!
     );
   }
