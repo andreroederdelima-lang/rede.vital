@@ -86,3 +86,7 @@
 - [x] Mudar fundo para branco/claro
 - [x] Redesenhar header com estilo moderno e clean
 - [x] Ajustar cards e elementos para seguir identidade visual
+
+## Ajuste de Tamanho da Logo
+
+- [x] Aumentar significativamente o tamanho da logo no header

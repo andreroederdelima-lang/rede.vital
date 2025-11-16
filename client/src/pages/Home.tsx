@@ -233,7 +233,7 @@ export default function Home() {
         <div className="container py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-20 w-auto" />
+              <img src={APP_LOGO} alt="Vital Logo" className="h-32 w-auto" />
               <div>
                 <h1 className="text-3xl font-bold text-primary">Guia de Credenciados</h1>
                 <p className="text-muted-foreground text-sm mt-1">
