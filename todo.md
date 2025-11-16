@@ -72,3 +72,9 @@
 - [x] Aumentar tamanho da logo na página inicial
 - [x] Adicionar campo de busca livre nas instituições (Pet Shop, Jiu-jitsu, etc)
 - [x] Ajustar filtros para buscar em observações/descrição das instituições
+
+## Ajustes de Cor e Tamanho da Logo
+
+- [x] Ajustar cor de fundo do header para verde mais claro (melhor contraste)
+- [x] Aumentar tamanho da logo para melhor visibilidade
+- [x] Garantir logo bem visível com tamanho moderno

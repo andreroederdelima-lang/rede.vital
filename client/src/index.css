@@ -43,9 +43,9 @@
 }
 
 :root {
-  --primary: oklch(0.5 0.12 190);
+  --primary: oklch(0.65 0.15 165);
   --primary-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.5 0.12 190);
+  --sidebar-primary: oklch(0.65 0.15 165);
   --sidebar-primary-foreground: oklch(1 0 0);
   --chart-1: var(--color-blue-300);
   --chart-2: var(--color-blue-500);

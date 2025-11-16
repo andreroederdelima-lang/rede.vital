@@ -232,7 +232,7 @@ export default function Home() {
       <header className="bg-primary text-primary-foreground shadow-lg">
         <div className="container py-6">
           <div className="flex items-center gap-4">
-            <img src={APP_LOGO} alt="Vital Logo" className="h-24 w-auto" />
+            <img src={APP_LOGO} alt="Vital Logo" className="h-32 w-auto" />
             <div>
               <h1 className="text-3xl font-bold">Guia de Credenciados</h1>
               <p className="text-primary-foreground/90 text-sm mt-1">
