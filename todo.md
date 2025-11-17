@@ -145,3 +145,10 @@
 ## Correção de Link de Assinaturas Empresariais
 
 - [x] Corrigir link "Conheça as Assinaturas Empresariais" para direcionar à página específica de assinaturas empresariais
+
+
+## Ajustes na Página de Parceiros
+
+- [x] Alterar título "Seja Parceiro" para "Convide um Parceiro" no topo
+- [x] Remover footer completamente da página de parceiros (sem nenhuma seção embaixo)
+- [x] Reorganizar botão "Indique e Ganhe" movendo para cima e removendo descrição

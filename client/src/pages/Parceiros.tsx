@@ -173,7 +173,7 @@ export default function Parceiros() {
               <div className="flex items-center gap-4">
                 <img src={APP_LOGO} alt="Vital Logo" className="h-20" />
                 <div>
-                  <h1 className="text-2xl font-bold text-primary">Seja Nosso Parceiro</h1>
+                  <h1 className="text-2xl font-bold text-primary">Convide um Parceiro</h1>
                   <p className="text-sm text-muted-foreground">Preencha o formulário abaixo</p>
                 </div>
               </div>
@@ -571,13 +571,23 @@ export default function Parceiros() {
                     </div>
                   </div>
 
-                  <div className="pt-4">
+                  <div className="pt-4 space-y-4">
                     <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
                       <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8">
                         <Wallet className="mr-2 h-5 w-5" />
                         Conheça as Assinaturas Empresariais
                       </Button>
                     </a>
+                    
+                    <div>
+                      <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
+                        <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-lg px-8">
+                          <Users className="mr-2 h-5 w-5" />
+                          Indique e Ganhe
+                        </Button>
+                      </a>
+                    </div>
+                    
                     <p className="text-sm text-muted-foreground mt-4">
                       Fale com nossa equipe e descubra como potencializar sua parceria com a Vital
                     </p>
@@ -589,52 +599,7 @@ export default function Parceiros() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-primary/5 border-t border-primary/20 py-12 mt-12">
-        <div className="container">
-          <div className="max-w-3xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Área do Parceiro */}
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                  <Handshake className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Área do Parceiro</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Cadastre seu estabelecimento e faça parte da rede credenciada Vital
-                </p>
-                <a href="/parceiros">
-                  <Button variant="outline" size="sm" className="text-primary border-primary">
-                    Seja Parceiro
-                  </Button>
-                </a>
-              </div>
 
-              {/* Preços das Assinaturas */}
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-secondary/10 mb-4">
-                  <Wallet className="h-6 w-6 text-secondary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Preços das Assinaturas</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Conheça os planos e valores das assinaturas Vital para você e sua família
-                </p>
-                <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="text-secondary border-secondary">
-                    Ver Preços
-                  </Button>
-                </a>
-              </div>
-            </div>
-
-            <div className="border-t border-primary/20 pt-6 text-center text-sm text-muted-foreground">
-              <p className="font-medium mb-1">credenciados.suasaudevital.com.br</p>
-              <p>© 2025 Sua Saúde Vital - Todos os direitos reservados</p>
-              <p className="mt-1">Atendendo Timbó, Indaial, Pomerode, Rodeio, Benedito Novo, Rio dos Cedros, Apiuña e Ascurra</p>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
