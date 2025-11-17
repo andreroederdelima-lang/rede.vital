@@ -517,8 +517,7 @@ export default function Parceiros() {
                     Seja Parceiro + Assinante Empresarial
                   </h2>
                   <p className="text-xl text-muted-foreground">
-                    Potencialize seus benefícios! Além de fazer parte da nossa rede credenciada, 
-                    você pode oferecer assinaturas de saúde Vital aos seus funcionários.
+                    Conheça os planos e valores das assinaturas empresariais Vital para sua empresa e funcionários.
                   </p>
                   
                   <div className="grid md:grid-cols-2 gap-6 my-8 text-left">
@@ -586,6 +585,18 @@ export default function Parceiros() {
                           Indique e Ganhe
                         </Button>
                       </a>
+                    </div>
+                    
+                    <div className="mt-8 pt-6 border-t border-primary/20">
+                      <Button 
+                        size="lg" 
+                        onClick={() => setMostrarFormulario(true)}
+                        className="bg-primary text-white hover:bg-primary/90 text-xl px-12 py-6 font-bold shadow-2xl animate-pulse"
+                      >
+                        <ArrowRight className="mr-3 h-6 w-6" />
+                        COMPLETE SEU CADASTRO DE PARCEIRO
+                        <ArrowRight className="ml-3 h-6 w-6" />
+                      </Button>
                     </div>
                     
                     <p className="text-sm text-muted-foreground mt-4">

@@ -152,3 +152,9 @@
 - [x] Alterar título "Seja Parceiro" para "Convide um Parceiro" no topo
 - [x] Remover footer completamente da página de parceiros (sem nenhuma seção embaixo)
 - [x] Reorganizar botão "Indique e Ganhe" movendo para cima e removendo descrição
+
+
+## Ajustes Finais na Seção de Assinaturas
+
+- [x] Alterar descrição de "Preços das Assinaturas" para mencionar assinaturas empresariais
+- [x] Adicionar botão chamativo "COMPLETE SEU CADASTRO DE PARCEIRO" como último elemento
