@@ -226,3 +226,9 @@
 ## Correção de Link de Assinaturas Empresariais
 
 - [x] Verificar e corrigir link do botão "Conheça as Assinaturas Empresariais" para https://assinaturas.suasaudevital.com.br/empresarial
+
+
+## Correção de Alinhamento do Menu
+
+- [x] Corrigir alinhamento dos botões do header no desktop (espaçamento e sobreposição)
+- [x] Corrigir responsividade do menu no mobile

@@ -231,35 +231,35 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-white border-b-4 border-primary shadow-sm">
-        <div className="container py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-32 w-auto" />
+        <div className="container py-4 md:py-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div className="flex items-center gap-4 md:gap-6">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-20 md:h-32 w-auto" />
               <div>
-                <h1 className="text-3xl font-bold text-primary">Guia de Credenciados</h1>
-                <p className="text-muted-foreground text-sm mt-1">
+                <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Credenciados</h1>
+                <p className="text-muted-foreground text-xs md:text-sm mt-1">
                   Rede credenciada para encaminhamentos e orientações médicas
                 </p>
               </div>
             </div>
-            <div className="flex gap-2">
-              <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
-                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+            <div className="flex flex-wrap gap-2 w-full lg:w-auto">
+              <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
+                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto">
                   <Wallet className="h-4 w-4 mr-2" />
-                  Preços das Assinaturas
+                  <span className="text-xs md:text-sm">Preços</span>
                 </Button>
               </a>
-              <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
-                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+              <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
+                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
                   <Users className="h-4 w-4 mr-2" />
-                  Indique e Ganhe
+                  <span className="text-xs md:text-sm">Indique</span>
                 </Button>
               </a>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white">
+                  <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white flex-1 sm:flex-none">
                     <Building2 className="h-4 w-4 mr-2" />
-                    Sugerir Parceiro
+                    <span className="text-xs md:text-sm">Sugerir</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
@@ -269,16 +269,16 @@ export default function Home() {
                   <SugestaoParceiro />
                 </DialogContent>
               </Dialog>
-              <Link href="/parceiros">
-                <Button size="sm" className="bg-primary text-white hover:bg-primary/90">
+              <Link href="/parceiros" className="flex-1 sm:flex-none">
+                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
                   <Handshake className="h-4 w-4 mr-2" />
-                  Convide um Parceiro
+                  <span className="text-xs md:text-sm">Convide</span>
                 </Button>
               </Link>
-              <Link href="/admin">
-                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
+              <Link href="/admin" className="flex-1 sm:flex-none">
+                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
                   <User className="h-4 w-4 mr-2" />
-                  Área Administrativa
+                  <span className="text-xs md:text-sm">Admin</span>
                 </Button>
               </Link>
             </div>
