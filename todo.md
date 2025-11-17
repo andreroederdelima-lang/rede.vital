@@ -163,3 +163,9 @@
 ## Remoção do Botão Indique e Ganhe
 
 - [x] Remover botão "Indique e Ganhe" da página de parceiros
+
+
+## Ajustes na Página Home e Parceiros
+
+- [x] Remover footer da página Home (Plataforma de Consulta, Área do Parceiro)
+- [x] Remover formulário de cadastro "Convide um Parceiro" da página de parceiros

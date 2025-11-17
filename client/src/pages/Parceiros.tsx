@@ -164,170 +164,6 @@ export default function Parceiros() {
     "Somos um só cuidado - Parceiros que cuidam com o mesmo coração Vital"
   ];
 
-  if (mostrarFormulario) {
-    return (
-      <div className="min-h-screen bg-background">
-        <header className="bg-white border-b-4 border-primary shadow-sm">
-          <div className="container">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <img src={APP_LOGO} alt="Vital Logo" className="h-20" />
-                <div>
-                  <h1 className="text-2xl font-bold text-primary">Convide um Parceiro</h1>
-                  <p className="text-sm text-muted-foreground">Preencha o formulário abaixo</p>
-                </div>
-              </div>
-              <Button variant="outline" onClick={() => setMostrarFormulario(false)} className="border-primary text-primary hover:bg-primary hover:text-white">
-                Voltar
-              </Button>
-            </div>
-          </div>
-        </header>
-
-        <main className="container py-8">
-          <Card className="max-w-3xl mx-auto">
-            <CardContent className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="nomeResponsavel">Nome do Responsável *</Label>
-                  <Input
-                    id="nomeResponsavel"
-                    value={nomeResponsavel}
-                    onChange={(e) => setNomeResponsavel(e.target.value)}
-                    placeholder="Quem está negociando a parceria"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="nomeEstabelecimento">Nome do Estabelecimento *</Label>
-                  <Input
-                    id="nomeEstabelecimento"
-                    value={nomeEstabelecimento}
-                    onChange={(e) => setNomeEstabelecimento(e.target.value)}
-                    placeholder="Nome da clínica, farmácia, etc."
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="categoria">Categoria *</Label>
-                  <Select value={categoria} onValueChange={setCategoria} required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione a categoria" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="clinica">Clínica</SelectItem>
-                      <SelectItem value="farmacia">Farmácia</SelectItem>
-                      <SelectItem value="laboratorio">Laboratório</SelectItem>
-                      <SelectItem value="academia">Academia</SelectItem>
-                      <SelectItem value="hospital">Hospital</SelectItem>
-                      <SelectItem value="outro">Outro</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="endereco">Endereço Completo *</Label>
-                  <Textarea
-                    id="endereco"
-                    value={endereco}
-                    onChange={(e) => setEndereco(e.target.value)}
-                    placeholder="Rua, número, bairro"
-                    rows={3}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="cidade">Cidade *</Label>
-                  <Input
-                    id="cidade"
-                    value={cidade}
-                    onChange={(e) => setCidade(e.target.value)}
-                    placeholder="Ex: Timbó, Indaial, Pomerode..."
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="telefone">Telefone de Contato *</Label>
-                  <Input
-                    id="telefone"
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
-                    placeholder="(47) 99999-9999"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="desconto">Desconto Oferecido (%) *</Label>
-                  <Input
-                    id="desconto"
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={descontoPercentual}
-                    onChange={(e) => setDescontoPercentual(e.target.value)}
-                    placeholder="Ex: 10, 15, 20..."
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="imagem">Imagem do Estabelecimento (opcional)</Label>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    Foto do estabelecimento, logo ou produto
-                  </p>
-                  <Input
-                    id="imagem"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImagemChange}
-                  />
-                  {imagemPreview && (
-                    <div className="mt-4">
-                      <img src={imagemPreview} alt="Preview" className="max-w-xs rounded-lg border" />
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex gap-4 pt-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setMostrarFormulario(false)}
-                    className="flex-1"
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={solicitarParceriaMutation.isPending || uploading}
-                    className="flex-1"
-                  >
-                    {(solicitarParceriaMutation.isPending || uploading) ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Enviando...
-                      </>
-                    ) : (
-                      <>
-                        Enviar Solicitação
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-        </main>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -343,15 +179,16 @@ export default function Parceiros() {
               <p className="text-xl text-muted-foreground">
                 Faça parte do ecossistema que está revolucionando a saúde no Vale do Itajaí
               </p>
-              <Button 
-                size="lg" 
-                variant="secondary"
-                onClick={() => setMostrarFormulario(true)}
-                className="text-lg px-8"
-              >
-                Quero Crescer com a Vital!
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <a href="https://wa.me/5547999999999?text=Ol%C3%A1%2C%20gostaria%20de%20me%20tornar%20um%20parceiro%20Vital!" target="_blank" rel="noopener noreferrer">
+                <Button 
+                  size="lg" 
+                  variant="secondary"
+                  className="text-lg px-8"
+                >
+                  Quero Crescer com a Vital!
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </a>
             </div>
             <div className="hidden md:block">
               <img 
@@ -492,14 +329,15 @@ export default function Parceiros() {
         </div>
 
         <div className="text-center">
-          <Button 
-            size="lg" 
-            onClick={() => setMostrarFormulario(true)}
-            className="text-lg px-8"
-          >
-            <Handshake className="mr-2 h-5 w-5" />
-            Quero Fazer Parte do Ecossistema Vital!
-          </Button>
+          <a href="https://wa.me/5547999999999?text=Ol%C3%A1%2C%20gostaria%20de%20me%20tornar%20um%20parceiro%20Vital!" target="_blank" rel="noopener noreferrer">
+            <Button 
+              size="lg" 
+              className="text-lg px-8"
+            >
+              <Handshake className="mr-2 h-5 w-5" />
+              Quero Fazer Parte do Ecossistema Vital!
+            </Button>
+          </a>
         </div>
       </section>
 
@@ -579,15 +417,16 @@ export default function Parceiros() {
                     </a>
                     
                     <div className="mt-8 pt-6 border-t border-primary/20">
-                      <Button 
-                        size="lg" 
-                        onClick={() => setMostrarFormulario(true)}
-                        className="bg-primary text-white hover:bg-primary/90 text-xl px-12 py-6 font-bold shadow-2xl animate-pulse"
-                      >
-                        <ArrowRight className="mr-3 h-6 w-6" />
-                        COMPLETE SEU CADASTRO DE PARCEIRO
-                        <ArrowRight className="ml-3 h-6 w-6" />
-                      </Button>
+                      <a href="https://wa.me/5547999999999?text=Ol%C3%A1%2C%20gostaria%20de%20me%20tornar%20um%20parceiro%20Vital!" target="_blank" rel="noopener noreferrer">
+                        <Button 
+                          size="lg" 
+                          className="bg-primary text-white hover:bg-primary/90 text-xl px-12 py-6 font-bold shadow-2xl animate-pulse"
+                        >
+                          <ArrowRight className="mr-3 h-6 w-6" />
+                          COMPLETE SEU CADASTRO DE PARCEIRO
+                          <ArrowRight className="ml-3 h-6 w-6" />
+                        </Button>
+                      </a>
                     </div>
                     
                     <p className="text-sm text-muted-foreground mt-4">
