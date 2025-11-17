@@ -207,3 +207,9 @@
 ## Correção de Link de Assinaturas Empresariais
 
 - [x] Alterar link do botão "Conheça as Assinaturas Empresariais" para https://assinatura.suasaudevital.com.br/empresarial
+
+
+## Ajustes de Visualização e Título
+
+- [x] Ocultar porcentagem de desconto na visualização pública (Home), mantendo apenas na área administrativa
+- [x] Atualizar título do projeto para "Guia de Credenciados Vale do Itajaí" (via Management UI)

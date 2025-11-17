@@ -370,21 +370,7 @@ export default function Home() {
                 </SelectContent>
               </Select>
 
-              <Select 
-                value={descontoMinimo?.toString() || "all"} 
-                onValueChange={(v) => setDescontoMinimo(v === "all" ? undefined : parseInt(v))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Desconto mínimo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Qualquer desconto</SelectItem>
-                  <SelectItem value="10">Mín. 10%</SelectItem>
-                  <SelectItem value="20">Mín. 20%</SelectItem>
-                  <SelectItem value="30">Mín. 30%</SelectItem>
-                  <SelectItem value="50">Mín. 50%</SelectItem>
-                </SelectContent>
-              </Select>
+
             </div>
 
             {filtrosAtivos && (
@@ -432,12 +418,7 @@ export default function Home() {
                             {medico.tipoAtendimento === "presencial" ? "Presencial" :
                              medico.tipoAtendimento === "telemedicina" ? "Telemedicina" : "Presencial e Telemedicina"}
                           </Badge>
-                          {medico.descontoPercentual > 0 && (
-                            <Badge className="bg-accent text-accent-foreground">
-                              <Percent className="h-3 w-3 mr-1" />
-                              {medico.descontoPercentual}% desconto
-                            </Badge>
-                          )}
+
                         </div>
 
                         <div className="text-sm space-y-1">
@@ -526,12 +507,7 @@ export default function Home() {
                             <MapPin className="h-3 w-3 mr-1" />
                             {inst.municipio}
                           </Badge>
-                          {inst.descontoPercentual > 0 && (
-                            <Badge className="bg-accent text-accent-foreground">
-                              <Percent className="h-3 w-3 mr-1" />
-                              {inst.descontoPercentual}% desconto
-                            </Badge>
-                          )}
+
                         </div>
 
                         <div className="text-sm space-y-1">
