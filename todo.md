@@ -213,3 +213,11 @@
 
 - [x] Ocultar porcentagem de desconto na visualização pública (Home), mantendo apenas na área administrativa
 - [x] Atualizar título do projeto para "Guia de Credenciados Vale do Itajaí" (via Management UI)
+
+
+## Campos de Especialidade para Médicos no Formulário de Parceiros
+
+- [x] Adicionar campo "Tipo de Credenciado" (Médico ou Instituição) no formulário
+- [x] Adicionar campo "Especialidade" (condicional, aparece apenas para médicos)
+- [x] Adicionar campo "Principal Área de Atuação" (condicional, aparece apenas para médicos, ex: dor crônica)
+- [x] Atualizar backend para processar e enviar novos campos no e-mail

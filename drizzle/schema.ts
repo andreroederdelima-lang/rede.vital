@@ -76,9 +76,12 @@ export type InsertInstituicao = typeof instituicoes.$inferInsert;
  */
 export const solicitacoesParceria = mysqlTable("solicitacoesParceria", {
   id: int("id").autoincrement().primaryKey(),
+  tipoCredenciado: mysqlEnum("tipoCredenciado", ["medico", "instituicao"]).default("instituicao").notNull(),
   nomeResponsavel: varchar("nomeResponsavel", { length: 255 }).notNull(),
   nomeEstabelecimento: varchar("nomeEstabelecimento", { length: 255 }).notNull(),
-  categoria: mysqlEnum("categoria", ["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]).notNull(),
+  categoria: varchar("categoria", { length: 255 }).notNull(),
+  especialidade: varchar("especialidade", { length: 255 }),
+  areaAtuacao: varchar("areaAtuacao", { length: 255 }),
   endereco: text("endereco").notNull(),
   cidade: varchar("cidade", { length: 100 }).notNull(),
   telefone: varchar("telefone", { length: 100 }).notNull(),

@@ -43,9 +43,12 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
  * Envia e-mail de notificação de nova solicitação de parceria
  */
 export async function enviarEmailNovaParceria(dados: {
+  tipoCredenciado: "medico" | "instituicao";
   nomeResponsavel: string;
   nomeEstabelecimento: string;
   categoria: string;
+  especialidade?: string;
+  areaAtuacao?: string;
   endereco: string;
   cidade: string;
   telefone: string;
@@ -90,9 +93,28 @@ export async function enviarEmailNovaParceria(dados: {
           </div>
           
           <div class="field">
-            <div class="field-label">Categoria:</div>
-            <div class="field-value">${dados.categoria.charAt(0).toUpperCase() + dados.categoria.slice(1)}</div>
+            <div class="field-label">Tipo de Credenciado:</div>
+            <div class="field-value">${dados.tipoCredenciado === "medico" ? "Médico" : "Instituição"}</div>
           </div>
+          
+          <div class="field">
+            <div class="field-label">Categoria:</div>
+            <div class="field-value">${dados.categoria}</div>
+          </div>
+          
+          ${dados.tipoCredenciado === "medico" && dados.especialidade ? `
+          <div class="field">
+            <div class="field-label">Especialidade:</div>
+            <div class="field-value">${dados.especialidade}</div>
+          </div>
+          ` : ''}
+          
+          ${dados.tipoCredenciado === "medico" && dados.areaAtuacao ? `
+          <div class="field">
+            <div class="field-label">Principal Área de Atuação:</div>
+            <div class="field-value">${dados.areaAtuacao}</div>
+          </div>
+          ` : ''}
           
           <div class="field">
             <div class="field-label">Endereço:</div>

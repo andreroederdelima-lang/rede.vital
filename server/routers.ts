@@ -168,9 +168,12 @@ export const appRouter = router({
     // Endpoint público para criar solicitação de parceria
     solicitar: publicProcedure
       .input(z.object({
+        tipoCredenciado: z.enum(["medico", "instituicao"]).default("instituicao"),
         nomeResponsavel: z.string().min(1, "Nome do responsável é obrigatório"),
         nomeEstabelecimento: z.string().min(1, "Nome do estabelecimento é obrigatório"),
-        categoria: z.enum(["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]),
+        categoria: z.string().min(1, "Categoria é obrigatória"),
+        especialidade: z.string().optional(),
+        areaAtuacao: z.string().optional(),
         endereco: z.string().min(1, "Endereço é obrigatório"),
         cidade: z.string().min(1, "Cidade é obrigatória"),
         telefone: z.string().min(1, "Telefone é obrigatório"),
@@ -215,7 +218,7 @@ export const appRouter = router({
         // Criar instituição na rede credenciada
         await criarInstituicao({
           nome: solicitacao.nomeEstabelecimento,
-          categoria: solicitacao.categoria,
+          categoria: solicitacao.categoria as any,
           municipio: solicitacao.cidade,
           endereco: solicitacao.endereco,
           telefone: solicitacao.telefone,

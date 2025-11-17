@@ -33,9 +33,12 @@ export default function Parceiros() {
   const [uploading, setUploading] = useState(false);
   
   // Estados do formulário
+  const [tipoCredenciado, setTipoCredenciado] = useState<"medico" | "instituicao">("instituicao");
   const [nomeResponsavel, setNomeResponsavel] = useState("");
   const [nomeEstabelecimento, setNomeEstabelecimento] = useState("");
   const [categoria, setCategoria] = useState("");
+  const [especialidade, setEspecialidade] = useState("");
+  const [areaAtuacao, setAreaAtuacao] = useState("");
   const [endereco, setEndereco] = useState("");
   const [cidade, setCidade] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -71,9 +74,12 @@ export default function Parceiros() {
   };
 
   const limparFormulario = () => {
+    setTipoCredenciado("instituicao");
     setNomeResponsavel("");
     setNomeEstabelecimento("");
     setCategoria("");
+    setEspecialidade("");
+    setAreaAtuacao("");
     setEndereco("");
     setCidade("");
     setTelefone("");
@@ -85,8 +91,15 @@ export default function Parceiros() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validação básica
     if (!nomeResponsavel || !nomeEstabelecimento || !categoria || !endereco || !cidade || !telefone || !descontoPercentual) {
       toast.error("Preencha todos os campos obrigatórios");
+      return;
+    }
+    
+    // Validação adicional para médicos
+    if (tipoCredenciado === "medico" && (!especialidade || !areaAtuacao)) {
+      toast.error("Para médicos, é obrigatório informar especialidade e área de atuação");
       return;
     }
 
@@ -117,9 +130,12 @@ export default function Parceiros() {
     }
 
     solicitarParceriaMutation.mutate({
+      tipoCredenciado,
       nomeResponsavel,
       nomeEstabelecimento,
       categoria: categoria as any,
+      especialidade: tipoCredenciado === "medico" ? especialidade : undefined,
+      areaAtuacao: tipoCredenciado === "medico" ? areaAtuacao : undefined,
       endereco,
       cidade,
       telefone,
@@ -189,6 +205,19 @@ export default function Parceiros() {
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
+                  <Label htmlFor="tipoCredenciado">Tipo de Credenciado *</Label>
+                  <Select value={tipoCredenciado} onValueChange={(v: "medico" | "instituicao") => setTipoCredenciado(v)} required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="instituicao">Instituição (Clínica, Farmácia, Laboratório, etc.)</SelectItem>
+                      <SelectItem value="medico">Médico</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="nomeResponsavel">Nome do Responsável *</Label>
                   <Input
                     id="nomeResponsavel"
@@ -223,6 +252,35 @@ export default function Parceiros() {
                     Digite a categoria do seu estabelecimento. Se não encontrar uma categoria adequada, pode criar a sua própria.
                   </p>
                 </div>
+
+                {tipoCredenciado === "medico" && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="especialidade">Especialidade *</Label>
+                      <Input
+                        id="especialidade"
+                        value={especialidade}
+                        onChange={(e) => setEspecialidade(e.target.value)}
+                        placeholder="Ex: Cardiologia, Ortopedia, Clínica Geral..."
+                        required={tipoCredenciado === "medico"}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="areaAtuacao">Principal Área de Atuação *</Label>
+                      <Input
+                        id="areaAtuacao"
+                        value={areaAtuacao}
+                        onChange={(e) => setAreaAtuacao(e.target.value)}
+                        placeholder="Ex: Dor crônica, Cirurgia plástica, Saúde da mulher..."
+                        required={tipoCredenciado === "medico"}
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        Descreva sua principal área de atuação ou foco de trabalho.
+                      </p>
+                    </div>
+                  </>
+                )}
 
                 <div className="space-y-2">
                   <Label htmlFor="endereco">Endereço Completo *</Label>
