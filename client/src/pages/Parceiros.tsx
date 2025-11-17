@@ -572,7 +572,7 @@ export default function Parceiros() {
                   </div>
 
                   <div className="pt-4">
-                    <a href="https://suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
+                    <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
                       <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8">
                         <Wallet className="mr-2 h-5 w-5" />
                         Conheça as Assinaturas Empresariais

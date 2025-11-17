@@ -140,3 +140,8 @@
 ## Simplificação do Footer da Página de Parceiros
 
 - [x] Remover botões "Área Administrativa", "Área de Consulta" e "Indique e Ganhe" do footer da página de parceiros
+
+
+## Correção de Link de Assinaturas Empresariais
+
+- [x] Corrigir link "Conheça as Assinaturas Empresariais" para direcionar à página específica de assinaturas empresariais
