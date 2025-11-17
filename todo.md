@@ -158,3 +158,8 @@
 
 - [x] Alterar descrição de "Preços das Assinaturas" para mencionar assinaturas empresariais
 - [x] Adicionar botão chamativo "COMPLETE SEU CADASTRO DE PARCEIRO" como último elemento
+
+
+## Remoção do Botão Indique e Ganhe
+
+- [x] Remover botão "Indique e Ganhe" da página de parceiros
