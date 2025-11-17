@@ -202,3 +202,8 @@
 
 - [x] Remover opção "Outro" do campo categoria e adicionar campo de texto livre para categoria personalizada
 - [x] Verificar que e-mail de destino está correto: administrativo@suasaudevital.com.br
+
+
+## Correção de Link de Assinaturas Empresariais
+
+- [x] Alterar link do botão "Conheça as Assinaturas Empresariais" para https://assinatura.suasaudevital.com.br/empresarial
