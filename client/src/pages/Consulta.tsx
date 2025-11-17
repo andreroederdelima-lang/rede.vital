@@ -244,7 +244,21 @@ export default function Consulta() {
                 </p>
               </div>
             </div>
-            <div className="flex justify-end w-full lg:w-auto">
+            <div className="flex flex-wrap gap-3 justify-end w-full lg:w-auto">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                    <Building2 className="h-5 w-5 mr-2" />
+                    Sugerir um Parceiro
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Sugestão de Parceiro</DialogTitle>
+                  </DialogHeader>
+                  <SugestaoParceiro />
+                </DialogContent>
+              </Dialog>
               <a 
                 href={`${formatWhatsAppLink("+5547933853726")}?text=${encodeURIComponent("Olá! Gostaria de falar com um especialista sobre os credenciados Vital.")}`}
                 target="_blank" 

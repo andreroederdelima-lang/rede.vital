@@ -16,3 +16,10 @@
 - [x] Remover todos os botões do header da página /consulta (Preços, Indique, Sugerir, Convide, Admin)
 - [x] Adicionar apenas botão de WhatsApp "Fale com o Especialista" direcionando para +55 47 93385-3726
 - [x] Garantir que a página seja exclusiva para clientes consultarem credenciados (sem preços/descontos)
+
+
+## Botão Sugerir Parceiro na Página de Consulta
+
+- [x] Adicionar botão "Sugerir um Parceiro" no header da página /consulta
+- [x] Implementar formulário modal com campos: nome, especialidade, município
+- [x] Garantir envio de e-mail para administrativo@suasaudevital.com.br
