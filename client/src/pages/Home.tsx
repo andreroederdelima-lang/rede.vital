@@ -611,10 +611,65 @@ export default function Home() {
       </Dialog>
 
       {/* Footer */}
-      <footer className="bg-muted mt-12 py-6">
-        <div className="container text-center text-sm text-muted-foreground">
-          <p>© 2025 Sua Saúde Vital - Todos os direitos reservados</p>
-          <p className="mt-1">Atendendo Timbó, Indaial, Pomerode, Rodeio, Benedito Novo, Rio dos Cedros, Apiúna e Ascurra</p>
+      <footer className="bg-primary/5 border-t border-primary/20 py-12">
+        <div className="container">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 mb-8">
+              {/* Plataforma de Consulta */}
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
+                  <Search className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">Plataforma de Consulta</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Busque médicos e instituições credenciadas com filtros por especialidade, município e desconto
+                </p>
+                <Link href="/">
+                  <Button variant="outline" size="sm" className="text-primary border-primary">
+                    Acessar Consulta
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Área Admin */}
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-secondary/10 mb-4">
+                  <Building2 className="h-6 w-6 text-secondary" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">Área Administrativa</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Gerencie credenciados, aprove solicitações de parceria e mantenha a base atualizada
+                </p>
+                <Link href="/admin">
+                  <Button variant="outline" size="sm" className="text-secondary border-secondary">
+                    Acessar Admin
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Área do Parceiro */}
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
+                  <Handshake className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">Área do Parceiro</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Cadastre seu estabelecimento e faça parte da rede credenciada Vital
+                </p>
+                <Link href="/parceiros">
+                  <Button variant="outline" size="sm" className="text-primary border-primary">
+                    Seja Parceiro
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            <div className="border-t border-primary/20 pt-6 text-center text-sm text-muted-foreground">
+              <p className="font-medium mb-1">credenciados.suasaudevital.com.br</p>
+              <p>© 2025 Sua Saúde Vital - Todos os direitos reservados</p>
+              <p className="mt-1">Atendendo Timbó, Indaial, Pomerode, Rodeio, Benedito Novo, Rio dos Cedros, Apiuña e Ascurra</p>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
