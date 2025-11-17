@@ -167,7 +167,6 @@ export default function Parceiros() {
   if (mostrarFormulario) {
     return (
       <div className="min-h-screen bg-background">
-        <FloatingWhatsApp />
         <header className="bg-white border-b-4 border-primary shadow-sm">
           <div className="container">
             <div className="flex items-center justify-between">
@@ -331,7 +330,6 @@ export default function Parceiros() {
 
   return (
     <div className="min-h-screen bg-background">
-      <FloatingWhatsApp />
       {/* Hero Section */}
       <section className="relative bg-white border-b-4 border-primary overflow-hidden">
 
@@ -502,6 +500,92 @@ export default function Parceiros() {
             <Handshake className="mr-2 h-5 w-5" />
             Quero Fazer Parte do Ecossistema Vital!
           </Button>
+        </div>
+      </section>
+
+      {/* Seção Assinaturas Empresariais */}
+      <section className="bg-gradient-to-br from-secondary/20 via-secondary/10 to-background py-16">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <Card className="border-2 border-secondary shadow-xl">
+              <CardContent className="p-8 md:p-12">
+                <div className="text-center space-y-6">
+                  <div className="inline-block p-3 bg-secondary/20 rounded-full">
+                    <Shield className="h-12 w-12 text-secondary" />
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-primary">
+                    Seja Parceiro + Assinante Empresarial
+                  </h2>
+                  <p className="text-xl text-muted-foreground">
+                    Potencialize seus benefícios! Além de fazer parte da nossa rede credenciada, 
+                    você pode oferecer assinaturas de saúde Vital aos seus funcionários.
+                  </p>
+                  
+                  <div className="grid md:grid-cols-2 gap-6 my-8 text-left">
+                    <div className="flex gap-4 items-start">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg mb-1">Área Protegida Exclusiva</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Garanta exclusividade territorial para seu estabelecimento na rede Vital
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-4 items-start">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg mb-1">Assinaturas para Funcionários</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Ofereça saúde de qualidade para sua equipe com condições especiais
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-4 items-start">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg mb-1">Mais Credibilidade</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Demonstre compromisso oferecendo aos seus colaboradores o mesmo benefício que você oferece aos clientes
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-4 items-start">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg mb-1">Crescimento Conjunto</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Faça parte de um ecossistema integrado de saúde e proteção no Vale do Itajaí
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4">
+                    <a href="https://suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
+                      <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8">
+                        <Wallet className="mr-2 h-5 w-5" />
+                        Conheça as Assinaturas Empresariais
+                      </Button>
+                    </a>
+                    <p className="text-sm text-muted-foreground mt-4">
+                      Fale com nossa equipe e descubra como potencializar sua parceria com a Vital
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 

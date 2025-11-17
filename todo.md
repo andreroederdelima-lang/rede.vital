@@ -100,3 +100,10 @@
 - [x] Embelezar formulário de cadastro de parceiros
 - [x] Adicionar botão flutuante de WhatsApp
 - [x] Fornecer link de convite para parceiros
+
+## Ajustes de WhatsApp e Seção Empresarial
+
+- [x] Remover botão flutuante de WhatsApp de todas as páginas
+- [x] Adicionar seção "Seja Parceiro + Assinante" na página de parceiros
+- [x] Destacar benefícios: área protegida, assinaturas para funcionários
+- [x] Adicionar botão "Conheça as Assinaturas Empresariais"
