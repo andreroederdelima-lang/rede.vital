@@ -52,6 +52,7 @@ export async function enviarEmailNovaParceria(dados: {
   endereco: string;
   cidade: string;
   telefone: string;
+  precoConsulta: string;
   descontoPercentual: number;
   imagemUrl?: string;
 }) {
@@ -129,6 +130,11 @@ export async function enviarEmailNovaParceria(dados: {
           <div class="field">
             <div class="field-label">Telefone:</div>
             <div class="field-value">${dados.telefone}</div>
+          </div>
+          
+          <div class="field">
+            <div class="field-label">Preço da Consulta/Serviço:</div>
+            <div class="field-value">${dados.precoConsulta}</div>
           </div>
           
           <div class="field">

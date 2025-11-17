@@ -74,6 +74,7 @@ export const appRouter = router({
           telefone: z.string().optional(),
           whatsapp: z.string().optional(),
           tipoAtendimento: z.enum(["presencial", "telemedicina", "ambos"]).optional(),
+          precoConsulta: z.string().optional(),
           descontoPercentual: z.number().optional(),
           observacoes: z.string().optional(),
           contatoParceria: z.string().optional(),
@@ -139,6 +140,7 @@ export const appRouter = router({
           endereco: z.string().optional(),
           telefone: z.string().optional(),
           email: z.string().optional(),
+          precoConsulta: z.string().optional(),
           descontoPercentual: z.number().optional(),
           observacoes: z.string().optional(),
           contatoParceria: z.string().optional(),
@@ -177,6 +179,7 @@ export const appRouter = router({
         endereco: z.string().min(1, "Endereço é obrigatório"),
         cidade: z.string().min(1, "Cidade é obrigatória"),
         telefone: z.string().min(1, "Telefone é obrigatório"),
+        precoConsulta: z.string().min(1, "Preço é obrigatório"),
         descontoPercentual: z.number().min(0).max(100),
         imagemUrl: z.string().optional(),
       }))

@@ -42,6 +42,7 @@ export default function Parceiros() {
   const [endereco, setEndereco] = useState("");
   const [cidade, setCidade] = useState("");
   const [telefone, setTelefone] = useState("");
+  const [precoConsulta, setPrecoConsulta] = useState("");
   const [descontoPercentual, setDescontoPercentual] = useState("");
   const [imagemFile, setImagemFile] = useState<File | null>(null);
   const [imagemPreview, setImagemPreview] = useState<string>("");
@@ -83,6 +84,7 @@ export default function Parceiros() {
     setEndereco("");
     setCidade("");
     setTelefone("");
+    setPrecoConsulta("");
     setDescontoPercentual("");
     setImagemFile(null);
     setImagemPreview("");
@@ -92,7 +94,7 @@ export default function Parceiros() {
     e.preventDefault();
     
     // Validação básica
-    if (!nomeResponsavel || !nomeEstabelecimento || !categoria || !endereco || !cidade || !telefone || !descontoPercentual) {
+    if (!nomeResponsavel || !nomeEstabelecimento || !categoria || !endereco || !cidade || !telefone || !precoConsulta || !descontoPercentual) {
       toast.error("Preencha todos os campos obrigatórios");
       return;
     }
@@ -139,6 +141,7 @@ export default function Parceiros() {
       endereco,
       cidade,
       telefone,
+      precoConsulta,
       descontoPercentual: parseInt(descontoPercentual),
       imagemUrl,
     });
@@ -312,6 +315,17 @@ export default function Parceiros() {
                     value={telefone}
                     onChange={(e) => setTelefone(e.target.value)}
                     placeholder="(47) 99999-9999"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="preco">Preço da Consulta/Serviço *</Label>
+                  <Input
+                    id="preco"
+                    value={precoConsulta}
+                    onChange={(e) => setPrecoConsulta(e.target.value)}
+                    placeholder="Ex: R$ 150,00 ou A combinar"
                     required
                   />
                 </div>

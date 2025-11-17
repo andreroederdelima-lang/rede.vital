@@ -15,12 +15,12 @@ import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
-export default function Home() {
+export default function Consulta() {
   const [busca, setBusca] = useState("");
   const [especialidade, setEspecialidade] = useState<string>("");
   const [municipio, setMunicipio] = useState<string>("");
   const [categoria, setCategoria] = useState<string>("");
-  const [descontoMinimo, setDescontoMinimo] = useState<number | undefined>();
+  // Removido filtro de desconto para consulta pública
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "instituicoes">("medicos");
   const [encaminhamentoDialog, setEncaminhamentoDialog] = useState(false);
   const [medicoSelecionado, setMedicoSelecionado] = useState<any>(null);
@@ -30,14 +30,14 @@ export default function Home() {
     busca: busca || undefined,
     especialidade: especialidade || undefined,
     municipio: municipio || undefined,
-    descontoMinimo,
+    // descontoMinimo removido
   }, { enabled: tipoCredenciado === "medicos" });
 
   const { data: instituicoes = [], isLoading: loadingInstituicoes } = trpc.instituicoes.listar.useQuery({
     busca: busca || undefined,
     categoria: categoria || undefined,
     municipio: municipio || undefined,
-    descontoMinimo,
+    // descontoMinimo removido
   }, { enabled: tipoCredenciado === "instituicoes" });
 
   const { data: especialidades = [] } = trpc.medicos.listarEspecialidades.useQuery();
@@ -48,13 +48,14 @@ export default function Home() {
     setEspecialidade("");
     setMunicipio("");
     setCategoria("");
-    setDescontoMinimo(undefined);
+    // setDescontoMinimo removido
   };
 
   const filtrosAtivos = useMemo(() => {
-    return !!(busca || especialidade || municipio || categoria || descontoMinimo);
-  }, [busca, especialidade, municipio, categoria, descontoMinimo]);
+    return !!(busca || especialidade || municipio || categoria);
+  }, [busca, especialidade, municipio, categoria]);
 
+  /* Função de exportar PDF removida para consulta pública
   const exportarParaPDF = () => {
     const dados = tipoCredenciado === "medicos" ? medicos : instituicoes;
     const tipo = tipoCredenciado === "medicos" ? "Médicos" : "Instituições";
@@ -98,7 +99,7 @@ export default function Home() {
             ${medico.telefone || medico.whatsapp ? `<div class="info"><strong>Telefone:</strong> ${medico.telefone || medico.whatsapp}</div>` : ''}
             <div class="info">
               <span class="badge">${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}</span>
-              ${medico.descontoPercentual > 0 ? `<span class="badge desconto">${medico.descontoPercentual}% desconto</span>` : ''}
+              
             </div>
             ${medico.observacoes ? `<div class="info"><em>${medico.observacoes}</em></div>` : ''}
           </div>
@@ -114,7 +115,7 @@ export default function Home() {
             <div class="info"><strong>Endereço:</strong> ${inst.endereco}</div>
             ${inst.telefone ? `<div class="info"><strong>Telefone:</strong> ${inst.telefone}</div>` : ''}
             ${inst.email ? `<div class="info"><strong>E-mail:</strong> ${inst.email}</div>` : ''}
-            ${inst.descontoPercentual > 0 ? `<div class="info"><span class="badge desconto">${inst.descontoPercentual}% desconto</span></div>` : ''}
+            
             ${inst.observacoes ? `<div class="info"><em>${inst.observacoes}</em></div>` : ''}
           </div>
         `;
@@ -141,6 +142,7 @@ export default function Home() {
       }, 250);
     }
   };
+  */
 
   const gerarEncaminhamento = () => {
     if (!medicoSelecionado || !motivoEncaminhamento.trim()) {
@@ -609,20 +611,7 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
-      {/* Rodapé com botão Exportar PDF */}
-      <footer className="container py-8 border-t mt-8">
-        <div className="flex justify-center">
-          <Button 
-            variant="outline" 
-            size="lg" 
-            onClick={exportarParaPDF} 
-            className="border-primary text-primary hover:bg-primary hover:text-white"
-          >
-            <FileDown className="h-5 w-5 mr-2" />
-            Exportar Lista de Credenciados em PDF
-          </Button>
-        </div>
-      </footer>
+      {/* Rodapé removido da página de consulta pública */}
 
     </div>
   );
