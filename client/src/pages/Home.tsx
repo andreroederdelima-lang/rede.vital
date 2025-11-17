@@ -243,10 +243,6 @@ export default function Home() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={exportarParaPDF} className="border-primary text-primary hover:bg-primary hover:text-white">
-                <FileDown className="h-4 w-4 mr-2" />
-                Exportar PDF
-              </Button>
               <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
                 <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
                   <Wallet className="h-4 w-4 mr-2" />
@@ -259,6 +255,20 @@ export default function Home() {
                   Indique e Ganhe
                 </Button>
               </a>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white">
+                    <Building2 className="h-4 w-4 mr-2" />
+                    Sugerir Parceiro
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Sugestão de Parceiro</DialogTitle>
+                  </DialogHeader>
+                  <SugestaoParceiro />
+                </DialogContent>
+              </Dialog>
               <Link href="/parceiros">
                 <Button size="sm" className="bg-primary text-white hover:bg-primary/90">
                   <Handshake className="h-4 w-4 mr-2" />
@@ -623,6 +633,20 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
+      {/* Rodapé com botão Exportar PDF */}
+      <footer className="container py-8 border-t mt-8">
+        <div className="flex justify-center">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            onClick={exportarParaPDF} 
+            className="border-primary text-primary hover:bg-primary hover:text-white"
+          >
+            <FileDown className="h-5 w-5 mr-2" />
+            Exportar Lista de Credenciados em PDF
+          </Button>
+        </div>
+      </footer>
 
     </div>
   );

@@ -183,3 +183,10 @@
 ## Ajuste no Botão Convide um Parceiro
 
 - [x] Alterar botão "Convide um Parceiro" para direcionar à página /parceiros (remover modal de sugestão)
+
+
+## Reorganização da Página Home
+
+- [x] Mover botão "Exportar PDF" do header para a parte inferior da página
+- [x] Adicionar botão "Sugerir Parceiro" no header com modal de formulário (nome, especialidade, município)
+- [x] Manter botão "Convide um Parceiro" direcionando para /parceiros
