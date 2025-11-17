@@ -114,3 +114,10 @@
 - [x] Incluir 3 áreas: Plataforma de Consulta, Área Admin, Área do Parceiro
 - [x] Links diretos para cada funcionalidade
 - [x] Design consistente com identidade visual Vital
+
+## Novos Botões no Footer
+
+- [x] Adicionar botão "Preços das Assinaturas" → https://assinaturas.suasaudevital.com.br/
+- [x] Adicionar botão "Programa Indique e Ganhe" → https://indicacao.suasaudevital.com.br
+- [x] Expandir footer para 5 colunas com design responsivo
+- [x] Aplicar em todas as páginas (Home, Parceiros, Admin)

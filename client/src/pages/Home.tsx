@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 
@@ -614,7 +614,7 @@ export default function Home() {
       <footer className="bg-primary/5 border-t border-primary/20 py-12">
         <div className="container">
           <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
               {/* Plataforma de Consulta */}
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
@@ -661,6 +661,38 @@ export default function Home() {
                     Seja Parceiro
                   </Button>
                 </Link>
+              </div>
+
+              {/* Preços das Assinaturas */}
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-secondary/10 mb-4">
+                  <Wallet className="h-6 w-6 text-secondary" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">Preços das Assinaturas</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Conheça os planos e valores das assinaturas Vital para você e sua família
+                </p>
+                <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="sm" className="text-secondary border-secondary">
+                    Ver Preços
+                  </Button>
+                </a>
+              </div>
+
+              {/* Programa Indique e Ganhe */}
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg mb-2">Indique e Ganhe</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Indique amigos e familiares e ganhe benefícios exclusivos na Vital
+                </p>
+                <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="sm" className="text-primary border-primary">
+                    Participar
+                  </Button>
+                </a>
               </div>
             </div>
 
