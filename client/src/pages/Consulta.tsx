@@ -244,45 +244,17 @@ export default function Consulta() {
                 </p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-2 w-full lg:w-auto">
-              <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto">
-                  <Wallet className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Preços</span>
+            <div className="flex justify-end w-full lg:w-auto">
+              <a 
+                href={`${formatWhatsAppLink("+5547933853726")}?text=${encodeURIComponent("Olá! Gostaria de falar com um especialista sobre os credenciados Vital.")}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
+                  <MessageCircle className="h-5 w-5 mr-2" />
+                  Fale com o Especialista
                 </Button>
               </a>
-              <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
-                  <Users className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Indique</span>
-                </Button>
-              </a>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white flex-1 sm:flex-none">
-                    <Building2 className="h-4 w-4 mr-2" />
-                    <span className="text-xs md:text-sm">Sugerir</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Sugestão de Parceiro</DialogTitle>
-                  </DialogHeader>
-                  <SugestaoParceiro />
-                </DialogContent>
-              </Dialog>
-              <Link href="/parceiros" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
-                  <Handshake className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Convide</span>
-                </Button>
-              </Link>
-              <Link href="/admin" className="flex-1 sm:flex-none">
-                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
-                  <User className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Admin</span>
-                </Button>
-              </Link>
             </div>
           </div>
         </div>

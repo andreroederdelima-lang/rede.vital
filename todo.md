@@ -9,3 +9,10 @@
 - [x] Remover botão "Exportar PDF" da página de consulta do cliente
 - [x] Atualizar título de todas as páginas para "Guia de Credenciados Vale do Itajaí - SC"
 - [x] Atualizar rotas no App.tsx para incluir página de consulta
+
+
+## Simplificação da Página de Consulta Pública
+
+- [x] Remover todos os botões do header da página /consulta (Preços, Indique, Sugerir, Convide, Admin)
+- [x] Adicionar apenas botão de WhatsApp "Fale com o Especialista" direcionando para +55 47 93385-3726
+- [x] Garantir que a página seja exclusiva para clientes consultarem credenciados (sem preços/descontos)
