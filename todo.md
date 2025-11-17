@@ -121,3 +121,14 @@
 - [x] Adicionar botão "Programa Indique e Ganhe" → https://indicacao.suasaudevital.com.br
 - [x] Expandir footer para 5 colunas com design responsivo
 - [x] Aplicar em todas as páginas (Home, Parceiros, Admin)
+
+## Processamento de Logos Limpas
+
+- [x] Processar logo horizontal removendo "Serviços Médicos"
+- [x] Processar logo vertical removendo "Serviços Médicos"
+- [x] Entregar 2 versões limpas (só símbolo + VITAL) para avaliação
+
+## Substituir Logo Horizontal Original
+
+- [x] Usar logo horizontal "Serviços Médicos" em todas as páginas
+- [x] Verificar se logo está visível e com tamanho adequado
