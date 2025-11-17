@@ -212,19 +212,16 @@ export default function Parceiros() {
 
                 <div className="space-y-2">
                   <Label htmlFor="categoria">Categoria *</Label>
-                  <Select value={categoria} onValueChange={setCategoria} required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione a categoria" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="clinica">Clínica</SelectItem>
-                      <SelectItem value="farmacia">Farmácia</SelectItem>
-                      <SelectItem value="laboratorio">Laboratório</SelectItem>
-                      <SelectItem value="academia">Academia</SelectItem>
-                      <SelectItem value="hospital">Hospital</SelectItem>
-                      <SelectItem value="outro">Outro</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="categoria"
+                    value={categoria}
+                    onChange={(e) => setCategoria(e.target.value)}
+                    placeholder="Ex: Clínica, Farmácia, Laboratório, Academia, Hospital, Fisioterapia, Odontologia..."
+                    required
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    Digite a categoria do seu estabelecimento. Se não encontrar uma categoria adequada, pode criar a sua própria.
+                  </p>
                 </div>
 
                 <div className="space-y-2">

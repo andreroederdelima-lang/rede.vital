@@ -196,3 +196,9 @@
 
 - [x] Restaurar formulário modal de cadastro de parceiros na página Parceiros
 - [x] Substituir links de WhatsApp pelos botões que abrem o formulário
+
+
+## Ajustes no Formulário de Parceiros
+
+- [x] Remover opção "Outro" do campo categoria e adicionar campo de texto livre para categoria personalizada
+- [x] Verificar que e-mail de destino está correto: administrativo@suasaudevital.com.br
