@@ -259,20 +259,12 @@ export default function Home() {
                   Indique e Ganhe
                 </Button>
               </a>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="sm" className="bg-primary text-white hover:bg-primary/90">
-                    <Handshake className="h-4 w-4 mr-2" />
-                    Convide um Parceiro
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Sugestão de Parceiro</DialogTitle>
-                  </DialogHeader>
-                  <SugestaoParceiro />
-                </DialogContent>
-              </Dialog>
+              <Link href="/parceiros">
+                <Button size="sm" className="bg-primary text-white hover:bg-primary/90">
+                  <Handshake className="h-4 w-4 mr-2" />
+                  Convide um Parceiro
+                </Button>
+              </Link>
               <Link href="/admin">
                 <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
                   <User className="h-4 w-4 mr-2" />

@@ -178,3 +178,8 @@
 - [x] Alterar texto "Seja Parceiro" para "Convide um Parceiro"
 - [x] Criar formulário de sugestão de parceiros com campos: nome, especialidade, município
 - [x] Implementar envio de e-mail para administrativo@suasaudevital.com.br
+
+
+## Ajuste no Botão Convide um Parceiro
+
+- [x] Alterar botão "Convide um Parceiro" para direcionar à página /parceiros (remover modal de sugestão)
