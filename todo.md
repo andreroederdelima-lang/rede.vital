@@ -221,3 +221,8 @@
 - [x] Adicionar campo "Especialidade" (condicional, aparece apenas para médicos)
 - [x] Adicionar campo "Principal Área de Atuação" (condicional, aparece apenas para médicos, ex: dor crônica)
 - [x] Atualizar backend para processar e enviar novos campos no e-mail
+
+
+## Correção de Link de Assinaturas Empresariais
+
+- [x] Verificar e corrigir link do botão "Conheça as Assinaturas Empresariais" para https://assinaturas.suasaudevital.com.br/empresarial
