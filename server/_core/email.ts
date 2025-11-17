@@ -142,3 +142,72 @@ export async function enviarEmailNovaParceria(dados: {
     html,
   });
 }
+
+/**
+ * Envia e-mail com sugestão de parceiro feita por paciente
+ */
+export async function enviarEmailSugestaoParceiro(dados: {
+  nomeParceiro: string;
+  especialidade: string;
+  municipio: string;
+}) {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #2d7a7a; color: white; padding: 20px; text-align: center; }
+        .content { background-color: #f9f9f9; padding: 20px; }
+        .field { margin: 15px 0; }
+        .field-label { font-weight: bold; color: #2d7a7a; }
+        .field-value { margin-top: 5px; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>Sugestão de Novo Parceiro</h1>
+          <p>Sua Saúde Vital</p>
+        </div>
+        
+        <div class="content">
+          <p>Um paciente sugeriu um novo parceiro para a rede credenciada Vital:</p>
+          
+          <div class="field">
+            <div class="field-label">Nome do Parceiro Sugerido:</div>
+            <div class="field-value">${dados.nomeParceiro}</div>
+          </div>
+          
+          <div class="field">
+            <div class="field-label">Especialidade/Categoria:</div>
+            <div class="field-value">${dados.especialidade}</div>
+          </div>
+          
+          <div class="field">
+            <div class="field-label">Município:</div>
+            <div class="field-value">${dados.municipio}</div>
+          </div>
+          
+          <p style="margin-top: 30px;">
+            <strong>Entre em contato com o parceiro sugerido para avaliar possível parceria.</strong>
+          </p>
+        </div>
+        
+        <div class="footer">
+          <p>© 2025 Sua Saúde Vital - Sistema de Gestão de Credenciados</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: 'administrativo@suasaudevital.com.br',
+    subject: `Sugestão de Parceiro - ${dados.nomeParceiro}`,
+    html,
+  });
+}

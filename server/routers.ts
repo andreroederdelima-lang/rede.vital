@@ -241,6 +241,23 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  sugestao: router({
+    enviarSugestaoParceiro: publicProcedure
+      .input(z.object({
+        nomeParceiro: z.string().min(1, "Nome do parceiro é obrigatório"),
+        especialidade: z.string().min(1, "Especialidade é obrigatória"),
+        municipio: z.string().min(1, "Município é obrigatório"),
+      }))
+      .mutation(async ({ input }) => {
+        const { enviarEmailSugestaoParceiro } = await import("./_core/email");
+        
+        // Enviar e-mail de sugestão
+        await enviarEmailSugestaoParceiro(input);
+        
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -169,3 +169,12 @@
 
 - [x] Remover footer da página Home (Plataforma de Consulta, Área do Parceiro)
 - [x] Remover formulário de cadastro "Convide um Parceiro" da página de parceiros
+
+
+## Novos Botões e Formulário de Sugestão na Home
+
+- [x] Adicionar botão "Preços das Assinaturas" na Home
+- [x] Adicionar botão "Indique e Ganhe" na Home
+- [x] Alterar texto "Seja Parceiro" para "Convide um Parceiro"
+- [x] Criar formulário de sugestão de parceiros com campos: nome, especialidade, município
+- [x] Implementar envio de e-mail para administrativo@suasaudevital.com.br

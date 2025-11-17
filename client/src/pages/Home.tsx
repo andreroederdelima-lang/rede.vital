@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
+import { toast } from "sonner";
 
 export default function Home() {
   const [busca, setBusca] = useState("");
@@ -246,12 +247,32 @@ export default function Home() {
                 <FileDown className="h-4 w-4 mr-2" />
                 Exportar PDF
               </Button>
-              <Link href="/parceiros">
+              <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
                 <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-                  <Handshake className="h-4 w-4 mr-2" />
-                  Seja Parceiro
+                  <Wallet className="h-4 w-4 mr-2" />
+                  Preços das Assinaturas
                 </Button>
-              </Link>
+              </a>
+              <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
+                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                  <Users className="h-4 w-4 mr-2" />
+                  Indique e Ganhe
+                </Button>
+              </a>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="sm" className="bg-primary text-white hover:bg-primary/90">
+                    <Handshake className="h-4 w-4 mr-2" />
+                    Convide um Parceiro
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Sugestão de Parceiro</DialogTitle>
+                  </DialogHeader>
+                  <SugestaoParceiro />
+                </DialogContent>
+              </Dialog>
               <Link href="/admin">
                 <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white">
                   <User className="h-4 w-4 mr-2" />
@@ -612,5 +633,84 @@ export default function Home() {
 
 
     </div>
+  );
+}
+
+// Componente de sugestão de parceiro
+function SugestaoParceiro() {
+  const [nomeParceiro, setNomeParceiro] = useState("");
+  const [especialidade, setEspecialidade] = useState("");
+  const [municipio, setMunicipio] = useState("");
+  
+  const sugestaoMutation = trpc.sugestao.enviarSugestaoParceiro.useMutation({
+    onSuccess: () => {
+      toast.success("Sugestão enviada com sucesso!", {
+        description: "Obrigado pela sugestão. Entraremos em contato com o parceiro."
+      });
+      setNomeParceiro("");
+      setEspecialidade("");
+      setMunicipio("");
+    },
+    onError: (error) => {
+      toast.error("Erro ao enviar sugestão", {
+        description: error.message
+      });
+    },
+  });
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    sugestaoMutation.mutate({
+      nomeParceiro,
+      especialidade,
+      municipio,
+    });
+  };
+  
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="nomeParceiro">Nome do Parceiro *</Label>
+        <Input
+          id="nomeParceiro"
+          value={nomeParceiro}
+          onChange={(e) => setNomeParceiro(e.target.value)}
+          placeholder="Nome do profissional ou estabelecimento"
+          required
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="especialidade">Especialidade/Categoria *</Label>
+        <Input
+          id="especialidade"
+          value={especialidade}
+          onChange={(e) => setEspecialidade(e.target.value)}
+          placeholder="Ex: Cardiologia, Farmácia, Laboratório..."
+          required
+        />
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="municipio">Município *</Label>
+        <Input
+          id="municipio"
+          value={municipio}
+          onChange={(e) => setMunicipio(e.target.value)}
+          placeholder="Ex: Timbó, Indaial, Pomerode..."
+          required
+        />
+      </div>
+      
+      <div className="flex justify-end gap-2 pt-4">
+        <Button
+          type="submit"
+          disabled={sugestaoMutation.isPending}
+          className="w-full"
+        >
+          {sugestaoMutation.isPending ? "Enviando..." : "Enviar Sugestão"}
+        </Button>
+      </div>
+    </form>
   );
 }
