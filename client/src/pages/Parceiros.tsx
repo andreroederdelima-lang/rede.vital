@@ -592,40 +592,8 @@ export default function Parceiros() {
       {/* Footer */}
       <footer className="bg-primary/5 border-t border-primary/20 py-12 mt-12">
         <div className="container">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
-              {/* Plataforma de Consulta */}
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                  <Eye className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Plataforma de Consulta</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Busque médicos e instituições credenciadas com filtros por especialidade, município e desconto
-                </p>
-                <a href="/">
-                  <Button variant="outline" size="sm" className="text-primary border-primary">
-                    Acessar Consulta
-                  </Button>
-                </a>
-              </div>
-
-              {/* Área Admin */}
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-secondary/10 mb-4">
-                  <Building2 className="h-6 w-6 text-secondary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Área Administrativa</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Gerencie credenciados, aprove solicitações de parceria e mantenha a base atualizada
-                </p>
-                <a href="/admin">
-                  <Button variant="outline" size="sm" className="text-secondary border-secondary">
-                    Acessar Admin
-                  </Button>
-                </a>
-              </div>
-
+          <div className="max-w-3xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* Área do Parceiro */}
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
@@ -654,22 +622,6 @@ export default function Parceiros() {
                 <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" size="sm" className="text-secondary border-secondary">
                     Ver Preços
-                  </Button>
-                </a>
-              </div>
-
-              {/* Programa Indique e Ganhe */}
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-4">
-                  <Users className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Indique e Ganhe</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Indique amigos e familiares e ganhe benefícios exclusivos na Vital
-                </p>
-                <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="text-primary border-primary">
-                    Participar
                   </Button>
                 </a>
               </div>

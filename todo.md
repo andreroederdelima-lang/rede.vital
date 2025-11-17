@@ -136,3 +136,7 @@
 ## Atualização Final da Logo
 
 - [x] Substituir logo pela versão mais recente enviada
+
+## Simplificação do Footer da Página de Parceiros
+
+- [x] Remover botões "Área Administrativa", "Área de Consulta" e "Indique e Ganhe" do footer da página de parceiros
