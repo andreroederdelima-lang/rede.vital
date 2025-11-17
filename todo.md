@@ -132,3 +132,7 @@
 
 - [x] Usar logo horizontal "Serviços Médicos" em todas as páginas
 - [x] Verificar se logo está visível e com tamanho adequado
+
+## Atualização Final da Logo
+
+- [x] Substituir logo pela versão mais recente enviada
