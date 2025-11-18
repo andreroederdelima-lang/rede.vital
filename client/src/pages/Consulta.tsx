@@ -340,7 +340,7 @@ export default function Consulta() {
                                   className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                                 >
                                   <MessageCircle className="h-3 w-3" />
-                                  WhatsApp
+                                  Fale com o vendedor
                                 </a>
                               )}
                             </div>
@@ -450,7 +450,7 @@ export default function Consulta() {
                                 className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                               >
                                 <MessageCircle className="h-3 w-3" />
-                                WhatsApp
+                                Fale com o vendedor
                               </a>
                             </div>
                           )}

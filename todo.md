@@ -73,3 +73,8 @@
 ## Primeiro Usuário Autorizado
 
 - [x] Adicionar ambulatoriocensit@gmail.com como usuário autorizado no banco de dados
+
+
+## Ajuste de Texto do Botão WhatsApp
+
+- [x] Alterar texto do botão WhatsApp na página de consulta pública de "WhatsApp" para "Fale com o vendedor"
