@@ -162,7 +162,7 @@ export default function Admin() {
             <Button className="w-full" onClick={() => window.location.href = getLoginUrl()}>
               Fazer Login
             </Button>
-            <Link href="/">
+            <Link href="/dados-internos">
               <Button variant="outline" className="w-full mt-2">
                 <Home className="h-4 w-4 mr-2" />
                 Voltar para página inicial
@@ -190,10 +190,10 @@ export default function Admin() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Link href="/">
+              <Link href="/dados-internos">
                 <Button variant="secondary" size="sm">
                   <Home className="h-4 w-4 mr-2" />
-                  Página Pública
+                  Dados Internos
                 </Button>
               </Link>
               <Button variant="secondary" size="sm" onClick={() => logout()}>

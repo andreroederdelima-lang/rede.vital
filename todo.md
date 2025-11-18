@@ -51,3 +51,8 @@
 - [x] Trocar rota: página Consulta deve ser acessível em `/` (raiz)
 - [x] Mover página Home atual para `/dados-internos` (área administrativa)
 - [x] Atualizar links internos que referenciam as rotas antigas
+
+
+## Atualização de Links Home
+
+- [x] Atualizar todos os botões "Home" e links para página inicial para apontarem para `/dados-internos`
