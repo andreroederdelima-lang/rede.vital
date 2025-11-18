@@ -42,6 +42,7 @@ export const medicos = mysqlTable("medicos", {
   descontoPercentual: int("descontoPercentual").notNull().default(0),
   observacoes: text("observacoes"),
   contatoParceria: varchar("contatoParceria", { length: 255 }),
+  tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
   ativo: int("ativo").notNull().default(1),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -65,6 +66,7 @@ export const instituicoes = mysqlTable("instituicoes", {
   descontoPercentual: int("descontoPercentual").notNull().default(0),
   observacoes: text("observacoes"),
   contatoParceria: varchar("contatoParceria", { length: 255 }),
+  tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
   ativo: int("ativo").notNull().default(1),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -113,3 +115,26 @@ export const usuariosAutorizados = mysqlTable("usuariosAutorizados", {
 
 export type UsuarioAutorizado = typeof usuariosAutorizados.$inferSelect;
 export type InsertUsuarioAutorizado = typeof usuariosAutorizados.$inferInsert;
+/**
+ * Tabela de solicitações de atualização de dados pelos parceiros
+ */
+export const solicitacoesAtualizacao = mysqlTable("solicitacoesAtualizacao", {
+  id: int("id").autoincrement().primaryKey(),
+  tipoCredenciado: mysqlEnum("tipoCredenciado", ["medico", "instituicao"]).notNull(),
+  credenciadoId: int("credenciadoId").notNull(),
+  // Dados atualizados
+  telefone: varchar("telefone", { length: 100 }),
+  whatsapp: varchar("whatsapp", { length: 100 }),
+  email: varchar("email", { length: 255 }),
+  endereco: text("endereco"),
+  precoConsulta: varchar("precoConsulta", { length: 50 }),
+  descontoPercentual: int("descontoPercentual"),
+  observacoes: text("observacoes"),
+  status: mysqlEnum("status", ["pendente", "aprovado", "rejeitado"]).default("pendente").notNull(),
+  motivoRejeicao: text("motivoRejeicao"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SolicitacaoAtualizacao = typeof solicitacoesAtualizacao.$inferSelect;
+export type InsertSolicitacaoAtualizacao = typeof solicitacoesAtualizacao.$inferInsert;

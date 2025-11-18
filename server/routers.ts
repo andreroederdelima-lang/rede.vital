@@ -311,6 +311,102 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  atualizacao: router({
+    gerarLink: protectedProcedure
+      .input(z.object({
+        tipo: z.enum(["medico", "instituicao"]),
+        id: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        const { gerarTokenAtualizacao, obterMedicoPorId, obterInstituicaoPorId } = await import("./db");
+        const token = await gerarTokenAtualizacao(input.tipo, input.id);
+        
+        // Obter nome do credenciado para mensagem WhatsApp
+        let nome = "";
+        if (input.tipo === "medico") {
+          const medico = await obterMedicoPorId(input.id);
+          nome = medico?.nome || "";
+        } else {
+          const instituicao = await obterInstituicaoPorId(input.id);
+          nome = instituicao?.nome || "";
+        }
+        
+        const baseUrl = process.env.VITE_FRONTEND_FORGE_API_URL?.replace("/api", "") || "";
+        const link = `${baseUrl}/atualizar-dados/${token}`;
+        
+        return { token, link, nome };
+      }),
+    
+    obterPorToken: publicProcedure
+      .input(z.string())
+      .query(async ({ input }) => {
+        const { obterCredenciadoPorToken } = await import("./db");
+        return obterCredenciadoPorToken(input);
+      }),
+    
+    enviar: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        telefone: z.string().optional(),
+        whatsapp: z.string().optional(),
+        email: z.string().optional(),
+        endereco: z.string().optional(),
+        precoConsulta: z.string().optional(),
+        descontoPercentual: z.number().optional(),
+        observacoes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { obterCredenciadoPorToken, criarSolicitacaoAtualizacao } = await import("./db");
+        
+        const credenciado = await obterCredenciadoPorToken(input.token);
+        if (!credenciado) {
+          throw new Error("Token inv\u00e1lido ou expirado");
+        }
+        
+        await criarSolicitacaoAtualizacao({
+          tipoCredenciado: credenciado.tipo,
+          credenciadoId: credenciado.dados.id,
+          telefone: input.telefone,
+          whatsapp: input.whatsapp,
+          email: input.email,
+          endereco: input.endereco,
+          precoConsulta: input.precoConsulta,
+          descontoPercentual: input.descontoPercentual,
+          observacoes: input.observacoes,
+        });
+        
+        return { success: true };
+      }),
+    
+    listar: protectedProcedure
+      .input(z.object({
+        status: z.enum(["pendente", "aprovado", "rejeitado"]).optional(),
+      }).optional())
+      .query(async ({ input }) => {
+        const { listarSolicitacoesAtualizacao } = await import("./db");
+        return listarSolicitacoesAtualizacao(input?.status);
+      }),
+    
+    aprovar: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { aprovarSolicitacaoAtualizacao } = await import("./db");
+        await aprovarSolicitacaoAtualizacao(input);
+        return { success: true };
+      }),
+    
+    rejeitar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        motivo: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { rejeitarSolicitacaoAtualizacao } = await import("./db");
+        await rejeitarSolicitacaoAtualizacao(input.id, input.motivo);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

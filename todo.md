@@ -124,3 +124,17 @@
 - [x] Adicionar campo "% Desconto" no formulário de cadastro de instituições (Admin) (já existia)
 - [x] Garantir que preço e desconto apareçam SEMPRE nos cards de /dados-internos (mesmo se vazios)
 - [x] Exibir "Não informado" quando preço não estiver cadastrado
+
+
+## Sistema de Atualização de Dados pelos Parceiros
+
+- [x] Criar tabela de solicitações de atualização de dados no banco
+- [x] Adicionar campo token único para cada médico/instituição
+- [x] Implementar procedure tRPC para gerar link de atualização
+- [x] Implementar procedure tRPC para receber solicitação de atualização
+- [x] Implementar procedures tRPC para listar, aprovar e rejeitar atualizações
+- [x] Criar página pública `/atualizar-dados/:token` com formulário pré-preenchido
+- [ ] Adicionar aba "Atualizações Pendentes" no Admin
+- [ ] Implementar aprovação/rejeição de atualizações no Admin
+- [ ] Adicionar botão "Enviar Link de Atualização" nos cards de /dados-internos
+- [ ] Gerar mensagem WhatsApp com link de atualização

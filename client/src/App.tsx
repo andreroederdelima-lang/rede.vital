@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Parceiros from "./pages/Parceiros";
 import Consulta from "./pages/Consulta";
+import AtualizarDados from "./pages/AtualizarDados";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -17,6 +18,7 @@ function Router() {
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/parceiros"} component={Parceiros} />
+      <Route path={"/atualizar-dados/:token"} component={AtualizarDados} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
