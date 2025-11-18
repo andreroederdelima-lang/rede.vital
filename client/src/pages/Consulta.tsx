@@ -180,7 +180,7 @@ export default function Consulta() {
               >
                 <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
                   <MessageCircle className="h-5 w-5 mr-2" />
-                  Fale com o Especialista
+                  Fale Conosco
                 </Button>
               </a>
               <Link href="/dados-internos">

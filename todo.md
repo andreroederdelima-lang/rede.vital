@@ -91,3 +91,8 @@
 - [x] Alterar texto do botão "Convide" para "Convide um Parceiro" na página /dados-internos
 - [x] Alterar texto do botão "Indique" para "Indique a Vital!" na página /dados-internos
 - [x] Alterar texto do botão "Sugerir" para "Sugerir um Parceiro" na página /dados-internos
+
+
+## Ajuste do Botão WhatsApp no Header
+
+- [x] Alterar texto do botão "Fale com o Especialista" para "Fale Conosco" na página de consulta pública
