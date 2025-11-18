@@ -90,7 +90,7 @@ export default function Home() {
       </head>
       <body>
         <div class="header">
-          <h1>Guia de Credenciados Vale do Itajaí - Santa Catarina</h1>
+          <h1>Guia de Parceiros Vital - Vale do Itajaí</h1>
           <p><strong>${tipo} Credenciados</strong></p>
           <p>Gerado em: ${new Date().toLocaleDateString('pt-BR')}</p>
         </div>
@@ -296,9 +296,9 @@ export default function Home() {
             <div className="flex items-center gap-4 md:gap-6">
               <img src={APP_LOGO} alt="Vital Logo" className="h-20 md:h-32 w-auto" />
               <div>
-                <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Credenciados Vale do Itajaí - Santa Catarina</h1>
-                <p className="text-muted-foreground text-xs md:text-sm mt-1">
-                  Rede credenciada para encaminhamentos e orientações médicas
+                <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Parceiros Vital - Vale do Itajaí</h1>
+                <p className="text-destructive text-xs md:text-sm mt-1 font-semibold">
+                  Guia de uso interno para consultas e informações. Conteúdo sigiloso.
                 </p>
               </div>
             </div>

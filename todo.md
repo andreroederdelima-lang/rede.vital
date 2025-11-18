@@ -138,3 +138,12 @@
 - [ ] Implementar aprovação/rejeição de atualizações no Admin
 - [ ] Adicionar botão "Enviar Link de Atualização" nos cards de /dados-internos
 - [ ] Gerar mensagem WhatsApp com link de atualização
+
+
+## Atualização de Títulos e Descrições
+
+- [x] Alterar título da página pública para "Guia de Parceiros Vital - Vale do Itajaí"
+- [x] Alterar descrição da página pública para "Rede credenciada para encaminhamentos e orientações médicas"
+- [x] Adicionar aviso sobre busca nacional na página pública
+- [x] Alterar título da página dados-internos para "Guia de Parceiros Vital - Vale do Itajaí"
+- [x] Alterar descrição da página dados-internos para "Guia de uso interno para consultas e informações. Conteúdo sigiloso."

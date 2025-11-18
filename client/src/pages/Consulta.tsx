@@ -79,7 +79,7 @@ export default function Consulta() {
       </head>
       <body>
         <div class="header">
-          <h1>Guia de Credenciados Vale do Itajaí - Santa Catarina</h1>
+          <h1>Guia de Parceiros Vital - Vale do Itajaí</h1>
           <p><strong>${tipo} Credenciados</strong></p>
           <p>Gerado em: ${new Date().toLocaleDateString('pt-BR')}</p>
         </div>
@@ -152,9 +152,12 @@ export default function Consulta() {
             <div className="flex items-center gap-4 md:gap-6">
               <img src={APP_LOGO} alt="Vital Logo" className="h-20 md:h-32 w-auto" />
               <div>
-                <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Credenciados Vale do Itajaí - Santa Catarina</h1>
+                <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Parceiros Vital - Vale do Itajaí</h1>
                 <p className="text-muted-foreground text-xs md:text-sm mt-1">
                   Rede credenciada para encaminhamentos e orientações médicas
+                </p>
+                <p className="text-xs text-primary/80 mt-2 font-medium">
+                  Para acessar a Busca de Parceiros a nível Nacional - acesse sua área do cliente (+34.100 farmácias | +3.100 médicos, clínicas e hospitais | +350 laboratórios).
                 </p>
               </div>
             </div>
@@ -378,7 +381,7 @@ export default function Consulta() {
                               `${medico.telefone || medico.whatsapp ? `Telefone: ${medico.telefone || medico.whatsapp}\n` : ''}` +
                               `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n\n` +
                               `💚 *Vital, sempre ao seu lado* 💚\n` +
-                              `Credenciado Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina`;
+                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
@@ -492,7 +495,7 @@ export default function Consulta() {
                               `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
                               `${inst.email ? `Email: ${inst.email}\n` : ''}\n` +
                               `💚 *Vital, sempre ao seu lado* 💚\n` +
-                              `Credenciado Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina`;
+                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
