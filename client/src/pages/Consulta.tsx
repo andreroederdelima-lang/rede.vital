@@ -22,9 +22,6 @@ export default function Consulta() {
   const [categoria, setCategoria] = useState<string>("");
   // Removido filtro de desconto para consulta pública
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "instituicoes">("medicos");
-  const [encaminhamentoDialog, setEncaminhamentoDialog] = useState(false);
-  const [medicoSelecionado, setMedicoSelecionado] = useState<any>(null);
-  const [motivoEncaminhamento, setMotivoEncaminhamento] = useState("");
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -144,132 +141,7 @@ export default function Consulta() {
   };
   */
 
-  const gerarEncaminhamento = () => {
-    if (!medicoSelecionado || !motivoEncaminhamento.trim()) {
-      alert("Por favor, preencha o motivo do encaminhamento.");
-      return;
-    }
 
-    const html = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Encaminhamento Médico - Vital</title>
-        <style>
-          @page { size: A4; margin: 2.5cm; }
-          body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; margin: 0; padding: 0; }
-          .header { 
-            background: linear-gradient(135deg, oklch(0.58 0.12 180) 0%, oklch(0.65 0.15 165) 100%);
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 4px solid oklch(0.82 0.06 80);
-          }
-          .header img { max-width: 200px; height: auto; margin-bottom: 15px; }
-          .header h1 { color: white; margin: 10px 0; font-size: 22pt; text-transform: uppercase; letter-spacing: 1px; }
-          .header p { margin: 5px 0; color: white; font-size: 11pt; }
-          .header .slogan { 
-            color: oklch(0.82 0.06 80);
-            font-style: italic;
-            font-size: 10pt;
-            margin-top: 10px;
-            font-weight: 500;
-          }
-          .content { margin: 30px 40px; }
-          .field { margin: 20px 0; }
-          .field label { 
-            font-weight: bold; 
-            color: oklch(0.58 0.12 180);
-            display: block; 
-            margin-bottom: 5px;
-            font-size: 11pt;
-          }
-          .field .value { 
-            border-bottom: 2px solid oklch(0.82 0.06 80);
-            padding: 8px 0;
-            min-height: 25px;
-            color: #333;
-          }
-          .motivo { margin-top: 30px; }
-          .motivo .value { 
-            border: 2px solid oklch(0.58 0.12 180);
-            padding: 15px;
-            min-height: 150px;
-            border-radius: 8px;
-            background: oklch(0.98 0.02 180);
-          }
-          .footer { 
-            margin-top: 60px;
-            text-align: center;
-            padding: 20px;
-            background: oklch(0.98 0.02 180);
-            border-top: 3px solid oklch(0.82 0.06 80);
-          }
-          .footer p { margin: 5px 0; color: #666; font-size: 10pt; }
-          .footer strong { color: oklch(0.58 0.12 180); }
-          @media print { body { margin: 0; } }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <img src="${APP_LOGO}" alt="Vital Logo" />
-          <h1>Encaminhamento Médico</h1>
-          <p>Ambulatório - Hospital Censit</p>
-          <p>Data: ${new Date().toLocaleDateString('pt-BR')}</p>
-          <p class="slogan">Vital, sempre ao seu lado</p>
-        </div>
-        
-        <div class="content">
-          <div class="field">
-            <label>Especialista:</label>
-            <div class="value">${medicoSelecionado.nome} - ${medicoSelecionado.especialidade}${medicoSelecionado.subespecialidade ? ` / ${medicoSelecionado.subespecialidade}` : ''}</div>
-          </div>
-          
-          <div class="field">
-            <label>Telefone da clínica (somente fixo):</label>
-            <div class="value">${medicoSelecionado.telefone || '_______________________'}</div>
-          </div>
-          
-          <div class="field">
-            <label>Endereço:</label>
-            <div class="value">${medicoSelecionado.endereco}</div>
-          </div>
-          
-          <div class="field">
-            <label>Cidade:</label>
-            <div class="value">${medicoSelecionado.municipio}</div>
-          </div>
-          
-          <div class="motivo">
-            <label>Motivo do encaminhamento:</label>
-            <div class="value">${motivoEncaminhamento.replace(/\n/g, '<br>')}</div>
-          </div>
-        </div>
-        
-        <div class="footer">
-          <p><strong>Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina</strong></p>
-          <p>Agradecemos a parceria no cuidado ao paciente.</p>
-          <p style="margin-top: 10px; font-style: italic; color: oklch(0.58 0.12 180);">Vital, sempre ao seu lado</p>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(html);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => {
-        printWindow.print();
-      }, 250);
-    }
-
-    // Limpar e fechar diálogo
-    setMotivoEncaminhamento("");
-    setEncaminhamentoDialog(false);
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -490,17 +362,6 @@ export default function Consulta() {
                       
                       <div className="flex flex-col gap-2">
                         <Button
-                          variant="default"
-                          size="sm"
-                          onClick={() => {
-                            setMedicoSelecionado(medico);
-                            setEncaminhamentoDialog(true);
-                          }}
-                        >
-                          <FileText className="h-4 w-4 mr-2" />
-                          Gerar Encaminhamento
-                        </Button>
-                        <Button
                           variant="outline"
                           size="sm"
                           onClick={() => {
@@ -522,7 +383,7 @@ export default function Consulta() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const url = `${window.location.origin}/consulta?medico=${medico.id}`;
+                            const url = `${window.location.origin}/?medico=${medico.id}`;
                             navigator.clipboard.writeText(url).then(() => {
                               toast.success('Link copiado com sucesso!');
                             }).catch(() => {
@@ -636,7 +497,7 @@ export default function Consulta() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const url = `${window.location.origin}/consulta?instituicao=${inst.id}`;
+                            const url = `${window.location.origin}/?instituicao=${inst.id}`;
                             navigator.clipboard.writeText(url).then(() => {
                               toast.success('Link copiado com sucesso!');
                             }).catch(() => {
@@ -657,56 +518,7 @@ export default function Consulta() {
         )}
       </main>
 
-      {/* Diálogo de Encaminhamento Médico */}
-      <Dialog open={encaminhamentoDialog} onOpenChange={setEncaminhamentoDialog}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Gerar Encaminhamento Médico</DialogTitle>
-          </DialogHeader>
-          
-          {medicoSelecionado && (
-            <div className="space-y-4">
-              <div className="bg-muted p-4 rounded-lg space-y-2">
-                <p><strong>Especialista:</strong> {medicoSelecionado.nome}</p>
-                <p><strong>Especialidade:</strong> {medicoSelecionado.especialidade}
-                  {medicoSelecionado.subespecialidade && ` / ${medicoSelecionado.subespecialidade}`}
-                </p>
-                <p><strong>Telefone:</strong> {medicoSelecionado.telefone || "Não informado"}</p>
-                <p><strong>Endereço:</strong> {medicoSelecionado.endereco}</p>
-                <p><strong>Cidade:</strong> {medicoSelecionado.municipio}</p>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="motivo">Motivo do encaminhamento *</Label>
-                <Textarea
-                  id="motivo"
-                  placeholder="Descreva o motivo do encaminhamento..."
-                  value={motivoEncaminhamento}
-                  onChange={(e) => setMotivoEncaminhamento(e.target.value)}
-                  rows={6}
-                  className="resize-none"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setEncaminhamentoDialog(false);
-                    setMotivoEncaminhamento("");
-                  }}
-                >
-                  Cancelar
-                </Button>
-                <Button onClick={gerarEncaminhamento}>
-                  <FileText className="h-4 w-4 mr-2" />
-                  Gerar e Imprimir
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* Rodapé removido da página de consulta pública */}
 

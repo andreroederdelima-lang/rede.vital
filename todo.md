@@ -43,3 +43,11 @@
 - [x] Adicionar logo da Vital e cores da marca (verde turquesa e bege) no cabeçalho da receita de encaminhamento
 - [x] Criar botão "Copiar Link" nos cards de credenciados para copiar link direto
 - [x] Aprimorar mensagem de compartilhamento WhatsApp incluindo logo da Vital e slogan "Vital, sempre ao seu lado"
+
+
+## Reorganização de Rotas e Simplificação da Consulta Pública
+
+- [x] Remover botão "Gerar Encaminhamento" da página Consulta (uso exclusivo para pacientes)
+- [x] Trocar rota: página Consulta deve ser acessível em `/` (raiz)
+- [x] Mover página Home atual para `/dados-internos` (área administrativa)
+- [x] Atualizar links internos que referenciam as rotas antigas

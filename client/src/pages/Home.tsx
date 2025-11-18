@@ -492,7 +492,7 @@ export default function Home() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const url = `${window.location.origin}/?medico=${medico.id}`;
+                            const url = `${window.location.origin}/dados-internos?medico=${medico.id}`;
                             navigator.clipboard.writeText(url).then(() => {
                               toast.success('Link copiado com sucesso!');
                             }).catch(() => {
@@ -606,7 +606,7 @@ export default function Home() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const url = `${window.location.origin}/?instituicao=${inst.id}`;
+                            const url = `${window.location.origin}/dados-internos?instituicao=${inst.id}`;
                             navigator.clipboard.writeText(url).then(() => {
                               toast.success('Link copiado com sucesso!');
                             }).catch(() => {
