@@ -36,3 +36,10 @@
 ## Atualização de Título
 
 - [x] Atualizar título de "Guia de Credenciados Vale do Itajaí - SC" para "Guia de Credenciados Vale do Itajaí - Santa Catarina" em todas as páginas
+
+
+## Melhorias de Branding e Compartilhamento
+
+- [x] Adicionar logo da Vital e cores da marca (verde turquesa e bege) no cabeçalho da receita de encaminhamento
+- [x] Criar botão "Copiar Link" nos cards de credenciados para copiar link direto
+- [x] Aprimorar mensagem de compartilhamento WhatsApp incluindo logo da Vital e slogan "Vital, sempre ao seu lado"

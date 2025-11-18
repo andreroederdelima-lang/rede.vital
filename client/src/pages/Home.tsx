@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -470,6 +470,39 @@ export default function Home() {
                           <FileText className="h-4 w-4 mr-2" />
                           Gerar Encaminhamento
                         </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const mensagem = `*${medico.nome}*\n\n` +
+                              `Especialidade: ${medico.especialidade}${medico.subespecialidade ? ` • ${medico.subespecialidade}` : ''}\n` +
+                              `Município: ${medico.municipio}\n` +
+                              `Endereço: ${medico.endereco}\n` +
+                              `${medico.telefone || medico.whatsapp ? `Telefone: ${medico.telefone || medico.whatsapp}\n` : ''}` +
+                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n\n` +
+                              `💚 *Vital, sempre ao seu lado* 💚\n` +
+                              `Credenciado Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina`;
+                            window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
+                          }}
+                        >
+                          <Share2 className="h-4 w-4 mr-2" />
+                          Compartilhar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const url = `${window.location.origin}/?medico=${medico.id}`;
+                            navigator.clipboard.writeText(url).then(() => {
+                              toast.success('Link copiado com sucesso!');
+                            }).catch(() => {
+                              toast.error('Erro ao copiar link');
+                            });
+                          }}
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Copiar Link
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -548,6 +581,42 @@ export default function Home() {
                             Parceria: {inst.contatoParceria}
                           </p>
                         )}
+                      </div>
+                      
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const mensagem = `*${inst.nome}*\n\n` +
+                              `Categoria: ${inst.categoria}\n` +
+                              `Município: ${inst.municipio}\n` +
+                              `Endereço: ${inst.endereco}\n` +
+                              `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
+                              `${inst.email ? `Email: ${inst.email}\n` : ''}\n` +
+                              `💚 *Vital, sempre ao seu lado* 💚\n` +
+                              `Credenciado Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina`;
+                            window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
+                          }}
+                        >
+                          <Share2 className="h-4 w-4 mr-2" />
+                          Compartilhar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const url = `${window.location.origin}/?instituicao=${inst.id}`;
+                            navigator.clipboard.writeText(url).then(() => {
+                              toast.success('Link copiado com sucesso!');
+                            }).catch(() => {
+                              toast.error('Erro ao copiar link');
+                            });
+                          }}
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Copiar Link
+                        </Button>
                       </div>
                     </div>
                   </CardContent>

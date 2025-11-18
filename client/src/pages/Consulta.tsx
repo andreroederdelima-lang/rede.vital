@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2 } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -155,28 +155,69 @@ export default function Consulta() {
       <html>
       <head>
         <meta charset="UTF-8">
-        <title>Encaminhamento Médico</title>
+        <title>Encaminhamento Médico - Vital</title>
         <style>
-          @page { size: A4; margin: 3cm; }
-          body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; }
-          .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #2d7a7a; padding-bottom: 20px; }
-          .header h1 { color: #2d7a7a; margin: 0; font-size: 20pt; }
-          .header p { margin: 5px 0; color: #666; }
-          .content { margin: 30px 0; }
+          @page { size: A4; margin: 2.5cm; }
+          body { font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.6; margin: 0; padding: 0; }
+          .header { 
+            background: linear-gradient(135deg, oklch(0.58 0.12 180) 0%, oklch(0.65 0.15 165) 100%);
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 4px solid oklch(0.82 0.06 80);
+          }
+          .header img { max-width: 200px; height: auto; margin-bottom: 15px; }
+          .header h1 { color: white; margin: 10px 0; font-size: 22pt; text-transform: uppercase; letter-spacing: 1px; }
+          .header p { margin: 5px 0; color: white; font-size: 11pt; }
+          .header .slogan { 
+            color: oklch(0.82 0.06 80);
+            font-style: italic;
+            font-size: 10pt;
+            margin-top: 10px;
+            font-weight: 500;
+          }
+          .content { margin: 30px 40px; }
           .field { margin: 20px 0; }
-          .field label { font-weight: bold; color: #2d7a7a; display: block; margin-bottom: 5px; }
-          .field .value { border-bottom: 1px solid #333; padding: 5px 0; min-height: 25px; }
+          .field label { 
+            font-weight: bold; 
+            color: oklch(0.58 0.12 180);
+            display: block; 
+            margin-bottom: 5px;
+            font-size: 11pt;
+          }
+          .field .value { 
+            border-bottom: 2px solid oklch(0.82 0.06 80);
+            padding: 8px 0;
+            min-height: 25px;
+            color: #333;
+          }
           .motivo { margin-top: 30px; }
-          .motivo .value { border: 1px solid #333; padding: 15px; min-height: 150px; border-radius: 4px; }
-          .footer { margin-top: 60px; text-align: center; font-style: italic; color: #666; }
+          .motivo .value { 
+            border: 2px solid oklch(0.58 0.12 180);
+            padding: 15px;
+            min-height: 150px;
+            border-radius: 8px;
+            background: oklch(0.98 0.02 180);
+          }
+          .footer { 
+            margin-top: 60px;
+            text-align: center;
+            padding: 20px;
+            background: oklch(0.98 0.02 180);
+            border-top: 3px solid oklch(0.82 0.06 80);
+          }
+          .footer p { margin: 5px 0; color: #666; font-size: 10pt; }
+          .footer strong { color: oklch(0.58 0.12 180); }
           @media print { body { margin: 0; } }
         </style>
       </head>
       <body>
         <div class="header">
-          <h1>ENCAMINHAMENTO MÉDICO</h1>
+          <img src="${APP_LOGO}" alt="Vital Logo" />
+          <h1>Encaminhamento Médico</h1>
           <p>Ambulatório - Hospital Censit</p>
           <p>Data: ${new Date().toLocaleDateString('pt-BR')}</p>
+          <p class="slogan">Vital, sempre ao seu lado</p>
         </div>
         
         <div class="content">
@@ -207,8 +248,9 @@ export default function Consulta() {
         </div>
         
         <div class="footer">
+          <p><strong>Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina</strong></p>
           <p>Agradecemos a parceria no cuidado ao paciente.</p>
-          <p><strong>Ambulatório - Hospital Censit</strong></p>
+          <p style="margin-top: 10px; font-style: italic; color: oklch(0.58 0.12 180);">Vital, sempre ao seu lado</p>
         </div>
       </body>
       </html>
@@ -463,17 +505,33 @@ export default function Consulta() {
                           size="sm"
                           onClick={() => {
                             const mensagem = `*${medico.nome}*\n\n` +
-                              `Especialidade: ${medico.especialidade}${medico.subespecialidade ? ` \u2022 ${medico.subespecialidade}` : ''}\n` +
-                              `Munic\u00edpio: ${medico.municipio}\n` +
-                              `Endere\u00e7o: ${medico.endereco}\n` +
+                              `Especialidade: ${medico.especialidade}${medico.subespecialidade ? ` • ${medico.subespecialidade}` : ''}\n` +
+                              `Município: ${medico.municipio}\n` +
+                              `Endereço: ${medico.endereco}\n` +
                               `${medico.telefone || medico.whatsapp ? `Telefone: ${medico.telefone || medico.whatsapp}\n` : ''}` +
                               `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n\n` +
-                              `Credenciado Vital - Guia de Credenciados Vale do Itaja\u00ed`;
+                              `💚 *Vital, sempre ao seu lado* 💚\n` +
+                              `Credenciado Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
                           <Share2 className="h-4 w-4 mr-2" />
                           Compartilhar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const url = `${window.location.origin}/consulta?medico=${medico.id}`;
+                            navigator.clipboard.writeText(url).then(() => {
+                              toast.success('Link copiado com sucesso!');
+                            }).catch(() => {
+                              toast.error('Erro ao copiar link');
+                            });
+                          }}
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Copiar Link
                         </Button>
                       </div>
                     </div>
@@ -562,16 +620,32 @@ export default function Consulta() {
                           onClick={() => {
                             const mensagem = `*${inst.nome}*\n\n` +
                               `Categoria: ${inst.categoria}\n` +
-                              `Munic\u00edpio: ${inst.municipio}\n` +
-                              `Endere\u00e7o: ${inst.endereco}\n` +
+                              `Município: ${inst.municipio}\n` +
+                              `Endereço: ${inst.endereco}\n` +
                               `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
                               `${inst.email ? `Email: ${inst.email}\n` : ''}\n` +
-                              `Credenciado Vital - Guia de Credenciados Vale do Itaja\u00ed`;
+                              `💚 *Vital, sempre ao seu lado* 💚\n` +
+                              `Credenciado Vital - Guia de Credenciados Vale do Itajaí - Santa Catarina`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
                           <Share2 className="h-4 w-4 mr-2" />
                           Compartilhar
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const url = `${window.location.origin}/consulta?instituicao=${inst.id}`;
+                            navigator.clipboard.writeText(url).then(() => {
+                              toast.success('Link copiado com sucesso!');
+                            }).catch(() => {
+                              toast.error('Erro ao copiar link');
+                            });
+                          }}
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Copiar Link
                         </Button>
                       </div>
                     </div>
