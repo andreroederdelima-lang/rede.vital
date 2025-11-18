@@ -31,3 +31,8 @@
 - [x] Implementar compartilhamento via WhatsApp com informações formatadas do credenciado
 - [x] Adicionar toast de sucesso após envio do formulário de sugestão
 - [x] Mensagem: "Sugestão enviada com sucesso! Obrigado por contribuir com nossa rede"
+
+
+## Atualização de Título
+
+- [x] Atualizar título de "Guia de Credenciados Vale do Itajaí - SC" para "Guia de Credenciados Vale do Itajaí - Santa Catarina" em todas as páginas
