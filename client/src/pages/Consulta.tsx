@@ -150,7 +150,7 @@ export default function Consulta() {
         <div className="container py-4 md:py-6">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div className="flex items-center gap-4 md:gap-6">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-20 md:h-32 w-auto" />
+              <img src={APP_LOGO} alt="Vital Logo" className="h-28 md:h-40 w-auto" />
               <div>
                 <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Parceiros Vital - Vale do Itajaí</h1>
                 <p className="text-muted-foreground text-xs md:text-sm mt-1">
@@ -164,7 +164,7 @@ export default function Consulta() {
                   <img 
                     src="/parceiros-nacionais.a8f3d2e1.webp" 
                     alt="Parceiros Nacionais Vital" 
-                    className="w-full max-w-2xl h-auto opacity-80"
+                    className="w-full max-w-3xl h-auto"
                   />
                 </div>
               </div>

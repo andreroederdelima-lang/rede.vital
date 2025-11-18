@@ -172,3 +172,10 @@
 - [x] Adicionar botão "Enviar Link de Atualização" nos cards de médicos em /dados-internos
 - [x] Adicionar botão "Enviar Link de Atualização" nos cards de clínicas em /dados-internos
 - [x] Finalizar adição de coluna Preços nas tabelas do Admin
+
+
+## Ajustes de Layout do Header
+
+- [x] Alinhar corretamente logo Vital, textos e botões no header da página de consulta pública
+- [x] Aumentar tamanho da logo Vital (h-28 md:h-40)
+- [x] Aumentar tamanho do banner de parceiros nacionais (max-w-3xl)
