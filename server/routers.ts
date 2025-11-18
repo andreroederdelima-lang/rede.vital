@@ -264,6 +264,53 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  usuariosAutorizados: router({
+    listar: protectedProcedure.query(async () => {
+      const { listarUsuariosAutorizados } = await import("./db");
+      return listarUsuariosAutorizados();
+    }),
+
+    verificarAcesso: publicProcedure
+      .input(z.string().email())
+      .query(async ({ input }) => {
+        const { obterUsuarioAutorizadoPorEmail } = await import("./db");
+        const usuario = await obterUsuarioAutorizadoPorEmail(input);
+        return { autorizado: !!usuario };
+      }),
+
+    criar: protectedProcedure
+      .input(z.object({
+        email: z.string().email(),
+        nome: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarUsuarioAutorizado } = await import("./db");
+        await criarUsuarioAutorizado(input);
+        return { success: true };
+      }),
+
+    atualizar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        email: z.string().email().optional(),
+        nome: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarUsuarioAutorizado } = await import("./db");
+        const { id, ...data } = input;
+        await atualizarUsuarioAutorizado(id, data);
+        return { success: true };
+      }),
+
+    excluir: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { excluirUsuarioAutorizado } = await import("./db");
+        await excluirUsuarioAutorizado(input);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

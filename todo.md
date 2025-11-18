@@ -56,3 +56,15 @@
 ## Atualização de Links Home
 
 - [x] Atualizar todos os botões "Home" e links para página inicial para apontarem para `/dados-internos`
+
+
+## Proteção de Dados e Controle de Acesso
+
+- [x] Adicionar botão "Consulta Pública" no header da página /dados-internos direcionando para /
+- [x] Criar tabela de usuários autorizados no banco de dados
+- [x] Criar procedures tRPC para CRUD de usuários autorizados
+- [x] Remover dados de desconto e valores da página de consulta pública (/) - apenas informações básicas
+- [x] Manter dados completos (incluindo descontos) apenas em /dados-internos
+- [x] Adicionar aba de gerenciamento de usuários autorizados na página Admin
+- [x] Implementar verificação de acesso em /dados-internos (apenas emails autorizados)
+- [x] Criar tela de acesso negado para usuários não autorizados

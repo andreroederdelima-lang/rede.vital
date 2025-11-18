@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -274,4 +274,40 @@ export async function atualizarStatusSolicitacao(id: number, status: "pendente" 
   }
   
   await db.update(solicitacoesParceria).set(updateData).where(eq(solicitacoesParceria.id, id));
+}
+
+// ========== Usuários Autorizados ==========
+
+export async function listarUsuariosAutorizados() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(usuariosAutorizados).where(eq(usuariosAutorizados.ativo, 1)).orderBy(usuariosAutorizados.nome);
+}
+
+export async function obterUsuarioAutorizadoPorEmail(email: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(usuariosAutorizados).where(
+    and(eq(usuariosAutorizados.email, email), eq(usuariosAutorizados.ativo, 1))
+  ).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function criarUsuarioAutorizado(data: InsertUsuarioAutorizado) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(usuariosAutorizados).values(data);
+  return result;
+}
+
+export async function atualizarUsuarioAutorizado(id: number, data: Partial<InsertUsuarioAutorizado>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(usuariosAutorizados).set(data).where(eq(usuariosAutorizados.id, id));
+}
+
+export async function excluirUsuarioAutorizado(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(usuariosAutorizados).set({ ativo: 0 }).where(eq(usuariosAutorizados.id, id));
 }

@@ -98,3 +98,18 @@ export const solicitacoesParceria = mysqlTable("solicitacoesParceria", {
 
 export type SolicitacaoParceria = typeof solicitacoesParceria.$inferSelect;
 export type InsertSolicitacaoParceria = typeof solicitacoesParceria.$inferInsert;
+
+/**
+ * Tabela de usuários autorizados a acessar área /dados-internos
+ */
+export const usuariosAutorizados = mysqlTable("usuariosAutorizados", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  ativo: int("ativo").notNull().default(1),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type UsuarioAutorizado = typeof usuariosAutorizados.$inferSelect;
+export type InsertUsuarioAutorizado = typeof usuariosAutorizados.$inferInsert;

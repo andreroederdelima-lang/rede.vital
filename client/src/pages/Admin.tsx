@@ -208,10 +208,11 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-6">
+          <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-4 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
             <TabsTrigger value="instituicoes">Instituições</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
+            <TabsTrigger value="usuarios">Usuários</TabsTrigger>
           </TabsList>
 
           {/* Tab Médicos */}
@@ -405,6 +406,11 @@ export default function Admin() {
           {/* Tab Solicitações de Parceria */}
           <TabsContent value="solicitacoes">
             <SolicitacoesTab />
+          </TabsContent>
+
+          {/* Tab Usuários Autorizados */}
+          <TabsContent value="usuarios">
+            <UsuariosAutorizadosTab />
           </TabsContent>
         </Tabs>
       </main>
@@ -927,6 +933,208 @@ function SolicitacoesTab() {
           )}
         </DialogContent>
       </Dialog>
+    </>
+  );
+}
+
+
+function UsuariosAutorizadosTab() {
+  const utils = trpc.useUtils();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingUsuario, setEditingUsuario] = useState<{ id?: number; email: string; nome: string } | null>(null);
+
+  const { data: usuarios, isLoading } = trpc.usuariosAutorizados.listar.useQuery();
+
+  const criarMutation = trpc.usuariosAutorizados.criar.useMutation({
+    onSuccess: () => {
+      toast.success("Usuário autorizado adicionado com sucesso!");
+      utils.usuariosAutorizados.listar.invalidate();
+      setDialogOpen(false);
+      setEditingUsuario(null);
+    },
+    onError: (error) => {
+      toast.error("Erro ao adicionar usuário", {
+        description: error.message
+      });
+    },
+  });
+
+  const atualizarMutation = trpc.usuariosAutorizados.atualizar.useMutation({
+    onSuccess: () => {
+      toast.success("Usuário atualizado com sucesso!");
+      utils.usuariosAutorizados.listar.invalidate();
+      setDialogOpen(false);
+      setEditingUsuario(null);
+    },
+    onError: (error) => {
+      toast.error("Erro ao atualizar usuário", {
+        description: error.message
+      });
+    },
+  });
+
+  const excluirMutation = trpc.usuariosAutorizados.excluir.useMutation({
+    onSuccess: () => {
+      toast.success("Usuário removido com sucesso!");
+      utils.usuariosAutorizados.listar.invalidate();
+    },
+    onError: (error) => {
+      toast.error("Erro ao remover usuário", {
+        description: error.message
+      });
+    },
+  });
+
+  const handleSalvar = () => {
+    if (!editingUsuario) return;
+
+    if (editingUsuario.id) {
+      atualizarMutation.mutate({
+        id: editingUsuario.id,
+        email: editingUsuario.email,
+        nome: editingUsuario.nome,
+      });
+    } else {
+      criarMutation.mutate({
+        email: editingUsuario.email,
+        nome: editingUsuario.nome,
+      });
+    }
+  };
+
+  const handleExcluir = (id: number) => {
+    if (confirm("Tem certeza que deseja remover este usuário do acesso a dados internos?")) {
+      excluirMutation.mutate(id);
+    }
+  };
+
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Usuários Autorizados</CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">
+                Gerencie quem pode acessar a área /dados-internos com informações de descontos
+              </p>
+            </div>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={() => setEditingUsuario({ email: "", nome: "" })}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Adicionar Usuário
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingUsuario?.id ? "Editar Usuário" : "Adicionar Usuário Autorizado"}
+                  </DialogTitle>
+                </DialogHeader>
+                {editingUsuario && (
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="nome">Nome *</Label>
+                      <Input
+                        id="nome"
+                        value={editingUsuario.nome}
+                        onChange={(e) => setEditingUsuario({ ...editingUsuario, nome: e.target.value })}
+                        placeholder="Nome completo"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={editingUsuario.email}
+                        onChange={(e) => setEditingUsuario({ ...editingUsuario, email: e.target.value })}
+                        placeholder="email@exemplo.com"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Este email poderá acessar /dados-internos após fazer login
+                      </p>
+                    </div>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                        Cancelar
+                      </Button>
+                      <Button 
+                        onClick={handleSalvar}
+                        disabled={!editingUsuario.email || !editingUsuario.nome || criarMutation.isPending || atualizarMutation.isPending}
+                      >
+                        {editingUsuario.id ? "Atualizar" : "Adicionar"}
+                      </Button>
+                    </DialogFooter>
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Carregando...
+            </div>
+          ) : !usuarios || usuarios.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Nenhum usuário autorizado cadastrado.
+              <br />
+              <span className="text-xs">Adicione emails para permitir acesso à área de dados internos.</span>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nome</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Data de Cadastro</TableHead>
+                    <TableHead className="text-right">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {usuarios.map((usuario) => (
+                    <TableRow key={usuario.id}>
+                      <TableCell className="font-medium">{usuario.nome}</TableCell>
+                      <TableCell>{usuario.email}</TableCell>
+                      <TableCell>{new Date(usuario.createdAt).toLocaleDateString('pt-BR')}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setEditingUsuario({
+                                id: usuario.id,
+                                email: usuario.email,
+                                nome: usuario.nome,
+                              });
+                              setDialogOpen(true);
+                            }}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleExcluir(usuario.id)}
+                            disabled={excluirMutation.isPending}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </>
   );
 }
