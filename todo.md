@@ -68,3 +68,8 @@
 - [x] Adicionar aba de gerenciamento de usuários autorizados na página Admin
 - [x] Implementar verificação de acesso em /dados-internos (apenas emails autorizados)
 - [x] Criar tela de acesso negado para usuários não autorizados
+
+
+## Primeiro Usuário Autorizado
+
+- [x] Adicionar ambulatoriocensit@gmail.com como usuário autorizado no banco de dados
