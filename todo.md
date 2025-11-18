@@ -106,3 +106,11 @@
 - [x] Adicionar exibição do campo "% de Desconto Vital" nos cards de médicos
 - [x] Adicionar exibição do campo "Preço da Consulta" nos cards de instituições
 - [x] Adicionar exibição do campo "% de Desconto Vital" nos cards de instituições
+
+
+## Garantir Exibição de Preço e Desconto
+
+- [x] Verificar se campos precoConsulta e descontoPercentual estão sendo retornados pelas queries tRPC
+- [x] Ajustar exibição para mostrar preço e desconto corretamente
+- [x] Tornar campo "Valor" obrigatório e sempre visível na página Parceiros (já estava implementado)
+- [x] Adicionar validação para garantir que preço seja sempre preenchido (já estava implementado)

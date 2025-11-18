@@ -528,15 +528,15 @@ export default function Home() {
                             <div className="flex items-center gap-2">
                               <Wallet className="h-4 w-4 text-green-600" />
                               <span className="text-sm font-medium text-green-600">
-                                R$ {typeof (medico as any).precoConsulta === 'number' ? (medico as any).precoConsulta.toFixed(2) : (medico as any).precoConsulta}
+                                R$ {(medico as any).precoConsulta}
                               </span>
                             </div>
                           )}
-                          {(medico as any).porcentagemDesconto && (
+                          {(medico as any).descontoPercentual > 0 && (
                             <div className="flex items-center gap-2">
                               <Percent className="h-4 w-4 text-primary" />
                               <span className="text-sm font-medium text-primary">
-                                {(medico as any).porcentagemDesconto}% desconto Vital
+                                {(medico as any).descontoPercentual}% desconto Vital
                               </span>
                             </div>
                           )}
@@ -640,15 +640,15 @@ export default function Home() {
                             <div className="flex items-center gap-2">
                               <Wallet className="h-4 w-4 text-green-600" />
                               <span className="text-sm font-medium text-green-600">
-                                R$ {typeof (inst as any).precoConsulta === 'number' ? (inst as any).precoConsulta.toFixed(2) : (inst as any).precoConsulta}
+                                R$ {(inst as any).precoConsulta}
                               </span>
                             </div>
                           )}
-                          {(inst as any).porcentagemDesconto && (
+                          {(inst as any).descontoPercentual > 0 && (
                             <div className="flex items-center gap-2">
                               <Percent className="h-4 w-4 text-primary" />
                               <span className="text-sm font-medium text-primary">
-                                {(inst as any).porcentagemDesconto}% desconto Vital
+                                {(inst as any).descontoPercentual}% desconto Vital
                               </span>
                             </div>
                           )}
