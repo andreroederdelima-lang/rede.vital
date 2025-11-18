@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2 } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -458,6 +458,23 @@ export default function Consulta() {
                           <FileText className="h-4 w-4 mr-2" />
                           Gerar Encaminhamento
                         </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const mensagem = `*${medico.nome}*\n\n` +
+                              `Especialidade: ${medico.especialidade}${medico.subespecialidade ? ` \u2022 ${medico.subespecialidade}` : ''}\n` +
+                              `Munic\u00edpio: ${medico.municipio}\n` +
+                              `Endere\u00e7o: ${medico.endereco}\n` +
+                              `${medico.telefone || medico.whatsapp ? `Telefone: ${medico.telefone || medico.whatsapp}\n` : ''}` +
+                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n\n` +
+                              `Credenciado Vital - Guia de Credenciados Vale do Itaja\u00ed`;
+                            window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
+                          }}
+                        >
+                          <Share2 className="h-4 w-4 mr-2" />
+                          Compartilhar
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -537,6 +554,26 @@ export default function Consulta() {
                           </p>
                         )}
                       </div>
+                      
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const mensagem = `*${inst.nome}*\n\n` +
+                              `Categoria: ${inst.categoria}\n` +
+                              `Munic\u00edpio: ${inst.municipio}\n` +
+                              `Endere\u00e7o: ${inst.endereco}\n` +
+                              `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
+                              `${inst.email ? `Email: ${inst.email}\n` : ''}\n` +
+                              `Credenciado Vital - Guia de Credenciados Vale do Itaja\u00ed`;
+                            window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
+                          }}
+                        >
+                          <Share2 className="h-4 w-4 mr-2" />
+                          Compartilhar
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -611,8 +648,8 @@ function SugestaoParceiro() {
   
   const sugestaoMutation = trpc.sugestao.enviarSugestaoParceiro.useMutation({
     onSuccess: () => {
-      toast.success("Sugestão enviada com sucesso!", {
-        description: "Obrigado pela sugestão. Entraremos em contato com o parceiro."
+      toast.success("Sugest\u00e3o enviada com sucesso!", {
+        description: "Obrigado por contribuir com nossa rede"
       });
       setNomeParceiro("");
       setEspecialidade("");

@@ -23,3 +23,11 @@
 - [x] Adicionar botão "Sugerir um Parceiro" no header da página /consulta
 - [x] Implementar formulário modal com campos: nome, especialidade, município
 - [x] Garantir envio de e-mail para administrativo@suasaudevital.com.br
+
+
+## Botão de Compartilhamento e Confirmação Visual
+
+- [x] Adicionar botão "Compartilhar Credenciado" em cada card de médico/instituição
+- [x] Implementar compartilhamento via WhatsApp com informações formatadas do credenciado
+- [x] Adicionar toast de sucesso após envio do formulário de sugestão
+- [x] Mensagem: "Sugestão enviada com sucesso! Obrigado por contribuir com nossa rede"

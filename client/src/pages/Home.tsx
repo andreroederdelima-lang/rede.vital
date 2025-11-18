@@ -636,8 +636,8 @@ function SugestaoParceiro() {
   
   const sugestaoMutation = trpc.sugestao.enviarSugestaoParceiro.useMutation({
     onSuccess: () => {
-      toast.success("Sugestão enviada com sucesso!", {
-        description: "Obrigado pela sugestão. Entraremos em contato com o parceiro."
+      toast.success("Sugest\u00e3o enviada com sucesso!", {
+        description: "Obrigado por contribuir com nossa rede"
       });
       setNomeParceiro("");
       setEspecialidade("");
