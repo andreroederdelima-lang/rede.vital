@@ -96,3 +96,13 @@
 ## Ajuste do Botão WhatsApp no Header
 
 - [x] Alterar texto do botão "Fale com o Especialista" para "Fale Conosco" na página de consulta pública
+
+
+## Ajustes nos Cards da Página Dados Internos
+
+- [x] Remover botões "Compartilhar" e "Copiar Link" dos cards de médicos na página /dados-internos
+- [x] Remover botões "Compartilhar" e "Copiar Link" dos cards de instituições na página /dados-internos
+- [x] Adicionar exibição do campo "Preço da Consulta" nos cards de médicos
+- [x] Adicionar exibição do campo "% de Desconto Vital" nos cards de médicos
+- [x] Adicionar exibição do campo "Preço da Consulta" nos cards de instituições
+- [x] Adicionar exibição do campo "% de Desconto Vital" nos cards de instituições
