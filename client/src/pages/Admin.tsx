@@ -25,6 +25,7 @@ type MedicoForm = {
   telefone?: string;
   whatsapp?: string;
   tipoAtendimento: "presencial" | "telemedicina" | "ambos";
+  precoConsulta?: string;
   descontoPercentual: number;
   observacoes?: string;
   contatoParceria?: string;
@@ -38,6 +39,7 @@ type InstituicaoForm = {
   endereco: string;
   telefone?: string;
   email?: string;
+  precoConsulta?: string;
   descontoPercentual: number;
   observacoes?: string;
   contatoParceria?: string;
@@ -437,6 +439,7 @@ function MedicoFormDialog({
       telefone: "",
       whatsapp: "",
       tipoAtendimento: "presencial",
+      precoConsulta: "",
       descontoPercentual: 0,
       observacoes: "",
       contatoParceria: "",
@@ -536,6 +539,17 @@ function MedicoFormDialog({
         </div>
 
         <div>
+          <Label htmlFor="precoConsulta">Preço da Consulta *</Label>
+          <Input
+            id="precoConsulta"
+            value={formData.precoConsulta || ""}
+            onChange={(e) => setFormData({ ...formData, precoConsulta: e.target.value })}
+            placeholder="Ex: R$ 150,00 ou A combinar"
+            required
+          />
+        </div>
+
+        <div>
           <Label htmlFor="desconto">% Desconto *</Label>
           <Input
             id="desconto"
@@ -596,6 +610,7 @@ function InstituicaoFormDialog({
       endereco: "",
       telefone: "",
       email: "",
+      precoConsulta: "",
       descontoPercentual: 0,
       observacoes: "",
       contatoParceria: "",
@@ -676,6 +691,17 @@ function InstituicaoFormDialog({
             type="email"
             value={formData.email || ""}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="precoConsulta">Preço do Serviço *</Label>
+          <Input
+            id="precoConsulta"
+            value={formData.precoConsulta || ""}
+            onChange={(e) => setFormData({ ...formData, precoConsulta: e.target.value })}
+            placeholder="Ex: R$ 150,00 ou A combinar"
+            required
           />
         </div>
 

@@ -114,3 +114,13 @@
 - [x] Ajustar exibição para mostrar preço e desconto corretamente
 - [x] Tornar campo "Valor" obrigatório e sempre visível na página Parceiros (já estava implementado)
 - [x] Adicionar validação para garantir que preço seja sempre preenchido (já estava implementado)
+
+
+## URGENTE: Campo Preço e Exibição Correta
+
+- [x] Adicionar campo "Preço da Consulta" no formulário de cadastro de médicos (Admin)
+- [x] Adicionar campo "% Desconto" no formulário de cadastro de médicos (Admin) (já existia)
+- [x] Adicionar campo "Preço da Consulta" no formulário de cadastro de instituições (Admin)
+- [x] Adicionar campo "% Desconto" no formulário de cadastro de instituições (Admin) (já existia)
+- [x] Garantir que preço e desconto apareçam SEMPRE nos cards de /dados-internos (mesmo se vazios)
+- [x] Exibir "Não informado" quando preço não estiver cadastrado

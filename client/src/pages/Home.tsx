@@ -524,22 +524,18 @@ export default function Home() {
                         )}
 
                         <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t">
-                          {(medico as any).precoConsulta && (
-                            <div className="flex items-center gap-2">
-                              <Wallet className="h-4 w-4 text-green-600" />
-                              <span className="text-sm font-medium text-green-600">
-                                R$ {(medico as any).precoConsulta}
-                              </span>
-                            </div>
-                          )}
-                          {(medico as any).descontoPercentual > 0 && (
-                            <div className="flex items-center gap-2">
-                              <Percent className="h-4 w-4 text-primary" />
-                              <span className="text-sm font-medium text-primary">
-                                {(medico as any).descontoPercentual}% desconto Vital
-                              </span>
-                            </div>
-                          )}
+                          <div className="flex items-center gap-2">
+                            <Wallet className="h-4 w-4 text-green-600" />
+                            <span className="text-sm font-medium text-green-600">
+                              {(medico as any).precoConsulta || "Não informado"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Percent className="h-4 w-4 text-primary" />
+                            <span className="text-sm font-medium text-primary">
+                              {(medico as any).descontoPercentual || 0}% desconto Vital
+                            </span>
+                          </div>
                         </div>
                       </div>
                       
@@ -636,22 +632,18 @@ export default function Home() {
                         )}
 
                         <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t">
-                          {(inst as any).precoConsulta && (
-                            <div className="flex items-center gap-2">
-                              <Wallet className="h-4 w-4 text-green-600" />
-                              <span className="text-sm font-medium text-green-600">
-                                R$ {(inst as any).precoConsulta}
-                              </span>
-                            </div>
-                          )}
-                          {(inst as any).descontoPercentual > 0 && (
-                            <div className="flex items-center gap-2">
-                              <Percent className="h-4 w-4 text-primary" />
-                              <span className="text-sm font-medium text-primary">
-                                {(inst as any).descontoPercentual}% desconto Vital
-                              </span>
-                            </div>
-                          )}
+                          <div className="flex items-center gap-2">
+                            <Wallet className="h-4 w-4 text-green-600" />
+                            <span className="text-sm font-medium text-green-600">
+                              {(inst as any).precoConsulta || "Não informado"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Percent className="h-4 w-4 text-primary" />
+                            <span className="text-sm font-medium text-primary">
+                              {(inst as any).descontoPercentual || 0}% desconto Vital
+                            </span>
+                          </div>
                         </div>
                       </div>
                       
