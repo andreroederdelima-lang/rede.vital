@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe, Link2 } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -33,6 +33,7 @@ export default function Home() {
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "instituicoes">("medicos");
   const [encaminhamentoDialog, setEncaminhamentoDialog] = useState(false);
   const [medicoSelecionado, setMedicoSelecionado] = useState<any>(null);
+  const [instituicaoSelecionada, setInstituicaoSelecionada] = useState<any>(null);
   const [motivoEncaminhamento, setMotivoEncaminhamento] = useState("");
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
@@ -52,6 +53,17 @@ export default function Home() {
   const { data: especialidades = [] } = trpc.medicos.listarEspecialidades.useQuery();
   const { data: municipios = [] } = trpc.municipios.listar.useQuery();
 
+  const gerarLinkMutation = trpc.atualizacao.gerarLink.useMutation({
+    onSuccess: async (data) => {
+      const link = `${window.location.origin}/atualizar-dados/${data.token}`;
+      await navigator.clipboard.writeText(link);
+      toast.success('Link copiado! Envie para o parceiro atualizar os dados.');
+    },
+    onError: () => {
+      toast.error('Erro ao gerar link de atualização');
+    }
+  });
+
   const limparFiltros = () => {
     setBusca("");
     setEspecialidade("");
@@ -66,7 +78,7 @@ export default function Home() {
 
   const exportarParaPDF = () => {
     const dados = tipoCredenciado === "medicos" ? medicos : instituicoes;
-    const tipo = tipoCredenciado === "medicos" ? "Médicos" : "Instituições";
+    const tipo = tipoCredenciado === "medicos" ? "Médicos" : "Clínicas";
     
     // Criar conteúdo HTML para impressão
     let html = `
@@ -297,7 +309,7 @@ export default function Home() {
               <img src={APP_LOGO} alt="Vital Logo" className="h-20 md:h-32 w-auto" />
               <div>
                 <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Parceiros Vital - Vale do Itajaí</h1>
-                <p className="text-destructive text-xs md:text-sm mt-1 font-semibold">
+                <p className="text-muted-foreground text-xs md:text-sm mt-1 text-center">
                   Guia de uso interno para consultas e informações. Conteúdo sigiloso.
                 </p>
               </div>
@@ -354,7 +366,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="container py-8">
-        {/* Tabs: Médicos / Instituições */}
+        {/* Tabs: Médicos / Clínicas */}
         <Tabs value={tipoCredenciado} onValueChange={(v) => {
           setTipoCredenciado(v as "medicos" | "instituicoes");
           limparFiltros();
@@ -366,7 +378,7 @@ export default function Home() {
             </TabsTrigger>
             <TabsTrigger value="instituicoes" className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              Instituições
+              Clínicas
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -551,7 +563,19 @@ export default function Home() {
                           <FileText className="h-4 w-4 mr-2" />
                           Gerar Encaminhamento
                         </Button>
-
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            gerarLinkMutation.mutate({
+                              tipo: 'medico',
+                              id: medico.id
+                            });
+                          }}
+                        >
+                          <Link2 className="h-4 w-4 mr-2" />
+                          Enviar Link de Atualização
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
@@ -568,7 +592,7 @@ export default function Home() {
             ) : instituicoes.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center text-muted-foreground">
-                  Nenhuma instituição encontrada com os filtros selecionados.
+                  Nenhuma clínica encontrada com os filtros selecionados.
                 </CardContent>
               </Card>
             ) : (
@@ -647,7 +671,32 @@ export default function Home() {
                         </div>
                       </div>
                       
-
+                      <div className="flex flex-col gap-2">
+                        <Button
+                          variant="default"
+                          size="sm"
+                          onClick={() => {
+                            setInstituicaoSelecionada(inst);
+                            setEncaminhamentoDialog(true);
+                          }}
+                        >
+                          <FileText className="h-4 w-4 mr-2" />
+                          Gerar Encaminhamento
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            gerarLinkMutation.mutate({
+                              tipo: 'instituicao',
+                              id: inst.id
+                            });
+                          }}
+                        >
+                          <Link2 className="h-4 w-4 mr-2" />
+                          Enviar Link de Atualização
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

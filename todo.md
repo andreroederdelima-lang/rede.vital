@@ -157,3 +157,18 @@
 - [x] Reorganizar botões dos cards para melhor visualização em celular
 - [x] Ajustar paleta de cores para usar apenas verde turquesa e bege do logo Vital
 - [x] Testar responsividade em diferentes tamanhos de tela
+
+
+## Ajustes no Painel Admin e Nomenclatura
+
+- [x] Adicionar coluna "Preços" na tabela de médicos no Painel Admin
+- [x] Adicionar coluna "Preços" na tabela de instituições no Painel Admin
+- [x] Renomear "Instituições" para "Clínicas" em todas as páginas (Admin, Dados Internos, Consulta Pública)
+
+
+## Ajustes de Cor e Botão de Atualização
+
+- [x] Mudar cor da frase "Conteúdo sigiloso" de vermelho para cinza neutro e centralizar
+- [x] Adicionar botão "Enviar Link de Atualização" nos cards de médicos em /dados-internos
+- [x] Adicionar botão "Enviar Link de Atualização" nos cards de clínicas em /dados-internos
+- [x] Finalizar adição de coluna Preços nas tabelas do Admin

@@ -96,10 +96,10 @@ export default function Admin() {
       utils.instituicoes.listar.invalidate();
       setInstituicaoDialogOpen(false);
       setEditingInstituicao(null);
-      toast.success("Instituição adicionada com sucesso!");
+      toast.success("Clínica adicionada com sucesso!");
     },
     onError: (error) => {
-      toast.error("Erro ao adicionar instituição: " + error.message);
+      toast.error("Erro ao adicionar clínica: " + error.message);
     },
   });
 
@@ -108,20 +108,20 @@ export default function Admin() {
       utils.instituicoes.listar.invalidate();
       setInstituicaoDialogOpen(false);
       setEditingInstituicao(null);
-      toast.success("Instituição atualizada com sucesso!");
+      toast.success("Clínica atualizada com sucesso!");
     },
     onError: (error) => {
-      toast.error("Erro ao atualizar instituição: " + error.message);
+      toast.error("Erro ao atualizar clínica: " + error.message);
     },
   });
 
   const excluirInstituicao = trpc.instituicoes.excluir.useMutation({
     onSuccess: () => {
       utils.instituicoes.listar.invalidate();
-      toast.success("Instituição removida com sucesso!");
+      toast.success("Clínica removida com sucesso!");
     },
     onError: (error) => {
-      toast.error("Erro ao remover instituição: " + error.message);
+      toast.error("Erro ao remover clínica: " + error.message);
     },
   });
 
@@ -212,7 +212,7 @@ export default function Admin() {
         <Tabs defaultValue="medicos">
           <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-4 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
-            <TabsTrigger value="instituicoes">Instituições</TabsTrigger>
+            <TabsTrigger value="instituicoes">Clínicas</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
             <TabsTrigger value="usuarios">Usuários</TabsTrigger>
           </TabsList>
@@ -256,15 +256,16 @@ export default function Admin() {
                         <TableHead>Nome</TableHead>
                         <TableHead>Especialidade</TableHead>
                         <TableHead>Município</TableHead>
-                        <TableHead>Telefone</TableHead>
+                        <TableHead>Preço</TableHead>
                         <TableHead>Desconto</TableHead>
+                        <TableHead>Telefone</TableHead>
                         <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {medicos.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={6} className="text-center text-muted-foreground">
+                          <TableCell colSpan={7} className="text-center text-muted-foreground">
                             Nenhum médico cadastrado
                           </TableCell>
                         </TableRow>
@@ -274,8 +275,9 @@ export default function Admin() {
                             <TableCell className="font-medium">{medico.nome}</TableCell>
                             <TableCell>{medico.especialidade}</TableCell>
                             <TableCell>{medico.municipio}</TableCell>
-                            <TableCell>{medico.telefone || medico.whatsapp || "-"}</TableCell>
+                            <TableCell>{medico.precoConsulta || "Não informado"}</TableCell>
                             <TableCell>{medico.descontoPercentual}%</TableCell>
+                            <TableCell>{medico.telefone || medico.whatsapp || "-"}</TableCell>
                             <TableCell className="text-right">
                               <div className="flex justify-end gap-2">
                                 <Button
@@ -311,23 +313,23 @@ export default function Admin() {
             </Card>
           </TabsContent>
 
-          {/* Tab Instituições */}
+          {/* Tab Clínicas */}
           <TabsContent value="instituicoes">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle>Instituições Parceiras</CardTitle>
+                  <CardTitle>Clínicas Parceiras</CardTitle>
                   <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
                     <DialogTrigger asChild>
                       <Button onClick={() => setEditingInstituicao(null)}>
                         <Plus className="h-4 w-4 mr-2" />
-                        Adicionar Instituição
+                        Adicionar Clínica
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                       <DialogHeader>
                         <DialogTitle>
-                          {editingInstituicao?.id ? "Editar Instituição" : "Adicionar Instituição"}
+                          {editingInstituicao?.id ? "Editar Clínica" : "Adicionar Clínica"}
                         </DialogTitle>
                       </DialogHeader>
                       <InstituicaoFormDialog
@@ -350,16 +352,17 @@ export default function Admin() {
                         <TableHead>Nome</TableHead>
                         <TableHead>Categoria</TableHead>
                         <TableHead>Município</TableHead>
-                        <TableHead>Telefone</TableHead>
+                        <TableHead>Preço</TableHead>
                         <TableHead>Desconto</TableHead>
+                        <TableHead>Telefone</TableHead>
                         <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {instituicoes.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={6} className="text-center text-muted-foreground">
-                            Nenhuma instituição cadastrada
+                          <TableCell colSpan={7} className="text-center text-muted-foreground">
+                            Nenhuma clínica cadastrada
                           </TableCell>
                         </TableRow>
                       ) : (
@@ -368,8 +371,9 @@ export default function Admin() {
                             <TableCell className="font-medium">{inst.nome}</TableCell>
                             <TableCell className="capitalize">{inst.categoria}</TableCell>
                             <TableCell>{inst.municipio}</TableCell>
-                            <TableCell>{inst.telefone || "-"}</TableCell>
+                            <TableCell>{inst.precoConsulta || "Não informado"}</TableCell>
                             <TableCell>{inst.descontoPercentual}%</TableCell>
+                            <TableCell>{inst.telefone || "-"}</TableCell>
                             <TableCell className="text-right">
                               <div className="flex justify-end gap-2">
                                 <Button
@@ -386,7 +390,7 @@ export default function Admin() {
                                   variant="destructive"
                                   size="sm"
                                   onClick={() => {
-                                    if (confirm("Tem certeza que deseja remover esta instituição?")) {
+                                    if (confirm("Tem certeza que deseja remover esta clínica?")) {
                                       excluirInstituicao.mutate(inst.id);
                                     }
                                   }}
@@ -626,7 +630,7 @@ function InstituicaoFormDialog({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-2">
-          <Label htmlFor="nome">Nome da Instituição *</Label>
+          <Label htmlFor="nome">Nome da Clínica *</Label>
           <Input
             id="nome"
             value={formData.nome}

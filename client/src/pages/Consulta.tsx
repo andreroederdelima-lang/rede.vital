@@ -55,7 +55,7 @@ export default function Consulta() {
   /* Função de exportar PDF removida para consulta pública
   const exportarParaPDF = () => {
     const dados = tipoCredenciado === "medicos" ? medicos : instituicoes;
-    const tipo = tipoCredenciado === "medicos" ? "Médicos" : "Instituições";
+    const tipo = tipoCredenciado === "medicos" ? "Médicos" : "Clínicas";
     
     // Criar conteúdo HTML para impressão
     let html = `
@@ -207,7 +207,7 @@ export default function Consulta() {
 
       {/* Main Content */}
       <main className="container py-8">
-        {/* Tabs: Médicos / Instituições */}
+        {/* Tabs: Médicos / Clínicas */}
         <Tabs value={tipoCredenciado} onValueChange={(v) => {
           setTipoCredenciado(v as "medicos" | "instituicoes");
           limparFiltros();
@@ -219,7 +219,7 @@ export default function Consulta() {
             </TabsTrigger>
             <TabsTrigger value="instituicoes" className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              Instituições
+              Clínicas
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -427,7 +427,7 @@ export default function Consulta() {
             ) : instituicoes.length === 0 ? (
               <Card>
                 <CardContent className="py-12 text-center text-muted-foreground">
-                  Nenhuma instituição encontrada com os filtros selecionados.
+                  Nenhuma clínica encontrada com os filtros selecionados.
                 </CardContent>
               </Card>
             ) : (
