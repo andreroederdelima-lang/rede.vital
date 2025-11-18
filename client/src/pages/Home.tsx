@@ -306,20 +306,20 @@ export default function Home() {
               <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
                 <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto">
                   <Wallet className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Preços</span>
+                  <span className="text-xs md:text-sm">Preços das Assinaturas Vital</span>
                 </Button>
               </a>
               <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
                 <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
                   <Users className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Indique</span>
+                  <span className="text-xs md:text-sm">Indique a Vital!</span>
                 </Button>
               </a>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white flex-1 sm:flex-none">
                     <Building2 className="h-4 w-4 mr-2" />
-                    <span className="text-xs md:text-sm">Sugerir</span>
+                    <span className="text-xs md:text-sm">Sugerir um Parceiro</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
@@ -332,7 +332,7 @@ export default function Home() {
               <Link href="/parceiros" className="flex-1 sm:flex-none">
                 <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
                   <Handshake className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Convide</span>
+                  <span className="text-xs md:text-sm">Convide um Parceiro</span>
                 </Button>
               </Link>
               <Link href="/" className="flex-1 sm:flex-none">

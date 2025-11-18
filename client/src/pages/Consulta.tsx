@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Lock } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -183,6 +183,12 @@ export default function Consulta() {
                   Fale com o Especialista
                 </Button>
               </a>
+              <Link href="/dados-internos">
+                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                  <Lock className="h-5 w-5 mr-2" />
+                  Acesso Interno
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

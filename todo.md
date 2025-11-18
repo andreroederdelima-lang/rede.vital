@@ -78,3 +78,16 @@
 ## Ajuste de Texto do Botão WhatsApp
 
 - [x] Alterar texto do botão WhatsApp na página de consulta pública de "WhatsApp" para "Fale com o vendedor"
+
+
+## Botão Acesso Interno
+
+- [x] Adicionar botão "Acesso Interno" no header da página de consulta pública (/) direcionando para /dados-internos
+
+
+## Ajustes de Textos dos Botões
+
+- [x] Alterar texto do botão "Preços" para "Preços das Assinaturas Vital" na página /dados-internos
+- [x] Alterar texto do botão "Convide" para "Convide um Parceiro" na página /dados-internos
+- [x] Alterar texto do botão "Indique" para "Indique a Vital!" na página /dados-internos
+- [x] Alterar texto do botão "Sugerir" para "Sugerir um Parceiro" na página /dados-internos
