@@ -302,7 +302,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-2 w-full lg:w-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto">
               <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
                 <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto">
                   <Wallet className="h-4 w-4 mr-2" />

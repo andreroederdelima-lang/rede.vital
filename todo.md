@@ -147,3 +147,13 @@
 - [x] Adicionar aviso sobre busca nacional na página pública
 - [x] Alterar título da página dados-internos para "Guia de Parceiros Vital - Vale do Itajaí"
 - [x] Alterar descrição da página dados-internos para "Guia de uso interno para consultas e informações. Conteúdo sigiloso."
+
+
+## Melhorias Visuais e Responsividade
+
+- [x] Copiar imagem de parceiros nacionais para diretório público
+- [x] Adicionar banner "Nossos principais parceiros pelo Brasil" na página pública (discreto mas visível)
+- [x] Reorganizar botões do header para melhor responsividade mobile
+- [x] Reorganizar botões dos cards para melhor visualização em celular
+- [x] Ajustar paleta de cores para usar apenas verde turquesa e bege do logo Vital
+- [x] Testar responsividade em diferentes tamanhos de tela

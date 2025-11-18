@@ -159,9 +159,17 @@ export default function Consulta() {
                 <p className="text-xs text-primary/80 mt-2 font-medium">
                   Para acessar a Busca de Parceiros a nível Nacional - acesse sua área do cliente (+34.100 farmácias | +3.100 médicos, clínicas e hospitais | +350 laboratórios).
                 </p>
+                <div className="mt-3">
+                  <p className="text-xs text-muted-foreground mb-2">Nossos principais parceiros pelo Brasil</p>
+                  <img 
+                    src="/parceiros-nacionais.a8f3d2e1.webp" 
+                    alt="Parceiros Nacionais Vital" 
+                    className="w-full max-w-2xl h-auto opacity-80"
+                  />
+                </div>
               </div>
             </div>
-            <div className="flex flex-wrap gap-3 justify-end w-full lg:w-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2 sm:gap-3 w-full lg:w-auto">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
@@ -369,7 +377,7 @@ export default function Consulta() {
                         )}
                       </div>
                       
-                      <div className="flex flex-col gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         <Button
                           variant="outline"
                           size="sm"
@@ -483,7 +491,7 @@ export default function Consulta() {
                         )}
                       </div>
                       
-                      <div className="flex flex-col gap-2">
+                      <div className="grid grid-cols-2 gap-2">
                         <Button
                           variant="outline"
                           size="sm"
