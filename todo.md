@@ -134,10 +134,10 @@
 - [x] Implementar procedure tRPC para receber solicitação de atualização
 - [x] Implementar procedures tRPC para listar, aprovar e rejeitar atualizações
 - [x] Criar página pública `/atualizar-dados/:token` com formulário pré-preenchido
-- [ ] Adicionar aba "Atualizações Pendentes" no Admin
-- [ ] Implementar aprovação/rejeição de atualizações no Admin
-- [ ] Adicionar botão "Enviar Link de Atualização" nos cards de /dados-internos
-- [ ] Gerar mensagem WhatsApp com link de atualização
+- [x] Adicionar botão "Enviar Link de Atualização" nos cards de /dados-internos
+- [x] Gerar mensagem WhatsApp com link de atualização
+- [x] Adicionar aba "Atualizações Pendentes" no Admin
+- [x] Implementar aprovação/rejeição de atualizações no Admin
 
 
 ## Atualização de Títulos e Descrições
@@ -179,3 +179,11 @@
 - [x] Alinhar corretamente logo Vital, textos e botões no header da página de consulta pública
 - [x] Aumentar tamanho da logo Vital (h-28 md:h-40)
 - [x] Aumentar tamanho do banner de parceiros nacionais (max-w-3xl)
+
+## Redesign do Header e Implementação de Atualizações Pendentes
+
+- [x] Aumentar banner de parceiros para área de destaque abaixo do texto (legível)
+- [x] Alterar título para "GUIA DE CREDENCIADOS"
+- [x] Implementar aba "Atualizações Pendentes" no Admin com interface para aprovar/rejeitar
+- [x] Garantir design minimalista e funcional sem assimetrias
+- [x] Testar responsividade em mobile e desktop

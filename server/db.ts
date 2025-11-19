@@ -361,11 +361,29 @@ export async function listarSolicitacoesAtualizacao(status?: "pendente" | "aprov
   const db = await getDb();
   if (!db) return [];
   
+  let solicitacoesList;
   if (status) {
-    return await db.select().from(solicitacoesAtualizacao).where(eq(solicitacoesAtualizacao.status, status)).orderBy(solicitacoesAtualizacao.createdAt);
+    solicitacoesList = await db.select().from(solicitacoesAtualizacao).where(eq(solicitacoesAtualizacao.status, status)).orderBy(solicitacoesAtualizacao.createdAt);
+  } else {
+    solicitacoesList = await db.select().from(solicitacoesAtualizacao).orderBy(solicitacoesAtualizacao.createdAt);
   }
   
-  return await db.select().from(solicitacoesAtualizacao).orderBy(solicitacoesAtualizacao.createdAt);
+  // Adicionar nome do credenciado
+  const solicitacoesComNome = await Promise.all(
+    solicitacoesList.map(async (sol) => {
+      let nomeCredenciado = "";
+      if (sol.tipoCredenciado === "medico") {
+        const medico = await obterMedicoPorId(sol.credenciadoId);
+        nomeCredenciado = medico?.nome || "";
+      } else {
+        const instituicao = await obterInstituicaoPorId(sol.credenciadoId);
+        nomeCredenciado = instituicao?.nome || "";
+      }
+      return { ...sol, nomeCredenciado };
+    })
+  );
+  
+  return solicitacoesComNome;
 }
 
 export async function obterSolicitacaoAtualizacaoPorId(id: number) {

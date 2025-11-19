@@ -147,29 +147,35 @@ export default function Consulta() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-white border-b-4 border-primary shadow-sm">
-        <div className="container py-4 md:py-6">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-            <div className="flex items-center gap-4 md:gap-6">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-28 md:h-40 w-auto" />
-              <div>
-                <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Parceiros Vital - Vale do Itajaí</h1>
-                <p className="text-muted-foreground text-xs md:text-sm mt-1">
-                  Rede credenciada para encaminhamentos e orientações médicas
-                </p>
-                <p className="text-xs text-primary/80 mt-2 font-medium">
-                  Para acessar a Busca de Parceiros a nível Nacional - acesse sua área do cliente (+34.100 farmácias | +3.100 médicos, clínicas e hospitais | +350 laboratórios).
-                </p>
-                <div className="mt-3">
-                  <p className="text-xs text-muted-foreground mb-2">Nossos principais parceiros pelo Brasil</p>
-                  <img 
-                    src="/parceiros-nacionais.a8f3d2e1.webp" 
-                    alt="Parceiros Nacionais Vital" 
-                    className="w-full max-w-3xl h-auto"
-                  />
-                </div>
-              </div>
+        <div className="container py-6">
+          {/* Logo e Título */}
+          <div className="flex flex-col items-center text-center gap-4 mb-6">
+            <img src={APP_LOGO} alt="Vital Logo" className="h-24 md:h-32 w-auto" />
+            <div className="w-full">
+              <h1 className="text-2xl md:text-4xl font-bold text-primary tracking-wide">GUIA DE CREDENCIADOS</h1>
+              <p className="text-muted-foreground text-sm md:text-base mt-2">
+                Rede credenciada para encaminhamentos e orientações médicas
+              </p>
+              <p className="text-xs md:text-sm text-primary/70 mt-2">
+                Para acessar a Busca de Parceiros a nível Nacional - acesse sua área do cliente (+34.100 farmácias | +3.100 médicos, clínicas e hospitais | +350 laboratórios).
+              </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2 sm:gap-3 w-full lg:w-auto">
+          </div>
+
+          {/* Banner de Parceiros em Destaque */}
+          <div className="mb-6">
+            <p className="text-sm md:text-base text-center text-muted-foreground mb-3 font-medium">Nossos principais parceiros pelo Brasil</p>
+            <div className="flex justify-center">
+              <img 
+                src="/parceiros-nacionais.a8f3d2e1.webp" 
+                alt="Parceiros Nacionais Vital" 
+                className="w-full max-w-5xl h-auto rounded-lg shadow-md"
+              />
+            </div>
+          </div>
+
+          {/* Botões de Ação */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
@@ -200,7 +206,6 @@ export default function Consulta() {
                   Acesso Interno
                 </Button>
               </Link>
-            </div>
           </div>
         </div>
       </header>

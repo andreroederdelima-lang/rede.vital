@@ -210,10 +210,11 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-4 mb-6">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-5 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
             <TabsTrigger value="instituicoes">Clínicas</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
+            <TabsTrigger value="atualizacoes">Atualizações</TabsTrigger>
             <TabsTrigger value="usuarios">Usuários</TabsTrigger>
           </TabsList>
 
@@ -412,6 +413,11 @@ export default function Admin() {
           {/* Tab Solicitações de Parceria */}
           <TabsContent value="solicitacoes">
             <SolicitacoesTab />
+          </TabsContent>
+
+          {/* Tab Atualizações Pendentes */}
+          <TabsContent value="atualizacoes">
+            <AtualizacoesPendentesTab />
           </TabsContent>
 
           {/* Tab Usuários Autorizados */}
@@ -1165,6 +1171,244 @@ function UsuariosAutorizadosTab() {
           )}
         </CardContent>
       </Card>
+    </>
+  );
+}
+
+
+function AtualizacoesPendentesTab() {
+  const utils = trpc.useUtils();
+  const [detalhesDialogOpen, setDetalhesDialogOpen] = useState(false);
+  const [atualizacaoSelecionada, setAtualizacaoSelecionada] = useState<any>(null);
+  const [motivoRejeicao, setMotivoRejeicao] = useState("");
+
+  const { data: atualizacoes, isLoading } = trpc.atualizacao.listar.useQuery({ status: "pendente" });
+
+  const aprovarMutation = trpc.atualizacao.aprovar.useMutation({
+    onSuccess: () => {
+      toast.success("Atualização aprovada e aplicada com sucesso!");
+      utils.atualizacao.listar.invalidate();
+      utils.medicos.listar.invalidate();
+      utils.instituicoes.listar.invalidate();
+      setDetalhesDialogOpen(false);
+      setAtualizacaoSelecionada(null);
+    },
+    onError: (error) => {
+      toast.error("Erro ao aprovar atualização", { description: error.message });
+    },
+  });
+
+  const rejeitarMutation = trpc.atualizacao.rejeitar.useMutation({
+    onSuccess: () => {
+      toast.success("Atualização rejeitada");
+      utils.atualizacao.listar.invalidate();
+      setDetalhesDialogOpen(false);
+      setAtualizacaoSelecionada(null);
+      setMotivoRejeicao("");
+    },
+    onError: (error) => {
+      toast.error("Erro ao rejeitar atualização", { description: error.message });
+    },
+  });
+
+  const handleAprovar = (id: number) => {
+    if (confirm("Deseja aprovar esta atualização? Os dados do credenciado serão atualizados.")) {
+      aprovarMutation.mutate(id);
+    }
+  };
+
+  const handleRejeitar = (id: number) => {
+    rejeitarMutation.mutate({ id, motivo: motivoRejeicao });
+  };
+
+  const getTipoLabel = (tipo: string) => {
+    return tipo === "medico" ? "Médico" : "Clínica";
+  };
+
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Atualizações Pendentes de Credenciados
+          </CardTitle>
+          <p className="text-sm text-muted-foreground mt-1">
+            Solicitações de atualização enviadas pelos próprios parceiros
+          </p>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="text-center py-8 text-muted-foreground">Carregando...</div>
+          ) : !atualizacoes || atualizacoes.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Nenhuma atualização pendente
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tipo</TableHead>
+                    <TableHead>Credenciado</TableHead>
+                    <TableHead>Campos Atualizados</TableHead>
+                    <TableHead>Data</TableHead>
+                    <TableHead className="text-right">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {atualizacoes.map((atualizacao: any) => {
+                    const camposAtualizados = [];
+                    if (atualizacao.telefone) camposAtualizados.push("Telefone");
+                    if (atualizacao.whatsapp) camposAtualizados.push("WhatsApp");
+                    if (atualizacao.email) camposAtualizados.push("Email");
+                    if (atualizacao.endereco) camposAtualizados.push("Endereço");
+                    if (atualizacao.precoConsulta) camposAtualizados.push("Preço");
+                    if (atualizacao.descontoPercentual !== null) camposAtualizados.push("Desconto");
+                    if (atualizacao.observacoes) camposAtualizados.push("Observações");
+
+                    return (
+                      <TableRow key={atualizacao.id}>
+                        <TableCell className="font-medium">{getTipoLabel(atualizacao.tipoCredenciado)}</TableCell>
+                        <TableCell>{atualizacao.nomeCredenciado}</TableCell>
+                        <TableCell className="text-sm">{camposAtualizados.join(", ")}</TableCell>
+                        <TableCell>{new Date(atualizacao.createdAt).toLocaleDateString('pt-BR')}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setAtualizacaoSelecionada(atualizacao);
+                                setDetalhesDialogOpen(true);
+                              }}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="default"
+                              onClick={() => handleAprovar(atualizacao.id)}
+                              disabled={aprovarMutation.isPending}
+                            >
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Diálogo de Detalhes */}
+      <Dialog open={detalhesDialogOpen} onOpenChange={setDetalhesDialogOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Detalhes da Atualização</DialogTitle>
+          </DialogHeader>
+          {atualizacaoSelecionada && (
+            <div className="space-y-4">
+              <div className="bg-muted p-4 rounded-lg">
+                <h3 className="font-semibold mb-2">Informações do Credenciado</h3>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Tipo:</span>{" "}
+                    <span className="font-medium">{getTipoLabel(atualizacaoSelecionada.tipoCredenciado)}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Nome:</span>{" "}
+                    <span className="font-medium">{atualizacaoSelecionada.nomeCredenciado}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t pt-4">
+                <h3 className="font-semibold mb-3">Dados Atualizados pelo Parceiro</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {atualizacaoSelecionada.telefone && (
+                    <div>
+                      <Label className="text-muted-foreground">Telefone</Label>
+                      <p className="font-medium">{atualizacaoSelecionada.telefone}</p>
+                    </div>
+                  )}
+                  {atualizacaoSelecionada.whatsapp && (
+                    <div>
+                      <Label className="text-muted-foreground">WhatsApp</Label>
+                      <p className="font-medium">{atualizacaoSelecionada.whatsapp}</p>
+                    </div>
+                  )}
+                  {atualizacaoSelecionada.email && (
+                    <div>
+                      <Label className="text-muted-foreground">Email</Label>
+                      <p className="font-medium">{atualizacaoSelecionada.email}</p>
+                    </div>
+                  )}
+                  {atualizacaoSelecionada.precoConsulta && (
+                    <div>
+                      <Label className="text-muted-foreground">Preço da Consulta</Label>
+                      <p className="font-medium">{atualizacaoSelecionada.precoConsulta}</p>
+                    </div>
+                  )}
+                  {atualizacaoSelecionada.descontoPercentual !== null && (
+                    <div>
+                      <Label className="text-muted-foreground">Desconto Vital</Label>
+                      <p className="font-medium">{atualizacaoSelecionada.descontoPercentual}%</p>
+                    </div>
+                  )}
+                  {atualizacaoSelecionada.endereco && (
+                    <div className="col-span-2">
+                      <Label className="text-muted-foreground">Endereço</Label>
+                      <p className="font-medium">{atualizacaoSelecionada.endereco}</p>
+                    </div>
+                  )}
+                  {atualizacaoSelecionada.observacoes && (
+                    <div className="col-span-2">
+                      <Label className="text-muted-foreground">Observações</Label>
+                      <p className="font-medium">{atualizacaoSelecionada.observacoes}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="border-t pt-4">
+                <Label htmlFor="motivoRejeicao">Motivo da Rejeição (opcional)</Label>
+                <Textarea
+                  id="motivoRejeicao"
+                  value={motivoRejeicao}
+                  onChange={(e) => setMotivoRejeicao(e.target.value)}
+                  placeholder="Descreva o motivo caso vá rejeitar..."
+                  rows={3}
+                  className="mt-2"
+                />
+              </div>
+
+              <DialogFooter className="gap-2">
+                <Button
+                  variant="destructive"
+                  onClick={() => handleRejeitar(atualizacaoSelecionada.id)}
+                  disabled={rejeitarMutation.isPending}
+                >
+                  <XCircle className="h-4 w-4 mr-2" />
+                  Rejeitar
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={() => handleAprovar(atualizacaoSelecionada.id)}
+                  disabled={aprovarMutation.isPending}
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Aprovar e Aplicar Atualização
+                </Button>
+              </DialogFooter>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
