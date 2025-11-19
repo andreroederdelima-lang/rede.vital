@@ -152,9 +152,11 @@ export default function Consulta() {
           <div className="flex flex-col items-center text-center gap-4 mb-6">
             <img src={APP_LOGO} alt="Vital Logo" className="h-24 md:h-32 w-auto" />
             <div className="w-full">
-              <h1 className="text-2xl md:text-4xl font-bold text-primary tracking-wide">GUIA DE CREDENCIADOS</h1>
-              <p className="text-muted-foreground text-sm md:text-base mt-2">
-                Rede credenciada para encaminhamentos e orientações médicas
+              <h1 className="text-3xl md:text-5xl font-serif font-bold text-primary tracking-wider" style={{ fontFamily: '"Playfair Display", "Georgia", serif' }}>
+                GUIA DO ASSINANTE
+              </h1>
+              <p className="text-muted-foreground text-sm md:text-base mt-2 font-medium">
+                Rede Credenciada - Vale do Itajaí - Santa Catarina
               </p>
               <p className="text-xs md:text-sm text-primary/70 mt-2">
                 Para acessar a Busca de Parceiros a nível Nacional - acesse sua área do cliente (+34.100 farmácias | +3.100 médicos, clínicas e hospitais | +350 laboratórios).

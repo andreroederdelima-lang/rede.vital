@@ -187,3 +187,9 @@
 - [x] Implementar aba "Atualizações Pendentes" no Admin com interface para aprovar/rejeitar
 - [x] Garantir design minimalista e funcional sem assimetrias
 - [x] Testar responsividade em mobile e desktop
+
+
+## Atualização de Textos do Header
+
+- [x] Alterar título para "GUIA DO ASSINANTE" com fonte mais elegante
+- [x] Alterar subtítulo para "Rede Credenciada - Vale do Itajaí - Santa Catarina"
