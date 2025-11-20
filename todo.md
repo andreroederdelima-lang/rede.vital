@@ -209,3 +209,15 @@
 - [x] Proteger rota /dados-internos com autenticação própria
 - [x] Garantir que usuários internos não acessem área Admin
 - [x] Implementar logout para usuários internos
+
+
+## Melhorias de UX e Acesso Público
+
+- [x] Adicionar header com nome do usuário e botão logout na área Dados Internos
+- [x] Implementar recuperação de senha por email
+- [x] Criar página de solicitação de acesso público (/solicitar-acesso)
+- [x] Criar tabela de solicitações de acesso no banco
+- [x] Implementar aba "Solicitações de Acesso" no Admin
+- [x] Sistema de aprovação/rejeição de solicitações com geração de senha temporária
+- [ ] Envio de email com senha temporária para usuários aprovados
+- [ ] Forçar alteração de senha no primeiro login

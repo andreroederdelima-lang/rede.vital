@@ -464,6 +464,121 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // Solicitações de Acesso
+  solicitacoesAcesso: router({
+    criar: publicProcedure
+      .input(z.object({
+        nome: z.string().min(3),
+        email: z.string().email(),
+        telefone: z.string().optional(),
+        justificativa: z.string().min(10),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarSolicitacaoAcesso } = await import("./db");
+        await criarSolicitacaoAcesso(input);
+        return { success: true };
+      }),
+
+    listar: protectedProcedure
+      .query(async () => {
+        const { listarSolicitacoesAcesso } = await import("./db");
+        return listarSolicitacoesAcesso();
+      }),
+
+    aprovar: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { aprovarSolicitacaoAcesso, criarUsuarioAutorizado } = await import("./db");
+        
+        // Gerar senha temporária
+        const senhaTemporaria = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+        
+        // Aprovar solicitação
+        const solicitacao = await aprovarSolicitacaoAcesso(input, senhaTemporaria);
+        
+        // Criar usuário autorizado
+        await criarUsuarioAutorizado({
+          email: solicitacao.email,
+          nome: solicitacao.nome,
+          senha: senhaTemporaria,
+        });
+        
+        // TODO: Enviar email com credenciais
+        
+        return { success: true, senhaTemporaria };
+      }),
+
+    rejeitar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        motivo: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { rejeitarSolicitacaoAcesso } = await import("./db");
+        await rejeitarSolicitacaoAcesso(input.id, input.motivo);
+        return { success: true };
+      }),
+  }),
+
+  // Recuperação de Senha
+  recuperacaoSenha: router({
+    solicitar: publicProcedure
+      .input(z.string().email())
+      .mutation(async ({ input }) => {
+        const { obterUsuarioAutorizadoPorEmail, criarTokenRecuperacao } = await import("./db");
+        
+        const usuario = await obterUsuarioAutorizadoPorEmail(input);
+        if (!usuario) {
+          // Não revelar se o email existe ou não
+          return { success: true };
+        }
+        
+        // Gerar token único
+        const crypto = await import("crypto");
+        const token = crypto.randomBytes(32).toString("hex");
+        const expiresAt = new Date(Date.now() + 3600000); // 1 hora
+        
+        await criarTokenRecuperacao(usuario.id, token, expiresAt);
+        
+        // TODO: Enviar email com link de recuperação
+        
+        return { success: true };
+      }),
+
+    verificarToken: publicProcedure
+      .input(z.string())
+      .query(async ({ input }) => {
+        const { obterTokenRecuperacao } = await import("./db");
+        const tokenData = await obterTokenRecuperacao(input);
+        
+        if (!tokenData || tokenData.usado || new Date() > tokenData.expiresAt) {
+          return { valido: false };
+        }
+        
+        return { valido: true };
+      }),
+
+    redefinir: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        novaSenha: z.string().min(6),
+      }))
+      .mutation(async ({ input }) => {
+        const { obterTokenRecuperacao, marcarTokenComoUsado, alterarSenhaUsuario } = await import("./db");
+        
+        const tokenData = await obterTokenRecuperacao(input.token);
+        
+        if (!tokenData || tokenData.usado || new Date() > tokenData.expiresAt) {
+          throw new Error("Token inválido ou expirado");
+        }
+        
+        await alterarSenhaUsuario(tokenData.usuarioId, input.novaSenha);
+        await marcarTokenComoUsado(input.token);
+        
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

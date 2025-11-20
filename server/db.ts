@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -439,4 +439,86 @@ export async function rejeitarSolicitacaoAtualizacao(id: number, motivo?: string
   if (motivo) updateData.motivoRejeicao = motivo;
   
   await db.update(solicitacoesAtualizacao).set(updateData).where(eq(solicitacoesAtualizacao.id, id));
+}
+
+
+// ============================================
+// Solicitações de Acesso
+// ============================================
+
+export async function criarSolicitacaoAcesso(data: InsertSolicitacaoAcesso) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(solicitacoesAcesso).values(data);
+  return result;
+}
+
+export async function listarSolicitacoesAcesso() {
+  const db = await getDb();
+  if (!db) return [];
+  const result = await db.select().from(solicitacoesAcesso).orderBy(desc(solicitacoesAcesso.createdAt));
+  return result;
+}
+
+export async function aprovarSolicitacaoAcesso(id: number, senhaTemporaria: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Atualizar solicitação
+  await db.update(solicitacoesAcesso)
+    .set({ status: "aprovado", senhaTemporaria })
+    .where(eq(solicitacoesAcesso.id, id));
+  
+  // Buscar dados da solicitação
+  const solicitacao = await db.select().from(solicitacoesAcesso).where(eq(solicitacoesAcesso.id, id)).limit(1);
+  return solicitacao[0];
+}
+
+export async function rejeitarSolicitacaoAcesso(id: number, motivo: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(solicitacoesAcesso)
+    .set({ status: "rejeitado", motivoRejeicao: motivo })
+    .where(eq(solicitacoesAcesso.id, id));
+}
+
+// ============================================
+// Recuperação de Senha
+// ============================================
+
+export async function criarTokenRecuperacao(usuarioId: number, token: string, expiresAt: Date) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(tokensRecuperacao).values({
+    usuarioId,
+    token,
+    expiresAt,
+  });
+}
+
+export async function obterTokenRecuperacao(token: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(tokensRecuperacao).where(eq(tokensRecuperacao.token, token)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function marcarTokenComoUsado(token: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(tokensRecuperacao)
+    .set({ usado: 1 })
+    .where(eq(tokensRecuperacao.token, token));
+}
+
+export async function alterarSenhaUsuario(usuarioId: number, novaSenha: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const bcrypt = await import("bcryptjs");
+  const senhaHash = await bcrypt.hash(novaSenha, 10);
+  
+  await db.update(usuariosAutorizados)
+    .set({ senhaHash })
+    .where(eq(usuariosAutorizados.id, usuarioId));
 }

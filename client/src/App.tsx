@@ -10,6 +10,7 @@ import Parceiros from "./pages/Parceiros";
 import Consulta from "./pages/Consulta";
 import AtualizarDados from "./pages/AtualizarDados";
 import LoginDadosInternos from "./pages/LoginDadosInternos";
+import SolicitarAcesso from "./pages/SolicitarAcesso";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -17,6 +18,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Consulta} />
       <Route path={"/login-dados-internos"} component={LoginDadosInternos} />
+      <Route path={"/solicitar-acesso"} component={SolicitarAcesso} />
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/parceiros"} component={Parceiros} />

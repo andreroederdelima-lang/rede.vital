@@ -286,7 +286,23 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 w-full lg:w-auto">
+              {/* Informações do usuário */}
+              <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-md">
+                <User className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Usuário Interno</span>
+              </div>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={logout}
+                className="border-destructive text-destructive hover:bg-destructive hover:text-white"
+              >
+                <X className="h-4 w-4 mr-2" />
+                Sair
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto mt-3 lg:mt-0">
               <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
                 <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto">
                   <Wallet className="h-4 w-4 mr-2" />

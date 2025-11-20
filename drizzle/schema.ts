@@ -139,3 +139,37 @@ export const solicitacoesAtualizacao = mysqlTable("solicitacoesAtualizacao", {
 
 export type SolicitacaoAtualizacao = typeof solicitacoesAtualizacao.$inferSelect;
 export type InsertSolicitacaoAtualizacao = typeof solicitacoesAtualizacao.$inferInsert;
+
+/**
+ * Tabela de solicitações de acesso à área Dados Internos
+ */
+export const solicitacoesAcesso = mysqlTable("solicitacoesAcesso", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  telefone: varchar("telefone", { length: 100 }),
+  justificativa: text("justificativa").notNull(),
+  status: mysqlEnum("status", ["pendente", "aprovado", "rejeitado"]).default("pendente").notNull(),
+  motivoRejeicao: text("motivoRejeicao"),
+  senhaTemporaria: varchar("senhaTemporaria", { length: 255 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SolicitacaoAcesso = typeof solicitacoesAcesso.$inferSelect;
+export type InsertSolicitacaoAcesso = typeof solicitacoesAcesso.$inferInsert;
+
+/**
+ * Tabela de tokens para recuperação de senha
+ */
+export const tokensRecuperacao = mysqlTable("tokensRecuperacao", {
+  id: int("id").autoincrement().primaryKey(),
+  usuarioId: int("usuarioId").notNull(),
+  token: varchar("token", { length: 255 }).notNull().unique(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  usado: int("usado").notNull().default(0),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type TokenRecuperacao = typeof tokensRecuperacao.$inferSelect;
+export type InsertTokenRecuperacao = typeof tokensRecuperacao.$inferInsert;

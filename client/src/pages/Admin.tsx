@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
@@ -210,12 +210,13 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-5 mb-6">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-6 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
             <TabsTrigger value="instituicoes">Clínicas</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
             <TabsTrigger value="atualizacoes">Atualizações</TabsTrigger>
             <TabsTrigger value="usuarios">Usuários</TabsTrigger>
+            <TabsTrigger value="acessos">Acessos</TabsTrigger>
           </TabsList>
 
           {/* Tab Médicos */}
@@ -423,6 +424,11 @@ export default function Admin() {
           {/* Tab Usuários Autorizados */}
           <TabsContent value="usuarios">
             <UsuariosAutorizadosTab />
+          </TabsContent>
+
+          {/* Tab Solicitações de Acesso */}
+          <TabsContent value="acessos">
+            <SolicitacoesAcessoTab />
           </TabsContent>
         </Tabs>
       </main>
@@ -1427,6 +1433,157 @@ function AtualizacoesPendentesTab() {
               </DialogFooter>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+
+function SolicitacoesAcessoTab() {
+  const utils = trpc.useUtils();
+  const [senhaGerada, setSenhaGerada] = useState<string | null>(null);
+  const [emailSenha, setEmailSenha] = useState<string | null>(null);
+
+  const { data: solicitacoes, isLoading } = trpc.solicitacoesAcesso.listar.useQuery();
+
+  const aprovarMutation = trpc.solicitacoesAcesso.aprovar.useMutation({
+    onSuccess: (data) => {
+      setSenhaGerada(data.senhaTemporaria);
+      setEmailSenha(solicitacoes?.find(s => s.status === "pendente")?.email || null);
+      toast.success("Solicitação aprovada! Usuário criado com sucesso.");
+      utils.solicitacoesAcesso.listar.invalidate();
+      utils.usuariosAutorizados.listar.invalidate();
+    },
+    onError: (error) => {
+      toast.error("Erro ao aprovar solicitação", { description: error.message });
+    },
+  });
+
+  const rejeitarMutation = trpc.solicitacoesAcesso.rejeitar.useMutation({
+    onSuccess: () => {
+      toast.success("Solicitação rejeitada");
+      utils.solicitacoesAcesso.listar.invalidate();
+    },
+    onError: (error) => {
+      toast.error("Erro ao rejeitar solicitação", { description: error.message });
+    },
+  });
+
+  const handleAprovar = (id: number) => {
+    if (confirm("Deseja aprovar esta solicitação? Um usuário será criado automaticamente.")) {
+      aprovarMutation.mutate(id);
+    }
+  };
+
+  const handleRejeitar = (id: number) => {
+    const motivo = prompt("Motivo da rejeição (opcional):");
+    rejeitarMutation.mutate({ id, motivo: motivo || "Não especificado" });
+  };
+
+  const solicitacoesPendentes = solicitacoes?.filter(s => s.status === "pendente") || [];
+
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Solicitações de Acesso Público
+          </CardTitle>
+          <p className="text-sm text-muted-foreground mt-1">
+            Pedidos de acesso à área de dados internos enviados pelo formulário público
+          </p>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="text-center py-8 text-muted-foreground">Carregando...</div>
+          ) : solicitacoesPendentes.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Nenhuma solicitação pendente
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nome</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Telefone</TableHead>
+                    <TableHead>Justificativa</TableHead>
+                    <TableHead>Data</TableHead>
+                    <TableHead className="text-right">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {solicitacoesPendentes.map((solicitacao) => (
+                    <TableRow key={solicitacao.id}>
+                      <TableCell className="font-medium">{solicitacao.nome}</TableCell>
+                      <TableCell>{solicitacao.email}</TableCell>
+                      <TableCell>{solicitacao.telefone || "-"}</TableCell>
+                      <TableCell className="max-w-xs truncate">{solicitacao.justificativa}</TableCell>
+                      <TableCell>{new Date(solicitacao.createdAt).toLocaleDateString('pt-BR')}</TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="default"
+                            onClick={() => handleAprovar(solicitacao.id)}
+                            disabled={aprovarMutation.isPending}
+                          >
+                            <CheckCircle className="h-4 w-4 mr-1" />
+                            Aprovar
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleRejeitar(solicitacao.id)}
+                            disabled={rejeitarMutation.isPending}
+                          >
+                            <XCircle className="h-4 w-4 mr-1" />
+                            Rejeitar
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Diálogo de Senha Gerada */}
+      <Dialog open={!!senhaGerada} onOpenChange={() => setSenhaGerada(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Senha Temporária Gerada</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="bg-muted p-4 rounded-lg">
+              <Label className="text-sm text-muted-foreground">Email do usuário</Label>
+              <p className="font-mono font-semibold text-lg">{emailSenha}</p>
+            </div>
+            <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+              <Label className="text-sm text-muted-foreground">Senha temporária</Label>
+              <p className="font-mono font-bold text-xl text-yellow-900">{senhaGerada}</p>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              ⚠️ <strong>Importante:</strong> Copie e envie esta senha para o usuário por email manualmente. 
+              Esta senha não será exibida novamente.
+            </p>
+            <Button
+              onClick={() => {
+                navigator.clipboard.writeText(`Email: ${emailSenha}\nSenha: ${senhaGerada}`);
+                toast.success("Credenciais copiadas!");
+              }}
+              className="w-full"
+            >
+              <Copy className="h-4 w-4 mr-2" />
+              Copiar Credenciais
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </>
