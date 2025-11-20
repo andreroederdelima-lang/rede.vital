@@ -199,3 +199,13 @@
 
 - [x] Aplicar cor #1e9d9f (turquesa) ao título "GUIA DO ASSINANTE"
 - [x] Garantir que todas as cores sigam a paleta oficial do manual de marca
+
+
+## Sistema de Autenticação Separado para Dados Internos
+
+- [x] Criar tabela de usuários internos (separada de admins)
+- [x] Implementar procedures tRPC para login de usuários internos
+- [x] Criar página de login para área Dados Internos
+- [x] Proteger rota /dados-internos com autenticação própria
+- [x] Garantir que usuários internos não acessem área Admin
+- [x] Implementar logout para usuários internos

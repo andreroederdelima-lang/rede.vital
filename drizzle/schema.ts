@@ -108,6 +108,7 @@ export const usuariosAutorizados = mysqlTable("usuariosAutorizados", {
   id: int("id").autoincrement().primaryKey(),
   email: varchar("email", { length: 320 }).notNull().unique(),
   nome: varchar("nome", { length: 255 }).notNull(),
+  senhaHash: varchar("senhaHash", { length: 255 }).notNull(),
   ativo: int("ativo").notNull().default(1),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

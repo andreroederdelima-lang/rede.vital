@@ -293,10 +293,19 @@ export async function obterUsuarioAutorizadoPorEmail(email: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-export async function criarUsuarioAutorizado(data: InsertUsuarioAutorizado) {
+export async function criarUsuarioAutorizado(data: { email: string; nome: string; senha: string }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(usuariosAutorizados).values(data);
+  
+  // Hash da senha usando bcrypt
+  const bcrypt = await import("bcryptjs");
+  const senhaHash = await bcrypt.hash(data.senha, 10);
+  
+  const result = await db.insert(usuariosAutorizados).values({
+    email: data.email,
+    nome: data.nome,
+    senhaHash,
+  });
   return result;
 }
 

@@ -9,12 +9,14 @@ import Admin from "./pages/Admin";
 import Parceiros from "./pages/Parceiros";
 import Consulta from "./pages/Consulta";
 import AtualizarDados from "./pages/AtualizarDados";
+import LoginDadosInternos from "./pages/LoginDadosInternos";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Consulta} />
+      <Route path={"/login-dados-internos"} component={LoginDadosInternos} />
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/parceiros"} component={Parceiros} />

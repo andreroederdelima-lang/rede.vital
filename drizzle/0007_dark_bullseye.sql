@@ -1,0 +1,1 @@
+ALTER TABLE `usuariosAutorizados` ADD `senhaHash` varchar(255) NOT NULL;

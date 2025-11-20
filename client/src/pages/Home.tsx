@@ -14,16 +14,25 @@ import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, File
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useDadosInternosAuth } from "@/hooks/useDadosInternosAuth";
 
 export default function Home() {
-  const { user, loading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading, logout } = useDadosInternosAuth();
   
-  // Verificar se usuário está autorizado a acessar dados internos
-  const { data: acessoData, isLoading: verificandoAcesso } = trpc.usuariosAutorizados.verificarAcesso.useQuery(
-    user?.email || "",
-    { enabled: !!user?.email }
-  );
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Verificando autenticação...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!isAuthenticated) {
+    return null; // Redireciona para login
+  }
 
   const [busca, setBusca] = useState("");
   const [especialidade, setEspecialidade] = useState<string>("");
@@ -249,7 +258,7 @@ export default function Home() {
   };
 
   // Mostrar loading enquanto verifica autenticação e acesso
-  if (authLoading || verificandoAcesso) {
+  if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -260,44 +269,7 @@ export default function Home() {
     );
   }
 
-  // Mostrar tela de acesso negado se usuário não estiver autorizado
-  if (user && (!acessoData || !acessoData.autorizado)) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 h-16 w-16 rounded-full bg-destructive/10 flex items-center justify-center">
-              <X className="h-8 w-8 text-destructive" />
-            </div>
-            <CardTitle className="text-2xl">Acesso Negado</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-center">
-            <p className="text-muted-foreground">
-              Seu email <strong>{user.email}</strong> não está autorizado a acessar a área de dados internos.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Esta área contém informações sensíveis sobre descontos e valores dos credenciados.
-              Entre em contato com o administrador para solicitar acesso.
-            </p>
-            <div className="flex flex-col gap-2 pt-4">
-              <Link href="/">
-                <Button className="w-full" variant="default">
-                  <Globe className="h-4 w-4 mr-2" />
-                  Ir para Consulta Pública
-                </Button>
-              </Link>
-              <Link href="/admin">
-                <Button className="w-full" variant="outline">
-                  <User className="h-4 w-4 mr-2" />
-                  Acessar Painel Admin
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+
 
   return (
     <div className="min-h-screen bg-background">

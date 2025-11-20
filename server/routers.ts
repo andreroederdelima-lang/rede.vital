@@ -279,10 +279,67 @@ export const appRouter = router({
         return { autorizado: !!usuario };
       }),
 
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        senha: z.string(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { obterUsuarioAutorizadoPorEmail } = await import("./db");
+        const usuario = await obterUsuarioAutorizadoPorEmail(input.email);
+        
+        if (!usuario || !usuario.ativo) {
+          throw new Error("Credenciais inválidas");
+        }
+        
+        const bcrypt = await import("bcryptjs");
+        const senhaValida = await bcrypt.compare(input.senha, usuario.senhaHash);
+        
+        if (!senhaValida) {
+          throw new Error("Credenciais inválidas");
+        }
+        
+        // Criar sessão para usuário interno (diferente do admin)
+        const jwt = await import("jsonwebtoken");
+        const token = jwt.sign(
+          { 
+            userId: usuario.id, 
+            email: usuario.email, 
+            nome: usuario.nome,
+            tipo: "interno" 
+          },
+          process.env.JWT_SECRET!,
+          { expiresIn: "7d" }
+        );
+        
+        // Definir cookie de sessão
+        const { getSessionCookieOptions } = await import("./_core/cookies");
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie("dados_internos_session", token, cookieOptions);
+        
+        return { 
+          success: true,
+          usuario: {
+            id: usuario.id,
+            email: usuario.email,
+            nome: usuario.nome,
+          }
+        };
+      }),
+
+    logout: publicProcedure
+      .mutation(async ({ ctx }) => {
+        const { getSessionCookieOptions } = await import("./_core/cookies");
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.clearCookie("dados_internos_session", { ...cookieOptions, maxAge: -1 });
+        return { success: true };
+      }),
+
     criar: protectedProcedure
       .input(z.object({
         email: z.string().email(),
         nome: z.string(),
+        senha: z.string().min(6),
       }))
       .mutation(async ({ input }) => {
         const { criarUsuarioAutorizado } = await import("./db");

@@ -977,7 +977,7 @@ function SolicitacoesTab() {
 function UsuariosAutorizadosTab() {
   const utils = trpc.useUtils();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingUsuario, setEditingUsuario] = useState<{ id?: number; email: string; nome: string } | null>(null);
+  const [editingUsuario, setEditingUsuario] = useState<{ id?: number; email: string; nome: string; senha?: string } | null>(null);
 
   const { data: usuarios, isLoading } = trpc.usuariosAutorizados.listar.useQuery();
 
@@ -1031,9 +1031,14 @@ function UsuariosAutorizadosTab() {
         nome: editingUsuario.nome,
       });
     } else {
+      if (!editingUsuario.senha || editingUsuario.senha.length < 6) {
+        toast.error("Senha deve ter no mínimo 6 caracteres");
+        return;
+      }
       criarMutation.mutate({
         email: editingUsuario.email,
         nome: editingUsuario.nome,
+        senha: editingUsuario.senha,
       });
     }
   };
@@ -1092,6 +1097,21 @@ function UsuariosAutorizadosTab() {
                         Este email poderá acessar /dados-internos após fazer login
                       </p>
                     </div>
+                    {!editingUsuario.id && (
+                      <div>
+                        <Label htmlFor="senha">Senha *</Label>
+                        <Input
+                          id="senha"
+                          type="password"
+                          value={editingUsuario.senha || ""}
+                          onChange={(e) => setEditingUsuario({ ...editingUsuario, senha: e.target.value })}
+                          placeholder="Mínimo 6 caracteres"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Senha para acesso à área de dados internos
+                        </p>
+                      </div>
+                    )}
                     <DialogFooter>
                       <Button variant="outline" onClick={() => setDialogOpen(false)}>
                         Cancelar
