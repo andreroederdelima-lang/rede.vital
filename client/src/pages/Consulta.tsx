@@ -152,7 +152,7 @@ export default function Consulta() {
           <div className="flex flex-col items-center text-center gap-4 mb-6">
             <img src={APP_LOGO} alt="Vital Logo" className="h-24 md:h-32 w-auto" />
             <div className="w-full">
-              <h1 className="text-3xl md:text-5xl font-serif font-bold text-primary tracking-wider" style={{ fontFamily: '"Playfair Display", "Georgia", serif' }}>
+              <h1 className="text-3xl md:text-5xl font-serif font-bold tracking-wider" style={{ fontFamily: '"Playfair Display", "Georgia", serif', color: '#1e9d9f' }}>
                 GUIA DO ASSINANTE
               </h1>
               <p className="text-muted-foreground text-sm md:text-base mt-2 font-medium">

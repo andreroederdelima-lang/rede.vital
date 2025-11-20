@@ -193,3 +193,9 @@
 
 - [x] Alterar título para "GUIA DO ASSINANTE" com fonte mais elegante
 - [x] Alterar subtítulo para "Rede Credenciada - Vale do Itajaí - Santa Catarina"
+
+
+## Aplicação de Cores da Paleta Oficial
+
+- [x] Aplicar cor #1e9d9f (turquesa) ao título "GUIA DO ASSINANTE"
+- [x] Garantir que todas as cores sigam a paleta oficial do manual de marca
