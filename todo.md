@@ -223,54 +223,17 @@
 - [ ] Forçar alteração de senha no primeiro login
 
 
-## Melhorias na Aba Consulta Pública
-
-- [x] Dropdown de especialidades com fundo sólido (cor Vital turquesa)
-- [x] Alterar categorias de "Médicos/Clínicas" para "Médicos, Serviços de Saúde, Outros Serviços"
-- [x] Trocar botão "Fale com Vendedor" por "Agende por WhatsApp"
-- [x] Adicionar número WhatsApp e mensagem automática no botão de agendamento
-- [x] Tornar campo WhatsApp obrigatório no cadastro de parceiros (adicionado ao schema)
-- [x] Remover botão "Copiar Link" do card
-- [x] Criar botão "Compartilhar" com texto personalizado + botão "Seja Vital"
-
-## Melhorias no Admin e Login
-
-- [x] Adicionar botão "Reenviar Senha" na aba Usuários do Admin
-- [ ] Criar página de login Admin separada
-- [ ] Adicionar link "Esqueci minha senha" na página de login Admin
-- [ ] Implementar procedures tRPC para recuperação de senha Admin
-- [ ] Criar página de redefinição de senha Admin
-
-## Melhorias na Página Parceiros
-
-- [x] Ajustar cor da frase "Venha ser Vital" para paleta oficial (#1e9d9f)
-- [x] Trocar texto para "Seja parte deste movimento que está transformando o acesso à saúde privada!" e centralizar
-- [x] Adicionar botão WhatsApp no rodapé (47933853726) com mensagem sobre assinaturas empresariais
-- [x] Adicionar frase inicial no formulário: "Preencha com atenção as informações, para que possamos indicar o máximo de clientes possível! Nosso ecossistema é feito para gerar benefícios ao Parceiro e ao Cliente!"
-
-## Nova Página e Correções
-
-- [x] Criar página /formulario-parceiro com formulário direto
-- [x] Corrigir página /atualizar-dados/:token (verificada e funcionando)
-
-
-## Aplicação de Cores da Marca nas Páginas Home e Dados Internos
-
-- [x] Aplicar cores Vital nos botões da página Home (Dados Internos)
-- [x] Aplicar fundo sólido turquesa em todos os dropdowns (especialidades, categorias, municípios)
-- [x] Garantir elegância e consistência visual em todas as páginas
-
-
-## Ajustes de Botões e Cores
-
-- [x] Mover botão "Seja Vital" para dentro da mensagem de compartilhamento WhatsApp
-- [x] Alterar botão "Compartilhar Credenciado" para cor verde (#1e9d9f)
-- [x] Aplicar tom discreto de verde nas tabs "Médicos", "Serviços de Saúde" e "Outros Serviços"
-
-
 ## Recuperação de Senha para Usuários Internos
 
-- [ ] Adicionar botão "Esqueci minha senha" na página de login Dados Internos
-- [ ] Criar página de recuperação de senha para usuários internos
-- [ ] Implementar procedures tRPC para recuperação de senha de usuários internos
+- [x] Adicionar link "Esqueci minha senha" na página /login-dados-internos
+- [x] Criar página de recuperação de senha para usuários internos
+- [x] Implementar fluxo completo de redefinição por email (backend já existe)
 - [ ] Adicionar opção de troca de senha no Admin/Usuários
+
+## Filtros Avançados por Cidade com Contador
+
+- [ ] Atualizar lista de cidades foco: Rodeio, Rio dos Cedros, Benedito Novo, Pomerode, Ascurra, Apiúna, Timbó, Indaial
+- [ ] Implementar dropdown de cidades com contador de credenciados
+- [ ] Criar visualização de especialidades/categorias com quantidade por cidade
+- [ ] Adicionar descrições claras nas categorias (Serviços de Saúde e Outros Serviços)
+- [ ] Implementar sistema de prospecção (meta: 2+ credenciados por tipo/cidade)

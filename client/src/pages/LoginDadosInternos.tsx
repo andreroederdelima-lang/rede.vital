@@ -72,11 +72,27 @@ export default function LoginDadosInternos() {
             </div>
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-[#1e9d9f] hover:bg-[#178a8c]"
               disabled={loginMutation.isPending}
             >
               {loginMutation.isPending ? "Entrando..." : "Entrar"}
             </Button>
+            <div className="mt-4 text-center">
+              <a 
+                href="/recuperar-senha-dados-internos" 
+                className="text-sm text-[#1e9d9f] hover:underline"
+              >
+                Esqueci minha senha
+              </a>
+            </div>
+            <div className="mt-2 text-center">
+              <a 
+                href="/solicitar-acesso" 
+                className="text-sm text-muted-foreground hover:text-[#1e9d9f] hover:underline"
+              >
+                Não tem acesso? Solicite aqui
+              </a>
+            </div>
           </form>
         </CardContent>
       </Card>

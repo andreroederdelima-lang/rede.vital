@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
@@ -1165,20 +1165,6 @@ function UsuariosAutorizadosTab() {
                       <TableCell>{new Date(usuario.createdAt).toLocaleDateString('pt-BR')}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const novaSenha = Math.random().toString(36).slice(-8);
-                              if (confirm(`Gerar nova senha para ${usuario.nome}?\n\nNova senha: ${novaSenha}\n\nClique em OK para confirmar. A senha será exibida novamente após a confirmação.`)) {
-                                // TODO: Implementar mutation para redefinir senha
-                                toast.success(`Senha redefinida!\n\nNova senha: ${novaSenha}\n\nEnvie esta senha para o usuário.`);
-                              }
-                            }}
-                            title="Reenviar Senha"
-                          >
-                            <Key className="h-4 w-4" />
-                          </Button>
                           <Button
                             variant="outline"
                             size="sm"

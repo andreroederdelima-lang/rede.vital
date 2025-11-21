@@ -206,13 +206,6 @@ export default function Parceiros() {
         <main className="container py-8">
           <Card className="max-w-3xl mx-auto">
             <CardContent className="p-8">
-              <div className="mb-6 p-4 bg-[#1e9d9f]/10 border-l-4 border-[#1e9d9f] rounded">
-                <p className="text-[#1e9d9f] font-semibold text-center">
-                  Preencha com atenção as informações, para que possamos indicar o máximo de clientes possível!
-                  <br />
-                  Nosso ecossistema é feito para gerar benefícios ao Parceiro e ao Cliente!
-                </p>
-              </div>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="tipoCredenciado">Tipo de Credenciado *</Label>
@@ -413,11 +406,11 @@ export default function Parceiros() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <img src={APP_LOGO} alt="Vital Logo" className="h-24" />
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight" style={{ color: '#1e9d9f' }}>
+              <h1 className="text-4xl md:text-5xl font-bold leading-tight text-primary">
                 Venha ser Vital e cresça conosco!
               </h1>
-              <p className="text-xl text-center" style={{ color: '#1e9d9f' }}>
-                Seja parte deste movimento que está transformando o acesso à saúde privada!
+              <p className="text-xl text-muted-foreground">
+                Faça parte do ecossistema que está revolucionando a saúde no Vale do Itajaí
               </p>
               <Button 
                 size="lg" 
@@ -548,7 +541,7 @@ export default function Parceiros() {
             <span className="text-muted-foreground">Benefícios</span>{" "}
             <span className="text-primary">para o Parceiro</span>
           </h2>
-          <p className="text-xl text-center mx-auto" style={{ color: '#1e9d9f' }}>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             <strong>Venha ser Vital!</strong> Juntos, crescemos e transformamos a saúde no Vale do Itajaí
           </p>
         </div>
@@ -677,31 +670,6 @@ export default function Parceiros() {
         </div>
       </section>
 
-      {/* Rodapé com botão WhatsApp */}
-      <footer className="bg-gradient-to-r from-[#1e9d9f] to-[#178a8c] py-12">
-        <div className="container text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">
-            Tem dúvidas sobre as Assinaturas Empresariais?
-          </h3>
-          <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-            Fale com nossos especialistas e descubra como a Vital pode transformar a saúde da sua empresa
-          </p>
-          <a 
-            href="https://wa.me/5547933853726?text=Desejo%20saber%20mais%20sobre%20as%20assinaturas%20empresariais" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-block"
-          >
-            <Button 
-              size="lg" 
-              className="bg-white text-[#1e9d9f] hover:bg-gray-100 text-lg px-8 py-6 shadow-xl"
-            >
-              <HeadphonesIcon className="mr-2 h-5 w-5" />
-              Fale com o Especialista
-            </Button>
-          </a>
-        </div>
-      </footer>
 
     </div>
   );

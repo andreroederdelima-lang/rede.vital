@@ -11,9 +11,7 @@ import Consulta from "./pages/Consulta";
 import AtualizarDados from "./pages/AtualizarDados";
 import LoginDadosInternos from "./pages/LoginDadosInternos";
 import SolicitarAcesso from "./pages/SolicitarAcesso";
-import LoginAdmin from "./pages/LoginAdmin";
-import RecuperarSenhaAdmin from "./pages/RecuperarSenhaAdmin";
-import FormularioParceiro from "./pages/FormularioParceiro";
+import RecuperarSenhaDadosInternos from "./pages/RecuperarSenhaDadosInternos";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -22,9 +20,7 @@ function Router() {
       <Route path={"/"} component={Consulta} />
       <Route path={"/login-dados-internos"} component={LoginDadosInternos} />
       <Route path={"/solicitar-acesso"} component={SolicitarAcesso} />
-      <Route path={"/login-admin"} component={LoginAdmin} />
-      <Route path={"/recuperar-senha-admin"} component={RecuperarSenhaAdmin} />
-      <Route path={"/formulario-parceiro"} component={FormularioParceiro} />
+      <Route path={"/recuperar-senha-dados-internos"} component={RecuperarSenhaDadosInternos} />
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/parceiros"} component={Parceiros} />

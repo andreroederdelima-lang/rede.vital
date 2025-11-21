@@ -296,7 +296,7 @@ export default function Home() {
                 size="sm" 
                 variant="outline" 
                 onClick={logout}
-                className="border-[#1e9d9f] text-[#1e9d9f] hover:bg-[#1e9d9f] hover:text-white"
+                className="border-destructive text-destructive hover:bg-destructive hover:text-white"
               >
                 <X className="h-4 w-4 mr-2" />
                 Sair
@@ -304,20 +304,20 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto mt-3 lg:mt-0">
               <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-[#c6bca4] text-white hover:bg-[#b5ab93] w-full sm:w-auto">
+                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto">
                   <Wallet className="h-4 w-4 mr-2" />
                   <span className="text-xs md:text-sm">Preços das Assinaturas Vital</span>
                 </Button>
               </a>
               <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="border-[#1e9d9f] text-[#1e9d9f] hover:bg-[#1e9d9f] hover:text-white w-full sm:w-auto">
+                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
                   <Users className="h-4 w-4 mr-2" />
                   <span className="text-xs md:text-sm">Indique a Vital!</span>
                 </Button>
               </a>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button size="sm" variant="outline" className="border-[#c6bca4] text-[#c6bca4] hover:bg-[#c6bca4] hover:text-white flex-1 sm:flex-none">
+                  <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white flex-1 sm:flex-none">
                     <Building2 className="h-4 w-4 mr-2" />
                     <span className="text-xs md:text-sm">Sugerir um Parceiro</span>
                   </Button>
@@ -330,19 +330,19 @@ export default function Home() {
                 </DialogContent>
               </Dialog>
               <Link href="/parceiros" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-[#1e9d9f] text-white hover:bg-[#178a8c] w-full sm:w-auto">
+                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
                   <Handshake className="h-4 w-4 mr-2" />
                   <span className="text-xs md:text-sm">Convide um Parceiro</span>
                 </Button>
               </Link>
               <Link href="/" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="border-[#1e9d9f] text-[#1e9d9f] hover:bg-[#1e9d9f] hover:text-white w-full sm:w-auto">
+                <Button size="sm" variant="outline" className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white w-full sm:w-auto">
                   <Globe className="h-4 w-4 mr-2" />
                   <span className="text-xs md:text-sm">Consulta Pública</span>
                 </Button>
               </Link>
               <Link href="/admin" className="flex-1 sm:flex-none">
-                <Button variant="outline" size="sm" className="border-[#c6bca4] text-[#c6bca4] hover:bg-[#c6bca4] hover:text-white w-full sm:w-auto">
+                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
                   <User className="h-4 w-4 mr-2" />
                   <span className="text-xs md:text-sm">Admin</span>
                 </Button>
@@ -400,10 +400,10 @@ export default function Home() {
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as especialidades" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1e9d9f] text-white">
-                    <SelectItem value="all" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Todas as especialidades</SelectItem>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as especialidades</SelectItem>
                     {especialidades.map((esp) => (
-                      <SelectItem key={esp} value={esp} className="hover:bg-[#178a8c] focus:bg-[#178a8c]">{esp}</SelectItem>
+                      <SelectItem key={esp} value={esp}>{esp}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -412,14 +412,14 @@ export default function Home() {
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as categorias" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1e9d9f] text-white">
-                    <SelectItem value="all" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Todas as categorias</SelectItem>
-                    <SelectItem value="clinica" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Clínica</SelectItem>
-                    <SelectItem value="farmacia" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Farmácia</SelectItem>
-                    <SelectItem value="laboratorio" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Laboratório</SelectItem>
-                    <SelectItem value="academia" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Academia</SelectItem>
-                    <SelectItem value="hospital" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Hospital</SelectItem>
-                    <SelectItem value="outro" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Outro</SelectItem>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as categorias</SelectItem>
+                    <SelectItem value="clinica">Clínica</SelectItem>
+                    <SelectItem value="farmacia">Farmácia</SelectItem>
+                    <SelectItem value="laboratorio">Laboratório</SelectItem>
+                    <SelectItem value="academia">Academia</SelectItem>
+                    <SelectItem value="hospital">Hospital</SelectItem>
+                    <SelectItem value="outro">Outro</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -428,10 +428,10 @@ export default function Home() {
                 <SelectTrigger>
                   <SelectValue placeholder="Todos os municípios" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1e9d9f] text-white">
-                  <SelectItem value="all" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Todos os municípios</SelectItem>
+                <SelectContent>
+                  <SelectItem value="all">Todos os municípios</SelectItem>
                   {municipios.map((mun) => (
-                    <SelectItem key={mun} value={mun} className="hover:bg-[#178a8c] focus:bg-[#178a8c]">{mun}</SelectItem>
+                    <SelectItem key={mun} value={mun}>{mun}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

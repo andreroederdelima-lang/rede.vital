@@ -9,19 +9,17 @@ export function cn(...inputs: ClassValue[]) {
  * Formata um número de telefone brasileiro para link do WhatsApp
  * Remove caracteres especiais e adiciona código do país
  */
-export function formatWhatsAppLink(telefone: string, mensagem?: string): string {
+export function formatWhatsAppLink(telefone: string): string {
   // Remove todos os caracteres não numéricos
   const numeros = telefone.replace(/\D/g, '');
   
   // Se já tem código do país (55), usa direto
-  const numero = numeros.startsWith('55') ? numeros : `55${numeros}`;
-  
-  // Adiciona mensagem se fornecida
-  if (mensagem) {
-    return `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+  if (numeros.startsWith('55')) {
+    return `https://wa.me/${numeros}`;
   }
   
-  return `https://wa.me/${numero}`;
+  // Adiciona código do Brasil (55)
+  return `https://wa.me/55${numeros}`;
 }
 
 /**

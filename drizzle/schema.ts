@@ -61,7 +61,6 @@ export const instituicoes = mysqlTable("instituicoes", {
   municipio: varchar("municipio", { length: 100 }).notNull(),
   endereco: text("endereco").notNull(),
   telefone: varchar("telefone", { length: 100 }),
-  whatsapp: varchar("whatsapp", { length: 100 }),
   email: varchar("email", { length: 255 }),
   precoConsulta: varchar("precoConsulta", { length: 50 }),
   descontoPercentual: int("descontoPercentual").notNull().default(0),
