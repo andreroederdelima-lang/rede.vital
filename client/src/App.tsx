@@ -13,6 +13,7 @@ import LoginDadosInternos from "./pages/LoginDadosInternos";
 import SolicitarAcesso from "./pages/SolicitarAcesso";
 import LoginAdmin from "./pages/LoginAdmin";
 import RecuperarSenhaAdmin from "./pages/RecuperarSenhaAdmin";
+import FormularioParceiro from "./pages/FormularioParceiro";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -23,6 +24,7 @@ function Router() {
       <Route path={"/solicitar-acesso"} component={SolicitarAcesso} />
       <Route path={"/login-admin"} component={LoginAdmin} />
       <Route path={"/recuperar-senha-admin"} component={RecuperarSenhaAdmin} />
+      <Route path={"/formulario-parceiro"} component={FormularioParceiro} />
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/parceiros"} component={Parceiros} />

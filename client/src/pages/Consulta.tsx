@@ -219,16 +219,16 @@ export default function Consulta() {
           setTipoCredenciado(v as "medicos" | "instituicoes" | "outros");
           limparFiltros();
         }} className="mb-6">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
-            <TabsTrigger value="medicos" className="flex items-center gap-2">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-[#1e9d9f]/10">
+            <TabsTrigger value="medicos" className="flex items-center gap-2 data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">
               <User className="h-4 w-4" />
               Médicos
             </TabsTrigger>
-            <TabsTrigger value="instituicoes" className="flex items-center gap-2">
+            <TabsTrigger value="instituicoes" className="flex items-center gap-2 data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">
               <Building2 className="h-4 w-4" />
               Serviços de Saúde
             </TabsTrigger>
-            <TabsTrigger value="outros" className="flex items-center gap-2">
+            <TabsTrigger value="outros" className="flex items-center gap-2 data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">
               <Handshake className="h-4 w-4" />
               Outros Serviços
             </TabsTrigger>
@@ -390,34 +390,25 @@ export default function Consulta() {
                       
                       <div className="space-y-2">
                         <Button
-                          variant="outline"
                           size="sm"
-                          className="w-full"
+                          className="w-full bg-[#1e9d9f] hover:bg-[#178a8c] text-white"
                           onClick={() => {
-                            const mensagem = `🏛️ *CREDENCIADO VITAL: ${medico.nome.toUpperCase()}*\n\n` +
+                            const mensagem = 
+                              `💚 *CREDENCIADO VITAL: ${medico.nome}* 💚\n\n` +
                               `💚 *VITAL SEMPRE AO SEU LADO* 💚\n\n` +
                               `Especialidade: ${medico.especialidade}${medico.subespecialidade ? ` • ${medico.subespecialidade}` : ''}\n` +
                               `Município: ${medico.municipio}\n` +
                               `Endereço: ${medico.endereco}\n` +
                               `${medico.telefone || medico.whatsapp ? `Telefone: ${medico.telefone || medico.whatsapp}\n` : ''}` +
-                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}`;
+                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n\n` +
+                              `📞 *SEJA VITAL, FALE COM NOSSOS ESPECIALISTAS*\n` +
+                              `https://wa.me/5547933853726`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
                           <Share2 className="h-4 w-4 mr-2" />
                           Compartilhar Credenciado
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="w-full bg-[#1e9d9f] hover:bg-[#178a8c]"
-                          onClick={() => {
-                            window.open('https://wa.me/5547933853726?text=' + encodeURIComponent('SEJA VITAL, FALE COM NOSSOS ESPECIALISTAS'), '_blank');
-                          }}
-                        >
-                          <MessageCircle className="h-4 w-4 mr-2" />
-                          Seja Vital
-                        </Button>
-                      </div>
+                        </Button>              </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -501,34 +492,25 @@ export default function Consulta() {
                       
                       <div className="space-y-2">
                         <Button
-                          variant="outline"
                           size="sm"
-                          className="w-full"
+                          className="w-full bg-[#1e9d9f] hover:bg-[#178a8c] text-white"
                           onClick={() => {
-                            const mensagem = `🏛️ *CREDENCIADO VITAL: ${inst.nome.toUpperCase()}*\n\n` +
+                            const mensagem = 
+                              `💚 *CREDENCIADO VITAL: ${inst.nome}* 💚\n\n` +
                               `💚 *VITAL SEMPRE AO SEU LADO* 💚\n\n` +
                               `Categoria: ${inst.categoria}\n` +
                               `Município: ${inst.municipio}\n` +
                               `Endereço: ${inst.endereco}\n` +
                               `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
-                              `${inst.email ? `Email: ${inst.email}` : ''}`;
+                              `${inst.email ? `Email: ${inst.email}\n\n` : '\n'}` +
+                              `📞 *SEJA VITAL, FALE COM NOSSOS ESPECIALISTAS*\n` +
+                              `https://wa.me/5547933853726`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
                           <Share2 className="h-4 w-4 mr-2" />
                           Compartilhar Credenciado
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="w-full bg-[#1e9d9f] hover:bg-[#178a8c]"
-                          onClick={() => {
-                            window.open('https://wa.me/5547933853726?text=' + encodeURIComponent('SEJA VITAL, FALE COM NOSSOS ESPECIALISTAS'), '_blank');
-                          }}
-                        >
-                          <MessageCircle className="h-4 w-4 mr-2" />
-                          Seja Vital
-                        </Button>
-                      </div>
+                        </Button>     </div>
                     </div>
                   </CardContent>
                 </Card>
