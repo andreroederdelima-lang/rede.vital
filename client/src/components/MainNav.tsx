@@ -11,7 +11,7 @@ export function MainNav() {
 
   const navItems = [
     {
-      href: "/consulta",
+      href: "/",
       label: "Credenciados",
       icon: Users,
       public: true,
@@ -44,7 +44,7 @@ export function MainNav() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/consulta">
+          <Link href="/">
             <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
               <img src={APP_LOGO} alt="Vital Logo" className="h-10 w-auto" />
               <div className="flex flex-col">

@@ -288,3 +288,28 @@
 - [x] Corrigir erro de `<a>` aninhado no componente MainNav
 - [x] Corrigir procedure meuIndicador retornando undefined (agora retorna null)
 - [x] Adicionar tratamento adequado de null na página Indicações
+
+
+## BUGS CRÍTICOS IDENTIFICADOS - 21/11/2025
+
+- [x] Corrigir rota /consulta no MainNav.tsx (linha 14) - deve apontar para "/" ao invés de "/consulta"
+- [x] Corrigir link do logo no MainNav.tsx (linha 47) - deve apontar para "/" ao invés de "/consulta"
+- [ ] Verificar todas as referências a /consulta no código e substituir por /
+- [ ] Testar navegação completa após correção das rotas
+- [ ] Verificar se página Indicações está funcionando corretamente
+- [ ] Verificar se página Parceiros está funcionando corretamente
+- [ ] Verificar se página Admin está funcionando corretamente
+- [ ] Verificar se página Dados Internos está funcionando corretamente
+
+## PENDÊNCIAS DE INTEGRAÇÃO DO SISTEMA DE INDICAÇÕES
+
+- [ ] Implementar Aba "Indicações" no painel Admin
+- [ ] Criar formulário de cadastro de Promotores/Vendedores no Admin
+- [ ] Implementar listagem completa de indicações no Admin (todas, não só do usuário)
+- [ ] Adicionar filtros de status e vendedor na listagem Admin
+- [ ] Implementar atualização de status de indicações pelo Admin
+- [ ] Criar sistema de gestão de comissões no Admin
+- [ ] Adicionar campo de valor de comissão
+- [ ] Adicionar campo de data de pagamento
+- [ ] Implementar upload de comprovante de pagamento
+- [ ] Adicionar estatísticas gerais no Admin (total de indicações, conversões, comissões pagas)
