@@ -45,7 +45,7 @@ export function MainNav() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/consulta">
-            <a className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
               <img src={APP_LOGO} alt="Vital Logo" className="h-10 w-auto" />
               <div className="flex flex-col">
                 <span className="text-lg font-bold text-[#1e9d9f]">
@@ -55,7 +55,7 @@ export function MainNav() {
                   Rede Credenciada - Vale do Itajaí
                 </span>
               </div>
-            </a>
+            </div>
           </Link>
 
           {/* Navigation Links */}

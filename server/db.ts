@@ -636,10 +636,10 @@ export async function listarIndicadores(tipo?: "promotor" | "vendedor") {
 
 export async function buscarIndicadorPorUserId(userId: number) {
   const db = await getDb();
-  if (!db) return undefined;
+  if (!db) return null;
   
   const result = await db.select().from(indicadores).where(eq(indicadores.userId, userId)).limit(1);
-  return result[0];
+  return result[0] || null;
 }
 
 // Indicações

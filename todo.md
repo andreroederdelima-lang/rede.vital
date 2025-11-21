@@ -281,3 +281,10 @@
 - [ ] Adicionar aba Indicações no Admin
 - [ ] Implementar gestão de indicadores no Admin
 - [ ] Implementar gestão de comissões no Admin
+
+
+## Correção de Bugs - Links Aninhados e Query Undefined
+
+- [x] Corrigir erro de `<a>` aninhado no componente MainNav
+- [x] Corrigir procedure meuIndicador retornando undefined (agora retorna null)
+- [x] Adicionar tratamento adequado de null na página Indicações
