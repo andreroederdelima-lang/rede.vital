@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key } from "lucide-react";
+import DashboardProspeccao from "@/components/DashboardProspeccao";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
@@ -210,13 +211,14 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-6 mb-6">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-7 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
             <TabsTrigger value="instituicoes">Clínicas</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
             <TabsTrigger value="atualizacoes">Atualizações</TabsTrigger>
             <TabsTrigger value="usuarios">Usuários</TabsTrigger>
             <TabsTrigger value="acessos">Acessos</TabsTrigger>
+            <TabsTrigger value="prospeccao">Prospecção</TabsTrigger>
           </TabsList>
 
           {/* Tab Médicos */}
@@ -429,6 +431,11 @@ export default function Admin() {
           {/* Tab Solicitações de Acesso */}
           <TabsContent value="acessos">
             <SolicitacoesAcessoTab />
+          </TabsContent>
+
+          {/* Tab Prospecção */}
+          <TabsContent value="prospeccao">
+            <DashboardProspeccao />
           </TabsContent>
         </Tabs>
       </main>

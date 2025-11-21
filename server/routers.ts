@@ -579,6 +579,22 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // Rotas de prospecção e estatísticas
+  prospeccao: router({
+    estatisticasCobertura: protectedProcedure.query(async () => {
+      const { obterEstatisticasCobertura } = await import("./db");
+      return await obterEstatisticasCobertura();
+    }),
+    especialidadesUnicas: protectedProcedure.query(async () => {
+      const { obterEspecialidadesUnicas } = await import("./db");
+      return await obterEspecialidadesUnicas();
+    }),
+    categoriasUnicas: protectedProcedure.query(async () => {
+      const { obterCategoriasUnicas } = await import("./db");
+      return await obterCategoriasUnicas();
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

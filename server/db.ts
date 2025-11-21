@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, sql, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -521,4 +521,90 @@ export async function alterarSenhaUsuario(usuarioId: number, novaSenha: string) 
   await db.update(usuariosAutorizados)
     .set({ senhaHash })
     .where(eq(usuariosAutorizados.id, usuarioId));
+}
+
+
+/**
+ * Estatísticas de cobertura para dashboard de prospecção
+ */
+export async function obterEstatisticasCobertura() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get coverage stats: database not available");
+    return [];
+  }
+
+  try {
+    // Buscar todos os médicos ativos agrupados por município e especialidade
+    const medicosStats = await db
+      .select({
+        municipio: medicos.municipio,
+        especialidade: medicos.especialidade,
+        quantidade: sql<number>`COUNT(*)`.as('quantidade'),
+      })
+      .from(medicos)
+      .where(eq(medicos.ativo, 1))
+      .groupBy(medicos.municipio, medicos.especialidade);
+
+    // Buscar todas as instituições ativas agrupadas por município e categoria
+    const instituicoesStats = await db
+      .select({
+        municipio: instituicoes.municipio,
+        categoria: instituicoes.categoria,
+        quantidade: sql<number>`COUNT(*)`.as('quantidade'),
+      })
+      .from(instituicoes)
+      .where(eq(instituicoes.ativo, 1))
+      .groupBy(instituicoes.municipio, instituicoes.categoria);
+
+    return {
+      medicos: medicosStats,
+      instituicoes: instituicoesStats,
+    };
+  } catch (error) {
+    console.error("[Database] Failed to get coverage stats:", error);
+    throw error;
+  }
+}
+
+export async function obterEspecialidadesUnicas() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get unique specialties: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db
+      .selectDistinct({ especialidade: medicos.especialidade })
+      .from(medicos)
+      .where(eq(medicos.ativo, 1))
+      .orderBy(medicos.especialidade);
+
+    return result.map(r => r.especialidade);
+  } catch (error) {
+    console.error("[Database] Failed to get unique specialties:", error);
+    throw error;
+  }
+}
+
+export async function obterCategoriasUnicas() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get unique categories: database not available");
+    return [];
+  }
+
+  try {
+    const result = await db
+      .selectDistinct({ categoria: instituicoes.categoria })
+      .from(instituicoes)
+      .where(eq(instituicoes.ativo, 1))
+      .orderBy(instituicoes.categoria);
+
+    return result.map(r => r.categoria);
+  } catch (error) {
+    console.error("[Database] Failed to get unique categories:", error);
+    throw error;
+  }
 }

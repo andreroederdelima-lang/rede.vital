@@ -237,3 +237,19 @@
 - [ ] Criar visualização de especialidades/categorias com quantidade por cidade
 - [ ] Adicionar descrições claras nas categorias (Serviços de Saúde e Outros Serviços)
 - [ ] Implementar sistema de prospecção (meta: 2+ credenciados por tipo/cidade)
+
+
+## Dashboard de Prospecção no Admin
+
+- [x] Criar procedures tRPC para estatísticas de cobertura por cidade/categoria
+- [x] Implementar cálculo de meta (2+ credenciados por tipo/cidade)
+- [x] Criar componente de dashboard com mapa de cobertura visual
+- [x] Adicionar indicadores de cor (vermelho/amarelo/verde)
+- [x] Adicionar aba "Prospecção" no painel Admin
+
+## Sistema de Exportação para Prospecção
+
+- [ ] Implementar exportação de relatórios em Excel
+- [ ] Implementar exportação de relatórios em PDF
+- [ ] Criar listagem de especialidades/categorias faltantes por cidade
+- [ ] Adicionar filtros por cidade e categoria nos relatórios
