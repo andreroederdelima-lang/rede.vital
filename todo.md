@@ -253,3 +253,15 @@
 - [ ] Implementar exportação de relatórios em PDF
 - [ ] Criar listagem de especialidades/categorias faltantes por cidade
 - [ ] Adicionar filtros por cidade e categoria nos relatórios
+
+
+## Integração com Site de Indicações
+
+- [x] Analisar estrutura e funcionalidades do site indique-vital.manus.space
+- [x] Planejar arquitetura de integração (navegação, autenticação, banco de dados)
+- [ ] Criar navegação unificada entre Credenciados e Indicações
+- [ ] Migrar funcionalidades de indicações para o site atual
+- [ ] Unificar sistema de autenticação
+- [ ] Integrar painel Admin para gerenciar ambas áreas
+- [ ] Aplicar design consistente (paleta Vital) em todas as páginas
+- [ ] Testar fluxos integrados

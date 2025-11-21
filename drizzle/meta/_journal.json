@@ -64,6 +64,13 @@
       "when": 1763615027985,
       "tag": "0008_crazy_havok",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1763729801428,
+      "tag": "0009_gorgeous_stingray",
+      "breakpoints": true
     }
   ]
 }

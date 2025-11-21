@@ -14,8 +14,11 @@ import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, File
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
+import { MainNav } from "@/components/MainNav";
 
 export default function Consulta() {
+  // Renderizar MainNav no topo
+  const renderMainNav = () => <MainNav />;
   const [busca, setBusca] = useState("");
   const [especialidade, setEspecialidade] = useState<string>("");
   const [municipio, setMunicipio] = useState<string>("");
@@ -145,6 +148,9 @@ export default function Consulta() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Navegação Principal */}
+      <MainNav />
+      
       {/* Header */}
       <header className="bg-white border-b-4 border-primary shadow-sm">
         <div className="container py-6">
