@@ -21,7 +21,7 @@ export default function Consulta() {
   const [municipio, setMunicipio] = useState<string>("");
   const [categoria, setCategoria] = useState<string>("");
   // Removido filtro de desconto para consulta pública
-  const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "instituicoes">("medicos");
+  const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "instituicoes" | "outros">("medicos");
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -216,17 +216,21 @@ export default function Consulta() {
       <main className="container py-8">
         {/* Tabs: Médicos / Clínicas */}
         <Tabs value={tipoCredenciado} onValueChange={(v) => {
-          setTipoCredenciado(v as "medicos" | "instituicoes");
+          setTipoCredenciado(v as "medicos" | "instituicoes" | "outros");
           limparFiltros();
         }} className="mb-6">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
             <TabsTrigger value="medicos" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               Médicos
             </TabsTrigger>
             <TabsTrigger value="instituicoes" className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              Clínicas
+              Serviços de Saúde
+            </TabsTrigger>
+            <TabsTrigger value="outros" className="flex items-center gap-2">
+              <Handshake className="h-4 w-4" />
+              Outros Serviços
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -260,10 +264,10 @@ export default function Consulta() {
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as especialidades" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas as especialidades</SelectItem>
+                  <SelectContent className="bg-[#1e9d9f] text-white">
+                    <SelectItem value="all" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Todas as especialidades</SelectItem>
                     {especialidades.map((esp) => (
-                      <SelectItem key={esp} value={esp}>{esp}</SelectItem>
+                      <SelectItem key={esp} value={esp} className="hover:bg-[#178a8c] focus:bg-[#178a8c]">{esp}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -358,13 +362,13 @@ export default function Consulta() {
                               <span>{medico.telefone || medico.whatsapp}</span>
                               {medico.whatsapp && (
                                 <a
-                                  href={formatWhatsAppLink(medico.whatsapp)}
+                                  href={formatWhatsAppLink(medico.whatsapp, "Olá, eu sou assinante Vital, e desejo agendar um horário!")}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                  className="inline-flex items-center gap-1 text-xs text-[#1e9d9f] hover:underline font-medium"
                                 >
                                   <MessageCircle className="h-3 w-3" />
-                                  Fale com o vendedor
+                                  Agende por WhatsApp
                                 </a>
                               )}
                             </div>
@@ -384,39 +388,34 @@ export default function Consulta() {
                         )}
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-2">
                         <Button
                           variant="outline"
                           size="sm"
+                          className="w-full"
                           onClick={() => {
-                            const mensagem = `*${medico.nome}*\n\n` +
+                            const mensagem = `🏛️ *CREDENCIADO VITAL: ${medico.nome.toUpperCase()}*\n\n` +
+                              `💚 *VITAL SEMPRE AO SEU LADO* 💚\n\n` +
                               `Especialidade: ${medico.especialidade}${medico.subespecialidade ? ` • ${medico.subespecialidade}` : ''}\n` +
                               `Município: ${medico.municipio}\n` +
                               `Endereço: ${medico.endereco}\n` +
                               `${medico.telefone || medico.whatsapp ? `Telefone: ${medico.telefone || medico.whatsapp}\n` : ''}` +
-                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n\n` +
-                              `💚 *Vital, sempre ao seu lado* 💚\n` +
-                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí`;
+                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
                           <Share2 className="h-4 w-4 mr-2" />
-                          Compartilhar
+                          Compartilhar Credenciado
                         </Button>
                         <Button
-                          variant="outline"
                           size="sm"
+                          className="w-full bg-[#1e9d9f] hover:bg-[#178a8c]"
                           onClick={() => {
-                            const url = `${window.location.origin}/?medico=${medico.id}`;
-                            navigator.clipboard.writeText(url).then(() => {
-                              toast.success('Link copiado com sucesso!');
-                            }).catch(() => {
-                              toast.error('Erro ao copiar link');
-                            });
+                            window.open('https://wa.me/5547933853726?text=' + encodeURIComponent('SEJA VITAL, FALE COM NOSSOS ESPECIALISTAS'), '_blank');
                           }}
                         >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copiar Link
+                          <MessageCircle className="h-4 w-4 mr-2" />
+                          Seja Vital
                         </Button>
                       </div>
                     </div>
@@ -467,15 +466,17 @@ export default function Consulta() {
                             <div className="flex items-center gap-2">
                               <Phone className="h-4 w-4 text-muted-foreground" />
                               <span>{inst.telefone}</span>
-                              <a
-                                href={formatWhatsAppLink(inst.telefone)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                              >
-                                <MessageCircle className="h-3 w-3" />
-                                Fale com o vendedor
-                              </a>
+                              {inst.whatsapp && (
+                                <a
+                                  href={formatWhatsAppLink(inst.whatsapp, "Olá, eu sou assinante Vital, e desejo agendar um horário!")}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs text-[#1e9d9f] hover:underline font-medium"
+                                >
+                                  <MessageCircle className="h-3 w-3" />
+                                  Agende por WhatsApp
+                                </a>
+                              )}
                             </div>
                           )}
                           {inst.email && (
@@ -498,39 +499,34 @@ export default function Consulta() {
                         )}
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-2">
                         <Button
                           variant="outline"
                           size="sm"
+                          className="w-full"
                           onClick={() => {
-                            const mensagem = `*${inst.nome}*\n\n` +
+                            const mensagem = `🏛️ *CREDENCIADO VITAL: ${inst.nome.toUpperCase()}*\n\n` +
+                              `💚 *VITAL SEMPRE AO SEU LADO* 💚\n\n` +
                               `Categoria: ${inst.categoria}\n` +
                               `Município: ${inst.municipio}\n` +
                               `Endereço: ${inst.endereco}\n` +
                               `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
-                              `${inst.email ? `Email: ${inst.email}\n` : ''}\n` +
-                              `💚 *Vital, sempre ao seu lado* 💚\n` +
-                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí`;
+                              `${inst.email ? `Email: ${inst.email}` : ''}`;
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
                           <Share2 className="h-4 w-4 mr-2" />
-                          Compartilhar
+                          Compartilhar Credenciado
                         </Button>
                         <Button
-                          variant="outline"
                           size="sm"
+                          className="w-full bg-[#1e9d9f] hover:bg-[#178a8c]"
                           onClick={() => {
-                            const url = `${window.location.origin}/?instituicao=${inst.id}`;
-                            navigator.clipboard.writeText(url).then(() => {
-                              toast.success('Link copiado com sucesso!');
-                            }).catch(() => {
-                              toast.error('Erro ao copiar link');
-                            });
+                            window.open('https://wa.me/5547933853726?text=' + encodeURIComponent('SEJA VITAL, FALE COM NOSSOS ESPECIALISTAS'), '_blank');
                           }}
                         >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copiar Link
+                          <MessageCircle className="h-4 w-4 mr-2" />
+                          Seja Vital
                         </Button>
                       </div>
                     </div>

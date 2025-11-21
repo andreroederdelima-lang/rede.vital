@@ -221,3 +221,32 @@
 - [x] Sistema de aprovação/rejeição de solicitações com geração de senha temporária
 - [ ] Envio de email com senha temporária para usuários aprovados
 - [ ] Forçar alteração de senha no primeiro login
+
+
+## Melhorias na Aba Consulta Pública
+
+- [x] Dropdown de especialidades com fundo sólido (cor Vital turquesa)
+- [x] Alterar categorias de "Médicos/Clínicas" para "Médicos, Serviços de Saúde, Outros Serviços"
+- [x] Trocar botão "Fale com Vendedor" por "Agende por WhatsApp"
+- [x] Adicionar número WhatsApp e mensagem automática no botão de agendamento
+- [x] Tornar campo WhatsApp obrigatório no cadastro de parceiros (adicionado ao schema)
+- [x] Remover botão "Copiar Link" do card
+- [x] Criar botão "Compartilhar" com texto personalizado + botão "Seja Vital"
+
+## Melhorias no Admin e Login
+
+- [ ] Adicionar botão "Reenviar Senha" na aba Usuários do Admin
+- [ ] Adicionar link "Esqueci minha senha" na página de login Admin
+- [ ] Implementar fluxo de recuperação de senha para Admin
+
+## Melhorias na Página Parceiros
+
+- [ ] Ajustar cor da frase "Venha ser Vital" para paleta oficial
+- [ ] Trocar texto e centralizar frase principal
+- [ ] Adicionar botão WhatsApp no rodapé com mensagem sobre assinaturas empresariais
+- [ ] Adicionar frase inicial no formulário de parceiros
+
+## Nova Página e Correções
+
+- [ ] Criar página /formulario-parceiro com formulário direto
+- [ ] Corrigir página /atualizar-dados/:token que não está abrindo
