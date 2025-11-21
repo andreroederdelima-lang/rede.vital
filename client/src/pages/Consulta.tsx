@@ -276,14 +276,14 @@ export default function Consulta() {
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as categorias" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas as categorias</SelectItem>
-                    <SelectItem value="clinica">Clínica</SelectItem>
-                    <SelectItem value="farmacia">Farmácia</SelectItem>
-                    <SelectItem value="laboratorio">Laboratório</SelectItem>
-                    <SelectItem value="academia">Academia</SelectItem>
-                    <SelectItem value="hospital">Hospital</SelectItem>
-                    <SelectItem value="outro">Outro</SelectItem>
+                  <SelectContent className="bg-[#1e9d9f] text-white">
+                    <SelectItem value="all" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Todas as categorias</SelectItem>
+                    <SelectItem value="clinica" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Clínica</SelectItem>
+                    <SelectItem value="farmacia" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Farmácia</SelectItem>
+                    <SelectItem value="laboratorio" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Laboratório</SelectItem>
+                    <SelectItem value="academia" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Academia</SelectItem>
+                    <SelectItem value="hospital" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Hospital</SelectItem>
+                    <SelectItem value="outro" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Outro</SelectItem>
                   </SelectContent>
                 </Select>
               )}
@@ -292,10 +292,10 @@ export default function Consulta() {
                 <SelectTrigger>
                   <SelectValue placeholder="Todos os municípios" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os municípios</SelectItem>
+                <SelectContent className="bg-[#1e9d9f] text-white">
+                  <SelectItem value="all" className="hover:bg-[#178a8c] focus:bg-[#178a8c]">Todos os municípios</SelectItem>
                   {municipios.map((mun) => (
-                    <SelectItem key={mun} value={mun}>{mun}</SelectItem>
+                    <SelectItem key={mun} value={mun} className="hover:bg-[#178a8c] focus:bg-[#178a8c]">{mun}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

@@ -235,9 +235,11 @@
 
 ## Melhorias no Admin e Login
 
-- [ ] Adicionar botão "Reenviar Senha" na aba Usuários do Admin
+- [x] Adicionar botão "Reenviar Senha" na aba Usuários do Admin
+- [ ] Criar página de login Admin separada
 - [ ] Adicionar link "Esqueci minha senha" na página de login Admin
-- [ ] Implementar fluxo de recuperação de senha para Admin
+- [ ] Implementar procedures tRPC para recuperação de senha Admin
+- [ ] Criar página de redefinição de senha Admin
 
 ## Melhorias na Página Parceiros
 
@@ -250,3 +252,10 @@
 
 - [ ] Criar página /formulario-parceiro com formulário direto
 - [ ] Corrigir página /atualizar-dados/:token que não está abrindo
+
+
+## Aplicação de Cores da Marca nas Páginas Home e Dados Internos
+
+- [x] Aplicar cores Vital nos botões da página Home (Dados Internos)
+- [x] Aplicar fundo sólido turquesa em todos os dropdowns (especialidades, categorias, municípios)
+- [x] Garantir elegância e consistência visual em todas as páginas
