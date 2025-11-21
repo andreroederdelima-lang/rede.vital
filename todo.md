@@ -265,3 +265,19 @@
 - [ ] Integrar painel Admin para gerenciar ambas áreas
 - [ ] Aplicar design consistente (paleta Vital) em todas as páginas
 - [ ] Testar fluxos integrados
+
+
+## Implementação Completa do Sistema de Indicações
+
+- [x] Instalar biblioteca qrcode.react para geração de QR Codes
+- [x] Criar procedures tRPC para indicações (criar, listar, atualizar)
+- [x] Criar procedures tRPC para indicadores (cadastro, listar)
+- [x] Implementar página /indicacoes com dashboard
+- [ ] Adicionar formulário de cadastro de promotor/vendedor (Admin)
+- [x] Adicionar formulário de nova indicação
+- [x] Gerar QR Code com link WhatsApp do vendedor
+- [x] Mensagem padrão: "Recebi indicação para conhecer as assinaturas e benefícios da Vital ❤️🚑!"
+- [x] Implementar listagem de indicações com filtros
+- [ ] Adicionar aba Indicações no Admin
+- [ ] Implementar gestão de indicadores no Admin
+- [ ] Implementar gestão de comissões no Admin

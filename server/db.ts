@@ -1,6 +1,6 @@
 import { eq, sql, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao, indicadores, InsertIndicador, indicacoes, InsertIndicacao, comissoes, InsertComissao } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -607,4 +607,92 @@ export async function obterCategoriasUnicas() {
     console.error("[Database] Failed to get unique categories:", error);
     throw error;
   }
+}
+
+
+// ===== Funções para Sistema de Indicações =====
+
+// Indicadores (Promotores/Vendedores)
+export async function criarIndicador(data: InsertIndicador) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const [result] = await db.insert(indicadores).values(data);
+  return result;
+}
+
+export async function listarIndicadores(tipo?: "promotor" | "vendedor") {
+  const db = await getDb();
+  if (!db) return [];
+  
+  let query = db.select().from(indicadores);
+  
+  if (tipo) {
+    query = query.where(eq(indicadores.tipo, tipo)) as any;
+  }
+  
+  return await query.orderBy(desc(indicadores.createdAt));
+}
+
+export async function buscarIndicadorPorUserId(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const result = await db.select().from(indicadores).where(eq(indicadores.userId, userId)).limit(1);
+  return result[0];
+}
+
+// Indicações
+export async function criarIndicacao(data: InsertIndicacao) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const [result] = await db.insert(indicacoes).values(data);
+  return result;
+}
+
+export async function listarIndicacoes(indicadorId?: number, status?: string) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  let query = db.select().from(indicacoes);
+  
+  if (indicadorId) {
+    query = query.where(eq(indicacoes.indicadorId, indicadorId)) as any;
+  }
+  
+  if (status) {
+    query = query.where(eq(indicacoes.status, status as any)) as any;
+  }
+  
+  return await query.orderBy(desc(indicacoes.createdAt));
+}
+
+export async function atualizarIndicacao(id: number, data: Partial<InsertIndicacao>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(indicacoes).set(data).where(eq(indicacoes.id, id));
+}
+
+// Comissões
+export async function criarComissao(data: InsertComissao) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const [result] = await db.insert(comissoes).values(data);
+  return result;
+}
+
+export async function listarComissoes(indicadorId?: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  let query = db.select().from(comissoes);
+  
+  if (indicadorId) {
+    query = query.where(eq(comissoes.indicadorId, indicadorId)) as any;
+  }
+  
+  return await query.orderBy(desc(comissoes.createdAt));
 }

@@ -12,6 +12,7 @@ import AtualizarDados from "./pages/AtualizarDados";
 import LoginDadosInternos from "./pages/LoginDadosInternos";
 import SolicitarAcesso from "./pages/SolicitarAcesso";
 import RecuperarSenhaDadosInternos from "./pages/RecuperarSenhaDadosInternos";
+import Indicacoes from "./pages/Indicacoes";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -20,7 +21,8 @@ function Router() {
       <Route path={"/"} component={Consulta} />
       <Route path={"/login-dados-internos"} component={LoginDadosInternos} />
       <Route path={"/solicitar-acesso"} component={SolicitarAcesso} />
-      <Route path={"/recuperar-senha-dados-internos"} component={RecuperarSenhaDadosInternos} />
+      <Route path="/recuperar-senha-dados-internos" component={RecuperarSenhaDadosInternos} />
+      <Route path="/indicacoes" component={Indicacoes} />
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/parceiros"} component={Parceiros} />

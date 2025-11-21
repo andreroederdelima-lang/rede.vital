@@ -580,6 +580,112 @@ export const appRouter = router({
       }),
   }),
 
+  // Rotas de indicações
+  indicacoes: router({
+    // Indicadores
+    criarIndicador: protectedProcedure
+      .input(z.object({
+        tipo: z.enum(["promotor", "vendedor"]),
+        nome: z.string(),
+        email: z.string().email(),
+        telefone: z.string().optional(),
+        cpf: z.string().optional(),
+        pix: z.string().optional(),
+        comissaoPercentual: z.number().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { criarIndicador } = await import("./db");
+        return await criarIndicador({
+          ...input,
+          userId: ctx.user.id,
+        });
+      }),
+
+    listarIndicadores: protectedProcedure
+      .input(z.object({
+        tipo: z.enum(["promotor", "vendedor"]).optional(),
+      }).optional())
+      .query(async ({ input }) => {
+        const { listarIndicadores } = await import("./db");
+        return await listarIndicadores(input?.tipo);
+      }),
+
+    meuIndicador: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { buscarIndicadorPorUserId } = await import("./db");
+        return await buscarIndicadorPorUserId(ctx.user.id);
+      }),
+
+    // Indicações
+    criarIndicacao: protectedProcedure
+      .input(z.object({
+        nomeCliente: z.string(),
+        emailCliente: z.string().email().optional(),
+        telefoneCliente: z.string(),
+        cidadeCliente: z.string().optional(),
+        observacoes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { buscarIndicadorPorUserId, criarIndicacao } = await import("./db");
+        
+        // Buscar indicador do usuário atual
+        const indicador = await buscarIndicadorPorUserId(ctx.user.id);
+        if (!indicador) {
+          throw new Error("Usuário não é um indicador cadastrado");
+        }
+        
+        return await criarIndicacao({
+          ...input,
+          indicadorId: indicador.id,
+        });
+      }),
+
+    listarIndicacoes: protectedProcedure
+      .input(z.object({
+        status: z.string().optional(),
+      }).optional())
+      .query(async ({ ctx, input }) => {
+        const { buscarIndicadorPorUserId, listarIndicacoes } = await import("./db");
+        
+        // Buscar indicador do usuário atual
+        const indicador = await buscarIndicadorPorUserId(ctx.user.id);
+        if (!indicador) {
+          return [];
+        }
+        
+        return await listarIndicacoes(indicador.id, input?.status);
+      }),
+
+    atualizarIndicacao: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.enum(["pendente", "contatado", "em_negociacao", "fechado", "perdido"]).optional(),
+        vendedorId: z.number().optional(),
+        valorVenda: z.number().optional(),
+        valorComissao: z.number().optional(),
+        dataPagamento: z.date().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarIndicacao } = await import("./db");
+        const { id, ...data } = input;
+        await atualizarIndicacao(id, data);
+        return { success: true };
+      }),
+
+    // Comissões
+    listarComissoes: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { buscarIndicadorPorUserId, listarComissoes } = await import("./db");
+        
+        const indicador = await buscarIndicadorPorUserId(ctx.user.id);
+        if (!indicador) {
+          return [];
+        }
+        
+        return await listarComissoes(indicador.id);
+      }),
+  }),
+
   // Rotas de prospecção e estatísticas
   prospeccao: router({
     estatisticasCobertura: protectedProcedure.query(async () => {
