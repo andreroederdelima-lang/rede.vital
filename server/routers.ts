@@ -210,6 +210,8 @@ export const appRouter = router({
         endereco: z.string().min(1, "Endereço é obrigatório"),
         cidade: z.string().min(1, "Cidade é obrigatória"),
         telefone: z.string().min(1, "Telefone é obrigatório"),
+        whatsappSecretaria: z.string().min(1, "WhatsApp é obrigatório"),
+        email: z.string().email().optional(),
         precoConsulta: z.string().min(1, "Preço é obrigatório"),
         descontoPercentual: z.number().min(0).max(100),
         imagemUrl: z.string().optional(),

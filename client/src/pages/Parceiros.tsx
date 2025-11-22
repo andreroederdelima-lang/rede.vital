@@ -44,6 +44,8 @@ export default function Parceiros() {
   const [endereco, setEndereco] = useState("");
   const [cidade, setCidade] = useState("");
   const [telefone, setTelefone] = useState("");
+  const [whatsappSecretaria, setWhatsappSecretaria] = useState("");
+  const [email, setEmail] = useState("");
   const [precoConsulta, setPrecoConsulta] = useState("");
   const [descontoPercentual, setDescontoPercentual] = useState("");
   const [imagemFile, setImagemFile] = useState<File | null>(null);
@@ -86,6 +88,8 @@ export default function Parceiros() {
     setEndereco("");
     setCidade("");
     setTelefone("");
+    setWhatsappSecretaria("");
+    setEmail("");
     setPrecoConsulta("");
     setDescontoPercentual("");
     setImagemFile(null);
@@ -96,8 +100,14 @@ export default function Parceiros() {
     e.preventDefault();
     
     // Validação básica
-    if (!nomeResponsavel || !nomeEstabelecimento || !categoria || !endereco || !cidade || !telefone || !precoConsulta || !descontoPercentual) {
+    if (!nomeResponsavel || !nomeEstabelecimento || !categoria || !endereco || !cidade || !telefone || !whatsappSecretaria || !precoConsulta || !descontoPercentual) {
       toast.error("Preencha todos os campos obrigatórios");
+      return;
+    }
+    
+    // Validação de email para instituições
+    if (tipoCredenciado === "instituicao" && !email) {
+      toast.error("E-mail é obrigatório para instituições");
       return;
     }
     
@@ -144,6 +154,8 @@ export default function Parceiros() {
       endereco,
       cidade,
       telefone,
+      whatsappSecretaria,
+      email: email || undefined,
       precoConsulta,
       descontoPercentual: parseInt(descontoPercentual),
       imagemUrl,
@@ -345,6 +357,36 @@ export default function Parceiros() {
                     onChange={(e) => setTelefone(e.target.value)}
                     placeholder="(47) 99999-9999"
                     required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="whatsappSecretaria">
+                    {tipoCredenciado === "medico" 
+                      ? "WhatsApp da Secretária para Agendamento *" 
+                      : "WhatsApp Comercial para Contato *"}
+                  </Label>
+                  <Input
+                    id="whatsappSecretaria"
+                    value={whatsappSecretaria}
+                    onChange={(e) => setWhatsappSecretaria(e.target.value)}
+                    placeholder="(47) 99999-9999"
+                    required
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    Este número será usado no botão "Fale com o Parceiro" nos cards
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">E-mail {tipoCredenciado === "medico" ? "(opcional)" : "*"}</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="contato@exemplo.com"
+                    required={tipoCredenciado === "instituicao"}
                   />
                 </div>
 

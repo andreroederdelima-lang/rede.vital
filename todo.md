@@ -690,3 +690,45 @@
 
 ### Textos
 - [x] Atualizar frase descritiva abaixo de "Guia do Assinante"
+
+
+## Revisão Formulário de Parceiros
+
+### Campos Obrigatórios
+- [ ] Verificar todos os campos do formulário atual
+- [ ] Garantir campo "WhatsApp da Secretária para Agendamento" para médicos
+- [ ] Garantir campo "WhatsApp Comercial" para instituições
+- [ ] Verificar campo "Foto" está presente
+- [ ] Verificar todos os campos necessários para exibição nos cards
+
+### Fluxo de Aprovação
+- [ ] Verificar como funciona a autorização de parceiros
+- [ ] Garantir que dados aprovados apareçam automaticamente nas páginas
+- [ ] Testar fluxo completo: cadastro → aprovação → exibição
+
+### Validações
+- [ ] Adicionar validações de campos obrigatórios
+- [ ] Validar formato de WhatsApp
+- [ ] Validar formato de email
+
+
+## Ajuste de Logo
+
+- [x] Remover fundo branco da logo Vital
+- [x] Substituir logo atual por versão sem fundo (logo-vital.png)
+- [ ] Testar visualização em diferentes fundos
+
+
+## Configuração de E-mails
+
+### Estrutura
+- [x] Helper de envio de e-mail já existe (server/_core/email.ts)
+- [x] Templates de e-mail já definidos
+- [x] Usa API de Notificação do Manus (sem necessidade de SMTP)
+
+### Notificações
+- [x] E-mail para comercial@suasaudevital.com.br quando novo parceiro solicitar cadastro
+- [x] Campos whatsappSecretaria e email adicionados no template
+- [ ] E-mail para parceiro quando solicitação for aprovada (funcionalidade futura)
+- [ ] E-mail para parceiro quando solicitação for rejeitada (funcionalidade futura)
+- [ ] E-mail para indicador sobre comissões (funcionalidade futura)

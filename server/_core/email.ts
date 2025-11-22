@@ -52,6 +52,8 @@ export async function enviarEmailNovaParceria(dados: {
   endereco: string;
   cidade: string;
   telefone: string;
+  whatsappSecretaria?: string;
+  email?: string;
   precoConsulta: string;
   descontoPercentual: number;
   imagemUrl?: string;
@@ -132,6 +134,20 @@ export async function enviarEmailNovaParceria(dados: {
             <div class="field-value">${dados.telefone}</div>
           </div>
           
+          ${dados.whatsappSecretaria ? `
+          <div class="field">
+            <div class="field-label">WhatsApp ${dados.tipoCredenciado === "medico" ? "da Secretária" : "Comercial"}:</div>
+            <div class="field-value">${dados.whatsappSecretaria}</div>
+          </div>
+          ` : ''}
+          
+          ${dados.email ? `
+          <div class="field">
+            <div class="field-label">E-mail:</div>
+            <div class="field-value">${dados.email}</div>
+          </div>
+          ` : ''}
+          
           <div class="field">
             <div class="field-label">Preço da Consulta/Serviço:</div>
             <div class="field-value">${dados.precoConsulta}</div>
@@ -165,7 +181,7 @@ export async function enviarEmailNovaParceria(dados: {
   `;
 
   return await sendEmail({
-    to: 'administrativo@suasaudevital.com.br',
+    to: 'comercial@suasaudevital.com.br',
     subject: `Nova Solicitação de Parceria - ${dados.nomeEstabelecimento}`,
     html,
   });
@@ -234,7 +250,7 @@ export async function enviarEmailSugestaoParceiro(dados: {
   `;
 
   return await sendEmail({
-    to: 'administrativo@suasaudevital.com.br',
+    to: 'comercial@suasaudevital.com.br',
     subject: `Sugestão de Parceiro - ${dados.nomeParceiro}`,
     html,
   });
