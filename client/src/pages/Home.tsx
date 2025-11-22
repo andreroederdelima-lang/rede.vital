@@ -15,6 +15,7 @@ import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { useDadosInternosAuth } from "@/hooks/useDadosInternosAuth";
+import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 
 export default function Home() {
   const { isAuthenticated, isLoading: authLoading, logout } = useDadosInternosAuth();
@@ -393,26 +394,16 @@ export default function Home() {
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as categorias" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-h-[300px]">
                     <SelectItem value="all">Todas as categorias</SelectItem>
-                    <SelectItem value="clinica">Clínica</SelectItem>
-                    <SelectItem value="farmacia">Farmácia</SelectItem>
-                    <SelectItem value="laboratorio">Laboratório</SelectItem>
-                    <SelectItem value="hospital">Hospital</SelectItem>
-                    <SelectItem value="fisioterapia">Fisioterapia</SelectItem>
-                    <SelectItem value="psicologia">Psicologia</SelectItem>
-                    <SelectItem value="odontologia">Odontologia</SelectItem>
-                    <SelectItem value="nutricao">Nutrição</SelectItem>
-                    <SelectItem value="exames_imagem">Exames de Imagem</SelectItem>
-                    <SelectItem value="academia">Academia</SelectItem>
-                    <SelectItem value="otica">Ótica</SelectItem>
-                    <SelectItem value="home_care">Home Care</SelectItem>
-                    <SelectItem value="estetica">Estética</SelectItem>
-                    <SelectItem value="pilates">Pilates</SelectItem>
-                    <SelectItem value="podologia">Podologia</SelectItem>
-                    <SelectItem value="fonoaudiologia">Fonoaudiologia</SelectItem>
-                    <SelectItem value="terapia_ocupacional">Terapia Ocupacional</SelectItem>
-                    <SelectItem value="outro">Outro</SelectItem>
+                    {(tipoCredenciado === "servicos_saude" 
+                      ? CATEGORIAS_SERVICOS_SAUDE 
+                      : CATEGORIAS_OUTROS_SERVICOS
+                    ).map((cat) => (
+                      <SelectItem key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               )}

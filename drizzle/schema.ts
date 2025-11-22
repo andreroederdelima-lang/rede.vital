@@ -67,11 +67,8 @@ export const instituicoes = mysqlTable("instituicoes", {
   id: int("id").autoincrement().primaryKey(),
   nome: varchar("nome", { length: 255 }).notNull(),
   tipoServico: mysqlEnum("tipoServico", ["servicos_saude", "outros_servicos"]).default("servicos_saude").notNull(),
-  categoria: mysqlEnum("categoria", [
-    "clinica", "farmacia", "laboratorio", "hospital", "fisioterapia", "psicologia", 
-    "odontologia", "nutricao", "exames_imagem", "academia", "otica", "home_care", 
-    "estetica", "pilates", "podologia", "fonoaudiologia", "terapia_ocupacional", "outro"
-  ]).notNull(),
+  categoria: varchar("categoria", { length: 100 }).notNull(), // Categoria livre para flexibilidade
+  subcategoria: varchar("subcategoria", { length: 100 }), // Subcategoria específica (ex: Fisioterapia Ortopédica)
   municipio: varchar("municipio", { length: 100 }).notNull(),
   endereco: text("endereco").notNull(),
   telefone: varchar("telefone", { length: 100 }),

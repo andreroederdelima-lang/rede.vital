@@ -612,3 +612,25 @@
 - [x] Expandir categorias de "Serviços de Saúde" com mais opções
 - [x] Expandir categorias de "Outros Serviços" com mais opções
 - [x] Testar menu mobile em diferentes dispositivos
+
+
+## Reorganização de Categorias por Abas
+
+### Serviços de Saúde (expandir)
+- [ ] Adicionar: Fisioterapia, Fonoaudiologia, Nutrição, Psicologia, Odontologia
+- [ ] Adicionar: Clínica, Laboratório, Farmácia, Hospital, Exames de Imagem
+- [ ] Adicionar: Home Care, Podologia, Terapia Ocupacional
+
+### Outros Serviços (expandir muito)
+- [ ] Adicionar: Academia, Natação, Artes Marciais, Pilates
+- [ ] Adicionar: Padaria, Mercado, Restaurante
+- [ ] Adicionar: Ótica, Estética, Pet Shop, Hotel, Loja
+- [ ] Adicionar outras categorias relevantes
+
+### Implementação
+- [x] Atualizar schema com todas as novas categorias
+- [x] Aplicar migração do banco de dados
+- [x] Criar arquivo de constantes com categorias organizadas
+- [x] Atualizar formulários Admin, Parceiros, Consulta, Home
+- [x] Melhorar UX dos filtros combinados (categoria + município) - filtros dinâmicos
+- [x] Testar filtros e categorias

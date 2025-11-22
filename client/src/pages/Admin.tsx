@@ -17,6 +17,7 @@ import IndicacoesTab from "@/components/IndicacoesTab";
 import ConfiguracoesTab from "@/components/ConfiguracoesTab";
 import { Link } from "wouter";
 import { toast } from "sonner";
+import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 
 type MedicoForm = {
   id?: number;
@@ -729,29 +730,24 @@ function InstituicaoFormDialog({
             onValueChange={(v: any) => setFormData({ ...formData, categoria: v })}
           >
             <SelectTrigger>
-              <SelectValue />
+              <SelectValue placeholder="Selecione a categoria" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="clinica">Clínica</SelectItem>
-              <SelectItem value="farmacia">Farmácia</SelectItem>
-              <SelectItem value="laboratorio">Laboratório</SelectItem>
-              <SelectItem value="hospital">Hospital</SelectItem>
-              <SelectItem value="fisioterapia">Fisioterapia</SelectItem>
-              <SelectItem value="psicologia">Psicologia</SelectItem>
-              <SelectItem value="odontologia">Odontologia</SelectItem>
-              <SelectItem value="nutricao">Nutrição</SelectItem>
-              <SelectItem value="exames_imagem">Exames de Imagem</SelectItem>
-              <SelectItem value="academia">Academia</SelectItem>
-              <SelectItem value="otica">Ótica</SelectItem>
-              <SelectItem value="home_care">Home Care</SelectItem>
-              <SelectItem value="estetica">Estética</SelectItem>
-              <SelectItem value="pilates">Pilates</SelectItem>
-              <SelectItem value="podologia">Podologia</SelectItem>
-              <SelectItem value="fonoaudiologia">Fonoaudiologia</SelectItem>
-              <SelectItem value="terapia_ocupacional">Terapia Ocupacional</SelectItem>
-              <SelectItem value="outro">Outro</SelectItem>
+            <SelectContent className="max-h-[300px]">
+              {(formData.tipoServico === "servicos_saude" 
+                ? CATEGORIAS_SERVICOS_SAUDE 
+                : CATEGORIAS_OUTROS_SERVICOS
+              ).map((cat) => (
+                <SelectItem key={cat.value} value={cat.value}>
+                  {cat.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
+          <p className="text-xs text-muted-foreground mt-1">
+            {formData.tipoServico === "servicos_saude" 
+              ? "Selecione o tipo específico de serviço de saúde" 
+              : "Selecione a categoria do estabelecimento"}
+          </p>
         </div>
 
         <div>

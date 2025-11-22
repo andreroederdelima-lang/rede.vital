@@ -141,6 +141,13 @@
       "when": 1763818518478,
       "tag": "0019_melted_jubilee",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1763821977923,
+      "tag": "0020_open_xorn",
+      "breakpoints": true
     }
   ]
 }
