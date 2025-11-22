@@ -586,6 +586,100 @@ export const appRouter = router({
 
   // Rotas de indicações
   indicacoes: router({
+    // Cadastro público (sem autenticação)
+    cadastroPublico: publicProcedure
+      .input(z.object({
+        tipo: z.enum(["promotor", "vendedor"]),
+        nome: z.string(),
+        email: z.string().email(),
+        telefone: z.string(),
+        cpf: z.string().optional(),
+        pix: z.string(), // Obrigatório
+      }))
+      .mutation(async ({ input }) => {
+        const { getDb } = await import("./db");
+        const { users } = await import("../drizzle/schema");
+        // @ts-ignore - TypeScript cache bug
+        const { indicadores } = await import("../drizzle/schema");
+        
+        const db = await getDb();
+        if (!db) {
+          throw new Error("Database not available");
+        }
+
+        // Criar usuário automático
+        const userResult = await db.insert(users).values({
+          openId: `indicador_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+          name: input.nome,
+          email: input.email,
+          role: "user",
+        });
+
+        const userId = Number((userResult as any).insertId);
+
+        // Criar indicador
+        await db.insert(indicadores).values({
+          userId,
+          tipo: input.tipo,
+          nome: input.nome,
+          email: input.email,
+          telefone: input.telefone,
+          cpf: input.cpf || null,
+          pix: input.pix,
+          ativo: 1,
+        });
+
+        return { success: true, userId };
+      }),
+
+    // Login sem senha (apenas email)
+    loginSemSenha: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { getDb } = await import("./db");
+        const { users } = await import("../drizzle/schema");
+        // @ts-ignore - TypeScript cache bug
+        const { indicadores } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const { COOKIE_NAME } = await import("@shared/const");
+        const { getSessionCookieOptions } = await import("./_core/cookies");
+        const jwt = await import("jsonwebtoken");
+        const { ENV } = await import("./_core/env");
+        
+        const db = await getDb();
+        if (!db) {
+          throw new Error("Database not available");
+        }
+
+        // Buscar indicador por email
+        const indicador = await db.select().from(indicadores).where(eq((indicadores as any).email, input.email)).limit(1);
+        
+        if (!indicador || indicador.length === 0) {
+          throw new Error("Email não encontrado. Cadastre-se primeiro.");
+        }
+
+        // Buscar usuário
+        const user = await db.select().from(users).where(eq(users.id, indicador[0].userId)).limit(1);
+        
+        if (!user || user.length === 0) {
+          throw new Error("Usuário não encontrado");
+        }
+
+        // Criar sessão (cookie)
+        const token = jwt.sign(
+          { userId: user[0].id, openId: user[0].openId },
+          ENV.cookieSecret,
+          { expiresIn: "7d" }
+        );
+
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
+
+        return { success: true, user: user[0] };
+      }),
+
     // Indicadores
     criarIndicador: protectedProcedure
       .input(z.object({

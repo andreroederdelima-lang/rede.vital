@@ -475,3 +475,18 @@
 - [ ] Testar atualização de status
 - [ ] Testar cadastro de comissão
 - [ ] Testar cadastro de promotor
+
+
+## Sistema de Auto-Cadastro Público para Promotores e Vendedores
+
+- [x] Criar página pública `/cadastro-indicador` para auto-cadastro de promotores e vendedores
+- [x] Remover necessidade de aprovação admin para cadastro de indicadores
+- [x] Tornar campo PIX obrigatório no formulário de cadastro
+- [x] Remover campo senha do cadastro de indicadores
+- [x] Implementar login automático sem senha (via endpoint loginSemSenha)
+- [x] Adicionar descrição clara da diferença entre Promotor e Vendedor:
+  * Promotor: Indica e convence clientes
+  * Vendedor: Indica, convence E fecha a venda
+- [x] Atualizar router tRPC para permitir cadastro público sem autenticação
+- [x] Criar página de login para indicadores sem senha
+- [ ] Testar fluxo completo de cadastro e login (em andamento - endpoint criado, teste pendente)
