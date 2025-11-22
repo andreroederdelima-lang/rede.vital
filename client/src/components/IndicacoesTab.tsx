@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, QrCode } from "lucide-react";
 
 /**
  * Componente da aba Indicações no painel Admin
@@ -70,9 +70,18 @@ export default function IndicacoesTab() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Gestão de Indicações</h2>
-        <Button onClick={() => toast.info("Funcionalidade em desenvolvimento")}>
-          Cadastrar Promotor/Vendedor
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => window.open('/qr-codes', '_blank')}
+          >
+            <QrCode className="h-4 w-4 mr-2" />
+            Baixar QR Codes
+          </Button>
+          <Button onClick={() => toast.info("Funcionalidade em desenvolvimento")}>
+            Cadastrar Promotor/Vendedor
+          </Button>
+        </div>
       </div>
 
       {/* Estatísticas */}

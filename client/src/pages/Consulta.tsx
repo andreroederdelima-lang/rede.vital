@@ -419,21 +419,7 @@ export default function Consulta() {
                           <Share2 className="h-4 w-4 mr-2" />
                           Compartilhar
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const url = `${window.location.origin}/?medico=${medico.id}`;
-                            navigator.clipboard.writeText(url).then(() => {
-                              toast.success('Link copiado com sucesso!');
-                            }).catch(() => {
-                              toast.error('Erro ao copiar link');
-                            });
-                          }}
-                        >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copiar Link
-                        </Button>
+
                       </div>
                     </div>
                   </CardContent>
@@ -537,21 +523,7 @@ export default function Consulta() {
                           <Share2 className="h-4 w-4 mr-2" />
                           Compartilhar
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const url = `${window.location.origin}/?instituicao=${inst.id}`;
-                            navigator.clipboard.writeText(url).then(() => {
-                              toast.success('Link copiado com sucesso!');
-                            }).catch(() => {
-                              toast.error('Erro ao copiar link');
-                            });
-                          }}
-                        >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copiar Link
-                        </Button>
+
                       </div>
                     </div>
                   </CardContent>

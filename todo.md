@@ -499,3 +499,11 @@
 - [x] Criar QR Code fixo para WhatsApp do time de vendas (especialistas)
 - [x] Criar página `/qr-codes` para promotores baixarem QR Code imprimível
 - [ ] Adicionar campo "WhatsApp Time de Vendas" nas configurações do sistema (opcional - número fixo usado por enquanto)
+
+
+### Link para QR Codes no Painel de Indicações
+
+- [x] Adicionar botão "Baixar QR Codes" na aba Indicações do painel Admin
+- [x] Botão deve redirecionar para /qr-codes em nova aba
+- [x] Posicionar botão próximo ao botão "Cadastrar Promotor/Vendedor"
+- [x] Remover botão "Copiar Link" de todas as páginas públicas (Consulta, ServicosSaude, OutrosServicos)

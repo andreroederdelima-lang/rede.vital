@@ -417,21 +417,7 @@ export default function Consulta() {
                           <Share2 className="h-4 w-4 mr-2" />
                           Compartilhar
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const url = `${window.location.origin}/?medico=${medico.id}`;
-                            navigator.clipboard.writeText(url).then(() => {
-                              toast.success('Link copiado com sucesso!');
-                            }).catch(() => {
-                              toast.error('Erro ao copiar link');
-                            });
-                          }}
-                        >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copiar Link
-                        </Button>
+
                       </div>
                     </div>
                   </CardContent>
@@ -513,43 +499,7 @@ export default function Consulta() {
                       </div>
                       
                       <div className="grid grid-cols-2 gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const whatsappNumero = (inst.telefone || '').replace(/\D/g, '');
-                            const mensagem =
-                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí\n\n` +
-                              `*${inst.nome}*\n` +
-                              `Categoria: ${inst.categoria}\n` +
-                              `Município: ${inst.municipio}\n` +
-                              `Endereço: ${inst.endereco}\n` +
-                              `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
-                              `${inst.email ? `Email: ${inst.email}\n` : ''}\n` +
-                              `💚 *Vital, sempre ao seu lado* 💚\n\n` +
-                              `Vem ser VITAL!\n` +
-                              (whatsappNumero ? `👉 Fale com o especialista: https://wa.me/55${whatsappNumero}` : '');
-                            window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
-                          }}
-                        >
-                          <Share2 className="h-4 w-4 mr-2" />
-                          Compartilhar
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const url = `${window.location.origin}/?instituicao=${inst.id}`;
-                            navigator.clipboard.writeText(url).then(() => {
-                              toast.success('Link copiado com sucesso!');
-                            }).catch(() => {
-                              toast.error('Erro ao copiar link');
-                            });
-                          }}
-                        >
-                          <Copy className="h-4 w-4 mr-2" />
-                          Copiar Link
-                        </Button>
+
                       </div>
                     </div>
                   </CardContent>
@@ -635,13 +585,6 @@ function SugestaoParceiro() {
       </div>
       
       <div className="flex justify-end gap-2 pt-4">
-        <Button
-          type="submit"
-          disabled={sugestaoMutation.isPending}
-          className="w-full"
-        >
-          {sugestaoMutation.isPending ? "Enviando..." : "Enviar Sugestão"}
-        </Button>
       </div>
     </form>
   );
