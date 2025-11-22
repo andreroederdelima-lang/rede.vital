@@ -197,7 +197,6 @@ export type InsertTokenRecuperacao = typeof tokensRecuperacao.$inferInsert;
 export const indicadores = mysqlTable("indicadores", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(), // FK para users
-  tipo: mysqlEnum("tipo", ["promotor", "vendedor"]).notNull(),
   nome: varchar("nome", { length: 255 }).notNull(),
   email: varchar("email", { length: 320 }).notNull(),
   telefone: varchar("telefone", { length: 20 }),

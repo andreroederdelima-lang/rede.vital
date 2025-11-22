@@ -116,8 +116,15 @@ export default function Indicacoes() {
   }
 
   const totalIndicacoes = minhasIndicacoes.length;
+  const indicacoesPendentes = minhasIndicacoes.filter((i: any) => i.status === "pendente").length;
+  const indicacoesContatadas = minhasIndicacoes.filter((i: any) => i.status === "contatado").length;
   const indicacoesFechadas = minhasIndicacoes.filter((i: any) => i.status === "fechado").length;
-  const comissoesPendentes = minhasComissoes.filter((c: any) => c.status === "pendente").length;
+  const taxaConversao = totalIndicacoes > 0 ? ((indicacoesFechadas / totalIndicacoes) * 100).toFixed(1) : "0.0";
+  
+  const comissoesPendentes = minhasComissoes.filter((c: any) => c.status === "pendente");
+  const comissoesPagas = minhasComissoes.filter((c: any) => c.status === "pago");
+  const valorPendente = comissoesPendentes.reduce((sum: number, c: any) => sum + (c.valor || 0), 0);
+  const valorPago = comissoesPagas.reduce((sum: number, c: any) => sum + (c.valor || 0), 0);
 
   return (
     <div className="min-h-screen bg-background">
@@ -130,40 +137,65 @@ export default function Indicacoes() {
             Sistema de Indicações
           </h1>
           <p className="text-muted-foreground">
-            Olá, {meuIndicador.nome}! Você está cadastrado como{" "}
-            <Badge variant="outline">{meuIndicador.tipo}</Badge>
+            Olá, {meuIndicador.nome}! Acompanhe suas indicações e comissões
           </p>
         </div>
 
         {/* Cards de Estatísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <Card className="border-l-4 border-l-blue-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Total de Indicações</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <Users className="h-5 w-5 text-blue-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{totalIndicacoes}</div>
+              <div className="text-3xl font-bold text-blue-600">{totalIndicacoes}</div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {indicacoesPendentes} pendentes • {indicacoesContatadas} contatadas
+              </p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-green-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Vendas Fechadas</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <TrendingUp className="h-5 w-5 text-green-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{indicacoesFechadas}</div>
+              <div className="text-3xl font-bold text-green-600">{indicacoesFechadas}</div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Taxa de conversão: {taxaConversao}%
+              </p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-yellow-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Comissões Pendentes</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <DollarSign className="h-5 w-5 text-yellow-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{comissoesPendentes}</div>
+              <div className="text-3xl font-bold text-yellow-600">
+                R$ {(valorPendente / 100).toFixed(2)}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {comissoesPendentes.length} comissões aguardando pagamento
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-l-4 border-l-[#1e9d9f]">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">Total Recebido</CardTitle>
+              <DollarSign className="h-5 w-5 text-[#1e9d9f]" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-[#1e9d9f]">
+                R$ {(valorPago / 100).toFixed(2)}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {comissoesPagas.length} comissões pagas
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -179,8 +211,42 @@ export default function Indicacoes() {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Criar Nova Indicação</DialogTitle>
+                <DialogTitle>Registrar Nova Indicação</DialogTitle>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Preencha os dados da pessoa que você está indicando às assinaturas Vital
+                </p>
               </DialogHeader>
+
+              {/* QR Code para WhatsApp Comercial */}
+              <div className="bg-gradient-to-br from-[#1e9d9f]/10 to-[#1e9d9f]/5 rounded-lg p-6 text-center border-2 border-[#1e9d9f]/20">
+                <h3 className="font-semibold text-lg mb-2 text-[#1e9d9f]">Ou envie direto para o Comercial</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Escaneie o QR Code para enviar a indicação via WhatsApp
+                </p>
+                <div className="flex justify-center mb-4">
+                  <div className="bg-white p-4 rounded-lg shadow-lg">
+                    <QRCodeSVG
+                      value="https://wa.me/5547933853726?text=Ol%C3%A1%2C%20recebi%20uma%20indica%C3%A7%C3%A3o%20para%20conhecer%20mais%20sobre%20as%20assinaturas%20Vital"
+                      size={200}
+                      level="H"
+                      fgColor="#1e9d9f"
+                    />
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  📱 Aponte a câmera do celular para o QR Code
+                </p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Ou preencha o formulário</span>
+                </div>
+              </div>
+
               <form onSubmit={handleNovaIndicacao} className="space-y-4">
                 <div>
                   <Label htmlFor="nomeCliente">Nome do Cliente *</Label>

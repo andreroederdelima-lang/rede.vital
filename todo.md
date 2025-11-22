@@ -559,3 +559,17 @@
 - [x] Criar endpoint para redefinir senha com token (trpc.auth.redefinirSenha)
 - [x] Criar páginas de recuperação de senha no frontend (EsqueciSenha.tsx, RecuperarSenha.tsx)
 - [ ] Integrar envio de email de recuperação (pendente - atualmente apenas loga no console)
+
+
+## Ajustes no Sistema de Indicações
+
+- [x] Adicionar QR Code grande na página "Registrar Nova Indicação" direcionando para WhatsApp do comercial
+- [x] Remover campo "Tipo de Indicador" (Promotor/Vendedor) do cadastro - qualquer pessoa pode se cadastrar
+- [x] Remover QR Code da página de cadastro de indicador (CadastroIndicador.tsx)
+- [x] Recriar painel de gamificação na página /indicacoes mostrando:
+  * Total de indicações do usuário (com breakdown pendentes/contatadas)
+  * Indicações fechadas com taxa de conversão
+  * Comissões pendentes em R$ com contador
+  * Total recebido em R$ com histórico de comissões pagas
+  * Cards coloridos com bordas e ícones para melhor visualização
+- [x] Atualizar schema do banco para remover campo "tipo" de indicadores

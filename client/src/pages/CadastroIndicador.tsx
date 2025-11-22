@@ -17,7 +17,6 @@ import { Loader2 } from "lucide-react";
 export default function CadastroIndicador() {
   const [, setLocation] = useLocation();
   const [formData, setFormData] = useState({
-    tipo: "promotor" as "promotor" | "vendedor",
     nome: "",
     email: "",
     telefone: "",
@@ -102,40 +101,6 @@ export default function CadastroIndicador() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Tipo de Indicador */}
-                <div className="space-y-3">
-                  <Label className="text-base font-semibold">Tipo de Indicador</Label>
-                  <RadioGroup
-                    value={formData.tipo}
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, tipo: value as "promotor" | "vendedor" })
-                    }
-                  >
-                    <div className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-gray-50">
-                      <RadioGroupItem value="promotor" id="promotor" />
-                      <div className="flex-1">
-                        <Label htmlFor="promotor" className="font-semibold cursor-pointer">
-                          Promotor
-                        </Label>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Indica e aquece o cliente, e recebe comissão quando estes compram
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-gray-50">
-                      <RadioGroupItem value="vendedor" id="vendedor" />
-                      <div className="flex-1">
-                        <Label htmlFor="vendedor" className="font-semibold cursor-pointer">
-                          Vendedor
-                        </Label>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Realiza o processo de aquecimento do cliente e fechamento da venda
-                        </p>
-                      </div>
-                    </div>
-                  </RadioGroup>
-                </div>
-
                 {/* Nome */}
                 <div className="space-y-2">
                   <Label htmlFor="nome">
@@ -236,24 +201,6 @@ export default function CadastroIndicador() {
           </Card>
 
           {/* Informações Adicionais */}
-          {/* QR Code para Indicação */}
-          <div className="bg-white p-8 rounded-lg shadow-sm text-center">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">📱 Indique Agora via WhatsApp</h2>
-            <p className="text-gray-600 mb-6">
-              Escaneie o QR Code abaixo para falar diretamente com nosso time de especialistas
-            </p>
-            <div className="flex justify-center mb-4">
-              <img 
-                src="/qrcode-indicacao-vital.png" 
-                alt="QR Code WhatsApp Vital"
-                className="w-64 h-64 border-4 border-primary rounded-lg shadow-md"
-              />
-            </div>
-            <p className="text-sm text-gray-500 italic">
-              Mensagem automática: "Olá, recebi uma indicação para conhecer mais sobre as assinaturas Vital"
-            </p>
-          </div>
-
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">💡 Como funciona?</h2>
             <ul className="space-y-2 text-sm text-gray-700">

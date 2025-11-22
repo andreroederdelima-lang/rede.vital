@@ -1,0 +1,1 @@
+ALTER TABLE `indicadores` DROP COLUMN `tipo`;

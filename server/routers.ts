@@ -623,7 +623,6 @@ export const appRouter = router({
     // Cadastro público (sem autenticação)
     cadastroPublico: publicProcedure
       .input(z.object({
-        tipo: z.enum(["promotor", "vendedor"]),
         nome: z.string(),
         email: z.string().email(),
         telefone: z.string(),
@@ -654,14 +653,13 @@ export const appRouter = router({
         // Criar indicador
         await db.insert(indicadores).values({
           userId,
-          tipo: input.tipo,
           nome: input.nome,
           email: input.email,
           telefone: input.telefone,
           cpf: input.cpf || null,
           pix: input.pix,
           ativo: 1,
-        });
+        } as any);
 
         return { success: true, userId };
       }),
