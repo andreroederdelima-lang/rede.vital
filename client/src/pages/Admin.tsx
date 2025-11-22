@@ -14,6 +14,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key } from "lucide-react";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
 import IndicacoesTab from "@/components/IndicacoesTab";
+import ConfiguracoesTab from "@/components/ConfiguracoesTab";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
@@ -213,7 +214,7 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-8 mb-6">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-9 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
             <TabsTrigger value="instituicoes">Clínicas</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
@@ -222,6 +223,7 @@ export default function Admin() {
             <TabsTrigger value="acessos">Acessos</TabsTrigger>
             <TabsTrigger value="prospeccao">Prospecção</TabsTrigger>
             <TabsTrigger value="indicacoes">Indicações</TabsTrigger>
+            <TabsTrigger value="configuracoes">Configurações</TabsTrigger>
           </TabsList>
 
           {/* Tab Médicos */}
@@ -447,6 +449,11 @@ export default function Admin() {
           {/* Tab Indicações */}
           <TabsContent value="indicacoes">
             <IndicacoesTab />
+          </TabsContent>
+
+          {/* Tab Configurações */}
+          <TabsContent value="configuracoes">
+            <ConfiguracoesTab />
           </TabsContent>
         </Tabs>
       </main>

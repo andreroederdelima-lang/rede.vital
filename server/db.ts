@@ -829,3 +829,48 @@ export async function atualizarComissao(id: number, data: Partial<InsertComissao
   
   await db.update(comissoes).set(data).where(eq(comissoes.id, id));
 }
+
+
+// ==================== CONFIGURAÇÕES ====================
+
+export async function listarConfiguracoes() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // @ts-ignore
+  const { configuracoes } = await import("../drizzle/schema");
+  return await db.select().from(configuracoes).orderBy(configuracoes.chave);
+}
+
+export async function buscarConfiguracaoPorChave(chave: string) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  // @ts-ignore
+  const { configuracoes } = await import("../drizzle/schema");
+  const result = await db.select().from(configuracoes).where(eq(configuracoes.chave, chave)).limit(1);
+  return result[0] || null;
+}
+
+export async function atualizarConfiguracao(chave: string, valor: string, descricao?: string, updatedBy?: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { configuracoes } = await import("../drizzle/schema");
+  
+  // Verificar se configuração já existe
+  const existing = await buscarConfiguracaoPorChave(chave);
+  
+  if (existing) {
+    // Atualizar existente
+    await db.update(configuracoes)
+      .set({ valor, descricao, updatedBy, updatedAt: new Date() })
+      .where(eq(configuracoes.chave, chave));
+  } else {
+    // Criar nova
+    await db.insert(configuracoes).values({ chave, valor, descricao, updatedBy });
+  }
+  
+  return await buscarConfiguracaoPorChave(chave);
+}

@@ -246,3 +246,16 @@ export type InsertIndicacao = typeof indicacoes.$inferInsert;
 
 export type Comissao = typeof comissoes.$inferSelect;
 export type InsertComissao = typeof comissoes.$inferInsert;
+
+// Tabela de configurações do sistema
+export const configuracoes = mysqlTable("configuracoes", {
+  id: int("id").autoincrement().primaryKey(),
+  chave: varchar("chave", { length: 100 }).notNull().unique(), // Ex: "comissao_promotor", "comissao_vendedor"
+  valor: text("valor").notNull(), // Valor em JSON ou string
+  descricao: text("descricao"), // Descrição da configuração
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedBy: varchar("updatedBy", { length: 255 }), // Quem alterou por último
+});
+
+export type Configuracao = typeof configuracoes.$inferSelect;
+export type InsertConfiguracao = typeof configuracoes.$inferInsert;

@@ -826,6 +826,39 @@ export const appRouter = router({
     }),
   }),
 
+  // Rotas de configurações do sistema
+  configuracoes: router({
+    // Listar todas as configurações
+    listar: protectedProcedure.query(async () => {
+      const { listarConfiguracoes } = await import("./db");
+      return await listarConfiguracoes();
+    }),
+
+    // Buscar configuração por chave
+    buscarPorChave: publicProcedure
+      .input(z.object({ chave: z.string() }))
+      .query(async ({ input }) => {
+        const { buscarConfiguracaoPorChave } = await import("./db");
+        return await buscarConfiguracaoPorChave(input.chave);
+      }),
+
+    // Atualizar configuração
+    atualizar: protectedProcedure
+      .input(z.object({
+        chave: z.string(),
+        valor: z.string(),
+        descricao: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { atualizarConfiguracao } = await import("./db");
+        return await atualizarConfiguracao(
+          input.chave,
+          input.valor,
+          input.descricao,
+          ctx.user?.name || "Admin"
+        );
+      }),
+  }),
 
 });
 

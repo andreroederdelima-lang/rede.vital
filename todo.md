@@ -534,3 +534,18 @@
 - [x] Remover "Área do Cliente", "Indicações" e "Seja Parceiro" do header
 - [x] Adicionar botões "Área do Cliente", "Indicações" e "Seja Parceiro" na página Dados Internos
 - [x] Botão "Área do Cliente" deve redirecionar para a home (/)
+
+
+## Verificar Páginas Perdidas
+
+- [x] Verificar se página Admin/Configurações de comissões existe (não existe - nunca foi implementada)
+- [ ] Criar aba de Configurações de Comissões no painel Admin
+- [x] Verificar se outras páginas foram perdidas após sincronização (todas as abas estão presentes)
+
+## Criar Aba de Configurações de Comissões
+
+- [x] Adicionar tabela configuracoes no schema do banco
+- [x] Criar endpoints tRPC para listar e atualizar configurações
+- [x] Criar componente ConfiguracoesTab.tsx
+- [x] Adicionar aba "Configurações" no Admin.tsx
+- [x] Permitir configurar percentuais de comissão por tipo (Promotor/Vendedor)
