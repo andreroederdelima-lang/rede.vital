@@ -11,10 +11,16 @@ export const users = mysqlTable("users", {
    * Use this for relations between tables.
    */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
-  openId: varchar("openId", { length: 64 }).notNull().unique(),
+  /** Manus OAuth identifier (openId) returned from the OAuth callback. Optional for email/password users. */
+  openId: varchar("openId", { length: 64 }).unique(),
   name: text("name"),
-  email: varchar("email", { length: 320 }),
+  email: varchar("email", { length: 320 }).unique(),
+  /** Hashed password for email/password authentication. Optional for OAuth users. */
+  passwordHash: varchar("passwordHash", { length: 255 }),
+  /** Token for password reset. Expires after use or timeout. */
+  resetToken: varchar("resetToken", { length: 64 }).unique(),
+  /** Expiry timestamp for password reset token. */
+  resetTokenExpiry: timestamp("resetTokenExpiry"),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

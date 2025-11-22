@@ -386,3 +386,60 @@
 - [x] Placeholder de busca na aba Outros Serviços (Consulta.tsx)
 - [x] Texto explicativo no formulário Seja Parceiro (Parceiros.tsx)
 - [x] Placeholder de busca na página Dados Internos (Home.tsx)
+
+
+## Sistema Híbrido de Autenticação (OAuth Manus + Email/Senha)
+
+### Backend - Schema e Banco de Dados
+- [x] Adicionar campo `passwordHash` na tabela `users`
+- [x] Adicionar campo `resetToken` na tabela `users`
+- [x] Adicionar campo `resetTokenExpiry` na tabela `users`
+- [ ] Criar tabela `sessions` para gerenciar sessões de login
+- [x] Aplicar migração do banco (`pnpm db:push`)
+
+### Backend - Lógica de Autenticação
+- [ ] Instalar dependências: `bcrypt`, `jsonwebtoken`, `nodemailer`
+- [ ] Criar função `hashPassword` (bcrypt)
+- [ ] Criar função `comparePassword` (bcrypt)
+- [ ] Criar função `generateJWT` (jsonwebtoken)
+- [ ] Criar função `verifyJWT` (jsonwebtoken)
+- [ ] Criar função `generateResetToken` (crypto)
+
+### Backend - Routers tRPC
+- [ ] Router `auth.registerWithEmail` - Cadastro com email + senha
+- [ ] Router `auth.loginWithEmail` - Login com email + senha (gera JWT)
+- [ ] Router `auth.requestPasswordReset` - Solicitar recuperação de senha
+- [ ] Router `auth.resetPassword` - Resetar senha com token
+- [ ] Router `auth.changePassword` - Alterar senha (usuário logado)
+- [ ] Manter routers OAuth Manus existentes funcionando
+
+### Backend - SMTP e Envio de Emails
+- [ ] Configurar Nodemailer com SMTP
+- [ ] Criar template de email de recuperação de senha
+- [ ] Criar template de email de boas-vindas
+- [ ] Testar envio de email
+
+### Frontend - Páginas de Autenticação
+- [ ] Criar página `/login` com 2 opções: Email/Senha ou OAuth Manus
+- [ ] Criar página `/register` para cadastro com email + senha
+- [ ] Criar página `/forgot-password` para solicitar recuperação
+- [ ] Criar página `/reset-password/:token` para resetar senha
+- [ ] Atualizar `useAuth` hook para suportar ambos os métodos
+
+### Frontend - Proteção de Rotas
+- [ ] Middleware de `/dados-internos` - Verificar role "user" ou "admin" (ambos métodos)
+- [ ] Middleware de `/admin` - Verificar role "admin" (ambos métodos)
+- [ ] Middleware de `/indicacoes` - Verificar apenas login (ambos métodos)
+- [ ] Manter compatibilidade com OAuth Manus existente
+
+### Testes
+- [ ] Testar fluxo de cadastro de promotor
+- [ ] Testar fluxo de login (admin, membro, promotor)
+- [ ] Testar fluxo de recuperação de senha
+- [ ] Testar proteção de rotas
+- [ ] Testar envio de emails
+
+### Documentação
+- [ ] Documentar credenciais SMTP necessárias
+- [ ] Documentar fluxo de permissões
+- [ ] Atualizar README com instruções de configuração

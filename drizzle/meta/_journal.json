@@ -85,6 +85,20 @@
       "when": 1763773182241,
       "tag": "0011_fine_yellow_claw",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1763779494517,
+      "tag": "0012_chemical_starbolt",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "5",
+      "when": 1763779604579,
+      "tag": "0013_pretty_malcolm_colcord",
+      "breakpoints": true
     }
   ]
 }
