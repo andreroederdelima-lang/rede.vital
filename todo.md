@@ -523,3 +523,6 @@
 - [ ] Aplicar mesmas mudanças em ServicosSaude.tsx e OutrosServicos.tsx (pendente)
 
 - [x] Atualizar descrições de Promotor e Vendedor na página de cadastro de indicadores (CadastroIndicador.tsx)
+
+- [x] Adicionar QR Code grande na página de cadastro de indicadores direcionando para WhatsApp do time de especialistas
+- [x] Mensagem do QR Code: "Olá, recebi uma indicação para conhecer mais sobre as assinaturas Vital"

@@ -236,8 +236,26 @@ export default function CadastroIndicador() {
           </Card>
 
           {/* Informações Adicionais */}
-          <div className="mt-8 p-6 bg-white rounded-lg shadow-sm border">
-            <h3 className="font-semibold text-lg mb-3">Como funciona?</h3>
+          {/* QR Code para Indicação */}
+          <div className="bg-white p-8 rounded-lg shadow-sm text-center">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">📱 Indique Agora via WhatsApp</h2>
+            <p className="text-gray-600 mb-6">
+              Escaneie o QR Code abaixo para falar diretamente com nosso time de especialistas
+            </p>
+            <div className="flex justify-center mb-4">
+              <img 
+                src="/qrcode-indicacao-vital.png" 
+                alt="QR Code WhatsApp Vital"
+                className="w-64 h-64 border-4 border-primary rounded-lg shadow-md"
+              />
+            </div>
+            <p className="text-sm text-gray-500 italic">
+              Mensagem automática: "Olá, recebi uma indicação para conhecer mais sobre as assinaturas Vital"
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-sm">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">💡 Como funciona?</h2>
             <ul className="space-y-2 text-sm text-gray-700">
               <li>✅ Cadastre-se gratuitamente</li>
               <li>✅ Receba seu link personalizado de indicação</li>
@@ -245,8 +263,7 @@ export default function CadastroIndicador() {
               <li>✅ Acompanhe suas indicações em tempo real</li>
               <li>✅ Receba comissões via PIX quando a venda for fechada</li>
             </ul>
-          </div>
-        </div>
+          </div>      </div>
       </main>
     </div>
   );
