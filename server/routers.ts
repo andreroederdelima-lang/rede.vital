@@ -16,6 +16,33 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+
+    // Solicitar recuperação de senha
+    solicitarRecuperacao: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const { solicitarRecuperacaoSenha } = await import("./db");
+        return await solicitarRecuperacaoSenha(input.email);
+      }),
+
+    // Validar token de recuperação
+    validarToken: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const { validarTokenRecuperacao } = await import("./db");
+        return await validarTokenRecuperacao(input.token);
+      }),
+
+    // Redefinir senha com token
+    redefinirSenha: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        novaSenha: z.string().min(6),
+      }))
+      .mutation(async ({ input }) => {
+        const { redefinirSenhaComToken } = await import("./db");
+        return await redefinirSenhaComToken(input.token, input.novaSenha);
+      }),
   }),
 
   medicos: router({

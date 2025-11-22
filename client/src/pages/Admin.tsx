@@ -195,8 +195,8 @@ export default function Admin() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Link href="/dados-internos">
+            <div className="flex flex-row items-center gap-2">
+              <Link href="/dados-internos" className="inline-block">
                 <Button variant="secondary" size="sm">
                   <Home className="h-4 w-4 mr-2" />
                   Dados Internos

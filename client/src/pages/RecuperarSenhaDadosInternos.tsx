@@ -12,7 +12,7 @@ export default function RecuperarSenhaDadosInternos() {
   const [email, setEmail] = useState("");
   const [enviado, setEnviado] = useState(false);
 
-  const solicitarMutation = trpc.recuperacaoSenha.solicitar.useMutation({
+  const solicitarMutation = trpc.auth.solicitarRecuperacao.useMutation({
     onSuccess: () => {
       setEnviado(true);
       toast.success("Email enviado!", {
@@ -32,7 +32,7 @@ export default function RecuperarSenhaDadosInternos() {
       toast.error("Digite seu email");
       return;
     }
-    solicitarMutation.mutate(email);
+    solicitarMutation.mutate({ email });
   };
 
   if (enviado) {

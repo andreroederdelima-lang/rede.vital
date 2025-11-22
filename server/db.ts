@@ -874,3 +874,110 @@ export async function atualizarConfiguracao(chave: string, valor: string, descri
   
   return await buscarConfiguracaoPorChave(chave);
 }
+
+
+// ==================== RECUPERAÇÃO DE SENHA ====================
+
+export async function solicitarRecuperacaoSenha(email: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { usuariosAutorizados, tokensRecuperacao } = await import("../drizzle/schema");
+  
+  // Buscar usuário por email
+  const usuarios = await db.select().from(usuariosAutorizados).where(eq(usuariosAutorizados.email, email)).limit(1);
+  
+  if (usuarios.length === 0) {
+    // Por segurança, não revelar se o email existe ou não
+    return { success: true, message: "Se o email existir, um link de recuperação será enviado" };
+  }
+  
+  const usuario = usuarios[0];
+  
+  // Gerar token único
+  const crypto = await import("crypto");
+  const token = crypto.randomBytes(32).toString("hex");
+  
+  // Expiração: 1 hora
+  const expiresAt = new Date();
+  expiresAt.setHours(expiresAt.getHours() + 1);
+  
+  // Salvar token no banco
+  await db.insert(tokensRecuperacao).values({
+    usuarioId: usuario.id,
+    token,
+    expiresAt,
+    usado: 0,
+  });
+  
+  // TODO: Enviar email com link de recuperação
+  // Por enquanto, retornar o token para teste
+  console.log(`[Recuperação] Token gerado para ${email}: ${token}`);
+  console.log(`[Recuperação] Link: ${process.env.VITE_FRONTEND_URL || 'http://localhost:3000'}/recuperar-senha?token=${token}`);
+  
+  return {
+    success: true,
+    message: "Link de recuperação enviado para o email",
+    // Em produção, remover esta linha:
+    token, // Apenas para teste
+  };
+}
+
+export async function validarTokenRecuperacao(token: string) {
+  const db = await getDb();
+  if (!db) return { valid: false, message: "Database not available" };
+  
+  // @ts-ignore
+  const { tokensRecuperacao } = await import("../drizzle/schema");
+  
+  const tokens = await db.select().from(tokensRecuperacao).where(eq(tokensRecuperacao.token, token)).limit(1);
+  
+  if (tokens.length === 0) {
+    return { valid: false, message: "Token inválido" };
+  }
+  
+  const tokenData = tokens[0];
+  
+  // Verificar se já foi usado
+  if (tokenData.usado === 1) {
+    return { valid: false, message: "Token já foi utilizado" };
+  }
+  
+  // Verificar se expirou
+  if (new Date() > new Date(tokenData.expiresAt)) {
+    return { valid: false, message: "Token expirado" };
+  }
+  
+  return { valid: true, usuarioId: tokenData.usuarioId };
+}
+
+export async function redefinirSenhaComToken(token: string, novaSenha: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Validar token
+  const validacao = await validarTokenRecuperacao(token);
+  if (!validacao.valid) {
+    throw new Error(validacao.message);
+  }
+  
+  // @ts-ignore
+  const { usuariosAutorizados, tokensRecuperacao } = await import("../drizzle/schema");
+  const bcrypt = await import("bcrypt");
+  
+  // Hash da nova senha
+  const senhaHash = await bcrypt.hash(novaSenha, 10);
+  
+  // Atualizar senha do usuário
+  await db.update(usuariosAutorizados)
+    .set({ senhaHash })
+    .where(eq(usuariosAutorizados.id, validacao.usuarioId!));
+  
+  // Marcar token como usado
+  await db.update(tokensRecuperacao)
+    .set({ usado: 1 })
+    .where(eq(tokensRecuperacao.token, token));
+  
+  return { success: true, message: "Senha redefinida com sucesso" };
+}

@@ -549,3 +549,13 @@
 - [x] Criar componente ConfiguracoesTab.tsx
 - [x] Adicionar aba "Configurações" no Admin.tsx
 - [x] Permitir configurar percentuais de comissão por tipo (Promotor/Vendedor)
+
+
+## Correç## Correções de Layout e Recuperação de Senha
+
+- [x] Corrigir layout dos botões "Dados Internos" e "Sair" no header do Admin (estão um acima do outro)
+- [x] Implementar sistema de recuperação de senha via email
+- [x] Criar endpoint para solicitar recuperação de senha (trpc.auth.solicitarRecuperacao)
+- [x] Criar endpoint para redefinir senha com token (trpc.auth.redefinirSenha)
+- [x] Criar páginas de recuperação de senha no frontend (EsqueciSenha.tsx, RecuperarSenha.tsx)
+- [ ] Integrar envio de email de recuperação (pendente - atualmente apenas loga no console)

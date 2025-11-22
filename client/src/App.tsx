@@ -16,6 +16,8 @@ import Indicacoes from "./pages/Indicacoes";
 import CadastroIndicador from "./pages/CadastroIndicador";
 import LoginIndicador from "./pages/LoginIndicador";
 import QRCodes from "./pages/QRCodes";
+import EsqueciSenha from "./pages/EsqueciSenha";
+import RecuperarSenha from "./pages/RecuperarSenha";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -28,6 +30,8 @@ function Router() {
       <Route path="/indicacoes" component={Indicacoes} />
       <Route path="/cadastro-indicador" component={CadastroIndicador} />
       <Route path="/login-indicador" component={LoginIndicador} />
+      <Route path="/esqueci-senha" component={EsqueciSenha} />
+      <Route path="/recuperar-senha" component={RecuperarSenha} />
       <Route path="/qr-codes" component={QRCodes} />
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
