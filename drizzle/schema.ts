@@ -264,3 +264,39 @@ export const configuracoes = mysqlTable("configuracoes", {
 
 export type Configuracao = typeof configuracoes.$inferSelect;
 export type InsertConfiguracao = typeof configuracoes.$inferInsert;
+
+
+/**
+ * Tabela de Termos de Uso
+ */
+export const termosUso = mysqlTable("termosUso", {
+  id: int("id").autoincrement().primaryKey(),
+  tipo: mysqlEnum("tipo", ["plataforma", "prestadores_saude"]).notNull(),
+  titulo: varchar("titulo", { length: 255 }).notNull(),
+  conteudo: text("conteudo").notNull(),
+  versao: varchar("versao", { length: 20 }).notNull(), // Ex: "1.0", "1.1", "2.0"
+  ativo: int("ativo").default(1).notNull(), // 1 = versão ativa, 0 = versão antiga
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TermoUso = typeof termosUso.$inferSelect;
+export type InsertTermoUso = typeof termosUso.$inferInsert;
+
+/**
+ * Tabela de Aceites de Termos de Uso
+ * Registra quando e quem aceitou cada termo para rastreabilidade
+ */
+export const aceitesTermos = mysqlTable("aceitesTermos", {
+  id: int("id").autoincrement().primaryKey(),
+  solicitacaoParceriaId: int("solicitacaoParceriaId"), // FK para solicitacoesParceria
+  termoUsoId: int("termoUsoId").notNull(), // FK para termosUso
+  tipoTermo: mysqlEnum("tipoTermo", ["plataforma", "prestadores_saude"]).notNull(),
+  versaoTermo: varchar("versaoTermo", { length: 20 }).notNull(),
+  ipAceite: varchar("ipAceite", { length: 45 }), // Suporta IPv4 e IPv6
+  userAgent: text("userAgent"), // Informações do navegador
+  dataAceite: timestamp("dataAceite").defaultNow().notNull(),
+});
+
+export type AceiteTermo = typeof aceitesTermos.$inferSelect;
+export type InsertAceiteTermo = typeof aceitesTermos.$inferInsert;

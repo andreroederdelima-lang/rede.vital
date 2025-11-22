@@ -29,6 +29,12 @@ import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/c
 import { storagePut } from "../../../server/storage";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
+const VITAL_COLORS = {
+  turquoise: "#2D9B9B",
+  beige: "#D4C5A0",
+  lightGray: "#F5F5F5",
+};
+
 export default function Parceiros() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -52,6 +58,8 @@ export default function Parceiros() {
   const [logoPreview, setLogoPreview] = useState<string>("");
   const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [fotoPreview, setFotoPreview] = useState<string>("");
+  const [aceitouTermosPlataforma, setAceitouTermosPlataforma] = useState(false);
+  const [aceitouTermosPrestadores, setAceitouTermosPrestadores] = useState(false);
 
   const solicitarParceriaMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
@@ -110,6 +118,8 @@ export default function Parceiros() {
     setLogoPreview("");
     setFotoFile(null);
     setFotoPreview("");
+    setAceitouTermosPlataforma(false);
+    setAceitouTermosPrestadores(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -130,6 +140,12 @@ export default function Parceiros() {
     // Validação adicional para médicos
     if (tipoCredenciado === "medico" && (!especialidade || !areaAtuacao)) {
       toast.error("Para médicos, é obrigatório informar especialidade e área de atuação");
+      return;
+    }
+
+    // Validação de aceite de termos
+    if (!aceitouTermosPlataforma || !aceitouTermosPrestadores) {
+      toast.error("Você deve aceitar os Termos de Uso para prosseguir");
       return;
     }
 
@@ -491,6 +507,66 @@ export default function Parceiros() {
                       <img src={fotoPreview} alt="Preview Foto" className="max-w-xs rounded-lg border" />
                     </div>
                   )}
+                </div>
+
+                {/* Termos de Uso */}
+                <div className="space-y-4 pt-6 border-t">
+                  <h3 className="font-semibold text-lg" style={{ color: VITAL_COLORS.turquoise }}>
+                    Termos de Uso
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Para prosseguir com o cadastro, é necessário aceitar os termos abaixo:
+                  </p>
+                  
+                  <div className="flex items-start gap-3 p-4 rounded-lg" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
+                    <input
+                      type="checkbox"
+                      id="termosPlataforma"
+                      checked={aceitouTermosPlataforma}
+                      onChange={(e) => setAceitouTermosPlataforma(e.target.checked)}
+                      className="mt-1 w-4 h-4 cursor-pointer"
+                      style={{ accentColor: VITAL_COLORS.turquoise }}
+                    />
+                    <label htmlFor="termosPlataforma" className="text-sm cursor-pointer flex-1">
+                      Li e aceito os{" "}
+                      <a 
+                        href="#" 
+                        className="font-semibold underline"
+                        style={{ color: VITAL_COLORS.turquoise }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toast.info("Os Termos de Uso da Plataforma serão disponibilizados em breve.");
+                        }}
+                      >
+                        Termos de Uso da Plataforma
+                      </a>
+                    </label>
+                  </div>
+
+                  <div className="flex items-start gap-3 p-4 rounded-lg" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
+                    <input
+                      type="checkbox"
+                      id="termosPrestadores"
+                      checked={aceitouTermosPrestadores}
+                      onChange={(e) => setAceitouTermosPrestadores(e.target.checked)}
+                      className="mt-1 w-4 h-4 cursor-pointer"
+                      style={{ accentColor: VITAL_COLORS.turquoise }}
+                    />
+                    <label htmlFor="termosPrestadores" className="text-sm cursor-pointer flex-1">
+                      Li e aceito os{" "}
+                      <a 
+                        href="#" 
+                        className="font-semibold underline"
+                        style={{ color: VITAL_COLORS.turquoise }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toast.info("Os Termos de Uso para Prestadores de Saúde serão disponibilizados em breve.");
+                        }}
+                      >
+                        Termos de Uso para Prestadores de Saúde
+                      </a>
+                    </label>
+                  </div>
                 </div>
 
                 <div className="flex gap-4 pt-4">

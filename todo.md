@@ -822,3 +822,22 @@
 - [x] Salvar URLs das imagens no banco de dados (logoUrl e fotoUrl)
 - [x] Adicionar validação de tipo e tamanho de arquivo
 - [x] Testar upload completo com ambos os campos
+
+
+## Galeria de Logos na Área Admin
+
+- [x] Criar página de galeria mostrando todos os logos cadastrados
+- [x] Adicionar filtros por tipo (médico/instituição) e status
+- [x] Implementar opção de editar/substituir logo
+- [x] Adicionar preview das imagens em grid
+- [x] Testar funcionalidade completa
+
+## Sistema de Termos de Uso
+
+- [x] Criar tabela no banco para armazenar termos de uso
+- [x] Criar tabela para registrar aceites dos termos
+- [x] Adicionar campos para dois termos (Plataforma e Prestadores Saúde)
+- [x] Implementar checkboxes de aceite no formulário de cadastro
+- [x] Registrar data/hora do aceite para rastreabilidade
+- [ ] Criar página Admin para gerenciar conteúdo dos termos
+- [x] Testar fluxo completo de aceite

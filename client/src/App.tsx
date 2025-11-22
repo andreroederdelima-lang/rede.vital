@@ -18,6 +18,7 @@ import LoginIndicador from "./pages/LoginIndicador";
 import QRCodes from "./pages/QRCodes";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import RecuperarSenha from "./pages/RecuperarSenha";
+import GaleriaLogos from "./pages/GaleriaLogos";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/qr-codes" component={QRCodes} />
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
+      <Route path={"/galeria-logos"} component={GaleriaLogos} />
       <Route path={"/parceiros"} component={Parceiros} />
       <Route path={"/atualizar-dados/:token"} component={AtualizarDados} />
       <Route path={"/404"} component={NotFound} />
