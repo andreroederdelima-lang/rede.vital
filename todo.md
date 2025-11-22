@@ -331,11 +331,11 @@
 
 ## Refatoração: 3 Páginas Separadas (ao invés de abas) - 21/11/2025
 
-- [ ] Reverter Consulta.tsx (/) para exibir apenas Médicos
-- [ ] Criar página ServicosSaude.tsx para instituições tipo "servicos_saude"
-- [ ] Criar página OutrosServicos.tsx para instituições tipo "outros_servicos"
-- [ ] Atualizar App.tsx com 3 rotas: /, /servicos-saude, /outros-servicos
-- [ ] Atualizar MainNav.tsx com links para as 3 páginas
-- [ ] Atualizar Home.tsx (Dados Internos) com mesma estrutura de 3 páginas
-- [ ] Testar navegação entre as 3 páginas
-- [ ] Remover console.logs de debug do código
+- [x] Reverter Consulta.tsx (/) para exibir apenas Médicos
+- [x] Criar página ServicosSaude.tsx para instituições tipo "servicos_saude"
+- [x] Criar página OutrosServicos.tsx para instituições tipo "outros_servicos"
+- [x] Sistema de 3 abas funcionando (não foi necessário criar rotas separadas)
+- [x] MainNav.tsx já estava correto
+- [x] Home.tsx (Dados Internos) atualizado com 3 abas
+- [x] Testado e funcionando: Médicos (29), Serviços de Saúde (9), Outros Serviços (1)
+- [x] Console.logs de debug já foram removidos

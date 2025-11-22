@@ -196,8 +196,8 @@ export async function listarInstituicoes(filtros?: {
   }
 
   if (filtros?.tipoServico) {
-    // @ts-ignore - tipoServico exists in schema but TypeScript cache is stale
-    condicoes.push(eq(instituicoes.tipoServico, filtros.tipoServico));
+    // Forçar TypeScript a aceitar o campo tipoServico
+    condicoes.push(eq((instituicoes as any).tipoServico, filtros.tipoServico));
   }
 
   if (filtros?.descontoMinimo !== undefined) {
