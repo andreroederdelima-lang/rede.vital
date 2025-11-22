@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, nome, categoria, tipoServico FROM instituicoes WHERE categoria IN ('Academia', 'Pet Shop', 'Farmácia', 'Fisioterapia', 'Estética', 'Nutrição', 'Psicologia') OR categoria LIKE '%Pet%' OR categoria LIKE '%Academia%' OR categoria LIKE '%Farm%'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, categoria, tipoServico FROM instituicoes WHERE categoria IN ('Academia', 'Pet Shop', 'Farmácia', 'Fisioterapia', 'Estética', 'Nutrição', 'Psicologia') OR categoria LIKE '%Pet%' OR categoria LIKE '%Academia%' OR categoria LIKE '%Farm%'",
+  "rows": [
+    {
+      "id": "9",
+      "nome": "Dehon Farmácia de Manipulação – Matriz Timbó",
+      "categoria": "farmacia",
+      "tipoServico": "servicos_saude"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tcategoria\ttipoServico\n9\tDehon Farmácia de Manipulação – Matriz Timbó\tfarmacia\tservicos_saude\n",
+  "stderr": "",
+  "execution_time_ms": 857
+}

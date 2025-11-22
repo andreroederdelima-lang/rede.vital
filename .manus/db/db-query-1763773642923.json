@@ -1,0 +1,20 @@
+{
+  "query": "SELECT tipoServico, COUNT(*) as total, GROUP_CONCAT(DISTINCT categoria SEPARATOR ', ') as categorias FROM instituicoes GROUP BY tipoServico",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT tipoServico, COUNT(*) as total, GROUP_CONCAT(DISTINCT categoria SEPARATOR ', ') as categorias FROM instituicoes GROUP BY tipoServico",
+  "rows": [
+    {
+      "tipoServico": "servicos_saude",
+      "total": "8",
+      "categorias": "clinica, hospital, laboratorio"
+    },
+    {
+      "tipoServico": "outros_servicos",
+      "total": "1",
+      "categorias": "farmacia"
+    }
+  ],
+  "messages": [],
+  "stdout": "tipoServico\ttotal\tcategorias\nservicos_saude\t8\tclinica, hospital, laboratorio\noutros_servicos\t1\tfarmacia\n",
+  "stderr": "",
+  "execution_time_ms": 47
+}

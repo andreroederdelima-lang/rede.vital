@@ -325,5 +325,17 @@
 - [x] Atualizar queries tRPC para filtrar por categoria
 - [x] Atualizar interface Consulta para exibir 3 abas
 - [x] Atualizar interface Dados Internos para exibir 3 abas
-- [ ] Migrar dados existentes (definir categoria padrão)
+- [x] Migrar dados existentes (definir categoria padrão)
 - [x] Testar filtros e navegação
+
+
+## Refatoração: 3 Páginas Separadas (ao invés de abas) - 21/11/2025
+
+- [ ] Reverter Consulta.tsx (/) para exibir apenas Médicos
+- [ ] Criar página ServicosSaude.tsx para instituições tipo "servicos_saude"
+- [ ] Criar página OutrosServicos.tsx para instituições tipo "outros_servicos"
+- [ ] Atualizar App.tsx com 3 rotas: /, /servicos-saude, /outros-servicos
+- [ ] Atualizar MainNav.tsx com links para as 3 páginas
+- [ ] Atualizar Home.tsx (Dados Internos) com mesma estrutura de 3 páginas
+- [ ] Testar navegação entre as 3 páginas
+- [ ] Remover console.logs de debug do código

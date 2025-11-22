@@ -1,0 +1,35 @@
+{
+  "query": "SELECT id, nome, tipoServico FROM instituicoes LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, tipoServico FROM instituicoes LIMIT 5",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Única Medicina Avançada",
+      "tipoServico": "servicos_saude"
+    },
+    {
+      "id": "2",
+      "nome": "Hospital Censit / Centro Clínico Censit",
+      "tipoServico": "servicos_saude"
+    },
+    {
+      "id": "3",
+      "nome": "ITHAKA – Centro Médico de Reabilitação",
+      "tipoServico": "servicos_saude"
+    },
+    {
+      "id": "4",
+      "nome": "Matrix Medicina Diagnóstica – Unidade Timbó",
+      "tipoServico": "servicos_saude"
+    },
+    {
+      "id": "5",
+      "nome": "Oxygene Medicina Hiperbárica",
+      "tipoServico": "servicos_saude"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\ttipoServico\n1\tÚnica Medicina Avançada\tservicos_saude\n2\tHospital Censit / Centro Clínico Censit\tservicos_saude\n3\tITHAKA – Centro Médico de Reabilitação\tservicos_saude\n4\tMatrix Medicina Diagnóstica – Unidade Timbó\tservicos_saude\n5\tOxygene Medicina Hiperbárica\tservicos_saude\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

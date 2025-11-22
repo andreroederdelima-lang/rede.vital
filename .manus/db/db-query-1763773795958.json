@@ -1,0 +1,73 @@
+{
+  "query": "SELECT id, nome, categoria, tipoServico, ativo FROM instituicoes WHERE ativo = 1 ORDER BY tipoServico, nome LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, categoria, tipoServico, ativo FROM instituicoes WHERE ativo = 1 ORDER BY tipoServico, nome LIMIT 10",
+  "rows": [
+    {
+      "id": "7",
+      "nome": "Clínica Ortopédica Serpa (Unidade Timbó)",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "6",
+      "nome": "Clínica Zatro (Coderniz Saúde e Vida LTDA)",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "2",
+      "nome": "Hospital Censit / Centro Clínico Censit",
+      "categoria": "hospital",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "3",
+      "nome": "ITHAKA – Centro Médico de Reabilitação",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "4",
+      "nome": "Matrix Medicina Diagnóstica – Unidade Timbó",
+      "categoria": "laboratorio",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "5",
+      "nome": "Oxygene Medicina Hiperbárica",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "1",
+      "nome": "Única Medicina Avançada",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "8",
+      "nome": "Vaccine Care – Timbó",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "ativo": "1"
+    },
+    {
+      "id": "9",
+      "nome": "Dehon Farmácia de Manipulação – Matriz Timbó",
+      "categoria": "farmacia",
+      "tipoServico": "outros_servicos",
+      "ativo": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tcategoria\ttipoServico\tativo\n7\tClínica Ortopédica Serpa (Unidade Timbó)\tclinica\tservicos_saude\t1\n6\tClínica Zatro (Coderniz Saúde e Vida LTDA)\tclinica\tservicos_saude\t1\n2\tHospital Censit / Centro Clínico Censit\thospital\tservicos_saude\t1\n3\tITHAKA – Centro Médico de Reabilitação\tclinica\tservicos_saude\t1\n4\tMatrix Medicina Diagnóstica – Unidade Timbó\tlaboratorio\tservicos_saude\t1\n5\tOxygene Medicina Hiperbárica\tclinica\tservicos_saude\t1\n1\tÚnica Medicina Avançada\tclinica\tservicos_saude\t1\n8\tVaccine Care – Timbó\tclinica\tservicos_saude\t1\n9\tDehon Farmácia de Manipulação – Matriz Timbó\tfarmacia\toutros_servicos\t1\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}
