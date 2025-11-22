@@ -521,3 +521,5 @@
 - [x] Atualizar routers tRPC para aceitar novos campos
 - [x] Executar db:push para aplicar mudanças no banco
 - [ ] Aplicar mesmas mudanças em ServicosSaude.tsx e OutrosServicos.tsx (pendente)
+
+- [x] Atualizar descrições de Promotor e Vendedor na página de cadastro de indicadores (CadastroIndicador.tsx)

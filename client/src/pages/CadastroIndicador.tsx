@@ -118,7 +118,7 @@ export default function CadastroIndicador() {
                           Promotor
                         </Label>
                         <p className="text-sm text-gray-600 mt-1">
-                          Indica e convence clientes a conhecerem a Vital
+                          Indica e aquece o cliente, e recebe comissão quando estes compram
                         </p>
                       </div>
                     </div>
@@ -129,7 +129,7 @@ export default function CadastroIndicador() {
                           Vendedor
                         </Label>
                         <p className="text-sm text-gray-600 mt-1">
-                          Indica, convence E fecha a venda com o cliente
+                          Realiza o processo de aquecimento do cliente e fechamento da venda
                         </p>
                       </div>
                     </div>
