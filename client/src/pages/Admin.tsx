@@ -212,7 +212,7 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-7 mb-6">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-8 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
             <TabsTrigger value="instituicoes">Clínicas</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
@@ -220,6 +220,7 @@ export default function Admin() {
             <TabsTrigger value="usuarios">Usuários</TabsTrigger>
             <TabsTrigger value="acessos">Acessos</TabsTrigger>
             <TabsTrigger value="prospeccao">Prospecção</TabsTrigger>
+            <TabsTrigger value="indicacoes">Indicações</TabsTrigger>
           </TabsList>
 
           {/* Tab Médicos */}
@@ -437,6 +438,92 @@ export default function Admin() {
           {/* Tab Prospecção */}
           <TabsContent value="prospeccao">
             <DashboardProspeccao />
+          </TabsContent>
+
+          {/* Tab Indicações */}
+          <TabsContent value="indicacoes">
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Gestão de Indicações</h2>
+                <Button onClick={() => toast.info("Funcionalidade em desenvolvimento")}>
+                  Cadastrar Promotor/Vendedor
+                </Button>
+              </div>
+
+              {/* Estatísticas */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Estatísticas Gerais</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-primary">--</div>
+                      <div className="text-sm text-muted-foreground">Total de Indicações</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-yellow-600">--</div>
+                      <div className="text-sm text-muted-foreground">Pendentes</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-600">--</div>
+                      <div className="text-sm text-muted-foreground">Fechadas</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-blue-600">--</div>
+                      <div className="text-sm text-muted-foreground">Taxa de Conversão</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Filtros */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Filtros</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-4 gap-4">
+                    <div>
+                      <label className="text-sm font-medium">Status</label>
+                      <select className="w-full mt-1 p-2 border rounded">
+                        <option value="">Todos</option>
+                        <option value="pendente">Pendente</option>
+                        <option value="contatado">Contatado</option>
+                        <option value="fechado">Fechado</option>
+                        <option value="perdido">Perdido</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Promotor/Vendedor</label>
+                      <select className="w-full mt-1 p-2 border rounded">
+                        <option value="">Todos</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Data Início</label>
+                      <input type="date" className="w-full mt-1 p-2 border rounded" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">Data Fim</label>
+                      <input type="date" className="w-full mt-1 p-2 border rounded" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Lista de Indicações */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Indicações</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8 text-muted-foreground">
+                    Funcionalidade em desenvolvimento. Em breve você poderá visualizar e gerenciar todas as indicações aqui.
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </main>

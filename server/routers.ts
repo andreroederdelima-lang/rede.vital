@@ -688,6 +688,25 @@ export const appRouter = router({
         
         return await listarComissoes(indicador.id);
       }),
+
+    // Admin: Listar TODAS as indicações com filtros
+    listarTodasAdmin: protectedProcedure
+      .input(z.object({
+        indicadorId: z.number().optional(),
+        status: z.string().optional(),
+        dataInicio: z.date().optional(),
+        dataFim: z.date().optional(),
+      }).optional())
+      .query(async ({ input }) => {
+        const { listarTodasIndicacoesComFiltros } = await import("./db");
+        return await listarTodasIndicacoesComFiltros(input);
+      }),
+
+    // Admin: Estatísticas gerais
+    estatisticas: protectedProcedure.query(async () => {
+      const { obterEstatisticasIndicacoes } = await import("./db");
+      return await obterEstatisticasIndicacoes();
+    }),
   }),
 
   // Rotas de prospecção e estatísticas
@@ -705,6 +724,8 @@ export const appRouter = router({
       return await obterCategoriasUnicas();
     }),
   }),
+
+
 });
 
 export type AppRouter = typeof appRouter;

@@ -344,12 +344,12 @@
 ## Aba "Indicações" no Painel Admin
 
 ### Backend
-- [ ] Criar router `indicacoes.listar` - listar todas as indicações com filtros
-- [ ] Criar router `indicacoes.atualizar` - atualizar status e observações
-- [ ] Criar router `indicacoes.estatisticas` - estatísticas gerais (total, por status, taxa de conversão)
-- [ ] Criar router `indicadores.listar` - listar todos os promotores/vendedores
-- [ ] Criar router `indicadores.criar` - cadastrar novo promotor/vendedor
-- [ ] Criar router `indicadores.atualizar` - editar promotor/vendedor
+- [x] Criar router `indicacoes.listar` - listar todas as indicações com filtros
+- [x] Criar router `indicacoes.atualizar` - atualizar status e observações
+- [x] Criar router `indicacoes.estatisticas` - estatísticas gerais (total, por status, taxa de conversão)
+- [x] Criar router `indicadores.listar` - listar todos os promotores/vendedores
+- [x] Criar router `indicadores.criar` - cadastrar novo promotor/vendedor
+- [x] Criar router `indicadores.atualizar` - editar promotor/vendedor
 - [ ] Criar router `comissoes.criar` - registrar comissão paga
 - [ ] Criar router `comissoes.listar` - listar comissões por indicação
 - [ ] Criar queries no db.ts para todas as operações acima
