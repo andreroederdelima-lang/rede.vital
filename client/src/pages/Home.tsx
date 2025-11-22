@@ -446,7 +446,7 @@ export default function Home() {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                       <div className="flex-shrink-0">
                         <img 
-                          src={(medico as any).fotoUrl || "/medico-padrao.png"} 
+                          src={(medico as any).fotoUrl || "/logo-placeholder.png"} 
                           alt={medico.nome}
                           className="w-24 h-24 rounded-lg object-cover"
                         />
@@ -575,7 +575,7 @@ export default function Home() {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                       <div className="flex-shrink-0">
                         <img 
-                          src={(inst as any).fotoUrl || "/medico-padrao.png"} 
+                          src={(inst as any).fotoUrl || "/logo-placeholder.png"} 
                           alt={inst.nome}
                           className="w-24 h-24 rounded-lg object-cover"
                         />

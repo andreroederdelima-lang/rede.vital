@@ -308,7 +308,7 @@ export default function Consulta() {
                           {/* Foto/Avatar */}
                           <div className="flex-shrink-0">
                             <img
-                              src={medico.fotoUrl || "/avatar-medico.jpg"}
+                              src={medico.fotoUrl || "/logo-placeholder.png"}
                               alt={medico.nome}
                               className="w-20 h-20 rounded-xl object-cover"
                               style={{ 
@@ -477,7 +477,7 @@ export default function Consulta() {
                           {/* Foto/Avatar */}
                           <div className="flex-shrink-0">
                             <img
-                              src={inst.fotoUrl || (tipoCredenciado === "servicos_saude" ? "/avatar-servicos-saude.jpg" : "/avatar-outros-servicos.jpg")}
+                              src={inst.fotoUrl || "/logo-placeholder.png"}
                               alt={inst.nome}
                               className="w-20 h-20 rounded-xl object-cover"
                               style={{ 

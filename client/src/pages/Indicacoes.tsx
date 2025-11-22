@@ -134,7 +134,7 @@ export default function Indicacoes() {
         {/* Header */}
         <div className="mb-8 flex items-center gap-6">
           <img 
-            src={(meuIndicador as any).fotoUrl || "/medico-padrao.png"} 
+            src={(meuIndicador as any).fotoUrl || "/logo-placeholder.png"} 
             alt={meuIndicador.nome}
             className="w-24 h-24 rounded-full object-cover border-4 border-[#1e9d9f] shadow-lg"
           />

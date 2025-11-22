@@ -804,3 +804,11 @@
 - [x] Imagens carregando
 - [x] Cores e espaçamentos
 - [x] Navegação mobile
+
+
+## Logo Placeholder para Parceiros
+
+- [x] Copiar imagem de placeholder para client/public
+- [x] Configurar sistema para usar logo padrão quando parceiro não fornecer
+- [x] Aplicar em cards de médicos e instituições
+- [x] Testar visualização
