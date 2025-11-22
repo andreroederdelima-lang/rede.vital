@@ -338,6 +338,15 @@ export default function Consulta() {
                 <Card key={medico.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      {(medico as any).fotoUrl && (
+                        <div className="flex-shrink-0">
+                          <img 
+                            src={(medico as any).fotoUrl} 
+                            alt={medico.nome}
+                            className="w-24 h-24 rounded-lg object-cover"
+                          />
+                        </div>
+                      )}
                       <div className="flex-1 space-y-3">
                         <div>
                           <h3 className="text-xl font-semibold text-primary">{medico.nome}</h3>
@@ -377,6 +386,17 @@ export default function Consulta() {
                                 >
                                   <MessageCircle className="h-3 w-3" />
                                   Fale com o vendedor
+                                </a>
+                              )}
+                              {(medico as any).whatsappSecretaria && (
+                                <a
+                                  href={formatWhatsAppLink((medico as any).whatsappSecretaria)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline"
+                                >
+                                  <MessageCircle className="h-3 w-3" />
+                                  WhatsApp Secretaria
                                 </a>
                               )}
                             </div>

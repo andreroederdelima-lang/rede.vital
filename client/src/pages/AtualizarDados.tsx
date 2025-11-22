@@ -17,6 +17,9 @@ export default function AtualizarDados() {
   const [formData, setFormData] = useState({
     telefone: "",
     whatsapp: "",
+    whatsappSecretaria: "",
+    telefoneOrganizacao: "",
+    fotoUrl: "",
     email: "",
     endereco: "",
     precoConsulta: "",
@@ -49,6 +52,9 @@ export default function AtualizarDados() {
       setFormData({
         telefone: credenciado.dados.telefone || "",
         whatsapp: (credenciado.dados as any).whatsapp || "",
+        whatsappSecretaria: (credenciado.dados as any).whatsappSecretaria || "",
+        telefoneOrganizacao: (credenciado.dados as any).telefoneOrganizacao || "",
+        fotoUrl: (credenciado.dados as any).fotoUrl || "",
         email: (credenciado.dados as any).email || "",
         endereco: credenciado.dados.endereco || "",
         precoConsulta: (credenciado.dados as any).precoConsulta || "",
@@ -166,6 +172,28 @@ export default function AtualizarDados() {
                 </div>
               </div>
               
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="whatsappSecretaria">WhatsApp Secretaria</Label>
+                  <Input
+                    id="whatsappSecretaria"
+                    value={formData.whatsappSecretaria}
+                    onChange={(e) => setFormData({ ...formData, whatsappSecretaria: e.target.value })}
+                    placeholder="(47) 99999-7777"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="telefoneOrganizacao">Telefone Contato Organização</Label>
+                  <Input
+                    id="telefoneOrganizacao"
+                    value={formData.telefoneOrganizacao}
+                    onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: e.target.value })}
+                    placeholder="(47) 3333-5555"
+                  />
+                </div>
+              </div>
+              
               <div>
                 <Label htmlFor="email">E-mail</Label>
                 <Input
@@ -175,6 +203,20 @@ export default function AtualizarDados() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="contato@exemplo.com"
                 />
+              </div>
+              
+              <div>
+                <Label htmlFor="fotoUrl">Foto do Médico/Serviço (URL)</Label>
+                <Input
+                  id="fotoUrl"
+                  type="url"
+                  value={formData.fotoUrl}
+                  onChange={(e) => setFormData({ ...formData, fotoUrl: e.target.value })}
+                  placeholder="https://exemplo.com/foto.jpg"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Cole o link da imagem hospedada (ex: Google Drive, Imgur, etc)
+                </p>
               </div>
               
               <div>

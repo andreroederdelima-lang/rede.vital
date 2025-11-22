@@ -507,3 +507,17 @@
 - [x] Botão deve redirecionar para /qr-codes em nova aba
 - [x] Posicionar botão próximo ao botão "Cadastrar Promotor/Vendedor"
 - [x] Remover botão "Copiar Link" de todas as páginas públicas (Consulta, ServicosSaude, OutrosServicos)
+
+
+## Melhorias no Sistema de Credenciamento
+
+- [x] Adicionar campo "WhatsApp Secretaria" no schema de médicos e instituições
+- [x] Adicionar campo "Telefone Contato Organização" no schema de médicos e instituições
+- [x] Adicionar campo "Foto" (URL) no schema de médicos e instituições
+- [x] Adicionar campos no formulário de credenciamento (AtualizarDados.tsx)
+- [x] Implementar campo de foto (URL) no formulário
+- [x] Adicionar botão clicável "WhatsApp Secretaria" ao lado de cada credenciado em Consulta.tsx
+- [x] Exibir foto do médico/serviço em Consulta.tsx
+- [x] Atualizar routers tRPC para aceitar novos campos
+- [x] Executar db:push para aplicar mudanças no banco
+- [ ] Aplicar mesmas mudanças em ServicosSaude.tsx e OutrosServicos.tsx (pendente)
