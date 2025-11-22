@@ -634,3 +634,37 @@
 - [x] Atualizar formulários Admin, Parceiros, Consulta, Home
 - [x] Melhorar UX dos filtros combinados (categoria + município) - filtros dinâmicos
 - [x] Testar filtros e categorias
+
+
+## Reformulação Visual - Identidade Vital
+
+### Paleta de Cores Oficial
+- [ ] Aplicar Turquesa #1E9D9F (títulos, bordas, destaques)
+- [ ] Aplicar Bege #C6BCA4 (hover, detalhes suaves)
+- [ ] Aplicar Branco #FFFFFF (fundos principais)
+- [ ] Aplicar Cinza claro #F7F7F7 (fundos secundários, rodapé)
+- [ ] Aplicar Cinza escuro #2E2E2E (subtítulos)
+- [ ] Aplicar Cinza médio #444444 (textos menores)
+
+### Layout e Organização
+- [ ] Centralizar logo no topo com margens adequadas
+- [ ] Transformar filtros principais em botões arredondados com borda turquesa
+- [ ] Criar grid 3x3 de municípios com botões grandes
+- [ ] Ampliar barra de busca com cantos arredondados
+- [ ] Aumentar espaçamentos verticais (estilo minimalista)
+- [ ] Aplicar margens laterais amplas
+
+### Tipografia
+- [ ] Títulos: turquesa, semibold
+- [ ] Subtítulos: cinza escuro #2E2E2E
+- [ ] Textos menores: cinza #444444
+
+### Componentes Específicos
+- [ ] Botões de filtro com hover bege suave
+- [ ] Grid de municípios: TIMBÓ, INDAIAL, POMERODE, RIO DOS CEDROS, BENEDITO NOVO, RODEIO, APIÚNA, ASCURRA, BLUMENAU
+- [ ] Placeholder busca: "Buscar por clínica, profissional ou serviço…"
+- [ ] Rodapé com logo horizontal e informações de contato
+
+### Páginas a Atualizar
+- [x] Página Consulta (Home pública - /)
+- [x] Página Dados Internos (/dados-internos) - Reformulação parcial (header e cores)

@@ -16,7 +16,6 @@ import { Link } from "wouter";
 import { toast } from "sonner";
 import { useDadosInternosAuth } from "@/hooks/useDadosInternosAuth";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
-import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 
 export default function Home() {
   const { isAuthenticated, isLoading: authLoading, logout } = useDadosInternosAuth();
@@ -275,20 +274,17 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: VITAL_COLORS.white }}>
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="py-8 px-4" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
-        <div className="container max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-            <div className="flex flex-col items-center lg:items-start gap-4">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-24 object-contain" />
-              <div className="text-center lg:text-left">
-                <h1 className="text-3xl font-semibold" style={{ color: VITAL_COLORS.turquoise }}>DADOS INTERNOS</h1>
-                <p className="text-sm mt-2" style={{ color: VITAL_COLORS.darkGray }}>
-                  Guia de Parceiros Vital - Vale do Itajaí
-                </p>
-                <p className="text-xs mt-1" style={{ color: VITAL_COLORS.mediumGray }}>
-                  Conteúdo sigiloso - Uso interno
+      <header className="bg-white border-b-4 border-primary shadow-sm">
+        <div className="container py-4 md:py-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div className="flex items-center gap-4 md:gap-6">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-20 md:h-32 w-auto" />
+              <div>
+                <h1 className="text-xl md:text-3xl font-bold text-primary">Guia de Parceiros Vital - Vale do Itajaí</h1>
+                <p className="text-muted-foreground text-xs md:text-sm mt-1 text-center">
+                  Guia de uso interno para consultas e informações. Conteúdo sigiloso.
                 </p>
               </div>
             </div>
