@@ -841,3 +841,15 @@
 - [x] Registrar data/hora do aceite para rastreabilidade
 - [ ] Criar página Admin para gerenciar conteúdo dos termos
 - [x] Testar fluxo completo de aceite
+
+
+## Gestão Separada de Logo e Foto na Área Admin
+
+- [x] Atualizar formulário de aprovação de parceiros para logo e foto separados
+- [x] Atualizar formulários de edição de médicos para logo e foto separados
+- [x] Atualizar formulários de edição de instituições para logo e foto separados
+- [x] Implementar upload independente de cada imagem
+- [x] Criar estrutura organizada de armazenamento no S3 (logos/ e fotos/)
+- [x] Adicionar preview lado a lado das duas imagens
+- [x] Permitir substituição individual de logo ou foto
+- [x] Testar funcionalidade completa

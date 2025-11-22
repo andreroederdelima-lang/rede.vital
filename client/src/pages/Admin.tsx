@@ -29,6 +29,7 @@ type MedicoForm = {
   telefone?: string;
   whatsapp?: string;
   whatsappSecretaria?: string;
+  logoUrl?: string;
   fotoUrl?: string;
   tipoAtendimento: "presencial" | "telemedicina" | "ambos";
   precoConsulta?: string;
@@ -46,6 +47,7 @@ type InstituicaoForm = {
   endereco: string;
   telefone?: string;
   whatsappSecretaria?: string;
+  logoUrl?: string;
   fotoUrl?: string;
   email?: string;
   precoConsulta?: string;
@@ -598,7 +600,17 @@ function MedicoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="fotoUrl">URL da Foto</Label>
+          <Label htmlFor="logoUrl">URL do Logo</Label>
+          <Input
+            id="logoUrl"
+            value={formData.logoUrl || ""}
+            onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
+            placeholder="https://exemplo.com/logo.jpg"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="fotoUrl">URL da Foto do Médico</Label>
           <Input
             id="fotoUrl"
             value={formData.fotoUrl || ""}
@@ -800,7 +812,17 @@ function InstituicaoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="fotoUrl">URL da Foto</Label>
+          <Label htmlFor="logoUrl">URL do Logo</Label>
+          <Input
+            id="logoUrl"
+            value={formData.logoUrl || ""}
+            onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
+            placeholder="https://exemplo.com/logo.jpg"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="fotoUrl">URL da Foto do Estabelecimento</Label>
           <Input
             id="fotoUrl"
             value={formData.fotoUrl || ""}
@@ -1029,16 +1051,33 @@ function SolicitacoesTab() {
                 </div>
               </div>
 
-              {solicitacaoSelecionada.imagemUrl && (
-                <div>
-                  <Label className="text-muted-foreground">Imagem do Estabelecimento</Label>
-                  <img 
-                    src={solicitacaoSelecionada.imagemUrl} 
-                    alt="Estabelecimento" 
-                    className="mt-2 max-w-full rounded-lg border"
-                  />
-                </div>
-              )}
+              {/* Logo e Foto */}
+              <div className="grid grid-cols-2 gap-4">
+                {solicitacaoSelecionada.logoUrl && (
+                  <div>
+                    <Label className="text-muted-foreground">Logo do Estabelecimento</Label>
+                    <div className="mt-2 aspect-square bg-gray-100 rounded-lg border flex items-center justify-center overflow-hidden">
+                      <img 
+                        src={solicitacaoSelecionada.logoUrl} 
+                        alt="Logo" 
+                        className="max-w-full max-h-full object-contain p-2"
+                      />
+                    </div>
+                  </div>
+                )}
+                {solicitacaoSelecionada.fotoUrl && (
+                  <div>
+                    <Label className="text-muted-foreground">{solicitacaoSelecionada.tipoCredenciado === "medico" ? "Foto do Médico" : "Foto do Estabelecimento"}</Label>
+                    <div className="mt-2 aspect-square bg-gray-100 rounded-lg border overflow-hidden">
+                      <img 
+                        src={solicitacaoSelecionada.fotoUrl} 
+                        alt="Foto" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="border-t pt-4">
                 <Label htmlFor="motivoRejeicao">Motivo da Rejeição (opcional)</Label>
