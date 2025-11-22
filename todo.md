@@ -573,3 +573,10 @@
   * Total recebido em R$ com histórico de comissões pagas
   * Cards coloridos com bordas e ícones para melhor visualização
 - [x] Atualizar schema do banco para remover campo "tipo" de indicadores
+
+
+## Atualização de Logo
+
+- [x] Copiar nova imagem de logo para client/public/ (logo-vital.jpeg)
+- [x] Atualizar constante APP_LOGO em client/src/const.ts
+- [x] Verificar se logo está sendo exibido corretamente em todas as páginas
