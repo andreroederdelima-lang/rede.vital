@@ -313,3 +313,17 @@
 - [ ] Adicionar campo de data de pagamento
 - [ ] Implementar upload de comprovante de pagamento
 - [ ] Adicionar estatísticas gerais no Admin (total de indicações, conversões, comissões pagas)
+
+
+## Sistema de 3 Categorias - 21/11/2025
+
+- [x] Renomear aba "Clínicas" para "Serviços de Saúde"
+- [x] Adicionar terceira aba "Outros Serviços"
+- [x] Adicionar campo "categoria" na tabela instituicoes (enum: servicos_saude, outros_servicos)
+- [x] Atualizar formulários Admin para incluir seleção de categoria
+- [ ] Atualizar formulário de Parceiros para incluir categoria
+- [x] Atualizar queries tRPC para filtrar por categoria
+- [x] Atualizar interface Consulta para exibir 3 abas
+- [ ] Atualizar interface Dados Internos para exibir 3 abas
+- [ ] Migrar dados existentes (definir categoria padrão)
+- [x] Testar filtros e navegação

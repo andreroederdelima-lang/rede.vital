@@ -35,6 +35,7 @@ type MedicoForm = {
 type InstituicaoForm = {
   id?: number;
   nome: string;
+  tipoServico: "servicos_saude" | "outros_servicos";
   categoria: "clinica" | "farmacia" | "laboratorio" | "academia" | "hospital" | "outro";
   municipio: string;
   endereco: string;
@@ -628,6 +629,7 @@ function InstituicaoFormDialog({
   const [formData, setFormData] = useState<InstituicaoForm>(
     instituicao || {
       nome: "",
+      tipoServico: "servicos_saude",
       categoria: "clinica",
       municipio: "",
       endereco: "",
@@ -656,6 +658,22 @@ function InstituicaoFormDialog({
             onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
             required
           />
+        </div>
+
+        <div>
+          <Label htmlFor="tipoServico">Tipo de Serviço *</Label>
+          <Select
+            value={formData.tipoServico}
+            onValueChange={(v: any) => setFormData({ ...formData, tipoServico: v })}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="servicos_saude">Serviços de Saúde</SelectItem>
+              <SelectItem value="outros_servicos">Outros Serviços</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div>

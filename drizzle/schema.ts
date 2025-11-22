@@ -57,6 +57,7 @@ export type InsertMedico = typeof medicos.$inferInsert;
 export const instituicoes = mysqlTable("instituicoes", {
   id: int("id").autoincrement().primaryKey(),
   nome: varchar("nome", { length: 255 }).notNull(),
+  tipoServico: mysqlEnum("tipoServico", ["servicos_saude", "outros_servicos"]).default("servicos_saude").notNull(),
   categoria: mysqlEnum("categoria", ["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]).notNull(),
   municipio: varchar("municipio", { length: 100 }).notNull(),
   endereco: text("endereco").notNull(),

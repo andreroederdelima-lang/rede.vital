@@ -1,0 +1,1 @@
+ALTER TABLE `instituicoes` ADD `tipoServico` enum('servicos_saude','outros_servicos') DEFAULT 'servicos_saude' NOT NULL;

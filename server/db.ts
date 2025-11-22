@@ -170,6 +170,7 @@ export async function listarInstituicoes(filtros?: {
   categoria?: string;
   municipio?: string;
   descontoMinimo?: number;
+  tipoServico?: "servicos_saude" | "outros_servicos";
 }) {
   const db = await getDb();
   if (!db) return [];
@@ -192,6 +193,10 @@ export async function listarInstituicoes(filtros?: {
 
   if (filtros?.municipio) {
     condicoes.push(eq(instituicoes.municipio, filtros.municipio));
+  }
+
+  if (filtros?.tipoServico) {
+    condicoes.push(eq(instituicoes.tipoServico, filtros.tipoServico as any));
   }
 
   if (filtros?.descontoMinimo !== undefined) {

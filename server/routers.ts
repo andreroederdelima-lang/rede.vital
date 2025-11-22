@@ -100,6 +100,7 @@ export const appRouter = router({
         categoria: z.string().optional(),
         municipio: z.string().optional(),
         descontoMinimo: z.number().optional(),
+        tipoServico: z.enum(["servicos_saude", "outros_servicos"]).optional(),
       }).optional())
       .query(async ({ input }) => {
         const { listarInstituicoes } = await import("./db");
@@ -116,6 +117,7 @@ export const appRouter = router({
     criar: protectedProcedure
       .input(z.object({
         nome: z.string(),
+        tipoServico: z.enum(["servicos_saude", "outros_servicos"]).default("servicos_saude"),
         categoria: z.enum(["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]),
         municipio: z.string(),
         endereco: z.string(),
@@ -135,6 +137,7 @@ export const appRouter = router({
         id: z.number(),
         data: z.object({
           nome: z.string().optional(),
+          tipoServico: z.enum(["servicos_saude", "outros_servicos"]).optional(),
           categoria: z.enum(["clinica", "farmacia", "laboratorio", "academia", "hospital", "outro"]).optional(),
           municipio: z.string().optional(),
           endereco: z.string().optional(),

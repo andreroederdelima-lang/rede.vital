@@ -24,7 +24,7 @@ export default function Consulta() {
   const [municipio, setMunicipio] = useState<string>("");
   const [categoria, setCategoria] = useState<string>("");
   // Removido filtro de desconto para consulta pública
-  const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "instituicoes">("medicos");
+  const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "servicos_saude" | "outros_servicos">("medicos");
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -37,8 +37,8 @@ export default function Consulta() {
     busca: busca || undefined,
     categoria: categoria || undefined,
     municipio: municipio || undefined,
-    // descontoMinimo removido
-  }, { enabled: tipoCredenciado === "instituicoes" });
+    tipoServico: tipoCredenciado === "servicos_saude" ? "servicos_saude" : tipoCredenciado === "outros_servicos" ? "outros_servicos" : undefined,
+  }, { enabled: tipoCredenciado !== "medicos" });
 
   const { data: especialidades = [] } = trpc.medicos.listarEspecialidades.useQuery();
   const { data: municipios = [] } = trpc.municipios.listar.useQuery();
@@ -222,17 +222,21 @@ export default function Consulta() {
       <main className="container py-8">
         {/* Tabs: Médicos / Clínicas */}
         <Tabs value={tipoCredenciado} onValueChange={(v) => {
-          setTipoCredenciado(v as "medicos" | "instituicoes");
+          setTipoCredenciado(v as "medicos" | "servicos_saude" | "outros_servicos");
           limparFiltros();
         }} className="mb-6">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
+          <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-3">
             <TabsTrigger value="medicos" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               Médicos
             </TabsTrigger>
-            <TabsTrigger value="instituicoes" className="flex items-center gap-2">
+            <TabsTrigger value="servicos_saude" className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              Clínicas
+              Serviços de Saúde
+            </TabsTrigger>
+            <TabsTrigger value="outros_servicos" className="flex items-center gap-2">
+              <Handshake className="h-4 w-4" />
+              Outros Serviços
             </TabsTrigger>
           </TabsList>
         </Tabs>
