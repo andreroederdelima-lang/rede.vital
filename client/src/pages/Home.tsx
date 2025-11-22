@@ -19,7 +19,7 @@ import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/c
 import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 
 export default function Home() {
-  const { isAuthenticated, isLoading: authLoading, logout } = useDadosInternosAuth();
+  const { isAuthenticated, isLoading: authLoading, logout, user } = useDadosInternosAuth();
   
   if (authLoading) {
     return (
@@ -294,10 +294,12 @@ export default function Home() {
             </div>
             <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 w-full lg:w-auto">
               {/* Informações do usuário */}
-              <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-md">
-                <User className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Usuário Interno</span>
-              </div>
+              {user && (
+                <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-md">
+                  <User className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">{user.email}</span>
+                </div>
+              )}
               <Button 
                 size="sm" 
                 variant="outline" 

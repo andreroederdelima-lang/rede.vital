@@ -749,3 +749,13 @@
 - [x] Atualizar página Consulta.tsx com novo botão
 - [x] Atualizar página Home.tsx (Dados Internos) com novo botão
 - [x] Testar funcionalidade em mobile e desktop
+
+
+## Login com Google OAuth para Dados Internos
+
+- [x] Remover sistema de senha atual (passwordHash, resetToken)
+- [x] Implementar login com Google OAuth (Manus Auth)
+- [x] Atualizar página de login para usar botão "Entrar com Google"
+- [x] Manter controle de acesso por email autorizado
+- [x] Remover páginas de recuperação de senha
+- [x] Testar fluxo completo de login com Google

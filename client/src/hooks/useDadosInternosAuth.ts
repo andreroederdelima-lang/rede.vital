@@ -1,46 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 
 export function useDadosInternosAuth() {
   const [, setLocation] = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, loading: authLoading, logout: manusLogout } = useAuth();
+  
+  // Verificar se usuário está autorizado
+  const { data: usuarioAutorizado, isLoading: checkingAuth } = trpc.usuariosAutorizados.verificarAcesso.useQuery(
+    user?.email || "",
+    { enabled: !!user?.email }
+  );
 
-  // Verificar se há cookie de sessão
+  const isLoading = authLoading || checkingAuth;
+  const isAuthenticated = !!user && !!usuarioAutorizado?.autorizado;
+
   useEffect(() => {
-    const checkAuth = () => {
-      const cookies = document.cookie.split(';');
-      const hasSession = cookies.some(cookie => 
-        cookie.trim().startsWith('dados_internos_session=')
-      );
-      
-      if (!hasSession) {
+    if (!authLoading && !checkingAuth) {
+      if (!user) {
+        // Não autenticado, redirecionar para login
         setLocation("/login-dados-internos");
-        setIsLoading(false);
-        return;
+      } else if (user.email && !usuarioAutorizado?.autorizado) {
+        // Autenticado mas não autorizado, redirecionar para login com mensagem
+        setLocation("/login-dados-internos");
       }
-      
-      setIsAuthenticated(true);
-      setIsLoading(false);
-    };
-
-    checkAuth();
-  }, [setLocation]);
-
-  const logoutMutation = trpc.usuariosAutorizados.logout.useMutation({
-    onSuccess: () => {
-      setLocation("/login-dados-internos");
-    },
-  });
+    }
+  }, [user, authLoading, usuarioAutorizado, checkingAuth, setLocation]);
 
   const logout = () => {
-    logoutMutation.mutate();
+    manusLogout();
+    setLocation("/login-dados-internos");
   };
 
   return {
     isAuthenticated,
     isLoading,
     logout,
+    user,
   };
 }
