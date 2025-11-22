@@ -132,13 +132,20 @@ export default function Indicacoes() {
 
       <div className="container py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#1e9d9f] mb-2">
-            Sistema de Indicações
-          </h1>
-          <p className="text-muted-foreground">
-            Olá, {meuIndicador.nome}! Acompanhe suas indicações e comissões
-          </p>
+        <div className="mb-8 flex items-center gap-6">
+          <img 
+            src={(meuIndicador as any).fotoUrl || "/medico-padrao.png"} 
+            alt={meuIndicador.nome}
+            className="w-24 h-24 rounded-full object-cover border-4 border-[#1e9d9f] shadow-lg"
+          />
+          <div>
+            <h1 className="text-3xl font-bold text-[#1e9d9f] mb-2">
+              Sistema de Indicações
+            </h1>
+            <p className="text-muted-foreground">
+              Olá, {meuIndicador.nome}! Acompanhe suas indicações e comissões
+            </p>
+          </div>
         </div>
 
         {/* Cards de Estatísticas */}

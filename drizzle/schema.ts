@@ -202,6 +202,7 @@ export const indicadores = mysqlTable("indicadores", {
   telefone: varchar("telefone", { length: 20 }),
   cpf: varchar("cpf", { length: 14 }),
   pix: varchar("pix", { length: 255 }),
+  fotoUrl: varchar("fotoUrl", { length: 500 }),
   comissaoPercentual: int("comissaoPercentual"), // Armazenado como inteiro (ex: 1000 = 10.00%)
   ativo: int("ativo").default(1).notNull(), // 1 = ativo, 0 = inativo
   createdAt: timestamp("createdAt").defaultNow().notNull(),

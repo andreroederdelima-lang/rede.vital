@@ -127,6 +127,13 @@
       "when": 1763788416609,
       "tag": "0017_living_secret_warriors",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1763818237120,
+      "tag": "0018_friendly_owl",
+      "breakpoints": true
     }
   ]
 }

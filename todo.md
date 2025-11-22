@@ -594,3 +594,13 @@
 - [x] Ajustar botão WhatsApp para "Fale com o Parceiro" na página Consulta
 - [x] Confirmar campo "WhatsApp Comercial" nos formulários Admin
 - [x] Garantir que botão WhatsApp sempre use o campo whatsappSecretaria/whatsapp
+
+
+## Sistema de Fotos para Indicadores (Promotores/Vendedores)
+
+- [x] Verificar se schema possui campo fotoUrl na tabela indicadores
+- [x] Adicionar campo fotoUrl no schema e aplicar migração
+- [x] Adicionar campo de upload de foto no formulário de cadastro público (/cadastro-indicador)
+- [x] Implementar exibição de foto no dashboard de gamificação (/indicacoes)
+- [x] Adicionar foto padrão para indicadores sem foto cadastrada
+- [x] Testar upload e exibição de fotos

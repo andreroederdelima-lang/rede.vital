@@ -22,6 +22,7 @@ export default function CadastroIndicador() {
     telefone: "",
     cpf: "",
     pix: "",
+    fotoUrl: "",
   });
 
   const login = trpc.indicacoes.loginSemSenha.useMutation({
@@ -169,6 +170,20 @@ export default function CadastroIndicador() {
                   />
                   <p className="text-sm text-gray-600">
                     Obrigatório para receber suas comissões
+                  </p>
+                </div>
+
+                {/* Foto */}
+                <div className="space-y-2">
+                  <Label htmlFor="fotoUrl">URL da Foto (opcional)</Label>
+                  <Input
+                    id="fotoUrl"
+                    value={formData.fotoUrl}
+                    onChange={(e) => setFormData({ ...formData, fotoUrl: e.target.value })}
+                    placeholder="https://exemplo.com/sua-foto.jpg"
+                  />
+                  <p className="text-sm text-gray-600">
+                    Sua foto aparecerá no dashboard de gamificação
                   </p>
                 </div>
 

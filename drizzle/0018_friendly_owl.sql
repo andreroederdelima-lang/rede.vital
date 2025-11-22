@@ -1,0 +1,1 @@
+ALTER TABLE `indicadores` ADD `fotoUrl` varchar(500);
