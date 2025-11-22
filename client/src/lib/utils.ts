@@ -38,3 +38,19 @@ export function formatPhoneDisplay(telefone: string): string {
   
   return telefone; // Retorna original se não conseguir formatar
 }
+
+/**
+ * Abre o Google Maps com direções para o endereço especificado
+ * Funciona em desktop e mobile (abre app do Google Maps se disponível)
+ */
+export function abrirComoChegar(endereco: string, municipio: string): void {
+  // Formata o endereço completo para busca no Google Maps
+  const enderecoCompleto = `${endereco}, ${municipio}, Santa Catarina, Brasil`;
+  const enderecoEncoded = encodeURIComponent(enderecoCompleto);
+  
+  // URL do Google Maps com direções (destination)
+  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${enderecoEncoded}`;
+  
+  // Abre em nova aba
+  window.open(googleMapsUrl, '_blank');
+}

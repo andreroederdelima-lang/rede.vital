@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 
 import { Phone, MapPin, User, Building2, Search, X, MessageCircle, Share2, Copy, Lock } from "lucide-react";
-import { formatWhatsAppLink } from "@/lib/utils";
+import { formatWhatsAppLink, abrirComoChegar } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { MainNav } from "@/components/MainNav";
@@ -355,12 +355,13 @@ export default function Consulta() {
                                 <Button
                                   size="sm"
                                   variant="outline"
+                                  onClick={() => abrirComoChegar(medico.endereco, medico.municipio)}
                                   className="rounded-lg h-8 w-8 p-0"
                                   style={{
                                     border: `1px solid ${VITAL_COLORS.turquoise}`,
                                     color: VITAL_COLORS.turquoise,
                                   }}
-                                  title="Ver no mapa"
+                                  title="Como Chegar"
                                 >
                                   <MapPin size={14} />
                                 </Button>
@@ -523,12 +524,13 @@ export default function Consulta() {
                                 <Button
                                   size="sm"
                                   variant="outline"
+                                  onClick={() => abrirComoChegar(inst.endereco, inst.municipio)}
                                   className="rounded-lg h-8 w-8 p-0"
                                   style={{
                                     border: `1px solid ${VITAL_COLORS.turquoise}`,
                                     color: VITAL_COLORS.turquoise,
                                   }}
-                                  title="Ver no mapa"
+                                  title="Como Chegar"
                                 >
                                   <MapPin size={14} />
                                 </Button>

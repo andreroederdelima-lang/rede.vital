@@ -740,3 +740,12 @@
 - [x] Copiar nova imagem para client/public
 - [x] Substituir referência da imagem quebrada
 - [x] Testar visualização
+
+
+## Botão "Como Chegar" com Google Maps
+
+- [x] Renomear botão "Ver no mapa" para "Como Chegar"
+- [x] Criar função para abrir Google Maps com direções ao endereço
+- [x] Atualizar página Consulta.tsx com novo botão
+- [x] Atualizar página Home.tsx (Dados Internos) com novo botão
+- [x] Testar funcionalidade em mobile e desktop
