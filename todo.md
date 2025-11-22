@@ -604,3 +604,11 @@
 - [x] Implementar exibição de foto no dashboard de gamificação (/indicacoes)
 - [x] Adicionar foto padrão para indicadores sem foto cadastrada
 - [x] Testar upload e exibição de fotos
+
+
+## Correção Menu Mobile e Categorias de Serviços
+
+- [x] Corrigir botão Menu mobile que não está funcionando
+- [x] Expandir categorias de "Serviços de Saúde" com mais opções
+- [x] Expandir categorias de "Outros Serviços" com mais opções
+- [x] Testar menu mobile em diferentes dispositivos

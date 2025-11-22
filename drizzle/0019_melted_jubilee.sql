@@ -1,0 +1,1 @@
+ALTER TABLE `instituicoes` MODIFY COLUMN `categoria` enum('clinica','farmacia','laboratorio','hospital','fisioterapia','psicologia','odontologia','nutricao','exames_imagem','academia','otica','home_care','estetica','pilates','podologia','fonoaudiologia','terapia_ocupacional','outro') NOT NULL;

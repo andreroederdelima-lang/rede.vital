@@ -735,8 +735,20 @@ function InstituicaoFormDialog({
               <SelectItem value="clinica">Clínica</SelectItem>
               <SelectItem value="farmacia">Farmácia</SelectItem>
               <SelectItem value="laboratorio">Laboratório</SelectItem>
-              <SelectItem value="academia">Academia</SelectItem>
               <SelectItem value="hospital">Hospital</SelectItem>
+              <SelectItem value="fisioterapia">Fisioterapia</SelectItem>
+              <SelectItem value="psicologia">Psicologia</SelectItem>
+              <SelectItem value="odontologia">Odontologia</SelectItem>
+              <SelectItem value="nutricao">Nutrição</SelectItem>
+              <SelectItem value="exames_imagem">Exames de Imagem</SelectItem>
+              <SelectItem value="academia">Academia</SelectItem>
+              <SelectItem value="otica">Ótica</SelectItem>
+              <SelectItem value="home_care">Home Care</SelectItem>
+              <SelectItem value="estetica">Estética</SelectItem>
+              <SelectItem value="pilates">Pilates</SelectItem>
+              <SelectItem value="podologia">Podologia</SelectItem>
+              <SelectItem value="fonoaudiologia">Fonoaudiologia</SelectItem>
+              <SelectItem value="terapia_ocupacional">Terapia Ocupacional</SelectItem>
               <SelectItem value="outro">Outro</SelectItem>
             </SelectContent>
           </Select>
