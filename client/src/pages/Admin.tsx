@@ -27,6 +27,8 @@ type MedicoForm = {
   endereco: string;
   telefone?: string;
   whatsapp?: string;
+  whatsappSecretaria?: string;
+  fotoUrl?: string;
   tipoAtendimento: "presencial" | "telemedicina" | "ambos";
   precoConsulta?: string;
   descontoPercentual: number;
@@ -42,6 +44,8 @@ type InstituicaoForm = {
   municipio: string;
   endereco: string;
   telefone?: string;
+  whatsappSecretaria?: string;
+  fotoUrl?: string;
   email?: string;
   precoConsulta?: string;
   descontoPercentual: number;
@@ -479,6 +483,8 @@ function MedicoFormDialog({
       endereco: "",
       telefone: "",
       whatsapp: "",
+      whatsappSecretaria: "",
+      fotoUrl: "",
       tipoAtendimento: "presencial",
       precoConsulta: "",
       descontoPercentual: 0,
@@ -576,6 +582,27 @@ function MedicoFormDialog({
             id="whatsapp"
             value={formData.whatsapp || ""}
             onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+            placeholder="Ex: 47999999999"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="whatsappSecretaria">WhatsApp Comercial/Secretaria</Label>
+          <Input
+            id="whatsappSecretaria"
+            value={formData.whatsappSecretaria || ""}
+            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: e.target.value })}
+            placeholder="Ex: 47999999999"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="fotoUrl">URL da Foto</Label>
+          <Input
+            id="fotoUrl"
+            value={formData.fotoUrl || ""}
+            onChange={(e) => setFormData({ ...formData, fotoUrl: e.target.value })}
+            placeholder="https://exemplo.com/foto.jpg"
           />
         </div>
 
@@ -651,6 +678,8 @@ function InstituicaoFormDialog({
       municipio: "",
       endereco: "",
       telefone: "",
+      whatsappSecretaria: "",
+      fotoUrl: "",
       email: "",
       precoConsulta: "",
       descontoPercentual: 0,
@@ -749,6 +778,26 @@ function InstituicaoFormDialog({
             type="email"
             value={formData.email || ""}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="whatsappSecretaria">WhatsApp Comercial</Label>
+          <Input
+            id="whatsappSecretaria"
+            value={formData.whatsappSecretaria || ""}
+            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: e.target.value })}
+            placeholder="Ex: 47999999999"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="fotoUrl">URL da Foto</Label>
+          <Input
+            id="fotoUrl"
+            value={formData.fotoUrl || ""}
+            onChange={(e) => setFormData({ ...formData, fotoUrl: e.target.value })}
+            placeholder="https://exemplo.com/foto.jpg"
           />
         </div>
 

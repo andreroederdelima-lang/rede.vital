@@ -447,6 +447,13 @@ export default function Home() {
                 <Card key={medico.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={(medico as any).fotoUrl || "/medico-padrao.png"} 
+                          alt={medico.nome}
+                          className="w-24 h-24 rounded-lg object-cover"
+                        />
+                      </div>
                       <div className="flex-1 space-y-3">
                         <div>
                           <h3 className="text-xl font-semibold text-primary">{medico.nome}</h3>
@@ -569,6 +576,13 @@ export default function Home() {
                 <Card key={inst.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={(inst as any).fotoUrl || "/medico-padrao.png"} 
+                          alt={inst.nome}
+                          className="w-24 h-24 rounded-lg object-cover"
+                        />
+                      </div>
                       <div className="flex-1 space-y-3">
                         <div>
                           <h3 className="text-xl font-semibold text-primary">{inst.nome}</h3>

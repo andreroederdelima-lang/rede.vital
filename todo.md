@@ -580,3 +580,17 @@
 - [x] Copiar nova imagem de logo para client/public/ (logo-vital.jpeg)
 - [x] Atualizar constante APP_LOGO em client/src/const.ts
 - [x] Verificar se logo está sendo exibido corretamente em todas as páginas
+
+
+## Sistema de Fotos para Credenciados
+
+- [x] Copiar imagem padrão de médico para client/public/medico-padrao.png
+- [x] Verificar se schema já possui campo fotoUrl (médicos e instituições) - JÁ EXISTE
+- [x] Adicionar campo de upload de foto no formulário Admin (médicos)
+- [x] Adicionar campo de upload de foto no formulário Admin (instituições)
+- [x] Adicionar campo WhatsApp Comercial no formulário Admin (médicos e instituições)
+- [x] Adicionar campo de upload de foto no formulário Parceiros - JÁ EXISTE
+- [x] Implementar exibição de foto nos cards com fallback para imagem padrão (Consulta e Home)
+- [x] Ajustar botão WhatsApp para "Fale com o Parceiro" na página Consulta
+- [x] Confirmar campo "WhatsApp Comercial" nos formulários Admin
+- [x] Garantir que botão WhatsApp sempre use o campo whatsappSecretaria/whatsapp

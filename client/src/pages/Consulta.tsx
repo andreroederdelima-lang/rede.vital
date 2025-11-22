@@ -306,15 +306,13 @@ export default function Consulta() {
                 <Card key={medico.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                      {(medico as any).fotoUrl && (
-                        <div className="flex-shrink-0">
-                          <img 
-                            src={(medico as any).fotoUrl} 
-                            alt={medico.nome}
-                            className="w-24 h-24 rounded-lg object-cover"
-                          />
-                        </div>
-                      )}
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={(medico as any).fotoUrl || "/medico-padrao.png"} 
+                          alt={medico.nome}
+                          className="w-24 h-24 rounded-lg object-cover"
+                        />
+                      </div>
                       <div className="flex-1 space-y-3">
                         <div>
                           <h3 className="text-xl font-semibold text-primary">{medico.nome}</h3>
@@ -345,26 +343,15 @@ export default function Consulta() {
                             <div className="flex items-center gap-2">
                               <Phone className="h-4 w-4 text-muted-foreground" />
                               <span>{medico.telefone || medico.whatsapp}</span>
-                              {medico.whatsapp && (
+                              {((medico as any).whatsappSecretaria || medico.whatsapp) && (
                                 <a
-                                  href={formatWhatsAppLink(medico.whatsapp)}
+                                  href={formatWhatsAppLink((medico as any).whatsappSecretaria || medico.whatsapp)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                  className="inline-flex items-center gap-1 text-xs text-[#1e9d9f] hover:underline font-medium"
                                 >
                                   <MessageCircle className="h-3 w-3" />
-                                  Fale com o vendedor
-                                </a>
-                              )}
-                              {(medico as any).whatsappSecretaria && (
-                                <a
-                                  href={formatWhatsAppLink((medico as any).whatsappSecretaria)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline"
-                                >
-                                  <MessageCircle className="h-3 w-3" />
-                                  WhatsApp Secretaria
+                                  Fale com o Parceiro
                                 </a>
                               )}
                             </div>
@@ -432,6 +419,13 @@ export default function Consulta() {
                 <Card key={inst.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={(inst as any).fotoUrl || "/medico-padrao.png"} 
+                          alt={inst.nome}
+                          className="w-24 h-24 rounded-lg object-cover"
+                        />
+                      </div>
                       <div className="flex-1 space-y-3">
                         <div>
                           <h3 className="text-xl font-semibold text-primary">{inst.nome}</h3>
@@ -453,19 +447,21 @@ export default function Consulta() {
                             <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground flex-shrink-0" />
                             <span>{inst.endereco}</span>
                           </p>
-                          {inst.telefone && (
+                          {(inst.telefone || (inst as any).whatsappSecretaria) && (
                             <div className="flex items-center gap-2">
                               <Phone className="h-4 w-4 text-muted-foreground" />
-                              <span>{inst.telefone}</span>
-                              <a
-                                href={formatWhatsAppLink(inst.telefone)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                              >
-                                <MessageCircle className="h-3 w-3" />
-                                Fale com o vendedor
-                              </a>
+                              <span>{inst.telefone || (inst as any).whatsappSecretaria}</span>
+                              {((inst as any).whatsappSecretaria || inst.telefone) && (
+                                <a
+                                  href={formatWhatsAppLink((inst as any).whatsappSecretaria || inst.telefone)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs text-[#1e9d9f] hover:underline font-medium"
+                                >
+                                  <MessageCircle className="h-3 w-3" />
+                                  Fale com o Parceiro
+                                </a>
+                              )}
                             </div>
                           )}
                           {inst.email && (
