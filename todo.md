@@ -812,3 +812,13 @@
 - [x] Configurar sistema para usar logo padrão quando parceiro não fornecer
 - [x] Aplicar em cards de médicos e instituições
 - [x] Testar visualização
+
+
+## Upload Direto de Imagem no Cadastro de Parceiro
+
+- [x] Adicionar campo de upload de LOGO (do estabelecimento/clínica)
+- [x] Adicionar campo de upload de FOTO (do médico ou do estabelecimento)
+- [x] Implementar upload para S3 ao submeter formulário
+- [x] Salvar URLs das imagens no banco de dados (logoUrl e fotoUrl)
+- [x] Adicionar validação de tipo e tamanho de arquivo
+- [x] Testar upload completo com ambos os campos

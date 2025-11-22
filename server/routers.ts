@@ -214,7 +214,8 @@ export const appRouter = router({
         email: z.string().email().optional(),
         precoConsulta: z.string().min(1, "Preço é obrigatório"),
         descontoPercentual: z.number().min(0).max(100),
-        imagemUrl: z.string().optional(),
+        logoUrl: z.string().optional(),
+        fotoUrl: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         const { criarSolicitacaoParceria } = await import("./db");

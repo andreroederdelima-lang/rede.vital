@@ -148,6 +148,20 @@
       "when": 1763821977923,
       "tag": "0020_open_xorn",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1763836848280,
+      "tag": "0021_steep_penance",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1763836941359,
+      "tag": "0022_damp_star_brand",
+      "breakpoints": true
     }
   ]
 }

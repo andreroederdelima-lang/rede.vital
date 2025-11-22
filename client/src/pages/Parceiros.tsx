@@ -48,8 +48,10 @@ export default function Parceiros() {
   const [email, setEmail] = useState("");
   const [precoConsulta, setPrecoConsulta] = useState("");
   const [descontoPercentual, setDescontoPercentual] = useState("");
-  const [imagemFile, setImagemFile] = useState<File | null>(null);
-  const [imagemPreview, setImagemPreview] = useState<string>("");
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string>("");
+  const [fotoFile, setFotoFile] = useState<File | null>(null);
+  const [fotoPreview, setFotoPreview] = useState<string>("");
 
   const solicitarParceriaMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
@@ -66,13 +68,25 @@ export default function Parceiros() {
     }
   });
 
-  const handleImagemChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImagemFile(file);
+      setLogoFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagemPreview(reader.result as string);
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFotoFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFotoPreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -92,8 +106,10 @@ export default function Parceiros() {
     setEmail("");
     setPrecoConsulta("");
     setDescontoPercentual("");
-    setImagemFile(null);
-    setImagemPreview("");
+    setLogoFile(null);
+    setLogoPreview("");
+    setFotoFile(null);
+    setFotoPreview("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -117,31 +133,56 @@ export default function Parceiros() {
       return;
     }
 
-    let imagemUrl: string | undefined;
+    let logoUrl: string | undefined;
+    let fotoUrl: string | undefined;
 
-    // Upload da imagem se fornecida
-    if (imagemFile) {
+    // Upload do logo se fornecido
+    if (logoFile) {
       setUploading(true);
       try {
         const formData = new FormData();
-        formData.append('file', imagemFile);
+        formData.append('file', logoFile);
         
         const response = await fetch('/api/upload', {
           method: 'POST',
           body: formData,
         });
 
-        if (!response.ok) throw new Error("Erro no upload");
+        if (!response.ok) throw new Error("Erro no upload do logo");
         
         const data = await response.json();
-        imagemUrl = data.url;
+        logoUrl = data.url;
       } catch (error) {
-        toast.error("Erro ao fazer upload da imagem");
+        toast.error("Erro ao fazer upload do logo");
         setUploading(false);
         return;
       }
-      setUploading(false);
     }
+
+    // Upload da foto se fornecida
+    if (fotoFile) {
+      setUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', fotoFile);
+        
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) throw new Error("Erro no upload da foto");
+        
+        const data = await response.json();
+        fotoUrl = data.url;
+      } catch (error) {
+        toast.error("Erro ao fazer upload da foto");
+        setUploading(false);
+        return;
+      }
+    }
+    
+    setUploading(false);
 
     solicitarParceriaMutation.mutate({
       tipoCredenciado,
@@ -158,7 +199,8 @@ export default function Parceiros() {
       email: email || undefined,
       precoConsulta,
       descontoPercentual: parseInt(descontoPercentual),
-      imagemUrl,
+      logoUrl,
+      fotoUrl,
     });
   };
 
@@ -416,19 +458,37 @@ export default function Parceiros() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="imagem">Imagem do Estabelecimento (opcional)</Label>
+                  <Label htmlFor="logo">Logo do Estabelecimento (opcional)</Label>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Foto do estabelecimento, logo ou produto
+                    Logo da clínica, empresa ou estabelecimento
                   </p>
                   <Input
-                    id="imagem"
+                    id="logo"
                     type="file"
                     accept="image/*"
-                    onChange={handleImagemChange}
+                    onChange={handleLogoChange}
                   />
-                  {imagemPreview && (
+                  {logoPreview && (
                     <div className="mt-4">
-                      <img src={imagemPreview} alt="Preview" className="max-w-xs rounded-lg border" />
+                      <img src={logoPreview} alt="Preview Logo" className="max-w-xs rounded-lg border" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="foto">{tipoCredenciado === "medico" ? "Foto do Médico" : "Foto do Estabelecimento"} (opcional)</Label>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {tipoCredenciado === "medico" ? "Foto profissional do médico" : "Foto da fachada ou interior do estabelecimento"}
+                  </p>
+                  <Input
+                    id="foto"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFotoChange}
+                  />
+                  {fotoPreview && (
+                    <div className="mt-4">
+                      <img src={fotoPreview} alt="Preview Foto" className="max-w-xs rounded-lg border" />
                     </div>
                   )}
                 </div>
