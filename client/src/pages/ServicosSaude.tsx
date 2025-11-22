@@ -175,7 +175,7 @@ export default function Consulta() {
             <p className="text-sm md:text-base text-center text-muted-foreground mb-3 font-medium">Nossos principais parceiros pelo Brasil</p>
             <div className="flex justify-center">
               <img 
-                src="/parceiros-nacionais.a8f3d2e1.webp" 
+                src="/parceiros-nacionais.jpeg" 
                 alt="Parceiros Nacionais Vital" 
                 className="w-full max-w-5xl h-auto rounded-lg shadow-md"
               />

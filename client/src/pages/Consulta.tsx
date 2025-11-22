@@ -109,7 +109,7 @@ export default function Consulta() {
             Nossos principais parceiros pelo Brasil
           </h2>
           <div className="flex flex-wrap items-center justify-center gap-6">
-            <img src="/parceiros-nacionais.webp" alt="Parceiros Nacionais" className="max-w-full h-auto" />
+            <img src="/parceiros-nacionais.jpeg" alt="Parceiros Nacionais" className="max-w-full h-auto" />
           </div>
         </div>
       </section>

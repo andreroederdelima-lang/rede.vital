@@ -732,3 +732,11 @@
 - [ ] E-mail para parceiro quando solicitação for aprovada (funcionalidade futura)
 - [ ] E-mail para parceiro quando solicitação for rejeitada (funcionalidade futura)
 - [ ] E-mail para indicador sobre comissões (funcionalidade futura)
+
+
+## Ajuste Imagem Parceiros Nacionais
+
+- [x] Localizar onde imagem de Parceiros Nacionais está sendo usada
+- [x] Copiar nova imagem para client/public
+- [x] Substituir referência da imagem quebrada
+- [x] Testar visualização
