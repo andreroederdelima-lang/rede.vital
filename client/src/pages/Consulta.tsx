@@ -91,10 +91,10 @@ export default function Consulta() {
             Rede Credenciada - Vale do Itajaí - Santa Catarina
           </p>
           <p 
-            className="text-sm mt-2" 
+            className="text-sm mt-2 max-w-3xl mx-auto" 
             style={{ color: VITAL_COLORS.mediumGray }}
           >
-            Para acessar a Busca de Parceiros a nível Nacional - acesse sua área do cliente (+34.100 farmácias | +3.100 médicos, clínicas e hospitais | +350 laboratórios).
+            Encontre aqui todos os parceiros credenciados da Sua Saúde Vital na região do Vale do Itajaí. Navegue pelas categorias, escolha sua cidade ou utilize a busca para localizar rapidamente clínicas, especialistas, serviços de saúde e demais parceiros onde você possui condições exclusivas como assinante.
           </p>
         </div>
       </header>
@@ -295,82 +295,151 @@ export default function Consulta() {
                   {medicos.map((medico: any) => (
                     <Card 
                       key={medico.id} 
-                      className="rounded-xl shadow-sm hover:shadow-md transition-shadow"
-                      style={{ border: `1px solid ${VITAL_COLORS.lightGray}` }}
+                      className="rounded-2xl overflow-hidden relative"
+                      style={{ 
+                        backgroundColor: VITAL_COLORS.white,
+                        border: `1px solid #E5E5E5`,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+                      }}
                     >
-                      <CardHeader>
-                        <div className="flex items-start gap-4">
-                          <img
-                            src={medico.fotoUrl || "/medico-padrao.png"}
-                            alt={medico.nome}
-                            className="w-16 h-16 rounded-full object-cover"
-                            style={{ border: `2px solid ${VITAL_COLORS.turquoise}` }}
-                          />
-                          <div className="flex-1">
-                            <CardTitle 
-                              className="text-lg mb-1" 
-                              style={{ color: VITAL_COLORS.turquoise }}
-                            >
-                              {medico.nome}
-                            </CardTitle>
-                            <p 
-                              className="text-sm" 
-                              style={{ color: VITAL_COLORS.darkGray }}
-                            >
-                              {medico.especialidade}
-                            </p>
+                      <CardContent className="p-6">
+                        {/* Layout: Foto + Info + Botões */}
+                        <div className="flex items-start gap-4 mb-4">
+                          {/* Foto/Avatar */}
+                          <div className="flex-shrink-0">
+                            <img
+                              src={medico.fotoUrl || "/avatar-medico.jpg"}
+                              alt={medico.nome}
+                              className="w-20 h-20 rounded-xl object-cover"
+                              style={{ 
+                                boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                                backgroundColor: VITAL_COLORS.white
+                              }}
+                            />
                           </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="flex items-start gap-2">
-                          <MapPin size={16} style={{ color: VITAL_COLORS.turquoise, flexShrink: 0, marginTop: 2 }} />
-                          <p className="text-sm" style={{ color: VITAL_COLORS.mediumGray }}>
-                            {medico.endereco} - {medico.municipio}
-                          </p>
-                        </div>
-                        {(medico.telefone || medico.whatsapp) && (
-                          <div className="flex items-center gap-2">
-                            <Phone size={16} style={{ color: VITAL_COLORS.turquoise }} />
-                            <p className="text-sm" style={{ color: VITAL_COLORS.mediumGray }}>
-                              {medico.telefone || medico.whatsapp}
-                            </p>
-                          </div>
-                        )}
-                        <div className="flex gap-2 pt-2">
-                          {medico.whatsappSecretaria && (
-                            <a
-                              href={formatWhatsAppLink(medico.whatsappSecretaria)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1"
-                            >
-                              <Button 
-                                size="sm" 
-                                className="w-full rounded-lg"
-                                style={{
-                                  backgroundColor: VITAL_COLORS.turquoise,
-                                  color: VITAL_COLORS.white,
+
+                          {/* Informações + Botões */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-3 mb-2">
+                              {/* Nome e Especialidade */}
+                              <div className="flex-1 min-w-0">
+                                <h3 
+                                  className="font-semibold text-base mb-1 truncate" 
+                                  style={{ color: VITAL_COLORS.turquoise }}
+                                >
+                                  {medico.nome}
+                                </h3>
+                                <p 
+                                  className="text-sm mb-2" 
+                                  style={{ color: VITAL_COLORS.darkGray }}
+                                >
+                                  {medico.especialidade}
+                                </p>
+                              </div>
+
+                              {/* Botões à direita */}
+                              <div className="flex gap-2 flex-shrink-0">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => compartilharCredenciado(medico.nome, medico.endereco, medico.telefone)}
+                                  className="rounded-lg h-8 w-8 p-0"
+                                  style={{
+                                    border: `1px solid ${VITAL_COLORS.turquoise}`,
+                                    color: VITAL_COLORS.turquoise,
+                                  }}
+                                  title="Compartilhar"
+                                >
+                                  <Share2 size={14} />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="rounded-lg h-8 w-8 p-0"
+                                  style={{
+                                    border: `1px solid ${VITAL_COLORS.turquoise}`,
+                                    color: VITAL_COLORS.turquoise,
+                                  }}
+                                  title="Ver no mapa"
+                                >
+                                  <MapPin size={14} />
+                                </Button>
+                              </div>
+                            </div>
+
+                            {/* Chips */}
+                            <div className="flex flex-wrap gap-2 mb-3">
+                              <Badge 
+                                className="rounded-full px-3 py-1 text-xs font-normal"
+                                style={{ 
+                                  backgroundColor: VITAL_COLORS.beige,
+                                  color: VITAL_COLORS.darkGray,
+                                  border: 'none'
                                 }}
                               >
-                                <MessageCircle size={14} className="mr-1" />
-                                Fale com o Parceiro
-                              </Button>
-                            </a>
-                          )}
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => compartilharCredenciado(medico.nome, medico.endereco, medico.telefone)}
-                            className="rounded-lg"
-                            style={{
-                              border: `1px solid ${VITAL_COLORS.turquoise}`,
-                              color: VITAL_COLORS.turquoise,
-                            }}
-                          >
-                            <Share2 size={14} />
-                          </Button>
+                                {medico.municipio}
+                              </Badge>
+                              <Badge 
+                                className="rounded-full px-3 py-1 text-xs font-normal"
+                                style={{ 
+                                  backgroundColor: VITAL_COLORS.beige,
+                                  color: VITAL_COLORS.darkGray,
+                                  border: 'none'
+                                }}
+                              >
+                                {medico.tipoAtendimento === 'presencial' ? 'Presencial' : 
+                                 medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 
+                                 'Presencial e Telemedicina'}
+                              </Badge>
+                            </div>
+                          </div>
                         </div>
+
+                        {/* Informações extras */}
+                        <div className="space-y-2 mb-4">
+                          <p className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+                            {medico.endereco}
+                          </p>
+                          {(medico.telefone || medico.whatsapp) && (
+                            <p className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+                              {medico.telefone || medico.whatsapp}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Botão WhatsApp */}
+                        {medico.whatsappSecretaria && (
+                          <a
+                            href={formatWhatsAppLink(medico.whatsappSecretaria)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block"
+                          >
+                            <Button 
+                              size="sm" 
+                              className="w-full rounded-lg"
+                              style={{
+                                backgroundColor: VITAL_COLORS.turquoise,
+                                color: VITAL_COLORS.white,
+                              }}
+                            >
+                              <MessageCircle size={14} className="mr-2" />
+                              Fale com o Parceiro
+                            </Button>
+                          </a>
+                        )}
+
+                        {/* Selo Vital no canto inferior direito */}
+                        <img
+                          src="/selo-vital.png"
+                          alt="Credenciado Vital"
+                          className="absolute bottom-3 right-3"
+                          style={{
+                            width: '26px',
+                            height: 'auto',
+                            opacity: 0.9
+                          }}
+                        />
                       </CardContent>
                     </Card>
                   ))}
@@ -394,82 +463,139 @@ export default function Consulta() {
                   {instituicoes.map((inst: any) => (
                     <Card 
                       key={inst.id} 
-                      className="rounded-xl shadow-sm hover:shadow-md transition-shadow"
-                      style={{ border: `1px solid ${VITAL_COLORS.lightGray}` }}
+                      className="rounded-2xl overflow-hidden relative"
+                      style={{ 
+                        backgroundColor: VITAL_COLORS.white,
+                        border: `1px solid #E5E5E5`,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+                      }}
                     >
-                      <CardHeader>
-                        <div className="flex items-start gap-4">
-                          <img
-                            src={inst.fotoUrl || "/medico-padrao.png"}
-                            alt={inst.nome}
-                            className="w-16 h-16 rounded-full object-cover"
-                            style={{ border: `2px solid ${VITAL_COLORS.turquoise}` }}
-                          />
-                          <div className="flex-1">
-                            <CardTitle 
-                              className="text-lg mb-1" 
-                              style={{ color: VITAL_COLORS.turquoise }}
-                            >
-                              {inst.nome}
-                            </CardTitle>
-                            <p 
-                              className="text-sm" 
-                              style={{ color: VITAL_COLORS.darkGray }}
-                            >
-                              {inst.categoria}
-                            </p>
+                      <CardContent className="p-6">
+                        {/* Layout: Foto + Info + Botões */}
+                        <div className="flex items-start gap-4 mb-4">
+                          {/* Foto/Avatar */}
+                          <div className="flex-shrink-0">
+                            <img
+                              src={inst.fotoUrl || (tipoCredenciado === "servicos_saude" ? "/avatar-servicos-saude.jpg" : "/avatar-outros-servicos.jpg")}
+                              alt={inst.nome}
+                              className="w-20 h-20 rounded-xl object-cover"
+                              style={{ 
+                                boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                                backgroundColor: VITAL_COLORS.white
+                              }}
+                            />
                           </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="flex items-start gap-2">
-                          <MapPin size={16} style={{ color: VITAL_COLORS.turquoise, flexShrink: 0, marginTop: 2 }} />
-                          <p className="text-sm" style={{ color: VITAL_COLORS.mediumGray }}>
-                            {inst.endereco} - {inst.municipio}
-                          </p>
-                        </div>
-                        {(inst.telefone || inst.whatsapp) && (
-                          <div className="flex items-center gap-2">
-                            <Phone size={16} style={{ color: VITAL_COLORS.turquoise }} />
-                            <p className="text-sm" style={{ color: VITAL_COLORS.mediumGray }}>
-                              {inst.telefone || inst.whatsapp}
-                            </p>
-                          </div>
-                        )}
-                        <div className="flex gap-2 pt-2">
-                          {inst.whatsappComercial && (
-                            <a
-                              href={formatWhatsAppLink(inst.whatsappComercial)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1"
-                            >
-                              <Button 
-                                size="sm" 
-                                className="w-full rounded-lg"
-                                style={{
-                                  backgroundColor: VITAL_COLORS.turquoise,
-                                  color: VITAL_COLORS.white,
+
+                          {/* Informações + Botões */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-3 mb-2">
+                              {/* Nome e Categoria */}
+                              <div className="flex-1 min-w-0">
+                                <h3 
+                                  className="font-semibold text-base mb-1 truncate" 
+                                  style={{ color: VITAL_COLORS.turquoise }}
+                                >
+                                  {inst.nome}
+                                </h3>
+                                <p 
+                                  className="text-sm mb-2" 
+                                  style={{ color: VITAL_COLORS.darkGray }}
+                                >
+                                  {inst.categoria}
+                                </p>
+                              </div>
+
+                              {/* Botões à direita */}
+                              <div className="flex gap-2 flex-shrink-0">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => compartilharCredenciado(inst.nome, inst.endereco, inst.telefone)}
+                                  className="rounded-lg h-8 w-8 p-0"
+                                  style={{
+                                    border: `1px solid ${VITAL_COLORS.turquoise}`,
+                                    color: VITAL_COLORS.turquoise,
+                                  }}
+                                  title="Compartilhar"
+                                >
+                                  <Share2 size={14} />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="rounded-lg h-8 w-8 p-0"
+                                  style={{
+                                    border: `1px solid ${VITAL_COLORS.turquoise}`,
+                                    color: VITAL_COLORS.turquoise,
+                                  }}
+                                  title="Ver no mapa"
+                                >
+                                  <MapPin size={14} />
+                                </Button>
+                              </div>
+                            </div>
+
+                            {/* Chip de Município */}
+                            <div className="flex flex-wrap gap-2 mb-3">
+                              <Badge 
+                                className="rounded-full px-3 py-1 text-xs font-normal"
+                                style={{ 
+                                  backgroundColor: VITAL_COLORS.beige,
+                                  color: VITAL_COLORS.darkGray,
+                                  border: 'none'
                                 }}
                               >
-                                <MessageCircle size={14} className="mr-1" />
-                                Fale com o Parceiro
-                              </Button>
-                            </a>
-                          )}
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => compartilharCredenciado(inst.nome, inst.endereco, inst.telefone)}
-                            className="rounded-lg"
-                            style={{
-                              border: `1px solid ${VITAL_COLORS.turquoise}`,
-                              color: VITAL_COLORS.turquoise,
-                            }}
-                          >
-                            <Share2 size={14} />
-                          </Button>
+                                {inst.municipio}
+                              </Badge>
+                            </div>
+                          </div>
                         </div>
+
+                        {/* Informações extras */}
+                        <div className="space-y-2 mb-4">
+                          <p className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+                            {inst.endereco}
+                          </p>
+                          {(inst.telefone || inst.whatsapp) && (
+                            <p className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+                              {inst.telefone || inst.whatsapp}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Botão WhatsApp */}
+                        {inst.whatsappComercial && (
+                          <a
+                            href={formatWhatsAppLink(inst.whatsappComercial)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block"
+                          >
+                            <Button 
+                              size="sm" 
+                              className="w-full rounded-lg"
+                              style={{
+                                backgroundColor: VITAL_COLORS.turquoise,
+                                color: VITAL_COLORS.white,
+                              }}
+                            >
+                              <MessageCircle size={14} className="mr-2" />
+                              Fale com o Parceiro
+                            </Button>
+                          </a>
+                        )}
+
+                        {/* Selo Vital no canto inferior direito */}
+                        <img
+                          src="/selo-vital.png"
+                          alt="Credenciado Vital"
+                          className="absolute bottom-3 right-3"
+                          style={{
+                            width: '26px',
+                            height: 'auto',
+                            opacity: 0.9
+                          }}
+                        />
                       </CardContent>
                     </Card>
                   ))}

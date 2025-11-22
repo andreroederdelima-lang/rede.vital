@@ -668,3 +668,25 @@
 ### Páginas a Atualizar
 - [x] Página Consulta (Home pública - /)
 - [x] Página Dados Internos (/dados-internos) - Reformulação parcial (header e cores)
+
+
+## Cards Premium - Visual Atualizado
+
+### Especificações
+- [x] Foto/Avatar quadrado com bordas arredondadas e sombra suave
+- [x] Usar avatar padrão Vital se parceiro não tiver foto
+- [x] Adicionar selo Vital no canto inferior direito (26px, opacidade 90%)
+- [x] Nome em turquesa (#1E9D9F)
+- [x] Especialidade/Categoria em cinza escuro
+- [x] Chips de cidade/modalidade com fundo bege (#C6BCA4)
+- [x] Botões Mapa e Compartilhar alinhados à direita
+- [x] Fundo branco, borda #E5E5E5, sombra suave
+- [x] Responsivo: botões mantidos à direita com flex-shrink-0
+
+### Imagens
+- [x] Receber avatares padrão (Médicos, Serviços Saúde, Outros Serviços)
+- [x] Copiar avatares para client/public
+- [x] Preparar selo Vital para cards
+
+### Textos
+- [x] Atualizar frase descritiva abaixo de "Guia do Assinante"
