@@ -399,14 +399,18 @@ export default function Consulta() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const mensagem = `*${medico.nome}*\n\n` +
+                            const whatsappNumero = (medico.whatsapp || medico.telefone || '').replace(/\D/g, '');
+                            const mensagem =
+                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí\n\n` +
+                              `*${medico.nome}*\n` +
                               `Especialidade: ${medico.especialidade}${medico.subespecialidade ? ` • ${medico.subespecialidade}` : ''}\n` +
                               `Município: ${medico.municipio}\n` +
                               `Endereço: ${medico.endereco}\n` +
                               `${medico.telefone || medico.whatsapp ? `Telefone: ${medico.telefone || medico.whatsapp}\n` : ''}` +
-                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n\n` +
-                              `💚 *Vital, sempre ao seu lado* 💚\n` +
-                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí`;
+                              `Atendimento: ${medico.tipoAtendimento === 'presencial' ? 'Presencial 🏥' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina 💻' : 'Presencial e Telemedicina 🏥💻'}\n\n` +
+                              `💚 *Vital, sempre ao seu lado* 💚\n\n` +
+                              `Vem ser VITAL!\n` +
+                              (whatsappNumero ? `👉 Fale com o especialista: https://wa.me/55${whatsappNumero}` : '');
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
@@ -513,14 +517,18 @@ export default function Consulta() {
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const mensagem = `*${inst.nome}*\n\n` +
+                            const whatsappNumero = (inst.telefone || '').replace(/\D/g, '');
+                            const mensagem =
+                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí\n\n` +
+                              `*${inst.nome}*\n` +
                               `Categoria: ${inst.categoria}\n` +
                               `Município: ${inst.municipio}\n` +
                               `Endereço: ${inst.endereco}\n` +
                               `${inst.telefone ? `Telefone: ${inst.telefone}\n` : ''}` +
                               `${inst.email ? `Email: ${inst.email}\n` : ''}\n` +
-                              `💚 *Vital, sempre ao seu lado* 💚\n` +
-                              `Credenciado Vital - Guia de Parceiros Vital - Vale do Itajaí`;
+                              `💚 *Vital, sempre ao seu lado* 💚\n\n` +
+                              `Vem ser VITAL!\n` +
+                              (whatsappNumero ? `👉 Fale com o especialista: https://wa.me/55${whatsappNumero}` : '');
                             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >

@@ -490,3 +490,12 @@
 - [x] Atualizar router tRPC para permitir cadastro público sem autenticação
 - [x] Criar página de login para indicadores sem senha
 - [ ] Testar fluxo completo de cadastro e login (em andamento - endpoint criado, teste pendente)
+
+
+## Ajustes de Compartilhamento e QR Codes
+
+- [x] Ajustar mensagem de compartilhamento de parceiros para incluir botão WhatsApp do especialista
+- [x] Melhorar formatação da mensagem compartilhada (adicionar "Vem ser VITAL!" e link direto)
+- [x] Criar QR Code fixo para WhatsApp do time de vendas (especialistas)
+- [x] Criar página `/qr-codes` para promotores baixarem QR Code imprimível
+- [ ] Adicionar campo "WhatsApp Time de Vendas" nas configurações do sistema (opcional - número fixo usado por enquanto)
