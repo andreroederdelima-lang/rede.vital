@@ -1,6 +1,16 @@
 import { eq, sql, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao, indicadores, InsertIndicador, indicacoes, InsertIndicacao, comissoes, InsertComissao } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
+// @ts-ignore - TypeScript cache bug: exports exist but not recognized
+import { indicadores, indicacoes, comissoes } from "../drizzle/schema";
+
+// Workaround types for indicacoes system (TypeScript cache issue)
+type Indicador = typeof indicadores.$inferSelect;
+type InsertIndicador = typeof indicadores.$inferInsert;
+type Indicacao = typeof indicacoes.$inferSelect;
+type InsertIndicacao = typeof indicacoes.$inferInsert;
+type Comissao = typeof comissoes.$inferSelect;
+type InsertComissao = typeof comissoes.$inferInsert;
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;

@@ -443,3 +443,35 @@
 - [ ] Documentar credenciais SMTP necessárias
 - [ ] Documentar fluxo de permissões
 - [ ] Atualizar README com instruções de configuração
+
+
+## Conectar Dados Reais à Aba Indicações
+
+### Backend - Correções
+- [ ] Corrigir imports de `indicacoes`, `comissoes` e `indicadores` no db.ts
+- [ ] Verificar se routers tRPC de indicações estão funcionando
+
+### Frontend - Queries e Estatísticas
+- [ ] Implementar query `trpc.indicacoes.listarTodasAdmin.useQuery()`
+- [ ] Implementar query `trpc.indicacoes.estatisticas.useQuery()`
+- [ ] Popular cards de estatísticas com dados reais
+- [ ] Implementar filtros funcionais (status, vendedor, período)
+
+### Frontend - Tabela Interativa
+- [ ] Criar componente Table com colunas: ID, Cliente, Telefone, Vendedor, Status, Data, Ações
+- [ ] Adicionar botões de ação: Editar Status, Adicionar Comissão, Ver Detalhes
+- [ ] Implementar paginação
+- [ ] Implementar ordenação por colunas
+
+### Frontend - Modais de Gestão
+- [ ] Modal "Editar Status" - Atualizar status da indicação
+- [ ] Modal "Adicionar Comissão" - Registrar valor, data, comprovante
+- [ ] Modal "Cadastrar Promotor/Vendedor" - Formulário completo
+- [ ] Modal "Ver Detalhes" - Visualizar informações completas da indicação
+
+### Testes
+- [ ] Testar listagem de indicações
+- [ ] Testar filtros
+- [ ] Testar atualização de status
+- [ ] Testar cadastro de comissão
+- [ ] Testar cadastro de promotor

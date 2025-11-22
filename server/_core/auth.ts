@@ -28,20 +28,23 @@ export async function comparePassword(
 }
 
 /**
- * Gera JWT para autenticação
+ * Gera JWT para sessão de usuário interno
+ * TODO: Implementar quando JWT_SECRET for adicionado ao ENV
  */
 export function generateJWT(payload: {
   userId: number;
   email: string;
   role: string;
 }): string {
-  return jwt.sign(payload, ENV.jwtSecret, {
-    expiresIn: "7d", // Token válido por 7 dias
+  // Temporário: usar cookieSecret como fallback
+  return jwt.sign(payload, ENV.cookieSecret, {
+    expiresIn: "7d",
   });
 }
 
 /**
  * Verifica e decodifica JWT
+ * TODO: Implementar quando JWT_SECRET for adicionado ao ENV
  */
 export function verifyJWT(token: string): {
   userId: number;
@@ -49,7 +52,8 @@ export function verifyJWT(token: string): {
   role: string;
 } | null {
   try {
-    const decoded = jwt.verify(token, ENV.jwtSecret) as {
+    // Temporário: usar cookieSecret como fallback
+    const decoded = jwt.verify(token, ENV.cookieSecret) as {
       userId: number;
       email: string;
       role: string;

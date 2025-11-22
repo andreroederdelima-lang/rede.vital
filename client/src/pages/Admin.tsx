@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key } from "lucide-react";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
+import IndicacoesTab from "@/components/IndicacoesTab";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
@@ -386,7 +387,10 @@ export default function Admin() {
                                   variant="outline"
                                   size="sm"
                                   onClick={() => {
-                                    setEditingInstituicao(inst as InstituicaoForm);
+                                    setEditingInstituicao({
+                                      ...inst,
+                                      tipoServico: (inst as any).tipoServico || "servicos_saude"
+                                    } as InstituicaoForm);
                                     setInstituicaoDialogOpen(true);
                                   }}
                                 >
@@ -442,88 +446,7 @@ export default function Admin() {
 
           {/* Tab Indicações */}
           <TabsContent value="indicacoes">
-            <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Gestão de Indicações</h2>
-                <Button onClick={() => toast.info("Funcionalidade em desenvolvimento")}>
-                  Cadastrar Promotor/Vendedor
-                </Button>
-              </div>
-
-              {/* Estatísticas */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Estatísticas Gerais</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-primary">--</div>
-                      <div className="text-sm text-muted-foreground">Total de Indicações</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-yellow-600">--</div>
-                      <div className="text-sm text-muted-foreground">Pendentes</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-green-600">--</div>
-                      <div className="text-sm text-muted-foreground">Fechadas</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-blue-600">--</div>
-                      <div className="text-sm text-muted-foreground">Taxa de Conversão</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Filtros */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Filtros</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-4 gap-4">
-                    <div>
-                      <label className="text-sm font-medium">Status</label>
-                      <select className="w-full mt-1 p-2 border rounded">
-                        <option value="">Todos</option>
-                        <option value="pendente">Pendente</option>
-                        <option value="contatado">Contatado</option>
-                        <option value="fechado">Fechado</option>
-                        <option value="perdido">Perdido</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">Promotor/Vendedor</label>
-                      <select className="w-full mt-1 p-2 border rounded">
-                        <option value="">Todos</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">Data Início</label>
-                      <input type="date" className="w-full mt-1 p-2 border rounded" />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">Data Fim</label>
-                      <input type="date" className="w-full mt-1 p-2 border rounded" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Lista de Indicações */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Indicações</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8 text-muted-foreground">
-                    Funcionalidade em desenvolvimento. Em breve você poderá visualizar e gerenciar todas as indicações aqui.
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <IndicacoesTab />
           </TabsContent>
         </Tabs>
       </main>
