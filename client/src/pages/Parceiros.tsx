@@ -251,8 +251,8 @@ export default function Parceiros() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="servicos_saude">Serviços de Saúde (Clínicas, Hospitais, Laboratórios, Farmácias)</SelectItem>
-                      <SelectItem value="outros_servicos">Outros Serviços (Academias, Pet Shops, Estética, Bem-estar)</SelectItem>
+                      <SelectItem value="servicos_saude">Serviços de Saúde (Fisio, Fono, Clínicas, Laboratórios, Diagnóstico por Imagem, Farmácias)</SelectItem>
+                      <SelectItem value="outros_servicos">Outros Serviços (Artes Marciais, Academias, Lojas, Mercados, Padarias, Hotéis, Pet Shops)</SelectItem>
                     </SelectContent>
                   </Select>
                   <p className="text-sm text-muted-foreground">

@@ -339,3 +339,50 @@
 - [x] Home.tsx (Dados Internos) atualizado com 3 abas
 - [x] Testado e funcionando: Médicos (29), Serviços de Saúde (9), Outros Serviços (1)
 - [x] Console.logs de debug já foram removidos
+
+
+## Aba "Indicações" no Painel Admin
+
+### Backend
+- [ ] Criar router `indicacoes.listar` - listar todas as indicações com filtros
+- [ ] Criar router `indicacoes.atualizar` - atualizar status e observações
+- [ ] Criar router `indicacoes.estatisticas` - estatísticas gerais (total, por status, taxa de conversão)
+- [ ] Criar router `indicadores.listar` - listar todos os promotores/vendedores
+- [ ] Criar router `indicadores.criar` - cadastrar novo promotor/vendedor
+- [ ] Criar router `indicadores.atualizar` - editar promotor/vendedor
+- [ ] Criar router `comissoes.criar` - registrar comissão paga
+- [ ] Criar router `comissoes.listar` - listar comissões por indicação
+- [ ] Criar queries no db.ts para todas as operações acima
+
+### Frontend
+- [ ] Adicionar aba "Indicações" no Admin.tsx
+- [ ] Criar seção de listagem de indicações com tabela
+- [ ] Adicionar filtros: vendedor, status, período (data início/fim)
+- [ ] Implementar modal de edição de indicação (status, observações)
+- [ ] Criar seção de cadastro de promotores/vendedores
+- [ ] Implementar modal de gestão de comissões (valor, data, comprovante)
+- [ ] Adicionar cards de estatísticas no topo (total, pendentes, fechadas, taxa conversão)
+- [ ] Implementar busca por nome do cliente/empresa
+
+### Testes
+- [ ] Testar listagem de indicações
+- [ ] Testar filtros e busca
+- [ ] Testar atualização de status
+- [ ] Testar cadastro de promotor/vendedor
+- [ ] Testar registro de comissão
+- [ ] Verificar estatísticas
+
+
+## Correção de Exemplos de Categorias
+
+### Serviços de Saúde (exemplos corretos)
+- Fisioterapia, Fonoaudiologia, Clínicas, Laboratórios, Centros de Diagnóstico por Imagem, Farmácias, Hospitais, Psicologia, Nutrição, Odontologia
+
+### Outros Serviços (exemplos corretos)
+- Artes Marciais, Academias, Lojas, Mercados, Mercearias, Padarias, Hotéis, Pet Shops, Salões de Beleza, Estética, Restaurantes
+
+### Locais para atualizar
+- [x] Placeholder de busca na aba Serviços de Saúde (Consulta.tsx)
+- [x] Placeholder de busca na aba Outros Serviços (Consulta.tsx)
+- [x] Texto explicativo no formulário Seja Parceiro (Parceiros.tsx)
+- [x] Placeholder de busca na página Dados Internos (Home.tsx)

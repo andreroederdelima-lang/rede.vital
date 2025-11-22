@@ -702,3 +702,120 @@ export async function listarComissoes(indicadorId?: number) {
   
   return await query.orderBy(desc(comissoes.createdAt));
 }
+
+
+// Queries avançadas para Admin
+
+export async function listarTodasIndicacoesComFiltros(filtros?: {
+  indicadorId?: number;
+  status?: string;
+  dataInicio?: Date;
+  dataFim?: Date;
+}) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  let query = db
+    .select({
+      indicacao: indicacoes,
+      indicador: indicadores,
+    })
+    .from(indicacoes)
+    .leftJoin(indicadores, eq(indicacoes.indicadorId, indicadores.id));
+  
+  const condicoes: any[] = [];
+  
+  if (filtros?.indicadorId) {
+    condicoes.push(eq(indicacoes.indicadorId, filtros.indicadorId));
+  }
+  
+  if (filtros?.status) {
+    condicoes.push(eq(indicacoes.status, filtros.status as any));
+  }
+  
+  if (filtros?.dataInicio) {
+    condicoes.push(sql`${indicacoes.createdAt} >= ${filtros.dataInicio}`);
+  }
+  
+  if (filtros?.dataFim) {
+    condicoes.push(sql`${indicacoes.createdAt} <= ${filtros.dataFim}`);
+  }
+  
+  if (condicoes.length > 0) {
+    query = query.where(and(...condicoes)) as any;
+  }
+  
+  const resultado = await query.orderBy(desc(indicacoes.createdAt));
+  
+  return resultado.map(r => ({
+    ...r.indicacao,
+    indicadorNome: r.indicador?.nome || "Desconhecido",
+    indicadorTipo: r.indicador?.tipo || "promotor",
+  }));
+}
+
+export async function obterEstatisticasIndicacoes() {
+  const db = await getDb();
+  if (!db) return {
+    total: 0,
+    pendentes: 0,
+    contatadas: 0,
+    fechadas: 0,
+    perdidas: 0,
+    taxaConversao: 0,
+  };
+  
+  const stats = await db
+    .select({
+      status: indicacoes.status,
+      quantidade: sql<number>`COUNT(*)`.as('quantidade'),
+    })
+    .from(indicacoes)
+    .groupBy(indicacoes.status);
+  
+  const total = stats.reduce((acc, s) => acc + Number(s.quantidade), 0);
+  const pendentes = stats.find(s => s.status === "pendente")?.quantidade || 0;
+  const contatadas = stats.find(s => s.status === "contatado")?.quantidade || 0;
+  const fechadas = stats.find(s => s.status === "fechado")?.quantidade || 0;
+  const perdidas = stats.find(s => s.status === "perdido")?.quantidade || 0;
+  
+  const taxaConversao = total > 0 ? (Number(fechadas) / total) * 100 : 0;
+  
+  return {
+    total,
+    pendentes: Number(pendentes),
+    contatadas: Number(contatadas),
+    fechadas: Number(fechadas),
+    perdidas: Number(perdidas),
+    taxaConversao: Math.round(taxaConversao * 10) / 10,
+  };
+}
+
+export async function atualizarIndicador(id: number, data: Partial<InsertIndicador>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(indicadores).set(data).where(eq(indicadores.id, id));
+}
+
+export async function obterIndicadorPorId(id: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const result = await db.select().from(indicadores).where(eq(indicadores.id, id)).limit(1);
+  return result[0] || null;
+}
+
+export async function listarComissoesPorIndicacao(indicacaoId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return await db.select().from(comissoes).where(eq(comissoes.indicacaoId, indicacaoId)).orderBy(desc(comissoes.createdAt));
+}
+
+export async function atualizarComissao(id: number, data: Partial<InsertComissao>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(comissoes).set(data).where(eq(comissoes.id, id));
+}

@@ -391,7 +391,9 @@ export default function Home() {
               <Input
                 placeholder={tipoCredenciado === "medicos" 
                   ? "Buscar por nome do médico, especialidade ou clínica..." 
-                  : "Buscar por nome, setor (Pet Shop, Jiu-jitsu, etc) ou endereço..."}
+                  : tipoCredenciado === "servicos_saude"
+                  ? "Buscar por nome (Fisioterapia, Laboratório, Farmácia, Clínica...)" 
+                  : "Buscar por nome (Academia, Padaria, Mercado, Hotel, Pet Shop...)"}
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
                 className="pl-10"
