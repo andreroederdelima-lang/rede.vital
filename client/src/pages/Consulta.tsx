@@ -91,10 +91,16 @@ export default function Consulta() {
             Rede Credenciada - Vale do Itajaí - Santa Catarina
           </p>
           <p 
-            className="text-sm mt-2 max-w-3xl mx-auto" 
-            style={{ color: VITAL_COLORS.mediumGray }}
+            className="text-lg mt-2 max-w-3xl mx-auto" 
+            style={{ color: VITAL_COLORS.darkGray }}
           >
             Encontre aqui todos os parceiros credenciados da Sua Saúde Vital na região do Vale do Itajaí. Navegue pelas categorias, escolha sua cidade ou utilize a busca para localizar rapidamente clínicas, especialistas, serviços de saúde e demais parceiros onde você possui condições exclusivas como assinante.
+          </p>
+          <p 
+            className="text-sm mt-3 max-w-3xl mx-auto" 
+            style={{ color: VITAL_COLORS.mediumGray }}
+          >
+            Para acessar a Busca de Parceiros a nível Nacional - acesse sua área do cliente (+34.100 farmácias | +3.100 médicos, clínicas e hospitais | +350 laboratórios).
           </p>
         </div>
       </header>

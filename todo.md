@@ -759,3 +759,11 @@
 - [x] Manter controle de acesso por email autorizado
 - [x] Remover páginas de recuperação de senha
 - [x] Testar fluxo completo de login com Google
+
+
+## Atualizar Texto Rede Credenciada
+
+- [x] Substituir texto "Rede Credenciada" por novo conteúdo fornecido
+- [x] Adicionar nota discreta sobre rede nacional abaixo do texto principal
+- [x] Ajustar tamanhos e cores conforme especificado
+- [x] Testar visualização
