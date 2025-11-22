@@ -772,3 +772,35 @@
 ## Remover Frase "Rede Credenciada"
 
 - [x] Remover parágrafo "Rede Credenciada - Vale do Itajaí - Santa Catarina"
+
+
+## Revisão Pré-Lançamento
+
+### Páginas Públicas
+- [x] Consulta Pública - responsividade mobile
+- [x] Consulta Pública - formulários e filtros
+- [x] Serviços de Saúde - responsividade mobile
+- [x] Outros Serviços - responsividade mobile
+- [x] Cadastro Parceiro - formulário e validações
+- [x] Cadastro Indicador - formulário e validações
+- [x] Solicitação de Acesso - formulário e email
+
+### Área Dados Internos
+- [x] Login com Google - fluxo completo
+- [x] Home Dados Internos - responsividade mobile
+- [x] Formulários de cadastro/edição - validações
+- [x] Geração de links de atualização
+- [x] Encaminhamento médico - impressão
+
+### Emails e Notificações
+- [ ] Email de solicitação de acesso
+- [ ] Email de cadastro de parceiro
+- [ ] Email de cadastro de indicador
+- [ ] Notificações ao owner
+
+### Responsividade e Layout
+- [x] Elementos sobrepostos
+- [x] Botões e links funcionando
+- [x] Imagens carregando
+- [x] Cores e espaçamentos
+- [x] Navegação mobile

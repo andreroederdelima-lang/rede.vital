@@ -21,21 +21,7 @@ import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 export default function Home() {
   const { isAuthenticated, isLoading: authLoading, logout, user } = useDadosInternosAuth();
   
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Verificando autenticação...</p>
-        </div>
-      </div>
-    );
-  }
-  
-  if (!isAuthenticated) {
-    return null; // Redireciona para login
-  }
-
+  // Todos os hooks devem vir ANTES de qualquer return condicional
   const [busca, setBusca] = useState("");
   const [especialidade, setEspecialidade] = useState<string>("");
   const [municipio, setMunicipio] = useState<string>("");
@@ -271,8 +257,10 @@ export default function Home() {
       </div>
     );
   }
-
-
+  
+  if (!isAuthenticated) {
+    return null; // Redireciona para login
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: VITAL_COLORS.white }}>

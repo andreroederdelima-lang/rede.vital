@@ -622,7 +622,7 @@ export default function Consulta() {
                 className="font-medium mb-1" 
                 style={{ color: VITAL_COLORS.darkGray }}
               >
-                Sua Saúde Vital – Rede Credenciada Vale do Itajaí
+                Sua Saúde Vital
               </p>
               <a 
                 href="mailto:comercial@suasaudevital.com.br"
