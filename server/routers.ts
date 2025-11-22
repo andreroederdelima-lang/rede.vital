@@ -176,6 +176,7 @@ export const appRouter = router({
         tipoCredenciado: z.enum(["medico", "instituicao"]).default("instituicao"),
         nomeResponsavel: z.string().min(1, "Nome do responsável é obrigatório"),
         nomeEstabelecimento: z.string().min(1, "Nome do estabelecimento é obrigatório"),
+        tipoServico: z.enum(["servicos_saude", "outros_servicos"]).optional(),
         categoria: z.string().min(1, "Categoria é obrigatória"),
         especialidade: z.string().optional(),
         areaAtuacao: z.string().optional(),

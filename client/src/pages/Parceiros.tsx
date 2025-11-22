@@ -36,6 +36,7 @@ export default function Parceiros() {
   const [tipoCredenciado, setTipoCredenciado] = useState<"medico" | "instituicao">("instituicao");
   const [nomeResponsavel, setNomeResponsavel] = useState("");
   const [nomeEstabelecimento, setNomeEstabelecimento] = useState("");
+  const [tipoServico, setTipoServico] = useState<"servicos_saude" | "outros_servicos">("servicos_saude");
   const [categoria, setCategoria] = useState("");
   const [especialidade, setEspecialidade] = useState("");
   const [areaAtuacao, setAreaAtuacao] = useState("");
@@ -135,6 +136,7 @@ export default function Parceiros() {
       tipoCredenciado,
       nomeResponsavel,
       nomeEstabelecimento,
+      tipoServico: tipoCredenciado === "instituicao" ? tipoServico : undefined,
       categoria: categoria as any,
       especialidade: tipoCredenciado === "medico" ? especialidade : undefined,
       areaAtuacao: tipoCredenciado === "medico" ? areaAtuacao : undefined,
@@ -240,6 +242,22 @@ export default function Parceiros() {
                     placeholder="Nome da clínica, farmácia, etc."
                     required
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="tipoServico">Tipo de Serviço *</Label>
+                  <Select value={tipoServico} onValueChange={(v: any) => setTipoServico(v)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="servicos_saude">Serviços de Saúde (Clínicas, Hospitais, Laboratórios, Farmácias)</SelectItem>
+                      <SelectItem value="outros_servicos">Outros Serviços (Academias, Pet Shops, Estética, Bem-estar)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-sm text-muted-foreground">
+                    Selecione se seu estabelecimento é da área da saúde ou oferece outros tipos de serviços.
+                  </p>
                 </div>
 
                 <div className="space-y-2">

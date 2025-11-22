@@ -321,7 +321,7 @@
 - [x] Adicionar terceira aba "Outros Serviços"
 - [x] Adicionar campo "categoria" na tabela instituicoes (enum: servicos_saude, outros_servicos)
 - [x] Atualizar formulários Admin para incluir seleção de categoria
-- [ ] Atualizar formulário de Parceiros para incluir categoria
+- [x] Atualizar formulário de Parceiros para incluir categoria
 - [x] Atualizar queries tRPC para filtrar por categoria
 - [x] Atualizar interface Consulta para exibir 3 abas
 - [x] Atualizar interface Dados Internos para exibir 3 abas

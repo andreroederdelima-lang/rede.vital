@@ -78,6 +78,13 @@
       "when": 1763769514878,
       "tag": "0010_abnormal_madrox",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1763773182241,
+      "tag": "0011_fine_yellow_claw",
+      "breakpoints": true
     }
   ]
 }

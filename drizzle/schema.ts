@@ -84,6 +84,7 @@ export const solicitacoesParceria = mysqlTable("solicitacoesParceria", {
   tipoCredenciado: mysqlEnum("tipoCredenciado", ["medico", "instituicao"]).default("instituicao").notNull(),
   nomeResponsavel: varchar("nomeResponsavel", { length: 255 }).notNull(),
   nomeEstabelecimento: varchar("nomeEstabelecimento", { length: 255 }).notNull(),
+  tipoServico: mysqlEnum("tipoServico", ["servicos_saude", "outros_servicos"]),
   categoria: varchar("categoria", { length: 255 }).notNull(),
   especialidade: varchar("especialidade", { length: 255 }),
   areaAtuacao: varchar("areaAtuacao", { length: 255 }),

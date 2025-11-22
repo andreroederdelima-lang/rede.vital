@@ -1,0 +1,1 @@
+ALTER TABLE `solicitacoesParceria` ADD `tipoServico` enum('servicos_saude','outros_servicos');
