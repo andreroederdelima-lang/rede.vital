@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe, Link2 } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe, Link2, Home as HomeIcon, TrendingUp } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -304,48 +304,22 @@ export default function Home() {
               </Button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto mt-3 lg:mt-0">
-              <a href="https://assinaturas.suasaudevital.com.br/" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 w-full sm:w-auto">
-                  <Wallet className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Preços das Assinaturas Vital</span>
-                </Button>
-              </a>
-              <a href="https://indicacao.suasaudevital.com.br" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
-                  <Users className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Indique a Vital!</span>
-                </Button>
-              </a>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white flex-1 sm:flex-none">
-                    <Building2 className="h-4 w-4 mr-2" />
-                    <span className="text-xs md:text-sm">Sugerir um Parceiro</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Sugestão de Parceiro</DialogTitle>
-                  </DialogHeader>
-                  <SugestaoParceiro />
-                </DialogContent>
-              </Dialog>
-              <Link href="/parceiros" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
-                  <Handshake className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Convide um Parceiro</span>
-                </Button>
-              </Link>
               <Link href="/" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white w-full sm:w-auto">
-                  <Globe className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Consulta Pública</span>
+                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
+                  <HomeIcon className="h-4 w-4 mr-2" />
+                  <span className="text-xs md:text-sm">Área do Cliente</span>
                 </Button>
               </Link>
-              <Link href="/admin" className="flex-1 sm:flex-none">
-                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
-                  <User className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Admin</span>
+              <Link href="/indicacoes" className="flex-1 sm:flex-none">
+                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  <span className="text-xs md:text-sm">Indicações</span>
+                </Button>
+              </Link>
+              <Link href="/cadastro-indicador" className="flex-1 sm:flex-none">
+                <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white w-full sm:w-auto">
+                  <Building2 className="h-4 w-4 mr-2" />
+                  <span className="text-xs md:text-sm">Seja Parceiro</span>
                 </Button>
               </Link>
             </div>

@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { APP_LOGO } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Users, TrendingUp, Building2, Shield } from "lucide-react";
+import { Users, TrendingUp, Building2, Shield, Handshake, MessageCircle, Lock } from "lucide-react";
 
 export function MainNav() {
   const [location] = useLocation();
@@ -11,21 +11,22 @@ export function MainNav() {
 
   const navItems = [
     {
-      href: "/",
-      label: "Credenciados",
-      icon: Users,
+      href: "/parceiros",
+      label: "Sugerir um Parceiro",
+      icon: Handshake,
       public: true,
     },
     {
-      href: "/indicacoes",
-      label: "Indicações",
-      icon: TrendingUp,
-      public: false, // Requer login
+      href: "https://wa.me/5547933853726?text=Ol%C3%A1,%20gostaria%20de%20falar%20com%20o%20time%20Vital",
+      label: "Fale Conosco",
+      icon: MessageCircle,
+      public: true,
+      external: true,
     },
     {
-      href: "/parceiros",
-      label: "Seja Parceiro",
-      icon: Building2,
+      href: "/dados-internos",
+      label: "Acesso Interno",
+      icon: Lock,
       public: true,
     },
   ];
@@ -67,6 +68,21 @@ export function MainNav() {
               // Se não é público e usuário não está autenticado, não mostra
               if (!item.public && !isAuthenticated) {
                 return null;
+              }
+
+              // Links externos (WhatsApp)
+              if ((item as any).external) {
+                return (
+                  <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      variant="ghost"
+                      className="text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10"
+                    >
+                      <Icon className="h-4 w-4 mr-2" />
+                      {item.label}
+                    </Button>
+                  </a>
+                );
               }
 
               return (

@@ -526,3 +526,11 @@
 
 - [x] Adicionar QR Code grande na página de cadastro de indicadores direcionando para WhatsApp do time de especialistas
 - [x] Mensagem do QR Code: "Olá, recebi uma indicação para conhecer mais sobre as assinaturas Vital"
+
+
+## Reorganização da Navegação
+
+- [x] Mover "Sugerir um Parceiro", "Fale Conosco" e "Acesso Interno" para o header (topo da página)
+- [x] Remover "Área do Cliente", "Indicações" e "Seja Parceiro" do header
+- [x] Adicionar botões "Área do Cliente", "Indicações" e "Seja Parceiro" na página Dados Internos
+- [x] Botão "Área do Cliente" deve redirecionar para a home (/)

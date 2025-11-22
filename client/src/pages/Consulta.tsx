@@ -182,39 +182,7 @@ export default function Consulta() {
             </div>
           </div>
 
-          {/* Botões de Ação */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-                    <Building2 className="h-5 w-5 mr-2" />
-                    Sugerir um Parceiro
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Sugestão de Parceiro</DialogTitle>
-                  </DialogHeader>
-                  <SugestaoParceiro />
-                </DialogContent>
-              </Dialog>
-              <a 
-                href={`${formatWhatsAppLink("+5547933853726")}?text=${encodeURIComponent("Olá! Gostaria de falar com um especialista sobre os credenciados Vital.")}`}
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white">
-                  <MessageCircle className="h-5 w-5 mr-2" />
-                  Fale Conosco
-                </Button>
-              </a>
-              <Link href="/dados-internos">
-                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-                  <Lock className="h-5 w-5 mr-2" />
-                  Acesso Interno
-                </Button>
-              </Link>
-          </div>
+
         </div>
       </header>
 
