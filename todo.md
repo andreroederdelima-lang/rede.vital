@@ -324,6 +324,6 @@
 - [ ] Atualizar formulário de Parceiros para incluir categoria
 - [x] Atualizar queries tRPC para filtrar por categoria
 - [x] Atualizar interface Consulta para exibir 3 abas
-- [ ] Atualizar interface Dados Internos para exibir 3 abas
+- [x] Atualizar interface Dados Internos para exibir 3 abas
 - [ ] Migrar dados existentes (definir categoria padrão)
 - [x] Testar filtros e navegação
