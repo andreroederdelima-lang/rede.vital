@@ -85,12 +85,6 @@ export default function Consulta() {
             GUIA DO ASSINANTE
           </h1>
           <p 
-            className="text-lg" 
-            style={{ color: VITAL_COLORS.darkGray }}
-          >
-            Rede Credenciada - Vale do Itajaí - Santa Catarina
-          </p>
-          <p 
             className="text-lg mt-2 max-w-3xl mx-auto" 
             style={{ color: VITAL_COLORS.darkGray }}
           >

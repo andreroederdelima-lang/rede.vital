@@ -767,3 +767,8 @@
 - [x] Adicionar nota discreta sobre rede nacional abaixo do texto principal
 - [x] Ajustar tamanhos e cores conforme especificado
 - [x] Testar visualização
+
+
+## Remover Frase "Rede Credenciada"
+
+- [x] Remover parágrafo "Rede Credenciada - Vale do Itajaí - Santa Catarina"
