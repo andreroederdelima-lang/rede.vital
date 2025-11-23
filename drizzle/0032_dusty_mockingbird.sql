@@ -1,0 +1,1 @@
+ALTER TABLE `avaliacoes` DROP COLUMN `aprovada`;

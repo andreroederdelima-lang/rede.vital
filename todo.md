@@ -1258,3 +1258,12 @@
 ### Correções de Navegação
 - [x] Revisar e corrigir todas as páginas com erro 404
 - [x] Testar todos os botões de navegação
+
+
+## Simplificação Sistema de Avaliações - 23/11/2025
+
+- [x] Remover campo `status` da tabela avaliacoes
+- [x] Remover procedures de aprovar/rejeitar
+- [x] Simplificar página AdminAvaliacoes (apenas visualização)
+- [x] Adicionar notificação automática ao admin quando nova avaliação for enviada
+- [x] Testar fluxo completo

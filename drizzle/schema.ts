@@ -402,7 +402,6 @@ export const avaliacoes = mysqlTable("avaliacoes", {
   nomeAvaliador: varchar("nomeAvaliador", { length: 255 }), // Opcional
   emailAvaliador: varchar("emailAvaliador", { length: 320 }), // Opcional
   telefoneAvaliador: varchar("telefoneAvaliador", { length: 100 }), // Opcional
-  aprovada: int("aprovada").default(0).notNull(), // 0 = pendente, 1 = aprovada, -1 = rejeitada
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 

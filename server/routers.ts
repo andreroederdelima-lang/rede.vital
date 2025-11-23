@@ -1164,7 +1164,27 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const { criarAvaliacao } = await import("./db");
+        const { notifyOwner } = await import("./_core/notification");
+        
         await criarAvaliacao(input);
+        
+        // Notificar admin sobre nova avaliação
+        const mensagem = `
+🌟 NOVA AVALIAÇÃO RECEBIDA
+
+Credenciado: ${input.nomeCredenciado}
+Nota: ${input.nota}/5 estrelas
+${input.comentario ? `Comentário: ${input.comentario}` : ""}
+${input.nomeAvaliador ? `\nAvaliador: ${input.nomeAvaliador}` : ""}
+${input.emailAvaliador ? `Email: ${input.emailAvaliador}` : ""}
+${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
+        `.trim();
+        
+        await notifyOwner({
+          title: "Nova Avaliação de Credenciado",
+          content: mensagem,
+        });
+        
         return { success: true };
       }),
 
@@ -1188,28 +1208,6 @@ export const appRouter = router({
         }
         const { listarAvaliacoesPorCredenciado } = await import("./db");
         return await listarAvaliacoesPorCredenciado(input.tipoCredenciado, input.credenciadoId);
-      }),
-
-    aprovar: protectedProcedure
-      .input(z.object({ id: z.number() }))
-      .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem aprovar avaliações");
-        }
-        const { aprovarAvaliacao } = await import("./db");
-        await aprovarAvaliacao(input.id);
-        return { success: true };
-      }),
-
-    rejeitar: protectedProcedure
-      .input(z.object({ id: z.number() }))
-      .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem rejeitar avaliações");
-        }
-        const { rejeitarAvaliacao } = await import("./db");
-        await rejeitarAvaliacao(input.id);
-        return { success: true };
       }),
 
     estatisticas: protectedProcedure

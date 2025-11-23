@@ -1,36 +1,13 @@
-import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, ThumbsUp, ThumbsDown, User, Mail, Phone } from "lucide-react";
+import { Star, User, Mail, Phone } from "lucide-react";
 import { VITAL_COLORS } from "@shared/colors";
-import { toast } from "sonner";
 
 export default function AdminAvaliacoes() {
-  const { data: avaliacoes = [], isLoading, refetch } = trpc.avaliacoes.listar.useQuery();
+  const { data: avaliacoes = [], isLoading } = trpc.avaliacoes.listar.useQuery();
   const { data: stats } = trpc.avaliacoes.estatisticas.useQuery();
-
-  const aprovarMutation = trpc.avaliacoes.aprovar.useMutation({
-    onSuccess: () => {
-      toast.success("Avaliação aprovada!");
-      refetch();
-    },
-    onError: (error) => {
-      toast.error("Erro ao aprovar: " + error.message);
-    },
-  });
-
-  const rejeitarMutation = trpc.avaliacoes.rejeitar.useMutation({
-    onSuccess: () => {
-      toast.success("Avaliação rejeitada!");
-      refetch();
-    },
-    onError: (error) => {
-      toast.error("Erro ao rejeitar: " + error.message);
-    },
-  });
 
   const renderStars = (nota: number) => {
     return (
@@ -47,16 +24,6 @@ export default function AdminAvaliacoes() {
     );
   };
 
-  const getStatusBadge = (aprovada: number) => {
-    if (aprovada === 1) {
-      return <Badge className="bg-green-500">Aprovada</Badge>;
-    } else if (aprovada === -1) {
-      return <Badge className="bg-red-500">Rejeitada</Badge>;
-    } else {
-      return <Badge className="bg-yellow-500">Pendente</Badge>;
-    }
-  };
-
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -71,11 +38,11 @@ export default function AdminAvaliacoes() {
 
         {/* Estatísticas */}
         {stats && (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total
+                  Total de Avaliações
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -86,46 +53,30 @@ export default function AdminAvaliacoes() {
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Pendentes
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-yellow-600">{stats.pendentes}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Aprovadas
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">{stats.aprovadas}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Rejeitadas
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-red-600">{stats.rejeitadas}</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
                   Média de Notas
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold" style={{ color: VITAL_COLORS.gold }}>
-                  {stats.mediaNotas.toFixed(1)}
+                <div className="flex items-center gap-2">
+                  <div className="text-2xl font-bold" style={{ color: VITAL_COLORS.gold }}>
+                    {stats.media.toFixed(1)}
+                  </div>
+                  <Star size={20} fill={VITAL_COLORS.gold} stroke={VITAL_COLORS.gold} />
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Avaliações Positivas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">
+                  {avaliacoes.filter((a: any) => a.nota >= 4).length}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">4-5 estrelas</p>
               </CardContent>
             </Card>
           </div>
@@ -153,14 +104,11 @@ export default function AdminAvaliacoes() {
                             <h3 className="font-semibold text-lg" style={{ color: VITAL_COLORS.turquoise }}>
                               {avaliacao.nomeCredenciado}
                             </h3>
-                            <p className="text-sm text-muted-foreground">
+                            <Badge variant="outline">
                               {avaliacao.tipoCredenciado === "medico" ? "Médico" : "Instituição"}
-                            </p>
+                            </Badge>
                           </div>
-                          <div className="flex items-center gap-2">
-                            {renderStars(avaliacao.nota)}
-                            {getStatusBadge(avaliacao.aprovada)}
-                          </div>
+                          {renderStars(avaliacao.nota)}
                         </div>
 
                         {/* Comentário */}
@@ -202,36 +150,6 @@ export default function AdminAvaliacoes() {
                             minute: "2-digit",
                           })}
                         </p>
-
-                        {/* Botões de Ação (apenas para pendentes) */}
-                        {avaliacao.aprovada === 0 && (
-                          <div className="flex gap-2 pt-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => aprovarMutation.mutate({ id: avaliacao.id })}
-                              disabled={aprovarMutation.isPending || rejeitarMutation.isPending}
-                              className="flex items-center gap-1"
-                              style={{
-                                borderColor: VITAL_COLORS.turquoise,
-                                color: VITAL_COLORS.turquoise,
-                              }}
-                            >
-                              <ThumbsUp size={14} />
-                              Aprovar
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => rejeitarMutation.mutate({ id: avaliacao.id })}
-                              disabled={aprovarMutation.isPending || rejeitarMutation.isPending}
-                              className="flex items-center gap-1 border-red-500 text-red-500 hover:bg-red-50"
-                            >
-                              <ThumbsDown size={14} />
-                              Rejeitar
-                            </Button>
-                          </div>
-                        )}
                       </div>
                     </CardContent>
                   </Card>

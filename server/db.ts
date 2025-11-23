@@ -1366,20 +1366,6 @@ export async function listarAvaliacoesPorCredenciado(tipoCredenciado: "medico" |
   return result;
 }
 
-export async function aprovarAvaliacao(id: number) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  await db.update(avaliacoes).set({ aprovada: 1 }).where(eq(avaliacoes.id, id));
-}
-
-export async function rejeitarAvaliacao(id: number) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  await db.update(avaliacoes).set({ aprovada: -1 }).where(eq(avaliacoes.id, id));
-}
-
 export async function estatisticasAvaliacoes() {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -1387,18 +1373,12 @@ export async function estatisticasAvaliacoes() {
   const result = await db.select().from(avaliacoes);
   
   const total = result.length;
-  const pendentes = result.filter(a => a.aprovada === 0).length;
-  const aprovadas = result.filter(a => a.aprovada === 1).length;
-  const rejeitadas = result.filter(a => a.aprovada === -1).length;
-  const mediaNotas = result.length > 0 
+  const media = result.length > 0 
     ? result.reduce((acc, a) => acc + a.nota, 0) / result.length 
     : 0;
   
   return {
     total,
-    pendentes,
-    aprovadas,
-    rejeitadas,
-    mediaNotas: Math.round(mediaNotas * 10) / 10,
+    media: Math.round(media * 10) / 10,
   };
 }
