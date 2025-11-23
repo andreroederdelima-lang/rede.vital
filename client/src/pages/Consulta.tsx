@@ -181,7 +181,7 @@ export default function Consulta() {
                 }}
               >
                 <DollarSign className="mr-2 h-6 w-6" />
-                PROGrama Indique e Ganhe
+                INDIQUE & GANHE
               </Button>
             </Link>
           </div>

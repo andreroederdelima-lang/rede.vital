@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe, Link2, Home as HomeIcon, TrendingUp } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe, Link2, Home as HomeIcon, TrendingUp, DollarSign } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -295,9 +295,9 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/indicacoes" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" style={{ borderColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.turquoise }} className="hover:bg-opacity-10 w-full sm:w-auto">
-                  <TrendingUp className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Indicações</span>
+                <Button size="sm" style={{ backgroundColor: VITAL_COLORS.primary, color: VITAL_COLORS.white }} className="hover:opacity-90 w-full sm:w-auto">
+                  <DollarSign className="h-4 w-4 mr-2" />
+                  <span className="text-xs md:text-sm font-bold">INDIQUE & GANHE</span>
                 </Button>
               </Link>
               <Link href="/sugerir-parceiro" className="flex-1 sm:flex-none">

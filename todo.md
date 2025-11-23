@@ -1294,3 +1294,10 @@
 - [x] Adicionar ícone de dinheiro no botão
 - [x] Direcionar para /indicacoes
 - [x] Testar funcionalidades
+
+
+## Padronização Botões Indique & Ganhe - 23/11/2025
+
+- [x] Atualizar botão na página Consulta para "INDIQUE & GANHE" com ícone $
+- [x] Atualizar botão na página Home para "INDIQUE & GANHE" com ícone $
+- [x] Testar ambas as páginas
