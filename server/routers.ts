@@ -229,6 +229,8 @@ export const appRouter = router({
         categoria: z.string().min(1, "Categoria é obrigatória"),
         especialidade: z.string().optional(),
         areaAtuacao: z.string().optional(),
+        numeroRegistroConselho: z.string().optional(),
+        tipoAtendimento: z.enum(["presencial", "telemedicina", "ambos"]).default("presencial"),
         endereco: z.string().min(1, "Endereço é obrigatório"),
         cidade: z.string().min(1, "Cidade é obrigatória"),
         telefone: z.string().min(1, "Telefone é obrigatório"),
@@ -238,6 +240,9 @@ export const appRouter = router({
         descontoPercentual: z.number().min(0).max(100),
         logoUrl: z.string().optional(),
         fotoUrl: z.string().optional(),
+        contatoParceria: z.string().optional(),
+        whatsappParceria: z.string().optional(),
+        observacoes: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         const { criarSolicitacaoParceria } = await import("./db");

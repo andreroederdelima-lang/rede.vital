@@ -60,6 +60,13 @@ export default function Parceiros() {
   const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [fotoPreview, setFotoPreview] = useState<string>("");
   const [aceitouTermos, setAceitouTermos] = useState(false);
+  
+  // Novos campos padronizados
+  const [numeroRegistroConselho, setNumeroRegistroConselho] = useState("");
+  const [tipoAtendimento, setTipoAtendimento] = useState<"presencial" | "telemedicina" | "ambos">("presencial");
+  const [contatoParceria, setContatoParceria] = useState("");
+  const [whatsappParceria, setWhatsappParceria] = useState("");
+  const [observacoes, setObservacoes] = useState("");
 
   const solicitarParceriaMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
@@ -119,6 +126,11 @@ export default function Parceiros() {
     setFotoFile(null);
     setFotoPreview("");
     setAceitouTermos(false);
+    setNumeroRegistroConselho("");
+    setTipoAtendimento("presencial");
+    setContatoParceria("");
+    setWhatsappParceria("");
+    setObservacoes("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -207,6 +219,8 @@ export default function Parceiros() {
       categoria: categoria as any,
       especialidade: tipoCredenciado === "medico" ? especialidade : undefined,
       areaAtuacao: tipoCredenciado === "medico" ? areaAtuacao : undefined,
+      numeroRegistroConselho: tipoCredenciado === "medico" && numeroRegistroConselho ? numeroRegistroConselho : undefined,
+      tipoAtendimento,
       endereco,
       cidade,
       telefone,
@@ -216,6 +230,9 @@ export default function Parceiros() {
       descontoPercentual: parseInt(descontoPercentual),
       logoUrl,
       fotoUrl,
+      contatoParceria: contatoParceria || undefined,
+      whatsappParceria: whatsappParceria || undefined,
+      observacoes: observacoes || undefined,
     });
   };
 
@@ -380,6 +397,19 @@ export default function Parceiros() {
                         Descreva sua principal área de atuação ou foco de trabalho.
                       </p>
                     </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="numeroRegistroConselho">Número de Registro no Conselho (CRM, CRO, etc)</Label>
+                      <Input
+                        id="numeroRegistroConselho"
+                        value={numeroRegistroConselho}
+                        onChange={(e) => setNumeroRegistroConselho(e.target.value)}
+                        placeholder="Ex: CRM 12345/SC"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        Opcional. Informe seu registro profissional se desejar.
+                      </p>
+                    </div>
                   </>
                 )}
 
@@ -404,6 +434,20 @@ export default function Parceiros() {
                     placeholder="Ex: Timbó, Indaial, Pomerode..."
                     required
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="tipoAtendimento">Tipo de Atendimento *</Label>
+                  <Select value={tipoAtendimento} onValueChange={(v: any) => setTipoAtendimento(v)} required>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="presencial">Presencial</SelectItem>
+                      <SelectItem value="telemedicina">Online/Telemedicina</SelectItem>
+                      <SelectItem value="ambos">Ambos (Presencial e Online)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
@@ -506,6 +550,47 @@ export default function Parceiros() {
                       <img src={fotoPreview} alt="Preview Foto" className="max-w-xs rounded-lg border" />
                     </div>
                   )}
+                </div>
+
+                {/* Dados Internos (não exibidos publicamente) */}
+                <div className="space-y-4 pt-6 border-t">
+                  <h3 className="font-semibold text-lg" style={{ color: VITAL_COLORS.turquoise }}>
+                    Dados Internos (uso administrativo)
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Estas informações são apenas para controle interno e não serão exibidas publicamente.
+                  </p>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="contatoParceria">Nome do Responsável pela Parceria</Label>
+                    <Input
+                      id="contatoParceria"
+                      value={contatoParceria}
+                      onChange={(e) => setContatoParceria(e.target.value)}
+                      placeholder="Nome de quem está negociando a parceria"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável pela Parceria</Label>
+                    <Input
+                      id="whatsappParceria"
+                      value={whatsappParceria}
+                      onChange={(e) => setWhatsappParceria(e.target.value)}
+                      placeholder="(47) 99999-9999"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="observacoes">Observações Internas</Label>
+                    <Textarea
+                      id="observacoes"
+                      value={observacoes}
+                      onChange={(e) => setObservacoes(e.target.value)}
+                      placeholder="Anotações, condições especiais, histórico de negociação, etc."
+                      rows={4}
+                    />
+                  </div>
                 </div>
 
                 {/* Termos de Uso */}

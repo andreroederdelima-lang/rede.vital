@@ -1131,7 +1131,8 @@
 - [x] Criar componente FormularioCredenciado reutilizável
 - [x] Criar documentação de integração (INTEGRACAO_FORMULARIO.md)
 - [x] Criar resumo executivo de implementação (RESUMO_IMPLEMENTACAO.md)
-- [ ] Aplicar componente na página Parceiros (substituir formulário atual)
+- [x] Adicionar novos campos ao formulário da página Parceiros (Número Registro, Tipo Atendimento, Contato Parceria, WhatsApp Parceria, Observações)
+- [x] Atualizar procedure tRPC parceria.solicitar com novos campos
 - [ ] Aplicar componente na página Atualizar Dados (substituir formulário atual)
 - [ ] Implementar procedures tRPC (buscarPorToken, atualizarDados)
 - [ ] Implementar fluxo de aprovação Admin (dados pendentes -> aprovados -> site atualizado)
