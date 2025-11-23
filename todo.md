@@ -1028,3 +1028,22 @@
 - [x] Remover validação de "Cadastro Pendente" no sistema de indicadores
 - [x] Permitir auto-cadastro de promotores/vendedores sem aprovação prévia
 - [x] Atualizar lógica de cadastro para criar indicador imediatamente
+
+
+## Sistema de Notificações e Melhorias em Materiais de Divulgação
+
+- [x] Implementar badge de notificações no header do Painel do Vendedor
+- [x] Mostrar contador de indicações com mudança de status recente
+- [x] Adicionar polling ou WebSocket para atualização em tempo real (polling a cada 30s)
+- [x] Adicionar botão "Comunicar Vendedor" com ícone WhatsApp
+- [x] Botão deve abrir WhatsApp do vendedor com mensagem automática sobre nova indicação
+- [x] Adicionar seção de Landing Pages na página Materiais de Divulgação
+- [x] Botão: Home (https://assinaturas.suasaudevital.com.br)
+- [x] Botão: Pessoa Física (https://assinaturas.suasaudevital.com.br/pessoa-fisica)
+- [x] Botão: Empresarial (https://assinaturas.suasaudevital.com.br/empresarial)
+- [x] Botão: Planos Completos (https://assinaturas.suasaudevital.com.br/planos-completos)
+- [x] Botão: Cadastro de Grupos (https://assinaturas.suasaudevital.com.br/grupos)
+- [x] Botão: FAQ (https://assinaturas.suasaudevital.com.br/faq)
+- [x] Botão: QR Code WhatsApp Vendas (https://credenciados.suasaudevital.com.br/qr-codes)
+- [x] Botão: Convite de Parceiros (https://credenciados.suasaudevital.com.br/parceiros)
+- [x] Botão: Guia do Assinante (https://credenciados.suasaudevital.com.br)

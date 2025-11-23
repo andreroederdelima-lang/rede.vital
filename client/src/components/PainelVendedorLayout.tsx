@@ -4,7 +4,7 @@ import { APP_LOGO } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { FileText, BarChart3, DollarSign, LogOut, User, Image, Plus } from "lucide-react";
+import { FileText, BarChart3, DollarSign, LogOut, User, Image, Plus, Bell } from "lucide-react";
 import { toast } from "sonner";
 
 interface PainelVendedorLayoutProps {
@@ -27,6 +27,20 @@ export default function PainelVendedorLayout({ children }: PainelVendedorLayoutP
   });
 
   const { data: meuIndicador } = trpc.indicacoes.meuIndicador.useQuery();
+
+  // Buscar indicações com mudança de status recente (últimas 24h)
+  const { data: minhasIndicacoes = [] } = trpc.indicacoes.listarIndicacoes.useQuery(
+    undefined,
+    { enabled: !!meuIndicador, refetchInterval: 30000 } // Atualiza a cada 30s
+  );
+
+  // Contar indicações com status atualizado nas últimas 24h
+  const notificacoesCount = minhasIndicacoes.filter((ind: any) => {
+    if (!ind.dataAtualizacao) return false;
+    const dataAtualizacao = new Date(ind.dataAtualizacao);
+    const umDiaAtras = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    return dataAtualizacao > umDiaAtras && ind.status !== "pendente";
+  }).length;
 
   const menuItems = [
     {
@@ -75,7 +89,21 @@ export default function PainelVendedorLayout({ children }: PainelVendedorLayoutP
                 <p className="text-sm text-gray-600">Sistema de Indicações</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              {/* Badge de Notificações */}
+              <button
+                onClick={() => setLocation("/indicacoes")}
+                className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+                title="Notificações de indicações"
+              >
+                <Bell className="h-6 w-6 text-gray-700" />
+                {notificacoesCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {notificacoesCount > 9 ? "9+" : notificacoesCount}
+                  </span>
+                )}
+              </button>
+
               <div className="w-8 h-8 bg-[#1e9d9f] rounded-full flex items-center justify-center">
                 <span className="text-white text-xs font-bold">
                   {meuIndicador?.nome?.charAt(0).toUpperCase() || "?"}

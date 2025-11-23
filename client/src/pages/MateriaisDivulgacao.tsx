@@ -96,6 +96,230 @@ export default function MateriaisDivulgacao() {
             Recursos para promover as assinaturas Vital
           </p>
         </div>
+        {/* Landing Pages das Assinaturas */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-4" style={{ color: VITAL_COLORS.turquoise }}>
+            <ExternalLink className="inline mr-2" size={28} />
+            Landing Pages das Assinaturas
+          </h2>
+          <p className="text-sm text-gray-600 mb-4">
+            Compartilhe estes links com seus clientes para apresentar as assinaturas Vital
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Home (Página Principal)</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Visão geral dos planos e promoção
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://assinaturas.suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Abrir Página
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full mt-2"
+                onClick={() => copiarTexto("https://assinaturas.suasaudevital.com.br")}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copiar Link
+              </Button>
+            </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Pessoa Física</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Planos para famílias e indivíduos
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://assinaturas.suasaudevital.com.br/pessoa-fisica" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Abrir Página
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full mt-2"
+                onClick={() => copiarTexto("https://assinaturas.suasaudevital.com.br/pessoa-fisica")}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copiar Link
+              </Button>
+            </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Empresarial</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Planos para empresas e funcionários
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://assinaturas.suasaudevital.com.br/empresarial" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Abrir Página
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full mt-2"
+                onClick={() => copiarTexto("https://assinaturas.suasaudevital.com.br/empresarial")}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copiar Link
+              </Button>
+            </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Planos Completos</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Comparação detalhada dos 4 planos
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://assinaturas.suasaudevital.com.br/planos-completos" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Abrir Página
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full mt-2"
+                onClick={() => copiarTexto("https://assinaturas.suasaudevital.com.br/planos-completos")}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copiar Link
+              </Button>
+            </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Cadastro de Grupos</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Formar grupos de 4 pessoas e economizar
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://assinaturas.suasaudevital.com.br/grupos" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Abrir Página
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full mt-2"
+                onClick={() => copiarTexto("https://assinaturas.suasaudevital.com.br/grupos")}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copiar Link
+              </Button>
+            </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">FAQ (Dúvidas Frequentes)</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Respostas para dúvidas comuns
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://assinaturas.suasaudevital.com.br/faq" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Abrir Página
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full mt-2"
+                onClick={() => copiarTexto("https://assinaturas.suasaudevital.com.br/faq")}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copiar Link
+              </Button>
+            </Card>
+          </div>
+        </section>
+
+        {/* Recursos Adicionais */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-4" style={{ color: VITAL_COLORS.turquoise }}>
+            <Share2 className="inline mr-2" size={28} />
+            Recursos Adicionais
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">QR Code WhatsApp Vendas</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                QR Codes para contato direto via WhatsApp
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://credenciados.suasaudevital.com.br/qr-codes" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Acessar QR Codes
+                </a>
+              </Button>
+            </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Convite de Parceiros</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Página de credenciamento de parceiros
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://credenciados.suasaudevital.com.br/parceiros" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Convidar Parceiros
+                </a>
+              </Button>
+            </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Guia do Assinante</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Médicos e serviços credenciados
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://credenciados.suasaudevital.com.br" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Ver Guia
+                </a>
+              </Button>
+            </Card>
+          </div>
+        </section>
+
         {/* Integração WhatsApp */}
         <Card className="p-6 mb-8" style={{ backgroundColor: VITAL_COLORS.white }}>
           <h2 className="text-xl font-semibold mb-4" style={{ color: VITAL_COLORS.turquoise }}>

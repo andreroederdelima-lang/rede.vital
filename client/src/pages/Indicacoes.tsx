@@ -202,6 +202,34 @@ export default function Indicacoes() {
           </Card>
         </div>
 
+        {/* Botão de Comunicação com Vendedor */}
+        <div className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-lg text-gray-900 mb-1">
+                Precisa falar com o Vendedor?
+              </h3>
+              <p className="text-sm text-gray-600">
+                Comunique-se diretamente com Pedro (Comercial) sobre suas indicações
+              </p>
+            </div>
+            <Button
+              asChild
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <a
+                href="https://wa.me/5547933853726?text=Ol%C3%A1%20Pedro%2C%20sou%20promotor%2Fvendedor%20da%20Vital%20e%20preciso%20falar%20sobre%20minhas%20indica%C3%A7%C3%B5es.%20Por%20favor%2C%20verifique%20seu%20email%20para%20mais%20detalhes."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <MessageCircle className="h-5 w-5" />
+                Comunicar Vendedor
+              </a>
+            </Button>
+          </div>
+        </div>
+
         {/* Botão Nova Indicação */}
         <div className="mb-6">
           <Dialog open={novaIndicacaoOpen} onOpenChange={setNovaIndicacaoOpen}>
