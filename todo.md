@@ -1130,7 +1130,8 @@
 ### Formulários
 - [ ] Unificar formulário de Sugestão de Parceiro (página Parceiros)
 - [ ] Unificar formulário de Atualização (link /atualizar-dados/:token)
-- [ ] Campos padronizados: Nome, Especialidade/Categoria, Município, Endereço, Telefone Fixo, WhatsApp Comercial, Logo (upload), Foto (upload)
+- [ ] Campos públicos (Home): Nome, Especialidade/Categoria, Número de registro no conselho, Tipo de atendimento (Online/Presencial/Ambos), Município, Endereço, Telefone Fixo, WhatsApp Comercial/Agendamento, Logo (upload), Foto (upload)
+- [ ] Campos internos (Dados Internos): Contato do responsável pela parceria, WhatsApp do responsável pela parceria, Observações
 - [ ] Manter opt-in em ambos formulários
 - [ ] Remover campos desnecessários (telefone organização, whatsapp secretaria, etc)
 

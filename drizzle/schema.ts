@@ -38,11 +38,12 @@ export const medicos = mysqlTable("medicos", {
   id: int("id").autoincrement().primaryKey(),
   nome: varchar("nome", { length: 255 }).notNull(),
   especialidade: varchar("especialidade", { length: 255 }).notNull(),
+  numeroRegistroConselho: varchar("numeroRegistroConselho", { length: 100 }), // CRM, CRO, etc
   subespecialidade: varchar("subespecialidade", { length: 255 }),
   municipio: varchar("municipio", { length: 100 }).notNull(),
   endereco: text("endereco").notNull(),
   telefone: varchar("telefone", { length: 100 }),
-  whatsapp: varchar("whatsapp", { length: 100 }),
+  whatsapp: varchar("whatsapp", { length: 100 }), // WhatsApp Comercial/Agendamento
   whatsappSecretaria: varchar("whatsappSecretaria", { length: 100 }),
   telefoneOrganizacao: varchar("telefoneOrganizacao", { length: 100 }),
   logoUrl: varchar("logoUrl", { length: 500 }),
@@ -51,7 +52,8 @@ export const medicos = mysqlTable("medicos", {
   precoConsulta: varchar("precoConsulta", { length: 50 }),
   descontoPercentual: int("descontoPercentual").notNull().default(0),
   observacoes: text("observacoes"),
-  contatoParceria: varchar("contatoParceria", { length: 255 }),
+  contatoParceria: varchar("contatoParceria", { length: 255 }), // Nome do responsável pela parceria
+  whatsappParceria: varchar("whatsappParceria", { length: 100 }), // WhatsApp do responsável pela parceria
   tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
   ativo: int("ativo").notNull().default(1),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -73,7 +75,7 @@ export const instituicoes = mysqlTable("instituicoes", {
   municipio: varchar("municipio", { length: 100 }).notNull(),
   endereco: text("endereco").notNull(),
   telefone: varchar("telefone", { length: 100 }),
-  whatsappSecretaria: varchar("whatsappSecretaria", { length: 100 }),
+  whatsappSecretaria: varchar("whatsappSecretaria", { length: 100 }), // WhatsApp Comercial/Agendamento
   telefoneOrganizacao: varchar("telefoneOrganizacao", { length: 100 }),
   logoUrl: varchar("logoUrl", { length: 500 }),
   fotoUrl: varchar("fotoUrl", { length: 500 }),
@@ -81,7 +83,8 @@ export const instituicoes = mysqlTable("instituicoes", {
   precoConsulta: varchar("precoConsulta", { length: 50 }),
   descontoPercentual: int("descontoPercentual").notNull().default(0),
   observacoes: text("observacoes"),
-  contatoParceria: varchar("contatoParceria", { length: 255 }),
+  contatoParceria: varchar("contatoParceria", { length: 255 }), // Nome do responsável pela parceria
+  whatsappParceria: varchar("whatsappParceria", { length: 100 }), // WhatsApp do responsável pela parceria
   tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
   ativo: int("ativo").notNull().default(1),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
