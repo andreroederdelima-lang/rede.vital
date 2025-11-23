@@ -56,7 +56,15 @@ export function CredenciadoListItem({
     return "/outros-servicos-placeholder.png";
   };
 
-  const imagemPrincipal = logoUrl || fotoUrl || getPlaceholderImage();
+  // Nova lógica: FOTO como imagem principal (não logo)
+  // Tratar strings vazias como null
+  const fotoValida = fotoUrl && fotoUrl.trim() !== "" ? fotoUrl : null;
+  const logoValida = logoUrl && logoUrl.trim() !== "" ? logoUrl : null;
+  
+  const imagemPrincipal = fotoValida || getPlaceholderImage();
+  const logoParceiro = logoValida || "/logo-parceria-default.png";
+  const logoVital = "/logo-vital.jpeg";
+
   const telefoneExibir = whatsapp || telefone;
 
   return (
@@ -67,8 +75,8 @@ export function CredenciadoListItem({
         borderColor: "#E5E5E5",
       }}
     >
-      {/* Logo/Foto */}
-      <div className="flex-shrink-0">
+      {/* Foto/Imagem Principal com Logos nos Cantos */}
+      <div className="flex-shrink-0 relative">
         <img
           src={imagemPrincipal}
           alt={nome}
@@ -76,6 +84,28 @@ export function CredenciadoListItem({
           style={{
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
             backgroundColor: VITAL_COLORS.lightGray,
+          }}
+        />
+        
+        {/* Logo do Parceiro - Canto Superior Direito */}
+        <img
+          src={logoParceiro}
+          alt="Logo Parceiro"
+          className="absolute -top-2 -right-2 w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-white border-2"
+          style={{
+            borderColor: VITAL_COLORS.white,
+            boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+          }}
+        />
+        
+        {/* Logo Vital - Canto Inferior Direito */}
+        <img
+          src={logoVital}
+          alt="Logo Vital"
+          className="absolute -bottom-2 -right-2 w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-white border-2"
+          style={{
+            borderColor: VITAL_COLORS.white,
+            boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
           }}
         />
       </div>

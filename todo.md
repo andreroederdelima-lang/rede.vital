@@ -1176,3 +1176,15 @@
 - [x] Renomear "WhatsApp" → "WhatsApp Comercial/Agendamento" (Dados Internos e Home)
 - [x] Remover botão "Enviar Link de Atualização" da página Dados Internos
 - [x] Manter botão "Enviar Link" apenas no Admin
+
+
+## Refatoração de Layout dos Cards
+
+- [x] Copiar logo de parceria padrão (aperto de mão) para /logo-parceria-default.png
+- [x] Mudar lógica: Foto como imagem principal (não logo)
+- [x] Adicionar logo do parceiro no canto superior direito
+- [x] Adicionar logo Vital no canto inferior direito
+- [x] Forçar imagens padrão para credenciados sem foto
+- [x] Aplicar em CredenciadoListItem (usado em Home/Dados Internos)
+- [x] Aplicar na página Consulta (pública)
+- [x] Testar ambas as páginas
