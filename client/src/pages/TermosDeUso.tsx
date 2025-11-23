@@ -2,7 +2,7 @@ import { APP_LOGO, APP_TITLE } from "@/const";
 
 export default function TermosDeUso() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-amber-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -19,7 +19,7 @@ export default function TermosDeUso() {
       {/* Content */}
       <main className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="prose prose-teal max-w-none">
+          <div className="max-w-none text-black" style={{ fontSize: '10pt' }}>
             <h1 className="text-3xl font-bold text-teal-700 mb-6">
               ✅ TERMO DE CREDENCIAMENTO E USO DE SISTEMAS – SUA SAÚDE VITAL / VITAL AMBULÂNCIAS
             </h1>
@@ -223,21 +223,7 @@ export default function TermosDeUso() {
 
             <hr className="my-6" />
 
-            <div className="bg-teal-50 border-l-4 border-teal-500 p-6 mt-8">
-              <h2 className="text-2xl font-bold text-teal-700 mb-4">✔️ DECLARAÇÃO DE ACEITE (OPT-IN)</h2>
-              <p className="mb-4">Ao prosseguir com o cadastro, o Parceiro declara que:</p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>leu e aceitou integralmente este Termo;</li>
-                <li>confirma que seus dados são verdadeiros;</li>
-                <li>compromete-se a cumprir todas as regras aqui estabelecidas;</li>
-                <li>autoriza a exibição pública de suas informações profissionais;</li>
-                <li>reconhece sua autonomia técnica e ausência de vínculo com a Vital.</li>
-              </ul>
-              <p className="mt-6 font-bold text-teal-900 text-lg">
-                "LI E ACEITO OS TERMOS DE CREDENCIAMENTO E USO DOS SISTEMAS VITAL."
-              </p>
-              <p className="mt-4 text-sm text-teal-700">(Checkbox obrigatório no formulário.)</p>
-            </div>
+
           </div>
         </div>
       </main>

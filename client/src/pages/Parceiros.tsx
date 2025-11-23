@@ -59,8 +59,7 @@ export default function Parceiros() {
   const [logoPreview, setLogoPreview] = useState<string>("");
   const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [fotoPreview, setFotoPreview] = useState<string>("");
-  const [aceitouTermosPlataforma, setAceitouTermosPlataforma] = useState(false);
-  const [aceitouTermosPrestadores, setAceitouTermosPrestadores] = useState(false);
+  const [aceitouTermos, setAceitouTermos] = useState(false);
 
   const solicitarParceriaMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
@@ -119,8 +118,7 @@ export default function Parceiros() {
     setLogoPreview("");
     setFotoFile(null);
     setFotoPreview("");
-    setAceitouTermosPlataforma(false);
-    setAceitouTermosPrestadores(false);
+    setAceitouTermos(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -145,7 +143,7 @@ export default function Parceiros() {
     }
 
     // Validação de aceite de termos
-    if (!aceitouTermosPlataforma || !aceitouTermosPrestadores) {
+    if (!aceitouTermos) {
       toast.error("Você deve aceitar os Termos de Uso para prosseguir");
       return;
     }
@@ -522,49 +520,22 @@ export default function Parceiros() {
                   <div className="flex items-start gap-3 p-4 rounded-lg" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
                     <input
                       type="checkbox"
-                      id="termosPlataforma"
-                      checked={aceitouTermosPlataforma}
-                      onChange={(e) => setAceitouTermosPlataforma(e.target.checked)}
+                      id="termos"
+                      checked={aceitouTermos}
+                      onChange={(e) => setAceitouTermos(e.target.checked)}
                       className="mt-1 w-4 h-4 cursor-pointer"
                       style={{ accentColor: VITAL_COLORS.turquoise }}
                     />
-                    <label htmlFor="termosPlataforma" className="text-sm cursor-pointer flex-1">
+                    <label htmlFor="termos" className="text-sm cursor-pointer flex-1">
                       Li e aceito os{" "}
                       <a 
-                        href="#" 
+                        href="/termos-de-uso" 
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="font-semibold underline"
                         style={{ color: VITAL_COLORS.turquoise }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toast.info("Os Termos de Uso da Plataforma serão disponibilizados em breve.");
-                        }}
                       >
-                        Termos de Uso da Plataforma
-                      </a>
-                    </label>
-                  </div>
-
-                  <div className="flex items-start gap-3 p-4 rounded-lg" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
-                    <input
-                      type="checkbox"
-                      id="termosPrestadores"
-                      checked={aceitouTermosPrestadores}
-                      onChange={(e) => setAceitouTermosPrestadores(e.target.checked)}
-                      className="mt-1 w-4 h-4 cursor-pointer"
-                      style={{ accentColor: VITAL_COLORS.turquoise }}
-                    />
-                    <label htmlFor="termosPrestadores" className="text-sm cursor-pointer flex-1">
-                      Li e aceito os{" "}
-                      <a 
-                        href="#" 
-                        className="font-semibold underline"
-                        style={{ color: VITAL_COLORS.turquoise }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toast.info("Os Termos de Uso para Prestadores de Saúde serão disponibilizados em breve.");
-                        }}
-                      >
-                        Termos de Uso para Prestadores de Saúde
+                        Termos de Uso da Plataforma e/ou Prestadores de Saúde
                       </a>
                     </label>
                   </div>

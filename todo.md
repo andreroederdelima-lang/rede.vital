@@ -971,3 +971,11 @@
 - [x] Adicionar item "Materiais de Divulgação" no menu lateral abaixo de "Comissões"
 - [x] Adicionar botão de ação rápida "Nova Indicação" no menu lateral
 - [x] Garantir que rota /materiais-divulgacao funcione dentro do contexto do painel
+
+
+## Simplificação de Termos de Uso
+
+- [x] Unificar checkboxes de termos em um único: "Li e aceito os Termos de Uso da Plataforma e/ou Prestadores de Saúde"
+- [x] Adicionar link clicável no texto do checkbox direcionando para página de Termos de Uso
+- [x] Remover seção "DECLARAÇÃO DE ACEITE (OPT-IN)" da página Termos de Uso
+- [x] Formatar todo o texto da página Termos de Uso em preto, fonte tamanho 10
