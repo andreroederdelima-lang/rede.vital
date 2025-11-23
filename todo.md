@@ -1267,3 +1267,21 @@
 - [x] Simplificar página AdminAvaliacoes (apenas visualização)
 - [x] Adicionar notificação automática ao admin quando nova avaliação for enviada
 - [x] Testar fluxo completo
+
+
+## Templates de Mensagens para Parceiros - 23/11/2025
+
+- [x] Verificar rotas existentes (convite, cadastro, atualização)
+- [x] Criar template de mensagem para convidar parceiro
+- [x] Criar template de mensagem para cadastro direto
+- [x] Criar template de mensagem para atualização de dados
+- [x] Documentar links e fluxos de aprovação
+- [x] Criar documento final com todas as mensagens e links
+
+
+## Botões de Atualização de Dados - 23/11/2025
+
+- [x] Adicionar botão WhatsApp com mensagem pronta + link de atualização
+- [x] Adicionar botão Copiar Link de atualização
+- [x] Implementar no painel Admin (médicos e instituições)
+- [x] Testar funcionalidades
