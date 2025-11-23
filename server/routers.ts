@@ -1149,6 +1149,79 @@ export const appRouter = router({
       }),
   }),
 
+  // ========== AVALIAÇÕES ==========
+  avaliacoes: router({
+    criar: publicProcedure
+      .input(z.object({
+        tipoCredenciado: z.enum(["medico", "instituicao"]),
+        credenciadoId: z.number(),
+        nomeCredenciado: z.string(),
+        nota: z.number().min(1).max(5),
+        comentario: z.string().optional(),
+        nomeAvaliador: z.string().optional(),
+        emailAvaliador: z.string().email().optional(),
+        telefoneAvaliador: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarAvaliacao } = await import("./db");
+        await criarAvaliacao(input);
+        return { success: true };
+      }),
+
+    listar: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem visualizar avaliações");
+        }
+        const { listarAvaliacoes } = await import("./db");
+        return await listarAvaliacoes();
+      }),
+
+    listarPorCredenciado: protectedProcedure
+      .input(z.object({
+        tipoCredenciado: z.enum(["medico", "instituicao"]),
+        credenciadoId: z.number(),
+      }))
+      .query(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem visualizar avaliações");
+        }
+        const { listarAvaliacoesPorCredenciado } = await import("./db");
+        return await listarAvaliacoesPorCredenciado(input.tipoCredenciado, input.credenciadoId);
+      }),
+
+    aprovar: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem aprovar avaliações");
+        }
+        const { aprovarAvaliacao } = await import("./db");
+        await aprovarAvaliacao(input.id);
+        return { success: true };
+      }),
+
+    rejeitar: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem rejeitar avaliações");
+        }
+        const { rejeitarAvaliacao } = await import("./db");
+        await rejeitarAvaliacao(input.id);
+        return { success: true };
+      }),
+
+    estatisticas: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem visualizar estatísticas");
+        }
+        const { estatisticasAvaliacoes } = await import("./db");
+        return await estatisticasAvaliacoes();
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

@@ -218,6 +218,13 @@
       "when": 1763904165695,
       "tag": "0030_tense_titania",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1763910091275,
+      "tag": "0031_strong_silver_fox",
+      "breakpoints": true
     }
   ]
 }

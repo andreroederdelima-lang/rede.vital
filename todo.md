@@ -1205,3 +1205,22 @@
 - [x] Implementar seletor de app (Waze/Google Maps) no botão "Como Chegar"
 - [x] Ajustar formato de compartilhamento WhatsApp com layout organizado
 - [x] Testar todas as correções
+
+
+## Sistema de Avaliações de Credenciados - 23/11/2025
+
+### Backend
+- [x] Criar tabela de avaliações no schema
+- [x] Criar procedure tRPC para enviar avaliação
+- [x] Criar procedure tRPC para listar avaliações (admin)
+- [x] Criar procedure tRPC para estatísticas de avaliações
+
+### Frontend
+- [x] Adicionar botão "Avaliar" nos cards de credenciados (página pública) - base preparada
+- [ ] Criar modal de avaliação com campos: nota (1-5), comentário, nome opcional
+- [ ] Criar aba "Avaliações" no painel Admin
+- [ ] Implementar listagem de avaliações por credenciado
+- [ ] Adicionar filtros e estatísticas no Admin
+
+### Ajuste Visual
+- [x] Ajustar posição da logo Vital no mobile para não sobrepor botão compartilhar

@@ -21,6 +21,8 @@ interface CredenciadoListItemProps {
   onCompartilhar?: () => void;
   onEnviarLink?: () => void;
   onEditar?: () => void;
+  onAvaliar?: () => void;
+  credenciadoId?: number;
 }
 
 export function CredenciadoListItem({
@@ -40,6 +42,8 @@ export function CredenciadoListItem({
   onCompartilhar,
   onEnviarLink,
   onEditar,
+  onAvaliar,
+  credenciadoId,
 }: CredenciadoListItemProps) {
   // Determinar imagem padrão baseado no tipo e categoria
   const getPlaceholderImage = () => {
@@ -150,6 +154,20 @@ export function CredenciadoListItem({
                 }}
               >
                 Editar
+              </Button>
+            )}
+            {onAvaliar && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onAvaliar}
+                className="h-8 px-3"
+                style={{
+                  borderColor: VITAL_COLORS.gold,
+                  color: VITAL_COLORS.gold,
+                }}
+              >
+                Avaliar
               </Button>
             )}
           </div>
@@ -297,6 +315,20 @@ export function CredenciadoListItem({
               Editar
             </Button>
           )}
+          {onAvaliar && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={onAvaliar}
+              className="flex-1 h-8 text-xs"
+              style={{
+                borderColor: VITAL_COLORS.gold,
+                color: VITAL_COLORS.gold,
+              }}
+            >
+              Avaliar
+            </Button>
+          )}
         </div>
       </div>
 
@@ -312,10 +344,12 @@ export function CredenciadoListItem({
       />
       
       {/* Logo Vital - Canto Inferior Direito do CARD (FORA da foto) */}
+      {/* Mobile: posiciona acima dos botões para não sobrepor */}
+      {/* Desktop: mantém no canto inferior direito */}
       <img
         src={logoVital}
         alt="Logo Vital"
-        className="absolute bottom-2 right-2 w-10 h-10 md:w-12 md:h-12 rounded-full object-cover bg-white border-2"
+        className="absolute bottom-14 md:bottom-2 right-2 w-10 h-10 md:w-12 md:h-12 rounded-full object-cover bg-white border-2"
         style={{
           borderColor: VITAL_COLORS.white,
           boxShadow: "0 2px 4px rgba(0,0,0,0.15)",

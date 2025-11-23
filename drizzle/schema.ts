@@ -386,3 +386,25 @@ export const copys = mysqlTable("copys", {
 
 export type Copy = typeof copys.$inferSelect;
 export type InsertCopy = typeof copys.$inferInsert;
+
+/**
+ * Tabela de avaliações de credenciados
+ * Feedback dos assinantes sobre atendimento e qualidade dos parceiros
+ * Visível apenas para administradores
+ */
+export const avaliacoes = mysqlTable("avaliacoes", {
+  id: int("id").autoincrement().primaryKey(),
+  tipoCredenciado: mysqlEnum("tipoCredenciado", ["medico", "instituicao"]).notNull(),
+  credenciadoId: int("credenciadoId").notNull(), // ID do médico ou instituição
+  nomeCredenciado: varchar("nomeCredenciado", { length: 255 }).notNull(), // Nome para facilitar consultas
+  nota: int("nota").notNull(), // 1 a 5 estrelas
+  comentario: text("comentario"),
+  nomeAvaliador: varchar("nomeAvaliador", { length: 255 }), // Opcional
+  emailAvaliador: varchar("emailAvaliador", { length: 320 }), // Opcional
+  telefoneAvaliador: varchar("telefoneAvaliador", { length: 100 }), // Opcional
+  aprovada: int("aprovada").default(0).notNull(), // 0 = pendente, 1 = aprovada, -1 = rejeitada
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Avaliacao = typeof avaliacoes.$inferSelect;
+export type InsertAvaliacao = typeof avaliacoes.$inferInsert;

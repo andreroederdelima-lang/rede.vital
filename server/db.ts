@@ -1,8 +1,8 @@
-import { eq, sql, desc } from "drizzle-orm";
+import { eq, sql, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
 // @ts-ignore - TypeScript cache bug: exports exist but not recognized
-import { indicadores, indicacoes, comissoes, copys } from "../drizzle/schema";
+import { indicadores, indicacoes, comissoes, copys, avaliacoes } from "../drizzle/schema";
 
 // Workaround types for indicacoes system (TypeScript cache issue)
 type Indicador = typeof indicadores.$inferSelect;
@@ -13,6 +13,8 @@ type Comissao = typeof comissoes.$inferSelect;
 type InsertComissao = typeof comissoes.$inferInsert;
 type Copy = typeof copys.$inferSelect;
 type InsertCopy = typeof copys.$inferInsert;
+type Avaliacao = typeof avaliacoes.$inferSelect;
+type InsertAvaliacao = typeof avaliacoes.$inferInsert;
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -102,7 +104,7 @@ export async function getUserByOpenId(openId: string) {
 }
 
 import { Medico, Instituicao, InsertMedico, InsertInstituicao } from "../drizzle/schema";
-import { and, like, or, gte } from "drizzle-orm";
+import { like, or, gte } from "drizzle-orm";
 
 // ========== MÉDICOS ==========
 
@@ -1323,4 +1325,80 @@ export async function excluirCopy(id: number) {
   
   // Soft delete
   await db.update(copys).set({ ativo: 0 }).where(eq(copys.id, id));
+}
+
+// ==================== AVALIAÇÕES ====================
+
+export async function criarAvaliacao(data: InsertAvaliacao) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(avaliacoes).values(data);
+}
+
+export async function listarAvaliacoes() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .select()
+    .from(avaliacoes)
+    .orderBy(desc(avaliacoes.createdAt));
+  
+  return result;
+}
+
+export async function listarAvaliacoesPorCredenciado(tipoCredenciado: "medico" | "instituicao", credenciadoId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db
+    .select()
+    .from(avaliacoes)
+    .where(
+      and(
+        eq(avaliacoes.tipoCredenciado, tipoCredenciado),
+        eq(avaliacoes.credenciadoId, credenciadoId)
+      )
+    )
+    .orderBy(desc(avaliacoes.createdAt));
+  
+  return result;
+}
+
+export async function aprovarAvaliacao(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(avaliacoes).set({ aprovada: 1 }).where(eq(avaliacoes.id, id));
+}
+
+export async function rejeitarAvaliacao(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(avaliacoes).set({ aprovada: -1 }).where(eq(avaliacoes.id, id));
+}
+
+export async function estatisticasAvaliacoes() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.select().from(avaliacoes);
+  
+  const total = result.length;
+  const pendentes = result.filter(a => a.aprovada === 0).length;
+  const aprovadas = result.filter(a => a.aprovada === 1).length;
+  const rejeitadas = result.filter(a => a.aprovada === -1).length;
+  const mediaNotas = result.length > 0 
+    ? result.reduce((acc, a) => acc + a.nota, 0) / result.length 
+    : 0;
+  
+  return {
+    total,
+    pendentes,
+    aprovadas,
+    rejeitadas,
+    mediaNotas: Math.round(mediaNotas * 10) / 10,
+  };
 }
