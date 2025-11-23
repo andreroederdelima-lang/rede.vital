@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO, APP_TITLE } from "@/const";
 import { Button } from "@/components/ui/button";
