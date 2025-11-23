@@ -1128,12 +1128,13 @@
 - [ ] Remover botão "Enviar Link" da página pública
 
 ### Formulários
-- [ ] Unificar formulário de Sugestão de Parceiro (página Parceiros)
-- [ ] Unificar formulário de Atualização (link /atualizar-dados/:token)
-- [ ] Campos públicos (Home): Nome, Especialidade/Categoria, Número de registro no conselho, Tipo de atendimento (Online/Presencial/Ambos), Município, Endereço, Telefone Fixo, WhatsApp Comercial/Agendamento, Logo (upload), Foto (upload)
-- [ ] Campos internos (Dados Internos): Contato do responsável pela parceria, WhatsApp do responsável pela parceria, Observações
-- [ ] Manter opt-in em ambos formulários
-- [ ] Remover campos desnecessários (telefone organização, whatsapp secretaria, etc)
+- [x] Criar componente FormularioCredenciado reutilizável
+- [ ] Aplicar componente na página Parceiros (substituir formulário atual)
+- [ ] Aplicar componente na página Atualizar Dados (substituir formulário atual)
+- [x] Campos públicos (Home): Nome, Especialidade/Categoria, Número de registro no conselho, Tipo de atendimento (Online/Presencial/Ambos), Município, Endereço, Telefone Fixo, WhatsApp Comercial/Agendamento, Logo (upload), Foto (upload)
+- [x] Campos internos (Dados Internos): Contato do responsável pela parceria, WhatsApp do responsável pela parceria, Observações
+- [x] Manter opt-in em ambos formulários
+- [x] Upload de imagens com preview
 
 ### Imagens Padrão
 - [ ] Adicionar imagem padrão para Médicos (quando não enviar logo/foto)
