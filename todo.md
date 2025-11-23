@@ -1147,3 +1147,11 @@
 - [ ] Adicionar imagem padrão para Serviços de Saúde
 - [ ] Adicionar imagem padrão para Outros Serviços
 - [ ] Implementar fallback automático para imagens ausentes
+
+
+## Imagens Padrão por Categoria
+
+- [x] Copiar imagens para pasta pública (client/public/)
+- [x] Renomear imagens: medico-placeholder.png, servico-saude-placeholder.png, outros-servicos-placeholder.png
+- [x] Aplicar lógica de fallback no componente CredenciadoListItem
+- [x] Testar exibição de imagens padrão

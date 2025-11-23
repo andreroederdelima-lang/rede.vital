@@ -39,10 +39,19 @@ export function CredenciadoListItem({
   onEnviarLink,
   onEditar,
 }: CredenciadoListItemProps) {
-  // Determinar imagem padrão baseado no tipo
+  // Determinar imagem padrão baseado no tipo e categoria
   const getPlaceholderImage = () => {
     if (tipo === "medico") return "/medico-placeholder.png";
-    return "/servico-placeholder.png";
+    
+    // Para instituições, verificar categoria
+    const categoria = especialidadeOuCategoria.toLowerCase();
+    if (categoria.includes("saúde") || categoria.includes("saude") || 
+        categoria.includes("clínica") || categoria.includes("clinica") ||
+        categoria.includes("hospital") || categoria.includes("laboratório") || categoria.includes("laboratorio")) {
+      return "/servico-saude-placeholder.png";
+    }
+    
+    return "/outros-servicos-placeholder.png";
   };
 
   const imagemPrincipal = logoUrl || fotoUrl || getPlaceholderImage();
