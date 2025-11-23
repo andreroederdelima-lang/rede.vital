@@ -1301,3 +1301,11 @@
 - [x] Atualizar botão na página Consulta para "INDIQUE & GANHE" com ícone $
 - [x] Atualizar botão na página Home para "INDIQUE & GANHE" com ícone $
 - [x] Testar ambas as páginas
+
+
+## Botão INDIQUE & GANHE no Menu - 23/11/2025
+
+- [x] Adicionar botão destacado no MainNav (página pública Consulta)
+- [x] Verificar e ajustar posição na Home (dados internos)
+- [x] Garantir destaque visual em ambos os menus
+- [x] Testar navegação

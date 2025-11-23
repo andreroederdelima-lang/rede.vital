@@ -4,7 +4,7 @@ import { APP_LOGO } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Users, TrendingUp, Building2, Shield, Handshake, MessageCircle, Lock, Menu, Images } from "lucide-react";
+import { Users, TrendingUp, Building2, Shield, Handshake, MessageCircle, Lock, Menu, Images, DollarSign } from "lucide-react";
 
 export function MainNav() {
   const [location] = useLocation();
@@ -13,6 +13,13 @@ export function MainNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    {
+      href: "/indicacoes",
+      label: "INDIQUE & GANHE",
+      icon: DollarSign,
+      public: true,
+      highlight: true,
+    },
     {
       href: "/sugerir-parceiro",
       label: "Sugerir um Parceiro",
@@ -94,6 +101,20 @@ export function MainNav() {
                 );
               }
 
+              // Botão destacado (INDIQUE & GANHE)
+              if ((item as any).highlight) {
+                return (
+                  <Link key={item.href} href={item.href}>
+                    <Button
+                      className="bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white font-bold shadow-lg"
+                    >
+                      <Icon className="h-4 w-4 mr-2" />
+                      {item.label}
+                    </Button>
+                  </Link>
+                );
+              }
+
               return (
                 <Link key={item.href} href={item.href}>
                   <Button
@@ -153,6 +174,21 @@ export function MainNav() {
                             {item.label}
                           </Button>
                         </a>
+                      );
+                    }
+
+                    // Botão destacado (INDIQUE & GANHE) mobile
+                    if ((item as any).highlight) {
+                      return (
+                        <Link key={item.href} href={item.href}>
+                          <Button
+                            className="w-full justify-start bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white font-bold shadow-lg"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <Icon className="h-5 w-5 mr-3" />
+                            {item.label}
+                          </Button>
+                        </Link>
                       );
                     }
 
