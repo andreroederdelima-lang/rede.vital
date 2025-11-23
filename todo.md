@@ -1318,3 +1318,11 @@
 - [x] Mudar "GUIA DO ASSINANTE" para "Sua Rede Vital" (negrito)
 - [x] Atualizar texto principal
 - [x] Manter texto secundário com menos destaque
+
+
+## Correções de Layout Urgentes - 23/11/2025
+
+- [x] Corrigir textos sobrepostos no MainNav (desktop)
+- [x] Tornar "Rede de Parceiros Vital" e "Vale do Itajaí - SC" legíveis
+- [x] Realocar botão "Avaliar" nos cards para não sobrepor logo Vital
+- [x] Testar layout em desktop e mobile

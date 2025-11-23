@@ -59,16 +59,16 @@ export function MainNav() {
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/">
             <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-10 w-auto" />
-              <div className="flex flex-col">
-                <span className="text-base md:text-lg font-bold text-[#1e9d9f]">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-12 w-auto" />
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm md:text-base font-bold text-[#1e9d9f] whitespace-nowrap">
                   Rede de Parceiros Vital
                 </span>
-                <span className="text-xs text-gray-600">
+                <span className="text-xs text-gray-600 whitespace-nowrap">
                   Vale do Itajaí - SC
                 </span>
               </div>

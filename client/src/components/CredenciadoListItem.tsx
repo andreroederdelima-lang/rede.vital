@@ -111,8 +111,8 @@ export function CredenciadoListItem({
             </p>
           </div>
 
-          {/* Botões de ação (desktop) */}
-          <div className="hidden md:flex gap-2 flex-shrink-0">
+          {/* Botões de ação (desktop) - posicionados no topo para não sobrepor logo */}
+          <div className="hidden md:flex gap-2 flex-shrink-0 items-start">
             {onCompartilhar && (
               <Button
                 size="sm"
@@ -126,6 +126,21 @@ export function CredenciadoListItem({
                 title="Compartilhar"
               >
                 <Share2 size={14} />
+              </Button>
+            )}
+            {onAvaliar && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={onAvaliar}
+                className="h-8 w-8 p-0"
+                style={{
+                  borderColor: VITAL_COLORS.gold,
+                  color: VITAL_COLORS.gold,
+                }}
+                title="Avaliar"
+              >
+                Av
               </Button>
             )}
             {onEnviarLink && (
@@ -154,20 +169,6 @@ export function CredenciadoListItem({
                 }}
               >
                 Editar
-              </Button>
-            )}
-            {onAvaliar && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={onAvaliar}
-                className="h-8 px-3"
-                style={{
-                  borderColor: VITAL_COLORS.gold,
-                  color: VITAL_COLORS.gold,
-                }}
-              >
-                Avaliar
               </Button>
             )}
           </div>
