@@ -23,26 +23,43 @@ export default function DashboardProspeccao() {
     );
   }
 
-  // Processar dados para criar mapa de cobertura
-  const coberturaMap = new Map<string, Map<string, number>>();
+  // Processar dados para criar mapa de cobertura com contadores separados
+  const coberturaMap = new Map<string, {
+    medicos: number;
+    servicosSaude: number;
+    outrosServicos: number;
+  }>();
+  
+  // Inicializar todas as cidades
+  CIDADES_FOCO.forEach(cidade => {
+    coberturaMap.set(cidade, {
+      medicos: 0,
+      servicosSaude: 0,
+      outrosServicos: 0
+    });
+  });
   
   // Processar médicos
   if ('medicos' in stats) {
     stats.medicos.forEach((item: any) => {
-    if (!coberturaMap.has(item.municipio)) {
-      coberturaMap.set(item.municipio, new Map());
-    }
-      coberturaMap.get(item.municipio)!.set(`Médico: ${item.especialidade}`, item.quantidade);
+      const cidade = coberturaMap.get(item.municipio);
+      if (cidade) {
+        cidade.medicos += item.quantidade;
+      }
     });
   }
 
-  // Processar instituições
+  // Processar instituições - separar por tipo de serviço
   if ('instituicoes' in stats) {
     stats.instituicoes.forEach((item: any) => {
-    if (!coberturaMap.has(item.municipio)) {
-      coberturaMap.set(item.municipio, new Map());
-    }
-      coberturaMap.get(item.municipio)!.set(`Instituição: ${item.categoria}`, item.quantidade);
+      const cidade = coberturaMap.get(item.municipio);
+      if (cidade) {
+        if (item.tipoServico === 'servicos_saude') {
+          cidade.servicosSaude += item.quantidade;
+        } else if (item.tipoServico === 'outros_servicos') {
+          cidade.outrosServicos += item.quantidade;
+        }
+      }
     });
   }
 
@@ -81,8 +98,8 @@ export default function DashboardProspeccao() {
       {/* Mapa de Cobertura por Cidade */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {CIDADES_FOCO.map((cidade) => {
-          const coberturaCidade = coberturaMap.get(cidade) || new Map();
-          const totalCredenciados = Array.from(coberturaCidade.values()).reduce((a, b) => a + b, 0);
+          const cobertura = coberturaMap.get(cidade) || { medicos: 0, servicosSaude: 0, outrosServicos: 0 };
+          const totalCredenciados = cobertura.medicos + cobertura.servicosSaude + cobertura.outrosServicos;
           
           return (
             <Card key={cidade}>
@@ -93,34 +110,47 @@ export default function DashboardProspeccao() {
                     {totalCredenciados} credenciados
                   </Badge>
                 </CardTitle>
-                <CardDescription>
-                  {coberturaCidade.size} tipos de serviços
-                </CardDescription>
               </CardHeader>
               <CardContent>
-                {coberturaCidade.size === 0 ? (
+                {totalCredenciados === 0 ? (
                   <div className="text-center py-4 text-muted-foreground">
                     <AlertCircle className="h-8 w-8 mx-auto mb-2 text-red-500" />
                     <p className="text-sm">Nenhum credenciado</p>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    {Array.from(coberturaCidade.entries()).map(([tipo, quantidade]) => {
-                      const indicador = getIndicadorCor(quantidade);
-                      const Icon = indicador.icon;
-                      
-                      return (
-                        <div key={tipo} className="flex items-center justify-between text-sm">
-                          <div className="flex items-center gap-2 flex-1">
-                            <Icon className={`h-4 w-4 ${indicador.color.replace('bg-', 'text-')}`} />
-                            <span className="truncate">{tipo}</span>
-                          </div>
-                          <Badge variant="outline" className="ml-2">
-                            {quantidade}
-                          </Badge>
-                        </div>
-                      );
-                    })}
+                  <div className="space-y-3">
+                    {/* Médicos */}
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2 flex-1">
+                        <div className={`h-3 w-3 rounded-full ${getIndicadorCor(cobertura.medicos).color}`}></div>
+                        <span className="font-medium">Médicos</span>
+                      </div>
+                      <Badge variant="outline" className="ml-2">
+                        {cobertura.medicos}
+                      </Badge>
+                    </div>
+                    
+                    {/* Serviços de Saúde */}
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2 flex-1">
+                        <div className={`h-3 w-3 rounded-full ${getIndicadorCor(cobertura.servicosSaude).color}`}></div>
+                        <span className="font-medium">Serviços de Saúde</span>
+                      </div>
+                      <Badge variant="outline" className="ml-2">
+                        {cobertura.servicosSaude}
+                      </Badge>
+                    </div>
+                    
+                    {/* Outros Serviços */}
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2 flex-1">
+                        <div className={`h-3 w-3 rounded-full ${getIndicadorCor(cobertura.outrosServicos).color}`}></div>
+                        <span className="font-medium">Outros Serviços</span>
+                      </div>
+                      <Badge variant="outline" className="ml-2">
+                        {cobertura.outrosServicos}
+                      </Badge>
+                    </div>
                   </div>
                 )}
               </CardContent>
@@ -145,16 +175,16 @@ export default function DashboardProspeccao() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600">
-                {Array.from(coberturaMap.values()).filter(m => 
-                  Array.from(m.values()).reduce((a, b) => a + b, 0) >= 2
+                {Array.from(coberturaMap.values()).filter(c => 
+                  (c.medicos + c.servicosSaude + c.outrosServicos) >= 2
                 ).length}
               </div>
               <p className="text-sm text-muted-foreground">Cidades com Meta Atingida</p>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-yellow-600">
-                {Array.from(coberturaMap.values()).filter(m => {
-                  const total = Array.from(m.values()).reduce((a, b) => a + b, 0);
+                {Array.from(coberturaMap.values()).filter(c => {
+                  const total = c.medicos + c.servicosSaude + c.outrosServicos;
                   return total === 1;
                 }).length}
               </div>

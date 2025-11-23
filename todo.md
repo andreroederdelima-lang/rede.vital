@@ -917,3 +917,22 @@
 - [x] Substituir campo "URL da Foto" por upload de arquivo
 - [ ] Implementar upload para S3 nos formulários Admin (backend)
 - [ ] Testar funcionalidade completa
+
+
+## Melhorar Dashboard de Prospecção
+
+- [ ] Exibir quantidade de médicos por cidade
+- [ ] Exibir quantidade de serviços de saúde por cidade
+- [ ] Exibir quantidade de outros serviços por cidade
+- [ ] Substituir "X tipos de serviços" por contadores detalhados
+- [ ] Testar visualização
+
+
+## Dashboard de Prospecção - Melhorias de Visualização
+
+- [x] Modificar Dashboard de Prospecção para exibir contadores separados por categoria
+- [x] Mostrar quantidade de Médicos por cidade
+- [x] Mostrar quantidade de Serviços de Saúde por cidade
+- [x] Mostrar quantidade de Outros Serviços por cidade
+- [x] Adicionar indicadores visuais (vermelho/amarelo/verde) para cada categoria
+- [x] Atualizar resumo geral para refletir nova estrutura de dados
