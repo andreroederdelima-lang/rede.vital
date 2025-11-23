@@ -4,7 +4,7 @@ import { APP_LOGO } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { FileText, BarChart3, DollarSign, LogOut, User } from "lucide-react";
+import { FileText, BarChart3, DollarSign, LogOut, User, Image, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 interface PainelVendedorLayoutProps {
@@ -43,6 +43,20 @@ export default function PainelVendedorLayout({ children }: PainelVendedorLayoutP
       icon: DollarSign,
       label: "Comissões",
       path: "/indicacoes/comissoes",
+    },
+    {
+      icon: Image,
+      label: "Materiais de Divulgação",
+      path: "/materiais-divulgacao",
+    },
+  ];
+
+  const actionButtons = [
+    {
+      icon: Plus,
+      label: "Nova Indicação",
+      path: "/indicacoes",
+      action: "create",
     },
   ];
 
@@ -102,6 +116,23 @@ export default function PainelVendedorLayout({ children }: PainelVendedorLayoutP
               );
             })}
           </nav>
+
+          {/* Botão de Ação Rápida */}
+          <div className="mt-6 pt-6 border-t">
+            {actionButtons.map((btn) => {
+              const Icon = btn.icon;
+              return (
+                <Button
+                  key={btn.label}
+                  onClick={() => setLocation(btn.path)}
+                  className="w-full bg-[#1e9d9f] hover:bg-[#178789] text-white"
+                >
+                  <Icon className="h-5 w-5 mr-2" />
+                  {btn.label}
+                </Button>
+              );
+            })}
+          </div>
 
           {/* User Info & Logout */}
           <div className="mt-auto pt-6 border-t">

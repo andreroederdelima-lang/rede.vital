@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PainelVendedorLayout from "@/components/PainelVendedorLayout";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -77,34 +78,24 @@ export default function MateriaisDivulgacao() {
 
   if (loadingMateriais || loadingTemplates) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
-        <p style={{ color: VITAL_COLORS.mediumGray }}>Carregando materiais...</p>
-      </div>
+      <PainelVendedorLayout>
+        <div className="flex items-center justify-center h-64">
+          <p className="text-muted-foreground">Carregando materiais...</p>
+        </div>
+      </PainelVendedorLayout>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
-      {/* Header */}
-      <header className="py-6" style={{ backgroundColor: VITAL_COLORS.white, borderBottom: `2px solid ${VITAL_COLORS.beige}` }}>
-        <div className="container">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <img src={APP_LOGO} alt="Logo" className="h-12" />
-              <div>
-                <h1 className="text-2xl font-bold" style={{ color: VITAL_COLORS.turquoise }}>
-                  Materiais de Divulgação
-                </h1>
-                <p className="text-sm" style={{ color: VITAL_COLORS.mediumGray }}>
-                  Recursos para promover as assinaturas Vital
-                </p>
-              </div>
-            </div>
-          </div>
+    <PainelVendedorLayout>
+      <div className="space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Materiais de Divulgação</h1>
+          <p className="text-muted-foreground mt-1">
+            Recursos para promover as assinaturas Vital
+          </p>
         </div>
-      </header>
-
-      <div className="container py-8">
         {/* Integração WhatsApp */}
         <Card className="p-6 mb-8" style={{ backgroundColor: VITAL_COLORS.white }}>
           <h2 className="text-xl font-semibold mb-4" style={{ color: VITAL_COLORS.turquoise }}>
@@ -301,6 +292,6 @@ export default function MateriaisDivulgacao() {
           </div>
         </section>
       </div>
-    </div>
+    </PainelVendedorLayout>
   );
 }

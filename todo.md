@@ -964,3 +964,10 @@
 - [x] Criar página de Comissões mostrando ganhos e pagamentos
 - [x] Integrar com dados existentes de indicações
 - [x] Garantir que vendedores/promotores vejam apenas seus próprios dados
+
+
+## Melhorias no Menu do Painel do Vendedor
+
+- [x] Adicionar item "Materiais de Divulgação" no menu lateral abaixo de "Comissões"
+- [x] Adicionar botão de ação rápida "Nova Indicação" no menu lateral
+- [x] Garantir que rota /materiais-divulgacao funcione dentro do contexto do painel
