@@ -1197,3 +1197,11 @@
 - [x] Mover logo Vital para fora da foto (canto inferior direito do CARD)
 - [x] Ajustar posicionamento para mobile e desktop
 - [x] Testar layout em ambas as páginas
+
+
+## Correções Urgentes - 23/11/2025
+
+- [x] Investigar e corrigir erro no cadastro de indicador
+- [x] Implementar seletor de app (Waze/Google Maps) no botão "Como Chegar"
+- [x] Ajustar formato de compartilhamento WhatsApp com layout organizado
+- [x] Testar todas as correções

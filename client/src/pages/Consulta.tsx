@@ -53,17 +53,14 @@ export default function Consulta() {
   }, [busca, especialidade, municipio, categoria]);
 
   const compartilharCredenciado = (nome: string, endereco: string, telefone?: string) => {
-    const texto = `Confira este credenciado da Rede Vital:\\n\\n${nome}\\n${endereco}${telefone ? `\\nTelefone: ${telefone}` : ''}\\n\\nAcesse: ${window.location.origin}`;
+    // Formato organizado e visual para WhatsApp
+    const texto = `Confira este credenciado da Rede Vital:\n\n${nome}\n${endereco}${telefone ? `\nTelefone: ${telefone}` : ''}\n\nSua Saúde Vital - sempre ao seu lado.\nPara ver todos os credenciados acesse: ${window.location.origin}`;
     
-    if (navigator.share) {
-      navigator.share({
-        title: `Credenciado Vital - ${nome}`,
-        text: texto,
-      }).catch(() => {});
-    } else {
-      navigator.clipboard.writeText(texto);
-      toast.success("Informações copiadas!");
-    }
+    // Abre WhatsApp diretamente com o texto formatado
+    const textoEncoded = encodeURIComponent(texto);
+    const whatsappUrl = `https://wa.me/?text=${textoEncoded}`;
+    
+    window.open(whatsappUrl, '_blank');
   };
 
 

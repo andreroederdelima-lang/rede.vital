@@ -40,17 +40,34 @@ export function formatPhoneDisplay(telefone: string): string {
 }
 
 /**
- * Abre o Google Maps com direções para o endereço especificado
- * Funciona em desktop e mobile (abre app do Google Maps se disponível)
+ * Abre seletor de app de navegação (Waze ou Google Maps)
+ * Permite ao usuário escolher qual app usar para navegar
  */
 export function abrirComoChegar(endereco: string, municipio: string): void {
-  // Formata o endereço completo para busca no Google Maps
+  // Formata o endereço completo
   const enderecoCompleto = `${endereco}, ${municipio}, Santa Catarina, Brasil`;
   const enderecoEncoded = encodeURIComponent(enderecoCompleto);
   
-  // URL do Google Maps com direções (destination)
-  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${enderecoEncoded}`;
+  // Detecta se é mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
-  // Abre em nova aba
-  window.open(googleMapsUrl, '_blank');
+  if (isMobile) {
+    // No mobile, mostra opções
+    const escolha = confirm(
+      'Escolha o aplicativo de navegação:\n\n' +
+      'OK = Google Maps\n' +
+      'Cancelar = Waze'
+    );
+    
+    if (escolha) {
+      // Google Maps
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${enderecoEncoded}`, '_blank');
+    } else {
+      // Waze
+      window.open(`https://waze.com/ul?q=${enderecoEncoded}&navigate=yes`, '_blank');
+    }
+  } else {
+    // No desktop, abre Google Maps web
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${enderecoEncoded}`, '_blank');
+  }
 }
