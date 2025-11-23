@@ -4,7 +4,7 @@ import { APP_LOGO } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Users, TrendingUp, Building2, Shield, Handshake, MessageCircle, Lock, Menu } from "lucide-react";
+import { Users, TrendingUp, Building2, Shield, Handshake, MessageCircle, Lock, Menu, Images } from "lucide-react";
 
 export function MainNav() {
   const [location] = useLocation();
@@ -13,6 +13,12 @@ export function MainNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    {
+      href: "/galeria-parceiros",
+      label: "Galeria de Parceiros",
+      icon: Images,
+      public: true,
+    },
     {
       href: "/parceiros",
       label: "Sugerir um Parceiro",

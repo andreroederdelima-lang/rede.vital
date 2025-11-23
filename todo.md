@@ -1100,3 +1100,16 @@
 - [x] Adicionar campo de upload de foto no formulário de edição de credenciados
 - [x] Implementar preview da imagem antes do upload
 - [x] Testar upload e visualização de imagens
+
+
+## Galeria Pública de Parceiros
+
+- [x] Criar página GaleriaParceiros.tsx
+- [x] Buscar todos os médicos e instituições com logos/fotos
+- [x] Organizar por categorias (Médicos, Serviços de Saúde, Outros Serviços)
+- [x] Exibir logos e fotos em grid responsivo
+- [x] Adicionar filtros por categoria
+- [x] Adicionar botão de compartilhamento
+- [x] Adicionar rota /galeria-parceiros
+- [x] Adicionar link no menu principal
+- [x] Testar responsividade mobile
