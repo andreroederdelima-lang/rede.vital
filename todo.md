@@ -1047,3 +1047,15 @@
 - [x] Botão: QR Code WhatsApp Vendas (https://credenciados.suasaudevital.com.br/qr-codes)
 - [x] Botão: Convite de Parceiros (https://credenciados.suasaudevital.com.br/parceiros)
 - [x] Botão: Guia do Assinante (https://credenciados.suasaudevital.com.br)
+
+
+## Área de Edição de Copys para Admin
+
+- [x] Criar tabela no schema para armazenar copys editáveis (título, conteúdo, categoria)
+- [x] Criar procedures tRPC para listar, criar, atualizar e excluir copys
+- [x] Popular banco de dados com textos dos planos (Premium, Essencial, Premium Empresarial, Essencial Empresarial)
+- [x] Popular banco com textos promocionais (Promoção de Novembro)
+- [x] Criar interface de edição de copys na página Materiais de Divulgação (apenas para admin)
+- [x] Adicionar editor de texto com formatação básica
+- [x] Adicionar botões para copiar texto e compartilhar
+- [x] Organizar copys por categorias (Planos, Promoções, Outros)

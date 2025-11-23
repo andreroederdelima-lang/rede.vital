@@ -365,3 +365,21 @@ export const templatesWhatsapp = mysqlTable("templatesWhatsapp", {
 
 export type TemplateWhatsapp = typeof templatesWhatsapp.$inferSelect;
 export type InsertTemplateWhatsapp = typeof templatesWhatsapp.$inferInsert;
+
+/**
+ * Tabela de copys (textos) editáveis para materiais de divulgação
+ */
+export const copys = mysqlTable("copys", {
+  id: int("id").autoincrement().primaryKey(),
+  titulo: varchar("titulo", { length: 255 }).notNull(),
+  conteudo: text("conteudo").notNull(),
+  categoria: mysqlEnum("categoria", ["planos", "promocoes", "outros"]).default("outros").notNull(),
+  ordem: int("ordem").default(0).notNull(), // Para ordenação na interface
+  ativo: int("ativo").default(1).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedBy: varchar("updatedBy", { length: 255 }), // Quem alterou por último
+});
+
+export type Copy = typeof copys.$inferSelect;
+export type InsertCopy = typeof copys.$inferInsert;

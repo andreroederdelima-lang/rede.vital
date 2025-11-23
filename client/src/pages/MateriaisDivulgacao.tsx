@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { APP_LOGO, APP_TITLE } from "@/const";
+import CopysEditaveisSection from "@/components/CopysEditaveisSection";
 
 const VITAL_COLORS = {
   turquoise: "#2B9C9C",
@@ -319,6 +320,9 @@ export default function MateriaisDivulgacao() {
             </Card>
           </div>
         </section>
+
+        {/* Copys Editáveis (Admin) */}
+        <CopysEditaveisSection />
 
         {/* Integração WhatsApp */}
         <Card className="p-6 mb-8" style={{ backgroundColor: VITAL_COLORS.white }}>

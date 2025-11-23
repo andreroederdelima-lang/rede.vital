@@ -1085,6 +1085,65 @@ export const appRouter = router({
       }),
   }),
 
+  // Router de copys (textos editáveis)
+  copys: router({
+    listar: publicProcedure.query(async () => {
+      const { listarCopys } = await import("./db");
+      return await listarCopys();
+    }),
+
+    criar: protectedProcedure
+      .input(z.object({
+        titulo: z.string(),
+        conteudo: z.string(),
+        categoria: z.enum(["planos", "promocoes", "outros"]),
+        ordem: z.number().default(0),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem criar copys");
+        }
+        const { criarCopy } = await import("./db");
+        await criarCopy({
+          ...input,
+          updatedBy: ctx.user.email || ctx.user.name || "admin",
+        });
+        return { success: true };
+      }),
+
+    atualizar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        titulo: z.string().optional(),
+        conteudo: z.string().optional(),
+        categoria: z.enum(["planos", "promocoes", "outros"]).optional(),
+        ordem: z.number().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem atualizar copys");
+        }
+        const { atualizarCopy } = await import("./db");
+        const { id, ...data } = input;
+        await atualizarCopy(id, {
+          ...data,
+          updatedBy: ctx.user.email || ctx.user.name || "admin",
+        });
+        return { success: true };
+      }),
+
+    excluir: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem excluir copys");
+        }
+        const { excluirCopy } = await import("./db");
+        await excluirCopy(input.id);
+        return { success: true };
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

@@ -2,7 +2,7 @@ import { eq, sql, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
 // @ts-ignore - TypeScript cache bug: exports exist but not recognized
-import { indicadores, indicacoes, comissoes } from "../drizzle/schema";
+import { indicadores, indicacoes, comissoes, copys } from "../drizzle/schema";
 
 // Workaround types for indicacoes system (TypeScript cache issue)
 type Indicador = typeof indicadores.$inferSelect;
@@ -11,6 +11,8 @@ type Indicacao = typeof indicacoes.$inferSelect;
 type InsertIndicacao = typeof indicacoes.$inferInsert;
 type Comissao = typeof comissoes.$inferSelect;
 type InsertComissao = typeof comissoes.$inferInsert;
+type Copy = typeof copys.$inferSelect;
+type InsertCopy = typeof copys.$inferInsert;
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -1283,4 +1285,42 @@ export async function atualizarComissaoAssinatura(
       message: "Erro ao atualizar comissão",
     };
   }
+}
+
+
+// ==================== COPYS ====================
+
+export async function listarCopys() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db
+    .select()
+    .from(copys)
+    .where(eq(copys.ativo, 1))
+    .orderBy(copys.categoria, copys.ordem);
+  
+  return result;
+}
+
+export async function criarCopy(data: InsertCopy) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.insert(copys).values(data);
+}
+
+export async function atualizarCopy(id: number, data: Partial<InsertCopy>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(copys).set(data).where(eq(copys.id, id));
+}
+
+export async function excluirCopy(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Soft delete
+  await db.update(copys).set({ ativo: 0 }).where(eq(copys.id, id));
 }
