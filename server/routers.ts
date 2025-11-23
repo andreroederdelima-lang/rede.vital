@@ -888,6 +888,90 @@ export const appRouter = router({
       }),
   }),
 
+  // Materiais de Divulgação
+  materiais: router({  
+    listar: publicProcedure.query(async () => {
+      const { listarMateriaisDivulgacao } = await import("./db");
+      return await listarMateriaisDivulgacao();
+    }),
+
+    criar: protectedProcedure
+      .input(z.object({
+        tipo: z.enum(["link", "arquivo", "audio", "texto"]),
+        categoria: z.string(),
+        titulo: z.string(),
+        descricao: z.string().optional(),
+        conteudo: z.string(),
+        ordem: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarMaterialDivulgacao } = await import("./db");
+        return await criarMaterialDivulgacao(input);
+      }),
+
+    atualizar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        tipo: z.enum(["link", "arquivo", "audio", "texto"]).optional(),
+        categoria: z.string().optional(),
+        titulo: z.string().optional(),
+        descricao: z.string().optional(),
+        conteudo: z.string().optional(),
+        ordem: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        const { atualizarMaterialDivulgacao } = await import("./db");
+        return await atualizarMaterialDivulgacao(id, data);
+      }),
+
+    deletar: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const { deletarMaterialDivulgacao } = await import("./db");
+        return await deletarMaterialDivulgacao(input.id);
+      }),
+  }),
+
+  // Templates WhatsApp
+  templatesWhatsapp: router({
+    listar: publicProcedure.query(async () => {
+      const { listarTemplatesWhatsapp } = await import("./db");
+      return await listarTemplatesWhatsapp();
+    }),
+
+    criar: protectedProcedure
+      .input(z.object({
+        nome: z.string(),
+        tipo: z.enum(["cliente", "parceiro", "comercial"]),
+        mensagem: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarTemplateWhatsapp } = await import("./db");
+        return await criarTemplateWhatsapp(input);
+      }),
+
+    atualizar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        nome: z.string().optional(),
+        tipo: z.enum(["cliente", "parceiro", "comercial"]).optional(),
+        mensagem: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        const { atualizarTemplateWhatsapp } = await import("./db");
+        return await atualizarTemplateWhatsapp(id, data);
+      }),
+
+    deletar: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const { deletarTemplateWhatsapp } = await import("./db");
+        return await deletarTemplateWhatsapp(input.id);
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

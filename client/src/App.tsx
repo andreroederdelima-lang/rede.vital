@@ -20,6 +20,8 @@ import EsqueciSenha from "./pages/EsqueciSenha";
 import RecuperarSenha from "./pages/RecuperarSenha";
 import GaleriaLogos from "./pages/GaleriaLogos";
 import TermosDeUso from "./pages/TermosDeUso";
+import MateriaisDivulgacao from "./pages/MateriaisDivulgacao";
+import AdminMateriais from "./pages/AdminMateriais";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -39,6 +41,8 @@ function Router() {
       <Route path={"/admin"} component={Admin} />
       <Route path={"/galeria-logos"} component={GaleriaLogos} />
       <Route path={"/termos-de-uso"} component={TermosDeUso} />
+      <Route path={"/materiais-divulgacao"} component={MateriaisDivulgacao} />
+      <Route path={"/admin/materiais"} component={AdminMateriais} />
       <Route path={"/parceiros"} component={Parceiros} />
       <Route path={"/atualizar-dados/:token"} component={AtualizarDados} />
       <Route path={"/404"} component={NotFound} />

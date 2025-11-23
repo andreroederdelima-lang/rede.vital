@@ -861,9 +861,9 @@
 - [x] Adicionar campo dataUltimaAtualizacao na tabela instituicoes
 - [x] Exibir data da última atualização nos cards públicos (pequena)
 - [x] Marcar médicos desatualizados (+6 meses) na área interna
-- [ ] Criar sistema de notificação automática por email
-- [ ] Enviar emails para admin e parceiro a cada 6 meses
-- [ ] Testar funcionalidade completa
+- [ ] Criar sistema de notificação automática por email (PENDENTE - problema de tipagem TypeScript)
+- [ ] Enviar emails para admin e parceiro a cada 6 meses (PENDENTE)
+- [ ] Testar funcionalidade completa (PENDENTE)
 
 ## Página de Termos de Uso e Opt-in
 
@@ -877,24 +877,24 @@
 ## Área de Materiais de Divulgação para Indicadores
 
 ### Repositório de Materiais
-- [ ] Criar tabela materiaisDivulgacao no banco
-- [ ] Adicionar tipos: link, arquivo, audio, texto
-- [ ] Criar seção de Links Rápidos (checkout, landing pages)
-- [ ] Criar seção de Arquivos (PDFs, apresentações)
-- [ ] Criar seção de Áudios sobre assinaturas
-- [ ] Criar seção de Textos de Copy
+- [x] Criar tabela materiaisDivulgacao no banco
+- [x] Adicionar tipos: link, arquivo, audio, texto
+- [x] Criar seção de Links Rápidos (checkout, landing pages)
+- [x] Criar seção de Arquivos (PDFs, apresentações)
+- [x] Criar seção de Áudios sobre assinaturas
+- [x] Criar seção de Textos de Copy
 
 ### Integração WhatsApp
-- [ ] Campo para adicionar número do cliente
-- [ ] Botão para abrir WhatsApp com texto pré-pronto
-- [ ] Templates de mensagens personalizáveis
-- [ ] Opção de enviar contato do comercial Vital
-- [ ] Botão para convidar parceiro via WhatsApp
+- [x] Campo para adicionar número do cliente
+- [x] Botão para abrir WhatsApp com texto pré-pronto
+- [x] Templates de mensagens personalizáveis
+- [x] Opção de enviar contato do comercial Vital
+- [x] Botão para convidar parceiro via WhatsApp
 
 ### Painel Admin
-- [ ] Página /admin/materiais para gerenciar conteúdo
-- [ ] CRUD de links rápidos
-- [ ] Upload e gestão de arquivos
-- [ ] Upload e gestão de áudios
-- [ ] Gestão de textos de copy
-- [ ] Testar funcionalidade completa
+- [x] Página /admin/materiais para gerenciar conteúdo
+- [x] CRUD de links rápidos
+- [x] Upload e gestão de arquivos
+- [x] Upload e gestão de áudios
+- [x] Gestão de textos de copy
+- [x] Testar funcionalidade completa

@@ -981,3 +981,118 @@ export async function redefinirSenhaComToken(token: string, novaSenha: string) {
   
   return { success: true, message: "Senha redefinida com sucesso" };
 }
+
+
+// ===== Materiais de Divulgação =====
+
+export async function listarMateriaisDivulgacao() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // @ts-ignore
+  const { materiaisDivulgacao } = await import("../drizzle/schema");
+  
+  const materiais = await db.select()
+    .from(materiaisDivulgacao)
+    .where(eq(materiaisDivulgacao.ativo, 1))
+    .orderBy(materiaisDivulgacao.ordem, materiaisDivulgacao.createdAt);
+  
+  return materiais;
+}
+
+export async function criarMaterialDivulgacao(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { materiaisDivulgacao } = await import("../drizzle/schema");
+  
+  await db.insert(materiaisDivulgacao).values(data);
+  
+  return { success: true };
+}
+
+export async function atualizarMaterialDivulgacao(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { materiaisDivulgacao } = await import("../drizzle/schema");
+  
+  await db.update(materiaisDivulgacao)
+    .set(data)
+    .where(eq(materiaisDivulgacao.id, id));
+  
+  return { success: true };
+}
+
+export async function deletarMaterialDivulgacao(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { materiaisDivulgacao } = await import("../drizzle/schema");
+  
+  await db.update(materiaisDivulgacao)
+    .set({ ativo: 0 })
+    .where(eq(materiaisDivulgacao.id, id));
+  
+  return { success: true };
+}
+
+// ===== Templates WhatsApp =====
+
+export async function listarTemplatesWhatsapp() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  // @ts-ignore
+  const { templatesWhatsapp } = await import("../drizzle/schema");
+  
+  const templates = await db.select()
+    .from(templatesWhatsapp)
+    .where(eq(templatesWhatsapp.ativo, 1));
+  
+  return templates;
+}
+
+export async function criarTemplateWhatsapp(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { templatesWhatsapp } = await import("../drizzle/schema");
+  
+  await db.insert(templatesWhatsapp).values(data);
+  
+  return { success: true };
+}
+
+export async function atualizarTemplateWhatsapp(id: number, data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { templatesWhatsapp } = await import("../drizzle/schema");
+  
+  await db.update(templatesWhatsapp)
+    .set(data)
+    .where(eq(templatesWhatsapp.id, id));
+  
+  return { success: true };
+}
+
+export async function deletarTemplateWhatsapp(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // @ts-ignore
+  const { templatesWhatsapp } = await import("../drizzle/schema");
+  
+  await db.update(templatesWhatsapp)
+    .set({ ativo: 0 })
+    .where(eq(templatesWhatsapp.id, id));
+  
+  return { success: true };
+}
+
