@@ -979,3 +979,23 @@
 - [x] Adicionar link clicável no texto do checkbox direcionando para página de Termos de Uso
 - [x] Remover seção "DECLARAÇÃO DE ACEITE (OPT-IN)" da página Termos de Uso
 - [x] Formatar todo o texto da página Termos de Uso em preto, fonte tamanho 10
+
+
+## Ajustes de Layout de Cards e Filtros
+
+- [ ] Ajustar cards para exibição de um por linha (largura completa)
+- [ ] Garantir que nomes de médicos/serviços apareçam completos sem cortar
+- [ ] Criar/adicionar imagens padrão por categoria: médicos, serviços de saúde, outros serviços
+- [ ] Aplicar imagens padrão para credenciados sem foto enviada
+- [ ] Manter logo atual para todos que não enviaram logo próprio
+- [ ] Padronizar componente de filtros para uso em Home, Acesso Interno e outras páginas
+- [ ] Manter botões específicos de cada contexto (diferentes por página)
+
+
+## Ajustes de Layout de Cards e Filtros
+
+- [x] Ajustar layout de cards para um por linha (largura completa) garantindo nomes completos
+- [x] Gerar imagens padrão para cada categoria: médicos, serviços de saúde, outros serviços
+- [x] Atualizar lógica de fallback de imagens para usar placeholders por categoria
+- [x] Criar componente reutilizável FiltrosCredenciados para padronização
+- [x] Manter botões específicos de cada contexto (diferentes entre Home e Acesso Interno)
