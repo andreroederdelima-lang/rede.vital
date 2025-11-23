@@ -280,49 +280,64 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 w-full lg:w-auto">
-              {/* Informações do usuário */}
-              {user && (
-                <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-md">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">{user.email}</span>
-                </div>
-              )}
-              <Button 
-                size="sm" 
-                variant="outline" 
-                onClick={logout}
-                className="border-destructive text-destructive hover:bg-destructive hover:text-white"
-              >
-                <X className="h-4 w-4 mr-2" />
-                Sair
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto mt-3 lg:mt-0">
+            {/* Botões principais */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto">
               <Link href="/" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
+                <Button size="sm" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }} className="hover:opacity-90 w-full sm:w-auto">
                   <HomeIcon className="h-4 w-4 mr-2" />
                   <span className="text-xs md:text-sm">Modo Assinante</span>
                 </Button>
               </Link>
               <Link href="/admin" className="flex-1 sm:flex-none">
-                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
+                <Button size="sm" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }} className="hover:opacity-90 w-full sm:w-auto">
                   <User className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Admin</span>
+                  <span className="text-xs md:text-sm">Administrador</span>
                 </Button>
               </Link>
               <Link href="/indicacoes" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white w-full sm:w-auto">
+                <Button size="sm" variant="outline" style={{ borderColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.turquoise }} className="hover:bg-opacity-10 w-full sm:w-auto">
                   <TrendingUp className="h-4 w-4 mr-2" />
                   <span className="text-xs md:text-sm">Indicações</span>
                 </Button>
               </Link>
-              <Link href="/cadastro-indicador" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white w-full sm:w-auto">
-                  <Building2 className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Seja Parceiro</span>
+              <Link href="/sugerir-parceiro" className="flex-1 sm:flex-none">
+                <Button size="sm" variant="outline" style={{ borderColor: VITAL_COLORS.gold, color: VITAL_COLORS.gold }} className="hover:bg-opacity-10 w-full sm:w-auto">
+                  <Handshake className="h-4 w-4 mr-2" />
+                  <span className="text-xs md:text-sm">Sugira um Parceiro</span>
                 </Button>
               </Link>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                style={{ borderColor: VITAL_COLORS.gold, color: VITAL_COLORS.gold }}
+                className="hover:bg-opacity-10 w-full sm:w-auto flex-1 sm:flex-none"
+                onClick={async () => {
+                  const link = `${window.location.origin}/parceiros`;
+                  await navigator.clipboard.writeText(link);
+                  toast.success('Link copiado! Compartilhe com potenciais parceiros.');
+                }}
+              >
+                <Link2 className="h-4 w-4 mr-2" />
+                <span className="text-xs md:text-sm">Convide um Parceiro</span>
+              </Button>
+            </div>
+            {/* E-mail e Sair - discretos abaixo */}
+            <div className="flex flex-col sm:flex-row items-center gap-2 w-full lg:w-auto mt-3">
+              {user && (
+                <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded text-xs text-muted-foreground">
+                  <User className="h-3 w-3" />
+                  <span>{user.email}</span>
+                </div>
+              )}
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                onClick={logout}
+                className="text-xs text-muted-foreground hover:text-destructive"
+              >
+                <X className="h-3 w-3 mr-1" />
+                Sair
+              </Button>
             </div>
           </div>
         </div>
@@ -335,16 +350,28 @@ export default function Home() {
           setTipoCredenciado(v as "medicos" | "servicos_saude" | "outros_servicos");
           limparFiltros();
         }} className="mb-6">
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3">
-            <TabsTrigger value="medicos" className="flex items-center gap-2">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 gap-2 bg-transparent p-1">
+            <TabsTrigger 
+              value="medicos" 
+              className="flex items-center gap-2 border-2 data-[state=active]:border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white"
+              style={{ borderColor: tipoCredenciado === 'medicos' ? VITAL_COLORS.turquoise : VITAL_COLORS.mediumGray }}
+            >
               <User className="h-4 w-4" />
               Médicos
             </TabsTrigger>
-            <TabsTrigger value="servicos_saude" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="servicos_saude" 
+              className="flex items-center gap-2 border-2 data-[state=active]:border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white"
+              style={{ borderColor: tipoCredenciado === 'servicos_saude' ? VITAL_COLORS.turquoise : VITAL_COLORS.mediumGray }}
+            >
               <Building2 className="h-4 w-4" />
               Serviços de Saúde
             </TabsTrigger>
-            <TabsTrigger value="outros_servicos" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="outros_servicos" 
+              className="flex items-center gap-2 border-2 data-[state=active]:border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white"
+              style={{ borderColor: tipoCredenciado === 'outros_servicos' ? VITAL_COLORS.turquoise : VITAL_COLORS.mediumGray }}
+            >
               <Handshake className="h-4 w-4" />
               Outros Serviços
             </TabsTrigger>

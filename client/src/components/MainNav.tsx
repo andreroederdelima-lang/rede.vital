@@ -14,14 +14,14 @@ export function MainNav() {
 
   const navItems = [
     {
-      href: "/galeria-parceiros",
-      label: "Galeria de Parceiros",
-      icon: Images,
+      href: "/sugerir-parceiro",
+      label: "Sugerir um Parceiro",
+      icon: Handshake,
       public: true,
     },
     {
       href: "/parceiros",
-      label: "Sugerir um Parceiro",
+      label: "Seja Parceiro",
       icon: Handshake,
       public: true,
     },
@@ -58,11 +58,11 @@ export function MainNav() {
             <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
               <img src={APP_LOGO} alt="Vital Logo" className="h-10 w-auto" />
               <div className="flex flex-col">
-                <span className="text-lg font-bold text-[#1e9d9f]">
-                  GUIA DO ASSINANTE
+                <span className="text-base md:text-lg font-bold text-[#1e9d9f]">
+                  Guia de Parceiros Vital
                 </span>
                 <span className="text-xs text-gray-600">
-                  Rede Credenciada - Vale do Itajaí
+                  Vale do Itajaí - SC
                 </span>
               </div>
             </div>

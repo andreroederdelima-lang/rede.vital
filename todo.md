@@ -1234,3 +1234,27 @@
 - [x] Criar aba "Avaliações" no painel Admin
 - [x] Implementar listagem simples de avaliações no Admin
 - [x] Testar fluxo completo de avaliação
+
+
+## Ajustes de Layout e Navegação - 23/11/2025
+
+### Página Consulta (pública)
+- [x] Separar título em 2 linhas: "Guia de Parceiros Vital" + "Vale do Itajaí - SC"
+- [x] Mover botão "Galeria de Parceiros" para área administrativa
+- [x] Simplificar "Sugestão de Parceiro" (campos livres: tipo serviço, nome, município)
+- [x] Adicionar popup "Sugira um serviço parceiro ou seu médico de confiança!"
+- [x] Manter "Seja Parceiro" direcionando para /parceiros
+
+### Página Home (dados internos)
+- [x] Tornar e-mail + botão Sair mais discretos e posicionar abaixo dos outros botões
+- [x] Adicionar botão "Sugira um Parceiro"
+- [x] Renomear "Seja Parceiro" para "Convide um Parceiro - Copiar Link"
+- [x] Alinhar botões Médicos/Serviços de Saúde/Outros Serviços com bordas nítidas
+
+### Página Admin
+- [x] Reorganizar botões em 2 linhas bem visíveis (não sobrepostos)
+- [x] Adicionar bordas nítidas cor da logo nos botões
+
+### Correções de Navegação
+- [x] Revisar e corrigir todas as páginas com erro 404
+- [x] Testar todos os botões de navegação

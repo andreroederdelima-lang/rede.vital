@@ -213,6 +213,12 @@ export default function Admin() {
                   Dados Internos
                 </Button>
               </Link>
+              <Link href="/galeria-parceiros" className="inline-block">
+                <Button variant="secondary" size="sm">
+                  <Eye className="h-4 w-4 mr-2" />
+                  Galeria
+                </Button>
+              </Link>
               <Button variant="secondary" size="sm" onClick={() => logout()}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Sair
@@ -225,17 +231,23 @@ export default function Admin() {
       {/* Main Content */}
       <main className="container py-8">
         <Tabs defaultValue="medicos">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-9 mb-6">
-            <TabsTrigger value="medicos">Médicos</TabsTrigger>
-            <TabsTrigger value="instituicoes">Serviços</TabsTrigger>
-            <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
-            <TabsTrigger value="atualizacoes">Atualizações</TabsTrigger>
-            <TabsTrigger value="usuarios">Usuários</TabsTrigger>
-            <TabsTrigger value="acessos">Acessos</TabsTrigger>
-            <TabsTrigger value="prospeccao">Prospecção</TabsTrigger>
-            <TabsTrigger value="indicacoes">Indicações</TabsTrigger>
-            <TabsTrigger value="configuracoes">Configurações</TabsTrigger>
-          </TabsList>
+          <div className="max-w-6xl mx-auto mb-6 space-y-2">
+            {/* Primeira linha */}
+            <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1">
+              <TabsTrigger value="medicos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Médicos</TabsTrigger>
+              <TabsTrigger value="instituicoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Serviços</TabsTrigger>
+              <TabsTrigger value="solicitacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Solicitações</TabsTrigger>
+              <TabsTrigger value="atualizacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Atualizações</TabsTrigger>
+              <TabsTrigger value="usuarios" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Usuários</TabsTrigger>
+            </TabsList>
+            {/* Segunda linha */}
+            <TabsList className="grid w-full grid-cols-4 gap-2 bg-transparent p-1">
+              <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Acessos</TabsTrigger>
+              <TabsTrigger value="prospeccao" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Prospecção</TabsTrigger>
+              <TabsTrigger value="indicacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Indicações</TabsTrigger>
+              <TabsTrigger value="configuracoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Configurações</TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Tab Médicos */}
           <TabsContent value="medicos">
