@@ -1059,3 +1059,11 @@
 - [x] Adicionar editor de texto com formatação básica
 - [x] Adicionar botões para copiar texto e compartilhar
 - [x] Organizar copys por categorias (Planos, Promoções, Outros)
+
+
+## Botão Check-out Venda Direta
+
+- [x] Adicionar botão "Check-out Venda Direta" na seção de Landing Pages
+- [x] Link: https://suasaudevital.app.filoo.com.br/checkout?compact=true&team=suasaudevital
+- [x] Posicionar junto aos outros botões de landing pages (Home, Pessoa Física, Empresarial, etc)
+- [x] Testar funcionalidade do link

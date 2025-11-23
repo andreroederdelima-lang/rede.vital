@@ -257,6 +257,31 @@ export default function MateriaisDivulgacao() {
                 Copiar Link
               </Button>
             </Card>
+
+            <Card className="p-4 hover:shadow-lg transition-shadow">
+              <h3 className="font-semibold text-lg mb-2">Check-out Venda Direta</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Página de checkout para vendas diretas
+              </p>
+              <Button
+                asChild
+                className="w-full"
+                style={{ backgroundColor: VITAL_COLORS.turquoise }}
+              >
+                <a href="https://suasaudevital.app.filoo.com.br/checkout?compact=true&team=suasaudevital" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Abrir Página
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full mt-2"
+                onClick={() => copiarTexto("https://suasaudevital.app.filoo.com.br/checkout?compact=true&team=suasaudevital")}
+              >
+                <Copy className="mr-2 h-4 w-4" />
+                Copiar Link
+              </Button>
+            </Card>
           </div>
         </section>
 
