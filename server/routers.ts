@@ -118,6 +118,17 @@ export const appRouter = router({
         const { excluirMedico } = await import("./db");
         return excluirMedico(input);
       }),
+
+    uploadImagem: protectedProcedure
+      .input(z.object({
+        base64Data: z.string(),
+        filename: z.string(),
+        mimeType: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { uploadImage } = await import("./uploadImage");
+        return uploadImage(input);
+      }),
   }),
 
   instituicoes: router({
@@ -186,6 +197,17 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const { excluirInstituicao } = await import("./db");
         return excluirInstituicao(input);
+      }),
+
+    uploadImagem: protectedProcedure
+      .input(z.object({
+        base64Data: z.string(),
+        filename: z.string(),
+        mimeType: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { uploadImage } = await import("./uploadImage");
+        return uploadImage(input);
       }),
   }),
 
@@ -747,6 +769,38 @@ export const appRouter = router({
       .query(async ({ ctx }) => {
         const { buscarIndicadorPorUserId } = await import("./db");
         return await buscarIndicadorPorUserId(ctx.user.id);
+      }),
+
+    cadastrarIndicador: protectedProcedure
+      .input(z.object({
+        nome: z.string(),
+        email: z.string().email(),
+        telefone: z.string(),
+        tipo: z.enum(["promotor", "vendedor"]),
+        observacoes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import("./db");
+        // @ts-ignore - TypeScript cache bug
+        const { indicadores } = await import("../drizzle/schema");
+        
+        const db = await getDb();
+        if (!db) {
+          throw new Error("Database not available");
+        }
+
+        // Criar indicador vinculado ao usuário atual
+        const result = await db.insert(indicadores).values({
+          userId: ctx.user.id,
+          nome: input.nome,
+          email: input.email,
+          telefone: input.telefone,
+          tipo: input.tipo,
+          observacoes: input.observacoes || null,
+          ativo: 1,
+        } as any);
+
+        return { success: true, id: Number((result as any).insertId) };
       }),
 
     // Indicações

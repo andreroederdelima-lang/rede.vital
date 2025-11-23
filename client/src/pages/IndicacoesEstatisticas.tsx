@@ -61,18 +61,10 @@ export default function IndicacoesEstatisticas() {
   }
 
   if (!meuIndicador) {
+    const AutoCadastroIndicador = require("@/components/AutoCadastroIndicador").default;
     return (
       <PainelVendedorLayout>
-        <Card>
-          <CardHeader>
-            <CardTitle>Cadastro Pendente</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Você ainda não está cadastrado como promotor ou vendedor.
-            </p>
-          </CardContent>
-        </Card>
+        <AutoCadastroIndicador />
       </PainelVendedorLayout>
     );
   }

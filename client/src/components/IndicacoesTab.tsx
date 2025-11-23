@@ -150,6 +150,11 @@ export default function IndicacoesTab() {
                 <option value="">Todos</option>
                 <option value="pendente">Pendente</option>
                 <option value="contatado">Contatado</option>
+                <option value="em_negociacao">Em Negociação</option>
+                <option value="lead_com_resistencia">Lead com Resistência</option>
+                <option value="lead_frio">Lead Frio</option>
+                <option value="nao_comprou">Não Comprou</option>
+                <option value="venda_feita">Venda Feita</option>
                 <option value="fechado">Fechado</option>
                 <option value="perdido">Perdido</option>
               </select>
@@ -251,7 +256,7 @@ export default function IndicacoesTab() {
                     <TableCell>
                       <div className="flex gap-2">
                         <select
-                          className="p-1 border rounded text-xs"
+                          className="p-1 border rounded text-xs min-w-[160px]"
                           value={indicacao.status}
                           onChange={(e) =>
                             handleAtualizarStatus(indicacao.id, e.target.value)
@@ -259,6 +264,11 @@ export default function IndicacoesTab() {
                         >
                           <option value="pendente">Pendente</option>
                           <option value="contatado">Contatado</option>
+                          <option value="em_negociacao">Em Negociação</option>
+                          <option value="lead_com_resistencia">Lead com Resistência</option>
+                          <option value="lead_frio">Lead Frio</option>
+                          <option value="nao_comprou">Não Comprou</option>
+                          <option value="venda_feita">Venda Feita</option>
                           <option value="fechado">Fechado</option>
                           <option value="perdido">Perdido</option>
                         </select>

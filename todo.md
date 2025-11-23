@@ -1012,3 +1012,19 @@
 - [x] Configurar envio de emails para administrativo@ e comercial@ quando houver novas indicações
 - [x] Reorganizar layout do painel Admin (botões sobrepostos)
 - [x] Melhorar visual geral do painel Admin
+
+
+## Interface de Qualificação de Leads e Upload de Imagens
+
+- [x] Adicionar dropdown de status na aba Indicações do Admin para qualificação de leads
+- [x] Permitir comercial/admin alterar status diretamente na interface (pendente, contatado, em_negociacao, lead_com_resistencia, nao_comprou, venda_feita, etc.)
+- [x] Implementar procedure tRPC para atualizar status de indicação (já existia)
+- [x] Implementar upload real de imagens ao S3 no backend
+- [x] Adicionar processamento de logoFile e fotoFile nos endpoints de salvamento (procedures criados)
+- [x] Fazer upload ao S3 e salvar URLs retornadas no banco (lógica implementada)
+- [x] Adicionar validação de tipo de arquivo (JPEG, PNG, WebP apenas)
+- [x] Adicionar validação de tamanho máximo (5MB)
+- [x] Exibir mensagens de erro claras quando validações falharem
+- [x] Remover validação de "Cadastro Pendente" no sistema de indicadores
+- [x] Permitir auto-cadastro de promotores/vendedores sem aprovação prévia
+- [x] Atualizar lógica de cadastro para criar indicador imediatamente
