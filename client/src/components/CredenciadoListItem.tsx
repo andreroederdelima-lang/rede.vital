@@ -270,8 +270,8 @@ export function CredenciadoListItem({
           </div>
         )}
 
-        {/* Botões mobile */}
-        <div className="flex md:hidden gap-2 mt-3">
+        {/* Botões mobile + Logo Vital */}
+        <div className="flex md:hidden gap-2 mt-3 items-center">
           {onCompartilhar && (
             <Button
               size="sm"
@@ -329,6 +329,16 @@ export function CredenciadoListItem({
               Avaliar
             </Button>
           )}
+          {/* Logo Vital ao lado dos botões (mobile only) */}
+          <img
+            src={logoVital}
+            alt="Logo Vital"
+            className="w-8 h-8 rounded-full object-cover bg-white border-2 flex-shrink-0"
+            style={{
+              borderColor: VITAL_COLORS.white,
+              boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+            }}
+          />
         </div>
       </div>
 
@@ -343,13 +353,11 @@ export function CredenciadoListItem({
         }}
       />
       
-      {/* Logo Vital - Canto Inferior Direito do CARD (FORA da foto) */}
-      {/* Mobile: posiciona acima dos botões para não sobrepor */}
-      {/* Desktop: mantém no canto inferior direito */}
+      {/* Logo Vital - Desktop: Canto Inferior Direito / Mobile: ao lado dos botões */}
       <img
         src={logoVital}
         alt="Logo Vital"
-        className="absolute bottom-14 md:bottom-2 right-2 w-10 h-10 md:w-12 md:h-12 rounded-full object-cover bg-white border-2"
+        className="hidden md:block absolute bottom-2 right-2 w-12 h-12 rounded-full object-cover bg-white border-2"
         style={{
           borderColor: VITAL_COLORS.white,
           boxShadow: "0 2px 4px rgba(0,0,0,0.15)",

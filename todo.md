@@ -1224,3 +1224,13 @@
 
 ### Ajuste Visual
 - [x] Ajustar posição da logo Vital no mobile para não sobrepor botão compartilhar
+
+
+## Ajustes Visuais e Avaliações Simplificadas - 23/11/2025
+
+- [x] Ajustar logo Vital para ficar ao lado do botão Compartilhar (mobile)
+- [x] Criar modal simples de avaliação (nota 1-5 + comentário)
+- [x] Adicionar botão Avaliar funcional na página Consulta
+- [x] Criar aba "Avaliações" no painel Admin
+- [x] Implementar listagem simples de avaliações no Admin
+- [x] Testar fluxo completo de avaliação

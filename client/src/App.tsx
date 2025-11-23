@@ -27,6 +27,7 @@ import BoasVindasIndicadores from "./pages/BoasVindasIndicadores";
 import IndicacoesEstatisticas from "./pages/IndicacoesEstatisticas";
 import IndicacoesComissoes from "./pages/IndicacoesComissoes";
 import GaleriaParceiros from "./pages/GaleriaParceiros";
+import AdminAvaliacoes from "./pages/AdminAvaliacoes";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -48,6 +49,7 @@ function Router() {
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/galeria-logos"} component={GaleriaLogos} />
+      <Route path={"/admin/avaliacoes"} component={AdminAvaliacoes} />
       <Route path={"/galeria-parceiros"} component={GaleriaParceiros} />
       <Route path={"/termos-de-uso"} component={TermosDeUso} />
       <Route path={"/materiais-divulgacao"} component={MateriaisDivulgacao} />

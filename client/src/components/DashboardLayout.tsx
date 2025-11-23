@@ -37,7 +37,7 @@ const DEFAULT_WIDTH = 280;
 const MIN_WIDTH = 200;
 const MAX_WIDTH = 480;
 
-export default function DashboardLayout({
+export function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -291,3 +291,5 @@ function DashboardLayoutContent({
     </>
   );
 }
+
+export default DashboardLayout;

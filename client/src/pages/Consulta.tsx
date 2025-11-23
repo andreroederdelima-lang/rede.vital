@@ -14,6 +14,7 @@ import { Link } from "wouter";
 import { toast } from "sonner";
 import { MainNav } from "@/components/MainNav";
 import { CredenciadoListItem } from "@/components/CredenciadoListItem";
+import { ModalAvaliacao } from "@/components/ModalAvaliacao";
 import Footer from "@/components/Footer";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
@@ -25,6 +26,12 @@ export default function Consulta() {
   const [municipio, setMunicipio] = useState<string>("");
   const [categoria, setCategoria] = useState<string>("");
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "servicos_saude" | "outros_servicos">("medicos");
+  const [modalAvaliacaoOpen, setModalAvaliacaoOpen] = useState(false);
+  const [credenciadoSelecionado, setCredenciadoSelecionado] = useState<{
+    tipo: "medico" | "instituicao";
+    id: number;
+    nome: string;
+  } | null>(null);
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -304,7 +311,12 @@ export default function Consulta() {
                       logoUrl={medico.logoUrl}
                       fotoUrl={medico.fotoUrl}
                       mostrarPrecoDesconto={false}
+                      credenciadoId={medico.id}
                       onCompartilhar={() => compartilharCredenciado(medico.nome, medico.endereco, medico.telefone)}
+                      onAvaliar={() => {
+                        setCredenciadoSelecionado({ tipo: "medico", id: medico.id, nome: medico.nome });
+                        setModalAvaliacaoOpen(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -337,7 +349,12 @@ export default function Consulta() {
                       logoUrl={inst.logoUrl}
                       fotoUrl={inst.fotoUrl}
                       mostrarPrecoDesconto={false}
+                      credenciadoId={inst.id}
                       onCompartilhar={() => compartilharCredenciado(inst.nome, inst.endereco, inst.telefone)}
+                      onAvaliar={() => {
+                        setCredenciadoSelecionado({ tipo: "instituicao", id: inst.id, nome: inst.nome });
+                        setModalAvaliacaoOpen(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -376,6 +393,20 @@ export default function Consulta() {
       </footer>
       
       <Footer />
+
+      {/* Modal de Avaliação */}
+      {credenciadoSelecionado && (
+        <ModalAvaliacao
+          open={modalAvaliacaoOpen}
+          onClose={() => {
+            setModalAvaliacaoOpen(false);
+            setCredenciadoSelecionado(null);
+          }}
+          tipoCredenciado={credenciadoSelecionado.tipo}
+          credenciadoId={credenciadoSelecionado.id}
+          nomeCredenciado={credenciadoSelecionado.nome}
+        />
+      )}
     </div>
   );
 }
