@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MainNav } from "@/components/MainNav";
+import PainelVendedorLayout from "@/components/PainelVendedorLayout";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -75,43 +75,48 @@ export default function Indicacoes() {
 
   if (loading || loadingIndicador) {
     return (
-      <div className="min-h-screen bg-background">
-        <MainNav />
-        <div className="container py-12 text-center">
-          <p>Carregando...</p>
+      <PainelVendedorLayout>
+        <div className="flex items-center justify-center h-64">
+          <p className="text-muted-foreground">Carregando...</p>
         </div>
-      </div>
+      </PainelVendedorLayout>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background">
-        <MainNav />
-        <div className="container py-12 text-center">
-          <h1 className="text-3xl font-bold mb-4">Área Restrita</h1>
-          <p className="text-muted-foreground mb-6">
-            Faça login para acessar o sistema de indicações
-          </p>
-          <Button asChild>
-            <a href={getLoginUrl()}>Fazer Login</a>
-          </Button>
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Área Restrita</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground mb-4">
+              Faça login para acessar o sistema de indicações
+            </p>
+            <Button asChild className="w-full">
+              <a href={getLoginUrl()}>Fazer Login</a>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   if (!meuIndicador) {
     return (
-      <div className="min-h-screen bg-background">
-        <MainNav />
-        <div className="container py-12 text-center">
-          <h1 className="text-3xl font-bold mb-4">Cadastro Pendente</h1>
-          <p className="text-muted-foreground mb-6">
-            Você ainda não está cadastrado como promotor ou vendedor. Entre em contato com o administrador.
-          </p>
-        </div>
-      </div>
+      <PainelVendedorLayout>
+        <Card>
+          <CardHeader>
+            <CardTitle>Cadastro Pendente</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">
+              Você ainda não está cadastrado como promotor ou vendedor. Entre em contato com o administrador.
+            </p>
+          </CardContent>
+        </Card>
+      </PainelVendedorLayout>
     );
   }
 
@@ -127,10 +132,8 @@ export default function Indicacoes() {
   const valorPago = comissoesPagas.reduce((sum: number, c: any) => sum + (c.valor || 0), 0);
 
   return (
-    <div className="min-h-screen bg-background">
-      <MainNav />
-
-      <div className="container py-8">
+    <PainelVendedorLayout>
+      <div className="space-y-6">
         {/* Header */}
         <div className="mb-8 flex items-center gap-6">
           <img 
@@ -392,6 +395,6 @@ export default function Indicacoes() {
           </DialogContent>
         </Dialog>
       </div>
-    </div>
+    </PainelVendedorLayout>
   );
 }

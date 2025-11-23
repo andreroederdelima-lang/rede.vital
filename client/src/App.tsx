@@ -24,6 +24,8 @@ import MateriaisDivulgacao from "./pages/MateriaisDivulgacao";
 import AdminMateriais from "./pages/AdminMateriais";
 import AdminNotificacoes from "./pages/AdminNotificacoes";
 import BoasVindasIndicadores from "./pages/BoasVindasIndicadores";
+import IndicacoesEstatisticas from "./pages/IndicacoesEstatisticas";
+import IndicacoesComissoes from "./pages/IndicacoesComissoes";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -34,6 +36,8 @@ function Router() {
       <Route path={"/solicitar-acesso"} component={SolicitarAcesso} />
       <Route path="/recuperar-senha-dados-internos" component={RecuperarSenhaDadosInternos} />
       <Route path="/indicacoes" component={Indicacoes} />
+      <Route path="/indicacoes/estatisticas" component={IndicacoesEstatisticas} />
+      <Route path="/indicacoes/comissoes" component={IndicacoesComissoes} />
       <Route path="/cadastro-indicador" component={CadastroIndicador} />
       <Route path="/boas-vindas-indicadores" component={BoasVindasIndicadores} />
       <Route path="/login-indicador" component={LoginIndicador} />

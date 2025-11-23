@@ -954,3 +954,13 @@
 - [x] Atualizar descrição de Promotor: "Indica clientes e recebe comissão quando estes concluem o processo de compra"
 - [x] Atualizar descrição de Vendedor: "Quem conclui o processo de venda"
 - [x] Corrigir rodapé do sistema de indicações
+
+
+## Recuperar Funcionalidades do Sistema Antigo de Indicações
+
+- [x] Criar layout de Painel do Vendedor/Promotor com sidebar (similar ao sistema antigo)
+- [x] Implementar menu lateral com: Indicações, Estatísticas, Comissões
+- [x] Criar página de Estatísticas mostrando métricas do vendedor/promotor
+- [x] Criar página de Comissões mostrando ganhos e pagamentos
+- [x] Integrar com dados existentes de indicações
+- [x] Garantir que vendedores/promotores vejam apenas seus próprios dados
