@@ -292,7 +292,7 @@ export default function Consulta() {
               ) : medicos.length === 0 ? (
                 <p style={{ color: VITAL_COLORS.mediumGray }}>Nenhum médico encontrado.</p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   {medicos.map((medico: any) => (
                     <Card 
                       key={medico.id} 
@@ -466,7 +466,7 @@ export default function Consulta() {
               ) : instituicoes.length === 0 ? (
                 <p style={{ color: VITAL_COLORS.mediumGray }}>Nenhum serviço encontrado.</p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   {instituicoes.map((inst: any) => (
                     <Card 
                       key={inst.id} 

@@ -999,3 +999,16 @@
 - [x] Atualizar lógica de fallback de imagens para usar placeholders por categoria
 - [x] Criar componente reutilizável FiltrosCredenciados para padronização
 - [x] Manter botões específicos de cada contexto (diferentes entre Home e Acesso Interno)
+
+
+## Correções Urgentes de Layout e Sistema de Indicações
+
+- [x] Corrigir layout de cards na página pública - garantir um card por linha em mobile (nomes completos visíveis)
+- [x] Atualizar texto da página Boas-Vindas Indicadores sobre inversão de percentuais para leads frios
+- [x] Adicionar informação sobre quem define inversão: administrativo@suasaudevital.com.br ou comercial@suasaudevital.com.br (Pedro)
+- [x] Implementar categorias de qualificação de leads: "Lead com Resistência", "Não Comprou", "Venda Feita", etc.
+- [x] Adicionar campo de status/qualificação nas indicações (enum no schema)
+- [ ] Implementar interface de qualificação de leads para comercial e admin (já existe na aba Indicações do Admin)
+- [x] Configurar envio de emails para administrativo@ e comercial@ quando houver novas indicações
+- [x] Reorganizar layout do painel Admin (botões sobrepostos)
+- [x] Melhorar visual geral do painel Admin

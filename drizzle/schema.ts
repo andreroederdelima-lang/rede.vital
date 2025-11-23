@@ -222,7 +222,18 @@ export const indicacoes = mysqlTable("indicacoes", {
   telefoneCliente: varchar("telefoneCliente", { length: 20 }).notNull(),
   cidadeCliente: varchar("cidadeCliente", { length: 100 }),
   observacoes: text("observacoes"),
-  status: mysqlEnum("status", ["pendente", "contatado", "em_negociacao", "fechado", "perdido"]).default("pendente").notNull(),
+  status: mysqlEnum("status", [
+    "pendente", 
+    "contatado", 
+    "em_negociacao", 
+    "lead_com_resistencia", 
+    "lead_frio", 
+    "multiplas_objecoes",
+    "venda_feita", 
+    "nao_comprou", 
+    "fechado", 
+    "perdido"
+  ]).default("pendente").notNull(),
   vendedorId: int("vendedorId"), // FK para indicadores (vendedor responsável)
   valorVenda: int("valorVenda"), // Armazenado em centavos (ex: 10000 = R$ 100,00)
   valorComissao: int("valorComissao"), // Armazenado em centavos

@@ -40,19 +40,34 @@ export default function BoasVindasIndicadores() {
             </p>
 
             {/* Descrições dos Papéis */}
-            <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg space-y-3 text-left">
+            <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg space-y-4 text-left">
               <p className="text-sm md:text-base">
                 <strong className="text-green-700">Promotor:</strong>{" "}
                 <span className="text-gray-700">
-                  Indica clientes e recebe comissão quando estes concluem o processo de compra
+                  Indica clientes e recebe comissão quando estes concluem o processo de compra.
                 </span>
               </p>
               <p className="text-sm md:text-base">
                 <strong className="text-green-700">Vendedor:</strong>{" "}
                 <span className="text-gray-700">
-                  Quem conclui o processo de venda
+                  Quem conclui o processo de venda.
                 </span>
               </p>
+              
+              {/* Informação sobre Inversão de Percentuais */}
+              <div className="mt-4 pt-4 border-t border-green-200">
+                <p className="text-xs md:text-sm text-gray-600 italic">
+                  <strong>Observação importante:</strong> Em casos de lead frio ou com múltiplas objeções, 
+                  as porcentagens de comissão podem ser invertidas. Esta definição é feita exclusivamente por:
+                </p>
+                <ul className="text-xs md:text-sm text-gray-600 mt-2 ml-4 space-y-1">
+                  <li>• Email master: <strong>administrativo@suasaudevital.com.br</strong></li>
+                  <li>• Vendedor Pedro: <strong>comercial@suasaudevital.com.br</strong></li>
+                </ul>
+                <p className="text-xs md:text-sm text-gray-600 mt-2 italic">
+                  Todas as indicações devem ser qualificadas na plataforma por estes responsáveis.
+                </p>
+              </div>
             </div>
 
             {/* Botão de Login */}

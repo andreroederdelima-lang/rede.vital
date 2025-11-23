@@ -664,6 +664,22 @@ export async function criarIndicacao(data: InsertIndicacao) {
   if (!db) throw new Error("Database not available");
   
   const [result] = await db.insert(indicacoes).values(data);
+  
+  // Enviar email de notificação para administrativo e comercial
+  try {
+    const { notifyOwner } = await import("./_core/notification");
+    const indicador = await db.select().from(indicadores).where(eq(indicadores.id, data.indicadorId)).limit(1);
+    const indicadorNome = indicador[0]?.nome || "Indicador";
+    
+    await notifyOwner({
+      title: "📢 Nova Indicação Recebida",
+      content: `**Indicador:** ${indicadorNome}\n**Cliente:** ${data.nomeCliente}\n**Telefone:** ${data.telefoneCliente}\n**Email:** ${data.emailCliente || "Não informado"}\n**Cidade:** ${data.cidadeCliente || "Não informada"}\n\n**Observações:** ${data.observacoes || "Nenhuma"}\n\n⚠️ **Ação necessária:** Esta indicação precisa ser qualificada na plataforma por administrativo@suasaudevital.com.br ou comercial@suasaudevital.com.br (Pedro).`
+    });
+  } catch (error) {
+    console.error("Erro ao enviar notificação de nova indicação:", error);
+    // Não falhar a criação da indicação se o email falhar
+  }
+  
   return result;
 }
 

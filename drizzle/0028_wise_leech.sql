@@ -1,0 +1,1 @@
+ALTER TABLE `indicacoes` MODIFY COLUMN `status` enum('pendente','contatado','em_negociacao','lead_com_resistencia','lead_frio','multiplas_objecoes','venda_feita','nao_comprou','fechado','perdido') NOT NULL DEFAULT 'pendente';

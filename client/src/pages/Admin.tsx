@@ -298,26 +298,30 @@ export default function Admin() {
                             <TableCell>{medico.precoConsulta || "Não informado"}</TableCell>
                             <TableCell>{medico.descontoPercentual}%</TableCell>
                             <TableCell>{medico.telefone || medico.whatsapp || "-"}</TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex justify-end gap-2">
+                            <TableCell>
+                              <div className="flex items-center gap-2">
                                 <Button
-                                  variant="outline"
-                                  size="sm"
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8"
                                   onClick={() => {
                                     setEditingMedico(medico as MedicoForm);
                                     setMedicoDialogOpen(true);
                                   }}
+                                  title="Editar médico"
                                 >
                                   <Pencil className="h-4 w-4" />
                                 </Button>
                                 <Button
-                                  variant="destructive"
-                                  size="sm"
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
                                   onClick={() => {
                                     if (confirm("Tem certeza que deseja remover este médico?")) {
                                       excluirMedico.mutate(medico.id);
                                     }
                                   }}
+                                  title="Excluir médico"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
@@ -394,11 +398,12 @@ export default function Admin() {
                             <TableCell>{inst.precoConsulta || "Não informado"}</TableCell>
                             <TableCell>{inst.descontoPercentual}%</TableCell>
                             <TableCell>{inst.telefone || "-"}</TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex justify-end gap-2">
+                            <TableCell>
+                              <div className="flex items-center gap-2">
                                 <Button
-                                  variant="outline"
-                                  size="sm"
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8"
                                   onClick={() => {
                                     setEditingInstituicao({
                                       ...inst,
@@ -406,17 +411,20 @@ export default function Admin() {
                                     } as InstituicaoForm);
                                     setInstituicaoDialogOpen(true);
                                   }}
+                                  title="Editar clínica"
                                 >
                                   <Pencil className="h-4 w-4" />
                                 </Button>
                                 <Button
-                                  variant="destructive"
-                                  size="sm"
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
                                   onClick={() => {
                                     if (confirm("Tem certeza que deseja remover esta clínica?")) {
                                       excluirInstituicao.mutate(inst.id);
                                     }
                                   }}
+                                  title="Excluir clínica"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
