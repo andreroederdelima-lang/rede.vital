@@ -12,6 +12,7 @@ interface CredenciadoListItemProps {
   endereco: string;
   telefone?: string | null;
   whatsapp?: string | null;
+  whatsappParceria?: string | null; // WhatsApp do responsável pela parceria
   logoUrl?: string | null;
   fotoUrl?: string | null;
   precoConsulta?: string | null;
@@ -30,6 +31,7 @@ export function CredenciadoListItem({
   endereco,
   telefone,
   whatsapp,
+  whatsappParceria,
   logoUrl,
   fotoUrl,
   precoConsulta,
@@ -177,7 +179,7 @@ export function CredenciadoListItem({
                 }}
               >
                 <MessageCircle size={12} className="mr-1" />
-                WhatsApp
+                WhatsApp Comercial/Agendamento
               </Button>
             </a>
           )}
@@ -195,6 +197,27 @@ export function CredenciadoListItem({
             <MapPin size={12} className="mr-1" />
             Como Chegar
           </Button>
+
+          {whatsappParceria && mostrarPrecoDesconto && (
+            <a
+              href={formatWhatsAppLink(whatsappParceria)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-7 px-3 text-xs"
+                style={{
+                  borderColor: VITAL_COLORS.turquoise,
+                  color: VITAL_COLORS.turquoise,
+                }}
+              >
+                <MessageCircle size={12} className="mr-1" />
+                Contato Responsável Parceria
+              </Button>
+            </a>
+          )}
         </div>
 
         {/* Linha 4: Preço e Desconto (apenas Dados Internos) */}

@@ -302,7 +302,13 @@ export default function Home() {
               <Link href="/" className="flex-1 sm:flex-none">
                 <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
                   <HomeIcon className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Área do Cliente</span>
+                  <span className="text-xs md:text-sm">Modo Assinante</span>
+                </Button>
+              </Link>
+              <Link href="/admin" className="flex-1 sm:flex-none">
+                <Button size="sm" className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
+                  <User className="h-4 w-4 mr-2" />
+                  <span className="text-xs md:text-sm">Admin</span>
                 </Button>
               </Link>
               <Link href="/indicacoes" className="flex-1 sm:flex-none">
@@ -504,7 +510,7 @@ export default function Home() {
                                   className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                                 >
                                   <MessageCircle className="h-3 w-3" />
-                                  WhatsApp
+                                  WhatsApp Comercial/Agendamento
                                 </a>
                               )}
                             </div>
@@ -550,19 +556,6 @@ export default function Home() {
                         >
                           <FileText className="h-4 w-4 mr-2" />
                           Gerar Encaminhamento
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            gerarLinkMutation.mutate({
-                              tipo: 'medico',
-                              id: medico.id
-                            });
-                          }}
-                        >
-                          <Link2 className="h-4 w-4 mr-2" />
-                          Enviar Link de Atualização
                         </Button>
                       </div>
                     </div>
@@ -627,7 +620,7 @@ export default function Home() {
                                 className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                               >
                                 <MessageCircle className="h-3 w-3" />
-                                WhatsApp
+                                WhatsApp Comercial/Agendamento
                               </a>
                             </div>
                           )}
@@ -677,19 +670,6 @@ export default function Home() {
                         >
                           <FileText className="h-4 w-4 mr-2" />
                           Gerar Encaminhamento
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            gerarLinkMutation.mutate({
-                              tipo: 'instituicao',
-                              id: inst.id
-                            });
-                          }}
-                        >
-                          <Link2 className="h-4 w-4 mr-2" />
-                          Enviar Link de Atualização
                         </Button>
                       </div>
                     </div>

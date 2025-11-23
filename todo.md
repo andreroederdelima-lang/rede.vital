@@ -1155,3 +1155,24 @@
 - [x] Renomear imagens: medico-placeholder.png, servico-saude-placeholder.png, outros-servicos-placeholder.png
 - [x] Aplicar lógica de fallback no componente CredenciadoListItem
 - [x] Testar exibição de imagens padrão
+
+
+## Página Dados Internos (Vendedores/Intermediários)
+
+- [ ] Criar página DadosInternos.tsx
+- [ ] Usar layout de lista expandida (CredenciadoListItem)
+- [ ] Mostrar informações públicas + Preço e % Desconto
+- [ ] SEM botões de gestão (Editar/Excluir/Enviar Link)
+- [ ] Adicionar rota protegida /dados-internos (requer login)
+- [ ] Adicionar link no menu de navegação
+- [ ] Testar acesso e visualização
+
+
+## Ajustes de Botões e Labels
+
+- [x] Renomear botão "Área do Cliente" → "Modo Assinante"
+- [x] Adicionar botão "Admin" no topo junto com outros botões
+- [x] Adicionar botão "Contato Responsável Parceria" (WhatsApp do responsável)
+- [x] Renomear "WhatsApp" → "WhatsApp Comercial/Agendamento" (Dados Internos e Home)
+- [x] Remover botão "Enviar Link de Atualização" da página Dados Internos
+- [x] Manter botão "Enviar Link" apenas no Admin
