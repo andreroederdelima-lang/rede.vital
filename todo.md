@@ -1067,3 +1067,19 @@
 - [x] Link: https://suasaudevital.app.filoo.com.br/checkout?compact=true&team=suasaudevital
 - [x] Posicionar junto aos outros botões de landing pages (Home, Pessoa Física, Empresarial, etc)
 - [x] Testar funcionalidade do link
+
+
+## Finalização da Página Materiais de Divulgação
+
+- [x] Adicionar botão "Áudios das Assinaturas" (Google Drive)
+- [x] Adicionar botão "Avisar Vendedor sobre Indicação" (WhatsApp)
+- [x] Remover seção de envio de WhatsApp com template
+
+## Testes e Ajustes Finais
+
+- [x] Testar todas as páginas do sistema
+- [x] Ajustar responsividade mobile em todas as páginas
+- [x] Revisar sistema de login
+- [x] Revisar sistema de email
+- [x] Criar documentação completa do sistema Indique e Ganhe
+- [x] Criar documentação da plataforma do credenciado com links
