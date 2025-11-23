@@ -1285,3 +1285,12 @@
 - [x] Adicionar botão Copiar Link de atualização
 - [x] Implementar no painel Admin (médicos e instituições)
 - [x] Testar funcionalidades
+
+
+## Popup Automático e Botão Indique e Ganhe - 23/11/2025
+
+- [x] Implementar popup automático "Sugira um Parceiro" após alguns segundos
+- [x] Adicionar botão "PROGrama Indique e Ganhe" na página Consulta
+- [x] Adicionar ícone de dinheiro no botão
+- [x] Direcionar para /indicacoes
+- [x] Testar funcionalidades

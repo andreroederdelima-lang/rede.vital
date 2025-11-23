@@ -7,8 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-import { Phone, MapPin, User, Building2, Search, X, MessageCircle, Share2, Copy, Lock } from "lucide-react";
+import { Phone, MapPin, User, Building2, Search, X, MessageCircle, Share2, Copy, Lock, DollarSign } from "lucide-react";
 import { formatWhatsAppLink, abrirComoChegar } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -32,6 +33,16 @@ export default function Consulta() {
     id: number;
     nome: string;
   } | null>(null);
+  const [popupSugestaoOpen, setPopupSugestaoOpen] = useState(false);
+
+  // Popup automático de sugestão após 10 segundos
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPopupSugestaoOpen(true);
+    }, 10000); // 10 segundos
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -156,6 +167,23 @@ export default function Consulta() {
                 {tipo.label}
               </button>
             ))}
+          </div>
+
+          {/* Botão PROGrama Indique e Ganhe */}
+          <div className="mb-8 flex justify-center">
+            <Link href="/indicacoes">
+              <Button 
+                size="lg"
+                className="font-bold text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all"
+                style={{ 
+                  backgroundColor: VITAL_COLORS.primary,
+                  color: VITAL_COLORS.white 
+                }}
+              >
+                <DollarSign className="mr-2 h-6 w-6" />
+                PROGrama Indique e Ganhe
+              </Button>
+            </Link>
           </div>
 
           {/* Barra de Busca */}
@@ -407,6 +435,43 @@ export default function Consulta() {
           nomeCredenciado={credenciadoSelecionado.nome}
         />
       )}
+
+      {/* Popup Automático de Sugestão */}
+      <Dialog open={popupSugestaoOpen} onOpenChange={setPopupSugestaoOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-center" style={{ color: VITAL_COLORS.primary }}>
+              🌟 Sugira um Parceiro!
+            </DialogTitle>
+            <DialogDescription className="text-center text-base">
+              Conhece um serviço ou médico de confiança que deveria estar na nossa rede?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4 py-4">
+            <p className="text-center text-muted-foreground">
+              Ajude-nos a expandir nossa rede credenciada sugerindo profissionais e serviços de qualidade!
+            </p>
+            <div className="flex flex-col gap-2">
+              <Link href="/sugerir-parceiro">
+                <Button 
+                  className="w-full" 
+                  style={{ backgroundColor: VITAL_COLORS.primary }}
+                  onClick={() => setPopupSugestaoOpen(false)}
+                >
+                  Sugerir Agora
+                </Button>
+              </Link>
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setPopupSugestaoOpen(false)}
+              >
+                Talvez Depois
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
