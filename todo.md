@@ -908,3 +908,12 @@
 - [x] Adicionar rodapé nas páginas públicas (Consulta, Serviços, Cadastros)
 - [x] Estilizar com cores da marca
 - [x] Testar responsividade
+
+
+## Ajustes Painel Admin
+
+- [x] Mudar "Clínicas" para "Serviços" nas abas do painel
+- [x] Substituir campo "URL do Logo" por upload de arquivo
+- [x] Substituir campo "URL da Foto" por upload de arquivo
+- [ ] Implementar upload para S3 nos formulários Admin (backend)
+- [ ] Testar funcionalidade completa

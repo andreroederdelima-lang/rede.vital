@@ -31,6 +31,8 @@ type MedicoForm = {
   whatsappSecretaria?: string;
   logoUrl?: string;
   fotoUrl?: string;
+  logoFile?: File;
+  fotoFile?: File;
   tipoAtendimento: "presencial" | "telemedicina" | "ambos";
   precoConsulta?: string;
   descontoPercentual: number;
@@ -49,6 +51,8 @@ type InstituicaoForm = {
   whatsappSecretaria?: string;
   logoUrl?: string;
   fotoUrl?: string;
+  logoFile?: File;
+  fotoFile?: File;
   email?: string;
   precoConsulta?: string;
   descontoPercentual: number;
@@ -223,7 +227,7 @@ export default function Admin() {
         <Tabs defaultValue="medicos">
           <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-9 mb-6">
             <TabsTrigger value="medicos">Médicos</TabsTrigger>
-            <TabsTrigger value="instituicoes">Clínicas</TabsTrigger>
+            <TabsTrigger value="instituicoes">Serviços</TabsTrigger>
             <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
             <TabsTrigger value="atualizacoes">Atualizações</TabsTrigger>
             <TabsTrigger value="usuarios">Usuários</TabsTrigger>
@@ -329,12 +333,12 @@ export default function Admin() {
             </Card>
           </TabsContent>
 
-          {/* Tab Clínicas */}
+          {/* Tab Serviços */}
           <TabsContent value="instituicoes">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle>Clínicas Parceiras</CardTitle>
+                  <CardTitle>Serviços Parceiros</CardTitle>
                   <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
                     <DialogTrigger asChild>
                       <Button onClick={() => setEditingInstituicao(null)}>
@@ -604,23 +608,39 @@ function MedicoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="logoUrl">URL do Logo</Label>
+          <Label htmlFor="logoFile">Logo do Estabelecimento</Label>
           <Input
-            id="logoUrl"
-            value={formData.logoUrl || ""}
-            onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
-            placeholder="https://exemplo.com/logo.jpg"
+            id="logoFile"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setFormData({ ...formData, logoFile: file });
+              }
+            }}
           />
+          {formData.logoUrl && (
+            <p className="text-sm text-gray-600 mt-1">Logo atual: {formData.logoUrl}</p>
+          )}
         </div>
 
         <div>
-          <Label htmlFor="fotoUrl">URL da Foto do Médico</Label>
+          <Label htmlFor="fotoFile">Foto do Médico</Label>
           <Input
-            id="fotoUrl"
-            value={formData.fotoUrl || ""}
-            onChange={(e) => setFormData({ ...formData, fotoUrl: e.target.value })}
-            placeholder="https://exemplo.com/foto.jpg"
+            id="fotoFile"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setFormData({ ...formData, fotoFile: file });
+              }
+            }}
           />
+          {formData.fotoUrl && (
+            <p className="text-sm text-gray-600 mt-1">Foto atual: {formData.fotoUrl}</p>
+          )}
         </div>
 
         <div>
@@ -816,23 +836,39 @@ function InstituicaoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="logoUrl">URL do Logo</Label>
+          <Label htmlFor="logoFile">Logo do Estabelecimento</Label>
           <Input
-            id="logoUrl"
-            value={formData.logoUrl || ""}
-            onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
-            placeholder="https://exemplo.com/logo.jpg"
+            id="logoFile"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setFormData({ ...formData, logoFile: file });
+              }
+            }}
           />
+          {formData.logoUrl && (
+            <p className="text-sm text-gray-600 mt-1">Logo atual: {formData.logoUrl}</p>
+          )}
         </div>
 
         <div>
-          <Label htmlFor="fotoUrl">URL da Foto do Estabelecimento</Label>
+          <Label htmlFor="fotoFile">Foto do Estabelecimento</Label>
           <Input
-            id="fotoUrl"
-            value={formData.fotoUrl || ""}
-            onChange={(e) => setFormData({ ...formData, fotoUrl: e.target.value })}
-            placeholder="https://exemplo.com/foto.jpg"
+            id="fotoFile"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setFormData({ ...formData, fotoFile: file });
+              }
+            }}
           />
+          {formData.fotoUrl && (
+            <p className="text-sm text-gray-600 mt-1">Foto atual: {formData.fotoUrl}</p>
+          )}
         </div>
 
         <div>
