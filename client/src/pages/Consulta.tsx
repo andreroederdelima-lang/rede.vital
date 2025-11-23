@@ -406,6 +406,11 @@ export default function Consulta() {
                               {medico.telefone || medico.whatsapp}
                             </p>
                           )}
+                          {medico.dataUltimaAtualizacao && (
+                            <p className="text-xs italic" style={{ color: VITAL_COLORS.mediumGray }}>
+                              Última atualização: {new Date(medico.dataUltimaAtualizacao).toLocaleDateString('pt-BR')}
+                            </p>
+                          )}
                         </div>
 
                         {/* Botão WhatsApp */}

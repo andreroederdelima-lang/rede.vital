@@ -28,6 +28,7 @@ export default function AtualizarDados() {
   });
   
   const [enviado, setEnviado] = useState(false);
+  const [aceitouTermos, setAceitouTermos] = useState(false);
   
   const { data: credenciado, isLoading } = trpc.atualizacao.obterPorToken.useQuery(token, {
     enabled: !!token,
@@ -66,6 +67,14 @@ export default function AtualizarDados() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!aceitouTermos) {
+      toast.error("Aceite obrigatório", {
+        description: "Você precisa aceitar os Termos de Credenciamento para continuar.",
+      });
+      return;
+    }
+    
     enviarMutation.mutate({
       token,
       ...formData,
@@ -262,6 +271,34 @@ export default function AtualizarDados() {
                   placeholder="Informações adicionais, horários de atendimento, etc."
                   rows={4}
                 />
+              </div>
+              
+              {/* Checkbox de Aceite de Termos */}
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 space-y-3">
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    id="termos"
+                    checked={aceitouTermos}
+                    onChange={(e) => setAceitouTermos(e.target.checked)}
+                    className="mt-1 h-5 w-5 text-teal-600 rounded border-gray-300 focus:ring-teal-500"
+                  />
+                  <label htmlFor="termos" className="text-sm text-gray-700 cursor-pointer">
+                    <span className="font-semibold text-teal-700">Li e aceito os Termos de Credenciamento e Uso dos Sistemas Vital.</span>
+                    {" "}
+                    <a 
+                      href="/termos-de-uso" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-teal-600 underline hover:text-teal-700"
+                    >
+                      Ler termos completos
+                    </a>
+                  </label>
+                </div>
+                <p className="text-xs text-gray-600 ml-8">
+                  Ao aceitar, você autoriza a divulgação pública de suas informações profissionais e se compromete a cumprir todas as regras estabelecidas.
+                </p>
               </div>
               
               <div className="flex gap-3 pt-4">

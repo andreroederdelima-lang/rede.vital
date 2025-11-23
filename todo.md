@@ -853,3 +853,48 @@
 - [x] Adicionar preview lado a lado das duas imagens
 - [x] Permitir substituição individual de logo ou foto
 - [x] Testar funcionalidade completa
+
+
+## Sistema de Notificação Semestral e Atualização de Dados
+
+- [x] Adicionar campo dataUltimaAtualizacao na tabela medicos
+- [x] Adicionar campo dataUltimaAtualizacao na tabela instituicoes
+- [x] Exibir data da última atualização nos cards públicos (pequena)
+- [x] Marcar médicos desatualizados (+6 meses) na área interna
+- [ ] Criar sistema de notificação automática por email
+- [ ] Enviar emails para admin e parceiro a cada 6 meses
+- [ ] Testar funcionalidade completa
+
+## Página de Termos de Uso e Opt-in
+
+- [x] Criar página /termos-de-uso com texto fornecido
+- [x] Adicionar checkbox de aceite no formulário de atualização
+- [x] Registrar aceite no banco de dados
+- [x] Tornar aceite obrigatório para envio do formulário
+- [x] Testar funcionalidade completa
+
+
+## Área de Materiais de Divulgação para Indicadores
+
+### Repositório de Materiais
+- [ ] Criar tabela materiaisDivulgacao no banco
+- [ ] Adicionar tipos: link, arquivo, audio, texto
+- [ ] Criar seção de Links Rápidos (checkout, landing pages)
+- [ ] Criar seção de Arquivos (PDFs, apresentações)
+- [ ] Criar seção de Áudios sobre assinaturas
+- [ ] Criar seção de Textos de Copy
+
+### Integração WhatsApp
+- [ ] Campo para adicionar número do cliente
+- [ ] Botão para abrir WhatsApp com texto pré-pronto
+- [ ] Templates de mensagens personalizáveis
+- [ ] Opção de enviar contato do comercial Vital
+- [ ] Botão para convidar parceiro via WhatsApp
+
+### Painel Admin
+- [ ] Página /admin/materiais para gerenciar conteúdo
+- [ ] CRUD de links rápidos
+- [ ] Upload e gestão de arquivos
+- [ ] Upload e gestão de áudios
+- [ ] Gestão de textos de copy
+- [ ] Testar funcionalidade completa

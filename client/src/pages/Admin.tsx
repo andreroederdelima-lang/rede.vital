@@ -477,6 +477,10 @@ function MedicoFormDialog({
   onSave: (data: MedicoForm) => void;
   onCancel: () => void;
 }) {
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [fotoFile, setFotoFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+
   const [formData, setFormData] = useState<MedicoForm>(
     medico || {
       nome: "",

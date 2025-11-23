@@ -19,6 +19,7 @@ import QRCodes from "./pages/QRCodes";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import RecuperarSenha from "./pages/RecuperarSenha";
 import GaleriaLogos from "./pages/GaleriaLogos";
+import TermosDeUso from "./pages/TermosDeUso";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -37,6 +38,7 @@ function Router() {
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/galeria-logos"} component={GaleriaLogos} />
+      <Route path={"/termos-de-uso"} component={TermosDeUso} />
       <Route path={"/parceiros"} component={Parceiros} />
       <Route path={"/atualizar-dados/:token"} component={AtualizarDados} />
       <Route path={"/404"} component={NotFound} />

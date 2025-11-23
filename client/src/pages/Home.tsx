@@ -469,7 +469,22 @@ export default function Home() {
                             {medico.tipoAtendimento === "presencial" ? "Presencial" :
                              medico.tipoAtendimento === "telemedicina" ? "Telemedicina" : "Presencial e Telemedicina"}
                           </Badge>
-
+                          {(() => {
+                            const dataAtualizacao = (medico as any).dataUltimaAtualizacao;
+                            if (dataAtualizacao) {
+                              const mesesDesdeAtualizacao = Math.floor(
+                                (Date.now() - new Date(dataAtualizacao).getTime()) / (1000 * 60 * 60 * 24 * 30)
+                              );
+                              if (mesesDesdeAtualizacao >= 6) {
+                                return (
+                                  <Badge variant="destructive" className="bg-amber-500 hover:bg-amber-600">
+                                    Atualizar dados: +{mesesDesdeAtualizacao} meses
+                                  </Badge>
+                                );
+                              }
+                            }
+                            return null;
+                          })()}
                         </div>
 
                         <div className="text-sm space-y-1">

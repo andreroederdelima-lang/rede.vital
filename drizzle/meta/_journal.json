@@ -169,6 +169,20 @@
       "when": 1763837316571,
       "tag": "0023_dapper_aqueduct",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1763857390234,
+      "tag": "0024_stiff_hannibal_king",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1763857866824,
+      "tag": "0025_minor_sauron",
+      "breakpoints": true
     }
   ]
 }

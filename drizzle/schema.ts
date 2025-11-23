@@ -53,6 +53,7 @@ export const medicos = mysqlTable("medicos", {
   observacoes: text("observacoes"),
   contatoParceria: varchar("contatoParceria", { length: 255 }),
   tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
+  dataUltimaAtualizacao: timestamp("dataUltimaAtualizacao").defaultNow(),
   ativo: int("ativo").notNull().default(1),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -83,6 +84,7 @@ export const instituicoes = mysqlTable("instituicoes", {
   observacoes: text("observacoes"),
   contatoParceria: varchar("contatoParceria", { length: 255 }),
   tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
+  dataUltimaAtualizacao: timestamp("dataUltimaAtualizacao").defaultNow(),
   ativo: int("ativo").notNull().default(1),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
@@ -300,3 +302,39 @@ export const aceitesTermos = mysqlTable("aceitesTermos", {
 
 export type AceiteTermo = typeof aceitesTermos.$inferSelect;
 export type InsertAceiteTermo = typeof aceitesTermos.$inferInsert;
+
+
+/**
+ * Tabela de materiais de divulgação para indicadores/vendedores
+ */
+export const materiaisDivulgacao = mysqlTable("materiaisDivulgacao", {
+  id: int("id").autoincrement().primaryKey(),
+  tipo: mysqlEnum("tipo", ["link", "arquivo", "audio", "texto"]).notNull(),
+  categoria: varchar("categoria", { length: 100 }).notNull(), // "checkout", "landing_page", "pdf", "apresentacao", "audio", "copy"
+  titulo: varchar("titulo", { length: 255 }).notNull(),
+  descricao: text("descricao"),
+  conteudo: text("conteudo"), // URL para arquivos/áudios, texto para copy, link para URLs
+  ordem: int("ordem").default(0), // Para ordenação personalizada
+  ativo: int("ativo").default(1).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type MaterialDivulgacao = typeof materiaisDivulgacao.$inferSelect;
+export type InsertMaterialDivulgacao = typeof materiaisDivulgacao.$inferInsert;
+
+/**
+ * Tabela de templates de mensagens WhatsApp
+ */
+export const templatesWhatsapp = mysqlTable("templatesWhatsapp", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 255 }).notNull(),
+  tipo: mysqlEnum("tipo", ["cliente", "parceiro", "comercial"]).notNull(),
+  mensagem: text("mensagem").notNull(),
+  ativo: int("ativo").default(1).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TemplateWhatsapp = typeof templatesWhatsapp.$inferSelect;
+export type InsertTemplateWhatsapp = typeof templatesWhatsapp.$inferInsert;
