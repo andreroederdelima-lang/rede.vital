@@ -1309,3 +1309,12 @@
 - [x] Verificar e ajustar posição na Home (dados internos)
 - [x] Garantir destaque visual em ambos os menus
 - [x] Testar navegação
+
+
+## Atualização de Textos Página Pública - 23/11/2025
+
+- [x] Atualizar título para "Rede de Parceiros Vital" (centralizado)
+- [x] Atualizar subtítulo para "Vale do Itajaí - SC" (centralizado)
+- [x] Mudar "GUIA DO ASSINANTE" para "Sua Rede Vital" (negrito)
+- [x] Atualizar texto principal
+- [x] Manter texto secundário com menos destaque

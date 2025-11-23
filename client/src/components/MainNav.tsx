@@ -66,7 +66,7 @@ export function MainNav() {
               <img src={APP_LOGO} alt="Vital Logo" className="h-10 w-auto" />
               <div className="flex flex-col">
                 <span className="text-base md:text-lg font-bold text-[#1e9d9f]">
-                  Guia de Parceiros Vital
+                  Rede de Parceiros Vital
                 </span>
                 <span className="text-xs text-gray-600">
                   Vale do Itajaí - SC
