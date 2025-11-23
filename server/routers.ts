@@ -972,6 +972,29 @@ export const appRouter = router({
       }),
   }),
 
+  // Notificações Semestrais
+  notificacoes: router({
+    listarDesatualizados: protectedProcedure.query(async () => {
+      const { listarCredenciadosDesatualizados } = await import("./db");
+      return await listarCredenciadosDesatualizados();
+    }),
+
+    enviarTodas: protectedProcedure.mutation(async () => {
+      const { enviarNotificacoesSemestrais } = await import("./db");
+      return await enviarNotificacoesSemestrais();
+    }),
+
+    enviarIndividual: protectedProcedure
+      .input(z.object({
+        tipo: z.enum(["medico", "instituicao"]),
+        id: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        const { enviarNotificacaoSemestral } = await import("./db");
+        return await enviarNotificacaoSemestral(input.tipo, input.id);
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

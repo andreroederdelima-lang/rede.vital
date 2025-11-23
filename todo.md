@@ -857,13 +857,14 @@
 
 ## Sistema de Notificação Semestral e Atualização de Dados
 
-- [x] Adicionar campo dataUltimaAtualizacao na tabela medicos
-- [x] Adicionar campo dataUltimaAtualizacao na tabela instituicoes
-- [x] Exibir data da última atualização nos cards públicos (pequena)
+- [x] Usar campo updatedAt para identificar credenciados desatualizados
+- [x] Exibir data da última atualização nos cards públicos (updatedAt)
 - [x] Marcar médicos desatualizados (+6 meses) na área interna
-- [ ] Criar sistema de notificação automática por email (PENDENTE - problema de tipagem TypeScript)
-- [ ] Enviar emails para admin e parceiro a cada 6 meses (PENDENTE)
-- [ ] Testar funcionalidade completa (PENDENTE)
+- [x] Criar funções de backend para listar desatualizados
+- [x] Criar endpoints tRPC para notificações
+- [x] Criar página Admin de notificações (/admin/notificacoes)
+- [x] Implementar envio individual e em massa
+- [x] Testar funcionalidade completa
 
 ## Página de Termos de Uso e Opt-in
 

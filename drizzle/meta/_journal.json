@@ -183,6 +183,13 @@
       "when": 1763857866824,
       "tag": "0025_minor_sauron",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1763860389133,
+      "tag": "0026_first_meltdown",
+      "breakpoints": true
     }
   ]
 }
