@@ -23,6 +23,7 @@ import TermosDeUso from "./pages/TermosDeUso";
 import MateriaisDivulgacao from "./pages/MateriaisDivulgacao";
 import AdminMateriais from "./pages/AdminMateriais";
 import AdminNotificacoes from "./pages/AdminNotificacoes";
+import BoasVindasIndicadores from "./pages/BoasVindasIndicadores";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/recuperar-senha-dados-internos" component={RecuperarSenhaDadosInternos} />
       <Route path="/indicacoes" component={Indicacoes} />
       <Route path="/cadastro-indicador" component={CadastroIndicador} />
+      <Route path="/boas-vindas-indicadores" component={BoasVindasIndicadores} />
       <Route path="/login-indicador" component={LoginIndicador} />
       <Route path="/esqueci-senha" component={EsqueciSenha} />
       <Route path="/recuperar-senha" component={RecuperarSenha} />

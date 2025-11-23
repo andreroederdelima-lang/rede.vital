@@ -947,3 +947,10 @@
 - [x] Atualizar interface Admin de Configurações para mostrar tabela editável com os 6 tipos
 - [x] Permitir edição de valor total, percentual indicador e percentual vendedor
 - [x] Adicionar validação para garantir que percentuais somem 100%
+
+
+## Correções de Descrições e Rodapé
+
+- [x] Atualizar descrição de Promotor: "Indica clientes e recebe comissão quando estes concluem o processo de compra"
+- [x] Atualizar descrição de Vendedor: "Quem conclui o processo de venda"
+- [x] Corrigir rodapé do sistema de indicações

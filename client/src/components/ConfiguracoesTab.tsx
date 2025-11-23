@@ -229,8 +229,8 @@ export default function ConfiguracoesTab() {
       <Card className="bg-muted/50">
         <CardContent className="pt-6">
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p><strong>Indicador (70%):</strong> Pessoa que indica e aquece o cliente, facilitando o contato inicial</p>
-            <p><strong>Vendedor (30%):</strong> Pessoa que fecha a venda e finaliza o processo de assinatura</p>
+            <p><strong>Promotor (Indicador):</strong> Indica clientes e recebe comissão quando estes concluem o processo de compra</p>
+            <p><strong>Vendedor:</strong> Quem conclui o processo de venda</p>
             <p className="text-xs mt-4">
               💡 <strong>Dica:</strong> Os percentuais de indicador e vendedor devem sempre somar 100%. 
               Ajuste os valores conforme a estratégia comercial da Vital.
