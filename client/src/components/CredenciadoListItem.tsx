@@ -63,20 +63,20 @@ export function CredenciadoListItem({
   
   const imagemPrincipal = fotoValida || getPlaceholderImage();
   const logoParceiro = logoValida || "/logo-parceria-default.png";
-  const logoVital = "/logo-vital.jpeg";
+  const logoVital = "/logo-vital-vertical.jpeg";
 
   const telefoneExibir = whatsapp || telefone;
 
   return (
     <div
-      className="flex items-start gap-4 p-4 rounded-lg border hover:shadow-md transition-shadow"
+      className="flex items-start gap-4 p-4 rounded-lg border hover:shadow-md transition-shadow relative"
       style={{
         backgroundColor: VITAL_COLORS.white,
         borderColor: "#E5E5E5",
       }}
     >
-      {/* Foto/Imagem Principal com Logos nos Cantos */}
-      <div className="flex-shrink-0 relative">
+      {/* Foto/Imagem Principal */}
+      <div className="flex-shrink-0">
         <img
           src={imagemPrincipal}
           alt={nome}
@@ -84,28 +84,6 @@ export function CredenciadoListItem({
           style={{
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
             backgroundColor: VITAL_COLORS.lightGray,
-          }}
-        />
-        
-        {/* Logo do Parceiro - Canto Superior Direito */}
-        <img
-          src={logoParceiro}
-          alt="Logo Parceiro"
-          className="absolute -top-2 -right-2 w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-white border-2"
-          style={{
-            borderColor: VITAL_COLORS.white,
-            boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-          }}
-        />
-        
-        {/* Logo Vital - Canto Inferior Direito */}
-        <img
-          src={logoVital}
-          alt="Logo Vital"
-          className="absolute -bottom-2 -right-2 w-8 h-8 md:w-10 md:h-10 rounded-full object-cover bg-white border-2"
-          style={{
-            borderColor: VITAL_COLORS.white,
-            boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
           }}
         />
       </div>
@@ -321,6 +299,28 @@ export function CredenciadoListItem({
           )}
         </div>
       </div>
+
+      {/* Logo do Parceiro - Canto Superior Direito do CARD (FORA da foto) */}
+      <img
+        src={logoParceiro}
+        alt="Logo Parceiro"
+        className="absolute top-2 right-2 w-10 h-10 md:w-12 md:h-12 rounded-full object-cover bg-white border-2"
+        style={{
+          borderColor: VITAL_COLORS.white,
+          boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+        }}
+      />
+      
+      {/* Logo Vital - Canto Inferior Direito do CARD (FORA da foto) */}
+      <img
+        src={logoVital}
+        alt="Logo Vital"
+        className="absolute bottom-2 right-2 w-10 h-10 md:w-12 md:h-12 rounded-full object-cover bg-white border-2"
+        style={{
+          borderColor: VITAL_COLORS.white,
+          boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+        }}
+      />
     </div>
   );
 }

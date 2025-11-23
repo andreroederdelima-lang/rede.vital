@@ -1188,3 +1188,12 @@
 - [x] Aplicar em CredenciadoListItem (usado em Home/Dados Internos)
 - [x] Aplicar na página Consulta (pública)
 - [x] Testar ambas as páginas
+
+
+## Reposicionamento de Logos nos Cards
+
+- [x] Copiar nova logo Vital (LogoVertical-VILTAL_página_1.jpeg)
+- [x] Mover logo do parceiro para fora da foto (canto superior direito do CARD)
+- [x] Mover logo Vital para fora da foto (canto inferior direito do CARD)
+- [x] Ajustar posicionamento para mobile e desktop
+- [x] Testar layout em ambas as páginas
