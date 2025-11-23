@@ -1113,3 +1113,29 @@
 - [x] Adicionar rota /galeria-parceiros
 - [x] Adicionar link no menu principal
 - [x] Testar responsividade mobile
+
+
+## Padronização de Informações e Formulários
+
+### Informações Exibidas
+- [x] Padronizar informações na página Home (pública): Nome, Especialidade/Categoria, Município, Endereço, Telefone, WhatsApp Comercial, Logo, Foto
+- [ ] Padronizar informações na página Dados Internos: Mesmas + Preço e % Desconto
+- [x] Organizar layout de visualização dos credenciados (cards/lista)
+
+### Botões e Navegação
+- [ ] Adicionar botão "Admin" na página Dados Internos
+- [ ] Mover botão "Enviar Link de Atualização" para área Admin (gestão de credenciados)
+- [ ] Remover botão "Enviar Link" da página pública
+
+### Formulários
+- [ ] Unificar formulário de Sugestão de Parceiro (página Parceiros)
+- [ ] Unificar formulário de Atualização (link /atualizar-dados/:token)
+- [ ] Campos padronizados: Nome, Especialidade/Categoria, Município, Endereço, Telefone Fixo, WhatsApp Comercial, Logo (upload), Foto (upload)
+- [ ] Manter opt-in em ambos formulários
+- [ ] Remover campos desnecessários (telefone organização, whatsapp secretaria, etc)
+
+### Imagens Padrão
+- [ ] Adicionar imagem padrão para Médicos (quando não enviar logo/foto)
+- [ ] Adicionar imagem padrão para Serviços de Saúde
+- [ ] Adicionar imagem padrão para Outros Serviços
+- [ ] Implementar fallback automático para imagens ausentes
