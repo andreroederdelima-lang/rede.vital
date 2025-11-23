@@ -1190,3 +1190,81 @@ export async function enviarNotificacoesSemestrais() {
     },
   };
 }
+
+// ==================== COMISSÕES DE ASSINATURAS ====================
+
+export async function listarComissoesAssinaturas() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot list comissões assinaturas: database not available");
+    return [];
+  }
+
+  const { comissoesAssinaturas } = await import("../drizzle/schema");
+  const result = await db.select().from(comissoesAssinaturas).where(eq(comissoesAssinaturas.ativo, 1));
+  return result;
+}
+
+export async function buscarComissaoPorTipo(tipoAssinatura: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get comissão: database not available");
+    return null;
+  }
+
+  const { comissoesAssinaturas } = await import("../drizzle/schema");
+  const result = await db
+    .select()
+    .from(comissoesAssinaturas)
+    .where(eq(comissoesAssinaturas.tipoAssinatura, tipoAssinatura))
+    .limit(1);
+
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function atualizarComissaoAssinatura(
+  tipoAssinatura: string,
+  valorComissaoTotal: number,
+  percentualIndicador: number,
+  percentualVendedor: number,
+  updatedBy: string
+) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update comissão: database not available");
+    return { success: false, message: "Database not available" };
+  }
+
+  // Validar que percentuais somam 100%
+  if (percentualIndicador + percentualVendedor !== 100) {
+    return {
+      success: false,
+      message: "Os percentuais de indicador e vendedor devem somar 100%",
+    };
+  }
+
+  const { comissoesAssinaturas } = await import("../drizzle/schema");
+
+  try {
+    await db
+      .update(comissoesAssinaturas)
+      .set({
+        valorComissaoTotal,
+        percentualIndicador,
+        percentualVendedor,
+        updatedBy,
+      })
+      .where(eq(comissoesAssinaturas.tipoAssinatura, tipoAssinatura));
+
+    return {
+      success: true,
+      message: "Comissão atualizada com sucesso",
+    };
+  } catch (error) {
+    console.error("[Database] Error updating comissão:", error);
+    return {
+      success: false,
+      message: "Erro ao atualizar comissão",
+    };
+  }
+}

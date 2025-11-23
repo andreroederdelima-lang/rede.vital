@@ -265,6 +265,24 @@ export const configuracoes = mysqlTable("configuracoes", {
 export type Configuracao = typeof configuracoes.$inferSelect;
 export type InsertConfiguracao = typeof configuracoes.$inferInsert;
 
+// Tabela de comissões por tipo de assinatura
+export const comissoesAssinaturas = mysqlTable("comissoesAssinaturas", {
+  id: int("id").autoincrement().primaryKey(),
+  tipoAssinatura: varchar("tipoAssinatura", { length: 100 }).notNull().unique(), // Ex: "essencial_individual", "premium_familiar"
+  nomeExibicao: varchar("nomeExibicao", { length: 100 }).notNull(), // Ex: "Essencial Individual"
+  precoMensal: int("precoMensal").notNull(), // Preço em centavos (ex: 12900 = R$ 129,00)
+  valorComissaoTotal: int("valorComissaoTotal").notNull(), // Valor total da comissão em centavos (ex: 5000 = R$ 50,00)
+  percentualIndicador: int("percentualIndicador").notNull().default(70), // Percentual para o indicador (ex: 70 = 70%)
+  percentualVendedor: int("percentualVendedor").notNull().default(30), // Percentual para o vendedor (ex: 30 = 30%)
+  ativo: int("ativo").notNull().default(1),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  updatedBy: varchar("updatedBy", { length: 255 }), // Quem alterou por último
+});
+
+export type ComissaoAssinatura = typeof comissoesAssinaturas.$inferSelect;
+export type InsertComissaoAssinatura = typeof comissoesAssinaturas.$inferInsert;
+
 
 /**
  * Tabela de Termos de Uso

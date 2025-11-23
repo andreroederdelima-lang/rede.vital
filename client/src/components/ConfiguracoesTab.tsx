@@ -1,77 +1,79 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Settings, Save, Percent, DollarSign } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Settings, Save, DollarSign, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ConfiguracoesTab() {
   const utils = trpc.useUtils();
   
-  // Estados para configurações de comissão
-  const [comissaoPromotor, setComissaoPromotor] = useState("");
-  const [comissaoVendedor, setComissaoVendedor] = useState("");
-  const [descricaoPromotor, setDescricaoPromotor] = useState("");
-  const [descricaoVendedor, setDescricaoVendedor] = useState("");
+  // Estados para edição de comissões
+  const [editandoTipo, setEditandoTipo] = useState<string | null>(null);
+  const [valorEditando, setValorEditando] = useState("");
+  const [percentualIndicadorEditando, setPercentualIndicadorEditando] = useState("");
+  const [percentualVendedorEditando, setPercentualVendedorEditando] = useState("");
 
-  // Buscar configurações existentes
-  const { data: configuracoes = [], isLoading } = trpc.configuracoes.listar.useQuery();
+  // Buscar comissões de assinaturas
+  const { data: comissoes = [], isLoading } = trpc.comissoesAssinaturas.listar.useQuery();
 
-  // Mutation para atualizar configurações
-  const atualizarConfig = trpc.configuracoes.atualizar.useMutation({
+  // Mutation para atualizar comissão
+  const atualizarComissao = trpc.comissoesAssinaturas.atualizar.useMutation({
     onSuccess: () => {
-      utils.configuracoes.listar.invalidate();
-      toast.success("Configuração atualizada com sucesso!");
+      utils.comissoesAssinaturas.listar.invalidate();
+      toast.success("Comissão atualizada com sucesso!");
+      setEditandoTipo(null);
     },
     onError: (error) => {
-      toast.error("Erro ao atualizar configuração: " + error.message);
+      toast.error("Erro ao atualizar comissão: " + error.message);
     },
   });
 
-  // Carregar valores iniciais quando as configurações forem carregadas
-  useState(() => {
-    if (configuracoes.length > 0) {
-      const promotor = configuracoes.find((c: any) => c.chave === "comissao_promotor");
-      const vendedor = configuracoes.find((c: any) => c.chave === "comissao_vendedor");
-      
-      if (promotor) {
-        setComissaoPromotor(promotor.valor);
-        setDescricaoPromotor(promotor.descricao || "");
-      }
-      if (vendedor) {
-        setComissaoVendedor(vendedor.valor);
-        setDescricaoVendedor(vendedor.descricao || "");
-      }
-    }
-  });
+  const iniciarEdicao = (comissao: any) => {
+    setEditandoTipo(comissao.tipoAssinatura);
+    setValorEditando((comissao.valorComissaoTotal / 100).toFixed(2));
+    setPercentualIndicadorEditando(comissao.percentualIndicador.toString());
+    setPercentualVendedorEditando(comissao.percentualVendedor.toString());
+  };
 
-  const salvarComissaoPromotor = () => {
-    if (!comissaoPromotor) {
-      toast.error("Informe o percentual de comissão");
+  const cancelarEdicao = () => {
+    setEditandoTipo(null);
+    setValorEditando("");
+    setPercentualIndicadorEditando("");
+    setPercentualVendedorEditando("");
+  };
+
+  const salvarEdicao = () => {
+    if (!editandoTipo) return;
+
+    const valorTotal = Math.round(parseFloat(valorEditando) * 100);
+    const percIndicador = parseInt(percentualIndicadorEditando);
+    const percVendedor = parseInt(percentualVendedorEditando);
+
+    // Validar que percentuais somam 100%
+    if (percIndicador + percVendedor !== 100) {
+      toast.error("Os percentuais de indicador e vendedor devem somar 100%");
       return;
     }
 
-    atualizarConfig.mutate({
-      chave: "comissao_promotor",
-      valor: comissaoPromotor,
-      descricao: descricaoPromotor || "Percentual de comissão para promotores",
+    atualizarComissao.mutate({
+      tipoAssinatura: editandoTipo,
+      valorComissaoTotal: valorTotal,
+      percentualIndicador: percIndicador,
+      percentualVendedor: percVendedor,
     });
   };
 
-  const salvarComissaoVendedor = () => {
-    if (!comissaoVendedor) {
-      toast.error("Informe o percentual de comissão");
-      return;
-    }
+  // Calcular valores de comissão para indicador e vendedor
+  const calcularValorIndicador = (valorTotal: number, percentual: number) => {
+    return (valorTotal * percentual / 100) / 100;
+  };
 
-    atualizarConfig.mutate({
-      chave: "comissao_vendedor",
-      valor: comissaoVendedor,
-      descricao: descricaoVendedor || "Percentual de comissão para vendedores",
-    });
+  const calcularValorVendedor = (valorTotal: number, percentual: number) => {
+    return (valorTotal * percentual / 100) / 100;
   };
 
   if (isLoading) {
@@ -89,140 +91,151 @@ export default function ConfiguracoesTab() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <Settings className="h-8 w-8 text-primary" />
+        <Settings className="h-8 w-8 text-[#1e9d9f]" />
         <div>
-          <h2 className="text-2xl font-bold">Configurações do Sistema</h2>
-          <p className="text-muted-foreground">Gerencie percentuais de comissão e outras configurações</p>
+          <h2 className="text-2xl font-bold text-[#1e9d9f]">Configurações do Sistema</h2>
+          <p className="text-muted-foreground">Gerencie comissões por tipo de assinatura</p>
         </div>
       </div>
 
-      {/* Configurações de Comissão */}
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Comissão Promotor */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Percent className="h-5 w-5 text-primary" />
-              Comissão - Promotor
-            </CardTitle>
-            <CardDescription>
-              Define o percentual de comissão para promotores que indicam e aquecem clientes
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="comissao-promotor">Percentual (%)</Label>
-              <Input
-                id="comissao-promotor"
-                type="number"
-                min="0"
-                max="100"
-                step="0.1"
-                placeholder="Ex: 5.0"
-                value={comissaoPromotor}
-                onChange={(e) => setComissaoPromotor(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="descricao-promotor">Descrição (opcional)</Label>
-              <Textarea
-                id="descricao-promotor"
-                placeholder="Ex: Comissão aplicada quando o cliente indicado realiza a primeira compra"
-                value={descricaoPromotor}
-                onChange={(e) => setDescricaoPromotor(e.target.value)}
-                rows={3}
-              />
-            </div>
-            <Button 
-              onClick={salvarComissaoPromotor}
-              disabled={atualizarConfig.isPending}
-              className="w-full"
-            >
-              <Save className="h-4 w-4 mr-2" />
-              Salvar Comissão Promotor
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Comissão Vendedor */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-primary" />
-              Comissão - Vendedor
-            </CardTitle>
-            <CardDescription>
-              Define o percentual de comissão para vendedores que fecham vendas
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="comissao-vendedor">Percentual (%)</Label>
-              <Input
-                id="comissao-vendedor"
-                type="number"
-                min="0"
-                max="100"
-                step="0.1"
-                placeholder="Ex: 10.0"
-                value={comissaoVendedor}
-                onChange={(e) => setComissaoVendedor(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="descricao-vendedor">Descrição (opcional)</Label>
-              <Textarea
-                id="descricao-vendedor"
-                placeholder="Ex: Comissão aplicada quando o vendedor fecha a venda com o cliente"
-                value={descricaoVendedor}
-                onChange={(e) => setDescricaoVendedor(e.target.value)}
-                rows={3}
-              />
-            </div>
-            <Button 
-              onClick={salvarComissaoVendedor}
-              disabled={atualizarConfig.isPending}
-              className="w-full"
-            >
-              <Save className="h-4 w-4 mr-2" />
-              Salvar Comissão Vendedor
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Histórico de Configurações */}
+      {/* Tabela de Comissões por Tipo de Assinatura */}
       <Card>
         <CardHeader>
-          <CardTitle>Configurações Atuais</CardTitle>
-          <CardDescription>Histórico de todas as configurações do sistema</CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <DollarSign className="h-5 w-5 text-[#1e9d9f]" />
+            Comissões por Tipo de Assinatura
+          </CardTitle>
+          <CardDescription>
+            Valores de comissão e divisão entre indicador (70%) e vendedor (30%) para cada tipo de assinatura
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          {configuracoes.length === 0 ? (
+          {comissoes.length === 0 ? (
             <p className="text-center text-muted-foreground py-8">
-              Nenhuma configuração cadastrada ainda
+              Nenhuma comissão cadastrada ainda
             </p>
           ) : (
-            <div className="space-y-4">
-              {configuracoes.map((config: any) => (
-                <div key={config.id} className="border rounded-lg p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-semibold">{config.chave}</h3>
-                    <span className="text-sm text-muted-foreground">
-                      {config.chave.includes("comissao") ? `${config.valor}%` : config.valor}
-                    </span>
-                  </div>
-                  {config.descricao && (
-                    <p className="text-sm text-muted-foreground">{config.descricao}</p>
-                  )}
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>Atualizado por: {config.updatedBy || "Sistema"}</span>
-                    <span>{new Date(config.updatedAt).toLocaleString("pt-BR")}</span>
-                  </div>
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tipo de Assinatura</TableHead>
+                    <TableHead className="text-right">Preço Mensal</TableHead>
+                    <TableHead className="text-right">Comissão Total</TableHead>
+                    <TableHead className="text-right">% Indicador</TableHead>
+                    <TableHead className="text-right">Valor Indicador</TableHead>
+                    <TableHead className="text-right">% Vendedor</TableHead>
+                    <TableHead className="text-right">Valor Vendedor</TableHead>
+                    <TableHead className="text-center">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {comissoes.map((comissao: any) => (
+                    <TableRow key={comissao.id}>
+                      <TableCell className="font-medium">{comissao.nomeExibicao}</TableCell>
+                      <TableCell className="text-right">
+                        R$ {(comissao.precoMensal / 100).toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {editandoTipo === comissao.tipoAssinatura ? (
+                          <Input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={valorEditando}
+                            onChange={(e) => setValorEditando(e.target.value)}
+                            className="w-24 text-right"
+                          />
+                        ) : (
+                          <span className="font-semibold text-green-600">
+                            R$ {(comissao.valorComissaoTotal / 100).toFixed(2)}
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {editandoTipo === comissao.tipoAssinatura ? (
+                          <Input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={percentualIndicadorEditando}
+                            onChange={(e) => setPercentualIndicadorEditando(e.target.value)}
+                            className="w-16 text-right"
+                          />
+                        ) : (
+                          `${comissao.percentualIndicador}%`
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right text-[#1e9d9f] font-medium">
+                        R$ {calcularValorIndicador(comissao.valorComissaoTotal, comissao.percentualIndicador).toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {editandoTipo === comissao.tipoAssinatura ? (
+                          <Input
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={percentualVendedorEditando}
+                            onChange={(e) => setPercentualVendedorEditando(e.target.value)}
+                            className="w-16 text-right"
+                          />
+                        ) : (
+                          `${comissao.percentualVendedor}%`
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right text-[#c6bca4] font-medium">
+                        R$ {calcularValorVendedor(comissao.valorComissaoTotal, comissao.percentualVendedor).toFixed(2)}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {editandoTipo === comissao.tipoAssinatura ? (
+                          <div className="flex gap-2 justify-center">
+                            <Button
+                              size="sm"
+                              onClick={salvarEdicao}
+                              disabled={atualizarComissao.isPending}
+                              className="bg-[#1e9d9f] hover:bg-[#178a8c]"
+                            >
+                              <Save className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={cancelarEdicao}
+                              disabled={atualizarComissao.isPending}
+                            >
+                              Cancelar
+                            </Button>
+                          </div>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => iniciarEdicao(comissao)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           )}
+        </CardContent>
+      </Card>
+
+      {/* Legenda */}
+      <Card className="bg-muted/50">
+        <CardContent className="pt-6">
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <p><strong>Indicador (70%):</strong> Pessoa que indica e aquece o cliente, facilitando o contato inicial</p>
+            <p><strong>Vendedor (30%):</strong> Pessoa que fecha a venda e finaliza o processo de assinatura</p>
+            <p className="text-xs mt-4">
+              💡 <strong>Dica:</strong> Os percentuais de indicador e vendedor devem sempre somar 100%. 
+              Ajuste os valores conforme a estratégia comercial da Vital.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>

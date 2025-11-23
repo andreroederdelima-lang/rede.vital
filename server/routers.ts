@@ -888,6 +888,42 @@ export const appRouter = router({
       }),
   }),
 
+  // Comissões de Assinaturas
+  comissoesAssinaturas: router({
+    // Listar todas as comissões de assinaturas
+    listar: publicProcedure.query(async () => {
+      const { listarComissoesAssinaturas } = await import("./db");
+      return await listarComissoesAssinaturas();
+    }),
+
+    // Buscar comissão por tipo de assinatura
+    buscarPorTipo: publicProcedure
+      .input(z.object({ tipoAssinatura: z.string() }))
+      .query(async ({ input }) => {
+        const { buscarComissaoPorTipo } = await import("./db");
+        return await buscarComissaoPorTipo(input.tipoAssinatura);
+      }),
+
+    // Atualizar comissão de assinatura
+    atualizar: protectedProcedure
+      .input(z.object({
+        tipoAssinatura: z.string(),
+        valorComissaoTotal: z.number(),
+        percentualIndicador: z.number(),
+        percentualVendedor: z.number(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { atualizarComissaoAssinatura } = await import("./db");
+        return await atualizarComissaoAssinatura(
+          input.tipoAssinatura,
+          input.valorComissaoTotal,
+          input.percentualIndicador,
+          input.percentualVendedor,
+          ctx.user?.name || "Admin"
+        );
+      }),
+  }),
+
   // Materiais de Divulgação
   materiais: router({  
     listar: publicProcedure.query(async () => {

@@ -936,3 +936,14 @@
 - [x] Mostrar quantidade de Outros Serviços por cidade
 - [x] Adicionar indicadores visuais (vermelho/amarelo/verde) para cada categoria
 - [x] Atualizar resumo geral para refletir nova estrutura de dados
+
+
+## Sistema de Comissionamento por Tipo de Assinatura
+
+- [x] Criar tabela de comissões por tipo de assinatura no schema
+- [x] Adicionar 6 tipos de assinatura: Essencial Individual, Essencial Familiar, Premium Individual, Premium Familiar, Empresarial Individual, Empresarial Familiar
+- [x] Pré-preencher valores do PDF: Essencial Individual (R$50 - 70% indicador/30% vendedor), Essencial Familiar (R$70 - 70%/30%), Premium Individual (R$60 - 70%/30%), Premium Familiar (R$80 - 70%/30%), Empresarial Individual (R$40 - 70%/30%), Empresarial Familiar (usar mesmos valores Essencial)
+- [x] Implementar procedures tRPC para listar, atualizar comissões por tipo
+- [x] Atualizar interface Admin de Configurações para mostrar tabela editável com os 6 tipos
+- [x] Permitir edição de valor total, percentual indicador e percentual vendedor
+- [x] Adicionar validação para garantir que percentuais somem 100%
