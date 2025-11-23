@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { APP_LOGO } from "@/const";
+import Footer from "@/components/Footer";
 import { Loader2 } from "lucide-react";
 
 /**
@@ -227,6 +228,8 @@ export default function CadastroIndicador() {
             </ul>
           </div>      </div>
       </main>
+      
+      <Footer />
     </div>
   );
 }

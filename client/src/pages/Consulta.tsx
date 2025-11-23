@@ -13,6 +13,7 @@ import { formatWhatsAppLink, abrirComoChegar } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { MainNav } from "@/components/MainNav";
+import Footer from "@/components/Footer";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 
@@ -640,6 +641,8 @@ export default function Consulta() {
           </div>
         </div>
       </footer>
+      
+      <Footer />
     </div>
   );
 }

@@ -899,3 +899,12 @@
 - [x] Upload e gestão de áudios
 - [x] Gestão de textos de copy
 - [x] Testar funcionalidade completa
+
+
+## Rodapé Institucional
+
+- [x] Criar componente Footer com informações da empresa
+- [x] Adicionar copyright, CNPJ e ano
+- [x] Adicionar rodapé nas páginas públicas (Consulta, Serviços, Cadastros)
+- [x] Estilizar com cores da marca
+- [x] Testar responsividade

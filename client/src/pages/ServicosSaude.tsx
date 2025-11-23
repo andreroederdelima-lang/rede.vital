@@ -15,6 +15,7 @@ import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { MainNav } from "@/components/MainNav";
+import Footer from "@/components/Footer";
 
 export default function Consulta() {
   // Renderizar MainNav no topo
@@ -586,6 +587,8 @@ function SugestaoParceiro() {
       
       <div className="flex justify-end gap-2 pt-4">
       </div>
+      
+      <Footer />
     </form>
   );
 }

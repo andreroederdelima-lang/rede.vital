@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { APP_LOGO, APP_TITLE } from "@/const";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -878,6 +879,7 @@ export default function Parceiros() {
       </section>
 
 
+      <Footer />
     </div>
   );
 }
