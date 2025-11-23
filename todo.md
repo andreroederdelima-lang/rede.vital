@@ -1083,3 +1083,20 @@
 - [x] Revisar sistema de email
 - [x] Criar documentação completa do sistema Indique e Ganhe
 - [x] Criar documentação da plataforma do credenciado com links
+
+
+## Atualização da Página de Boas-Vindas
+
+- [x] Substituir texto atual por novo texto sobre programa de indicações
+- [x] Aplicar formatação elegante com cores da paleta Vital
+- [x] Destacar trechos importantes em negrito
+- [x] Adicionar observação sobre lead frio em tamanho menor
+- [x] Remover informações sobre emails de responsáveis
+
+## Integração de Upload de Imagens
+
+- [x] Conectar procedures de upload S3 aos formulários Admin
+- [x] Adicionar campo de upload de logo no formulário de cadastro de credenciados
+- [x] Adicionar campo de upload de foto no formulário de edição de credenciados
+- [x] Implementar preview da imagem antes do upload
+- [x] Testar upload e visualização de imagens

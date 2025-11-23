@@ -489,9 +489,8 @@ function MedicoFormDialog({
   onSave: (data: MedicoForm) => void;
   onCancel: () => void;
 }) {
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const uploadImagem = trpc.medicos.uploadImagem.useMutation();
 
   const [formData, setFormData] = useState<MedicoForm>(
     medico || {
@@ -512,9 +511,59 @@ function MedicoFormDialog({
     }
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    setUploading(true);
+
+    try {
+      const updatedData = { ...formData };
+
+      // Upload logo se houver arquivo selecionado
+      if (formData.logoFile) {
+        const reader = new FileReader();
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]); // Remove data:image/xxx;base64,
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.logoFile!);
+        });
+
+        const { url } = await uploadImagem.mutateAsync({
+          base64Data,
+          filename: formData.logoFile.name,
+          mimeType: formData.logoFile.type,
+        });
+        updatedData.logoUrl = url;
+      }
+
+      // Upload foto se houver arquivo selecionado
+      if (formData.fotoFile) {
+        const reader = new FileReader();
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.fotoFile!);
+        });
+
+        const { url } = await uploadImagem.mutateAsync({
+          base64Data,
+          filename: formData.fotoFile.name,
+          mimeType: formData.fotoFile.type,
+        });
+        updatedData.fotoUrl = url;
+      }
+
+      onSave(updatedData);
+    } catch (error) {
+      toast.error("Erro ao fazer upload das imagens: " + (error as Error).message);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -697,10 +746,12 @@ function MedicoFormDialog({
       </div>
 
       <DialogFooter>
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button type="button" variant="outline" onClick={onCancel} disabled={uploading}>
           Cancelar
         </Button>
-        <Button type="submit">Salvar</Button>
+        <Button type="submit" disabled={uploading}>
+          {uploading ? "Salvando..." : "Salvar"}
+        </Button>
       </DialogFooter>
     </form>
   );
@@ -715,6 +766,9 @@ function InstituicaoFormDialog({
   onSave: (data: InstituicaoForm) => void;
   onCancel: () => void;
 }) {
+  const [uploading, setUploading] = useState(false);
+  const uploadImagem = trpc.instituicoes.uploadImagem.useMutation();
+
   const [formData, setFormData] = useState<InstituicaoForm>(
     instituicao || {
       nome: "",
@@ -733,9 +787,59 @@ function InstituicaoFormDialog({
     }
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    setUploading(true);
+
+    try {
+      const updatedData = { ...formData };
+
+      // Upload logo se houver arquivo selecionado
+      if (formData.logoFile) {
+        const reader = new FileReader();
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.logoFile!);
+        });
+
+        const { url } = await uploadImagem.mutateAsync({
+          base64Data,
+          filename: formData.logoFile.name,
+          mimeType: formData.logoFile.type,
+        });
+        updatedData.logoUrl = url;
+      }
+
+      // Upload foto se houver arquivo selecionado
+      if (formData.fotoFile) {
+        const reader = new FileReader();
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.fotoFile!);
+        });
+
+        const { url } = await uploadImagem.mutateAsync({
+          base64Data,
+          filename: formData.fotoFile.name,
+          mimeType: formData.fotoFile.type,
+        });
+        updatedData.fotoUrl = url;
+      }
+
+      onSave(updatedData);
+    } catch (error) {
+      toast.error("Erro ao fazer upload das imagens: " + (error as Error).message);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -925,10 +1029,12 @@ function InstituicaoFormDialog({
       </div>
 
       <DialogFooter>
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button type="button" variant="outline" onClick={onCancel} disabled={uploading}>
           Cancelar
         </Button>
-        <Button type="submit">Salvar</Button>
+        <Button type="submit" disabled={uploading}>
+          {uploading ? "Salvando..." : "Salvar"}
+        </Button>
       </DialogFooter>
     </form>
   );

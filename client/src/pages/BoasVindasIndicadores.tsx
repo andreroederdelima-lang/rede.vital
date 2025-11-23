@@ -31,41 +31,66 @@ export default function BoasVindasIndicadores() {
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <Card className="w-full max-w-2xl">
           <CardContent className="pt-8 pb-8 text-center space-y-6">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Boas-vindas Promotor e/ou Vendedor!
+            <h2 className="text-3xl font-bold" style={{ color: '#2B9C9C' }}>
+              Indicar a Vital é simples, seguro e agora recompensa você.
             </h2>
             
-            <p className="text-lg text-gray-700">
-              Faça login para começar a registrar suas indicações
-            </p>
+            <div className="space-y-4 text-left">
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                Se você já conhece a qualidade do <strong>Hospital Censit</strong>, o atendimento da <strong>equipe Vital</strong> e a tranquilidade de ter <strong>saúde acessível 24h</strong>, por que não compartilhar essa experiência com quem você gosta?
+              </p>
 
-            {/* Descrições dos Papéis */}
-            <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg space-y-4 text-left">
-              <p className="text-sm md:text-base">
-                <strong className="text-green-700">Promotor:</strong>{" "}
-                <span className="text-gray-700">
-                  Indica clientes e recebe comissão quando estes concluem o processo de compra.
-                </span>
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                Com o <strong style={{ color: '#2B9C9C' }}>Programa de Indicação das Assinaturas Vital</strong>, cada pessoa indicada e confirmada como assinante gera <strong>benefícios reais</strong> para você.
+                É a forma que encontramos de agradecer pela <strong>confiança</strong> e por nos ajudar a fortalecer o ecossistema de saúde do Vale do Itajaí.
               </p>
-              <p className="text-sm md:text-base">
-                <strong className="text-green-700">Vendedor:</strong>{" "}
-                <span className="text-gray-700">
-                  Quem conclui o processo de venda.
-                </span>
-              </p>
-              
-              {/* Informação sobre Inversão de Percentuais */}
-              <div className="mt-4 pt-4 border-t border-green-200">
-                <p className="text-xs md:text-sm text-gray-600 italic">
-                  <strong>Observação importante:</strong> Em casos de lead frio ou com múltiplas objeções, 
-                  as porcentagens de comissão podem ser invertidas. Esta definição é feita exclusivamente por:
-                </p>
-                <ul className="text-xs md:text-sm text-gray-600 mt-2 ml-4 space-y-1">
-                  <li>• Email master: <strong>administrativo@suasaudevital.com.br</strong></li>
-                  <li>• Vendedor Pedro: <strong>comercial@suasaudevital.com.br</strong></li>
+
+              <div className="bg-gradient-to-r from-[#2B9C9C]/10 to-[#D4C5A0]/10 p-6 rounded-lg space-y-3">
+                <h3 className="text-xl font-bold" style={{ color: '#2B9C9C' }}>
+                  🔸 Como funciona?
+                </h3>
+                
+                <ul className="space-y-2 text-sm md:text-base text-gray-700">
+                  <li className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>Você envia a indicação pela <strong>plataforma oficial de indicações</strong> (somente indicações cadastradas por aqui são válidas)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>Nossa equipe entra em contato de forma <strong>profissional e acolhedora</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>Acompanhamos a pessoa indicada durante todo o processo — explicação, dúvidas, assinatura</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>Após a confirmação da compra, registramos sua <strong>bonificação</strong></span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="mr-2">•</span>
+                    <span>Você recebe sua comissão de forma <strong>organizada e transparente</strong> até o <strong>quinto dia útil do próximo mês</strong></span>
+                  </li>
                 </ul>
-                <p className="text-xs md:text-sm text-gray-600 mt-2 italic">
-                  Todas as indicações devem ser qualificadas na plataforma por estes responsáveis.
+              </div>
+
+              <div className="text-center py-4">
+                <p className="text-lg md:text-xl font-semibold" style={{ color: '#2B9C9C' }}>
+                  Indique. Compartilhe cuidado. Vamos juntos levar saúde de qualidade a preço acessível a cada vez mais pessoas!
+                </p>
+                <p className="text-base md:text-lg font-semibold text-gray-800 mt-2">
+                  Ganhe com isso — de forma <strong>justa, transparente e oficial</strong>.
+                </p>
+              </div>
+
+              <p className="text-center text-base font-medium" style={{ color: '#2B9C9C' }}>
+                Sua Saúde Vital — cuidando de quem cuida.
+              </p>
+
+              {/* Observação sobre lead frio */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <p className="text-xs text-gray-500 text-center">
+                  <em>Observação importante: Em casos de lead frio ou com múltiplas objeções, as porcentagens de comissão (indicador x vendedor) podem ser invertidas.</em>
                 </p>
               </div>
             </div>
