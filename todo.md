@@ -1130,8 +1130,10 @@
 ### Formulários
 - [x] Criar componente FormularioCredenciado reutilizável
 - [x] Criar documentação de integração (INTEGRACAO_FORMULARIO.md)
+- [x] Criar resumo executivo de implementação (RESUMO_IMPLEMENTACAO.md)
 - [ ] Aplicar componente na página Parceiros (substituir formulário atual)
 - [ ] Aplicar componente na página Atualizar Dados (substituir formulário atual)
+- [ ] Implementar procedures tRPC (buscarPorToken, atualizarDados)
 - [ ] Implementar fluxo de aprovação Admin (dados pendentes -> aprovados -> site atualizado)
 - [ ] Permitir edição direta pelo Admin a qualquer momento
 - [x] Campos públicos (Home): Nome, Especialidade/Categoria, Número de registro no conselho, Tipo de atendimento (Online/Presencial/Ambos), Município, Endereço, Telefone Fixo, WhatsApp Comercial/Agendamento, Logo (upload), Foto (upload)
