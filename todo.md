@@ -1333,3 +1333,11 @@
 - [x] Remover botão INDIQUE & GANHE da página Consulta (meio da página)
 - [x] Remover botão INDIQUE & GANHE da página Home (meio da página)
 - [x] Manter apenas botão no menu superior (MainNav)
+
+
+## Correção de Sobreposições no Header - 23/11/2025
+
+- [x] Corrigir sobreposição do botão "Menu" sobre texto "Rede de Parceiros Vital" (mobile)
+- [x] Corrigir sobreposição do botão "INDIQUE & GANHE" sobre texto "Vale do Itajaí - SC" (desktop)
+- [x] Reorganizar layout do MainNav com melhor espaçamento
+- [x] Testar em mobile e desktop

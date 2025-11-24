@@ -62,9 +62,9 @@ export function MainNav() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/">
-            <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-12 w-auto" />
-              <div className="flex flex-col gap-0.5">
+            <div className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity cursor-pointer">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-8 md:h-12 w-auto" />
+              <div className="hidden sm:flex flex-col gap-0.5">
                 <span className="text-sm md:text-base font-bold text-[#1e9d9f] whitespace-nowrap">
                   Rede de Parceiros Vital
                 </span>
@@ -76,7 +76,7 @@ export function MainNav() {
           </Link>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-1 lg:gap-2 flex-wrap">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.startsWith(item.href);
@@ -91,10 +91,11 @@ export function MainNav() {
                 return (
                   <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer">
                     <Button
+                      size="sm"
                       variant="ghost"
-                      className="text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10"
+                      className="text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10 text-xs lg:text-sm"
                     >
-                      <Icon className="h-4 w-4 mr-2" />
+                      <Icon className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
                       {item.label}
                     </Button>
                   </a>
@@ -106,9 +107,10 @@ export function MainNav() {
                 return (
                   <Link key={item.href} href={item.href}>
                     <Button
-                      className="bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white font-bold shadow-lg"
+                      size="sm"
+                      className="bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white font-bold shadow-lg text-xs lg:text-sm"
                     >
-                      <Icon className="h-4 w-4 mr-2" />
+                      <Icon className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
                       {item.label}
                     </Button>
                   </Link>
@@ -118,14 +120,15 @@ export function MainNav() {
               return (
                 <Link key={item.href} href={item.href}>
                   <Button
+                    size="sm"
                     variant={isActive ? "default" : "ghost"}
                     className={
                       isActive
-                        ? "bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white"
-                        : "text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10"
+                        ? "bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white text-xs lg:text-sm"
+                        : "text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10 text-xs lg:text-sm"
                     }
                   >
-                    <Icon className="h-4 w-4 mr-2" />
+                    <Icon className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
                     {item.label}
                   </Button>
                 </Link>
