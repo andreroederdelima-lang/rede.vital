@@ -170,23 +170,6 @@ export default function Consulta() {
             ))}
           </div>
 
-          {/* Botão PROGrama Indique e Ganhe */}
-          <div className="mb-8 flex justify-center">
-            <Link href="/indicacoes">
-              <Button 
-                size="lg"
-                className="font-bold text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all"
-                style={{ 
-                  backgroundColor: VITAL_COLORS.primary,
-                  color: VITAL_COLORS.white 
-                }}
-              >
-                <DollarSign className="mr-2 h-6 w-6" />
-                INDIQUE & GANHE
-              </Button>
-            </Link>
-          </div>
-
           {/* Barra de Busca */}
           <div className="mb-8">
             <div className="relative max-w-2xl mx-auto">

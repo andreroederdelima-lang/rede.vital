@@ -1326,3 +1326,10 @@
 - [x] Tornar "Rede de Parceiros Vital" e "Vale do Itajaí - SC" legíveis
 - [x] Realocar botão "Avaliar" nos cards para não sobrepor logo Vital
 - [x] Testar layout em desktop e mobile
+
+
+## Remover Botão INDIQUE & GANHE do Meio - 23/11/2025
+
+- [x] Remover botão INDIQUE & GANHE da página Consulta (meio da página)
+- [x] Remover botão INDIQUE & GANHE da página Home (meio da página)
+- [x] Manter apenas botão no menu superior (MainNav)

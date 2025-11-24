@@ -294,12 +294,6 @@ export default function Home() {
                   <span className="text-xs md:text-sm">Administrador</span>
                 </Button>
               </Link>
-              <Link href="/indicacoes" className="flex-1 sm:flex-none">
-                <Button size="sm" style={{ backgroundColor: VITAL_COLORS.primary, color: VITAL_COLORS.white }} className="hover:opacity-90 w-full sm:w-auto">
-                  <DollarSign className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm font-bold">INDIQUE & GANHE</span>
-                </Button>
-              </Link>
               <Link href="/sugerir-parceiro" className="flex-1 sm:flex-none">
                 <Button size="sm" variant="outline" style={{ borderColor: VITAL_COLORS.gold, color: VITAL_COLORS.gold }} className="hover:bg-opacity-10 w-full sm:w-auto">
                   <Handshake className="h-4 w-4 mr-2" />
