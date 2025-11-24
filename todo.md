@@ -1341,3 +1341,11 @@
 - [x] Corrigir sobreposição do botão "INDIQUE & GANHE" sobre texto "Vale do Itajaí - SC" (desktop)
 - [x] Reorganizar layout do MainNav com melhor espaçamento
 - [x] Testar em mobile e desktop
+
+
+## Reorganização de Botões na Página Dados Internos - 23/11/2025
+
+- [x] Analisar layout atual do header da página Home (Dados Internos)
+- [x] Reorganizar botões para evitar sobreposição
+- [x] Melhorar espaçamento e legibilidade
+- [x] Testar em desktop

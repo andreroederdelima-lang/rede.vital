@@ -265,60 +265,23 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: VITAL_COLORS.white }}>
       {/* Header */}
-      <header className="py-8 px-4" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
+      <header className="py-6 px-4" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
         <div className="container max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-            <div className="flex flex-col items-center lg:items-start gap-4">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-24 object-contain" />
-              <div className="text-center lg:text-left">
-                <h1 className="text-3xl font-semibold" style={{ color: VITAL_COLORS.turquoise }}>DADOS INTERNOS</h1>
-                <p className="text-sm mt-2" style={{ color: VITAL_COLORS.darkGray }}>
+          {/* Linha 1: Logo e Título */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-16 object-contain" />
+              <div>
+                <h1 className="text-2xl font-semibold" style={{ color: VITAL_COLORS.turquoise }}>DADOS INTERNOS</h1>
+                <p className="text-sm mt-1" style={{ color: VITAL_COLORS.darkGray }}>
                   Guia de Parceiros Vital - Vale do Itajaí
-                </p>
-                <p className="text-xs mt-1" style={{ color: VITAL_COLORS.mediumGray }}>
-                  Conteúdo sigiloso - Uso interno
                 </p>
               </div>
             </div>
-            {/* Botões principais */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap gap-2 w-full lg:w-auto">
-              <Link href="/" className="flex-1 sm:flex-none">
-                <Button size="sm" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }} className="hover:opacity-90 w-full sm:w-auto">
-                  <HomeIcon className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Modo Assinante</span>
-                </Button>
-              </Link>
-              <Link href="/admin" className="flex-1 sm:flex-none">
-                <Button size="sm" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }} className="hover:opacity-90 w-full sm:w-auto">
-                  <User className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Administrador</span>
-                </Button>
-              </Link>
-              <Link href="/sugerir-parceiro" className="flex-1 sm:flex-none">
-                <Button size="sm" variant="outline" style={{ borderColor: VITAL_COLORS.gold, color: VITAL_COLORS.gold }} className="hover:bg-opacity-10 w-full sm:w-auto">
-                  <Handshake className="h-4 w-4 mr-2" />
-                  <span className="text-xs md:text-sm">Sugira um Parceiro</span>
-                </Button>
-              </Link>
-              <Button 
-                size="sm" 
-                variant="outline" 
-                style={{ borderColor: VITAL_COLORS.gold, color: VITAL_COLORS.gold }}
-                className="hover:bg-opacity-10 w-full sm:w-auto flex-1 sm:flex-none"
-                onClick={async () => {
-                  const link = `${window.location.origin}/parceiros`;
-                  await navigator.clipboard.writeText(link);
-                  toast.success('Link copiado! Compartilhe com potenciais parceiros.');
-                }}
-              >
-                <Link2 className="h-4 w-4 mr-2" />
-                <span className="text-xs md:text-sm">Convide um Parceiro</span>
-              </Button>
-            </div>
-            {/* E-mail e Sair - discretos abaixo */}
-            <div className="flex flex-col sm:flex-row items-center gap-2 w-full lg:w-auto mt-3">
+            {/* E-mail e Sair */}
+            <div className="flex items-center gap-3">
               {user && (
-                <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
                   <User className="h-3 w-3" />
                   <span>{user.email}</span>
                 </div>
@@ -327,12 +290,56 @@ export default function Home() {
                 size="sm" 
                 variant="ghost" 
                 onClick={logout}
-                className="text-xs text-muted-foreground hover:text-destructive"
+                className="text-sm hover:bg-white"
+                style={{ color: VITAL_COLORS.mediumGray }}
               >
-                <X className="h-3 w-3 mr-1" />
+                <X className="h-4 w-4 mr-1" />
                 Sair
               </Button>
             </div>
+          </div>
+          
+          {/* Linha 2: Botões de Ação */}
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/">
+              <Button size="default" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }} className="hover:opacity-90">
+                <HomeIcon className="h-4 w-4 mr-2" />
+                Modo Assinante
+              </Button>
+            </Link>
+            <Link href="/admin">
+              <Button size="default" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }} className="hover:opacity-90">
+                <User className="h-4 w-4 mr-2" />
+                Administrador
+              </Button>
+            </Link>
+            <Link href="/sugerir-parceiro">
+              <Button size="default" variant="outline" style={{ borderColor: VITAL_COLORS.gold, color: VITAL_COLORS.gold, borderWidth: '2px' }} className="hover:bg-opacity-10">
+                <Handshake className="h-4 w-4 mr-2" />
+                Sugira um Parceiro
+              </Button>
+            </Link>
+            <Button 
+              size="default" 
+              variant="outline" 
+              style={{ borderColor: VITAL_COLORS.gold, color: VITAL_COLORS.gold, borderWidth: '2px' }}
+              className="hover:bg-opacity-10"
+              onClick={async () => {
+                const link = `${window.location.origin}/parceiros`;
+                await navigator.clipboard.writeText(link);
+                toast.success('Link copiado! Compartilhe com potenciais parceiros.');
+              }}
+            >
+              <Link2 className="h-4 w-4 mr-2" />
+              Convide um Parceiro
+            </Button>
+          </div>
+          
+          {/* Linha 3: Aviso de Conteúdo Sigiloso */}
+          <div className="mt-4 text-center">
+            <p className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+              Conteúdo sigiloso - Uso interno
+            </p>
           </div>
         </div>
       </header>
