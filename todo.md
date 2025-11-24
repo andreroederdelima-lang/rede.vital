@@ -1349,3 +1349,10 @@
 - [x] Reorganizar botões para evitar sobreposição
 - [x] Melhorar espaçamento e legibilidade
 - [x] Testar em desktop
+
+
+## Correção de Erro na Página Indicações - 24/11/2025
+
+- [x] Investigar erro "ReferenceError: require is not defined" na página /indicacoes
+- [x] Corrigir código que está causando o erro
+- [x] Testar abertura da página

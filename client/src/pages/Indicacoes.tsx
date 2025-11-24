@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import PainelVendedorLayout from "@/components/PainelVendedorLayout";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
@@ -13,6 +13,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { toast } from "sonner";
 import { TrendingUp, Plus, Users, DollarSign, QrCode, MessageCircle } from "lucide-react";
 import { getLoginUrl } from "@/const";
+
+const AutoCadastroIndicador = lazy(() => import("@/components/AutoCadastroIndicador"));
 
 export default function Indicacoes() {
   const { user, isAuthenticated, loading } = useAuth();
@@ -104,10 +106,15 @@ export default function Indicacoes() {
   }
 
   if (!meuIndicador) {
-    const AutoCadastroIndicador = require("@/components/AutoCadastroIndicador").default;
     return (
       <PainelVendedorLayout>
-        <AutoCadastroIndicador />
+        <Suspense fallback={
+          <div className="flex items-center justify-center h-64">
+            <p className="text-muted-foreground">Carregando...</p>
+          </div>
+        }>
+          <AutoCadastroIndicador />
+        </Suspense>
       </PainelVendedorLayout>
     );
   }
