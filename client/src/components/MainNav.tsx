@@ -59,13 +59,13 @@ export function MainNav() {
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+        {/* Linha 1: Logo e Título Centralizados */}
+        <div className="flex items-center justify-center py-3 border-b border-gray-100">
           <Link href="/">
-            <div className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-8 md:h-12 w-auto" />
-              <div className="hidden sm:flex flex-col gap-0.5">
-                <span className="text-sm md:text-base font-bold text-[#1e9d9f] whitespace-nowrap">
+            <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-12 w-auto" />
+              <div className="flex flex-col gap-0.5">
+                <span className="text-base font-bold text-[#1e9d9f] whitespace-nowrap">
                   Rede de Parceiros Vital
                 </span>
                 <span className="text-xs text-gray-600 whitespace-nowrap">
@@ -74,9 +74,12 @@ export function MainNav() {
               </div>
             </div>
           </Link>
+        </div>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center gap-1 lg:gap-2 flex-wrap">
+        {/* Linha 2: Botões de Navegação Centralizados */}
+        <div className="flex items-center justify-center h-16">
+          {/* Navigation Links Desktop */}
+          <div className="hidden md:flex items-center gap-2 flex-wrap justify-center">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.startsWith(item.href);
@@ -137,7 +140,7 @@ export function MainNav() {
           </div>
 
           {/* Mobile Menu */}
-          <div className="md:hidden">
+          <div className="md:hidden absolute right-4 top-4">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm">

@@ -1356,3 +1356,12 @@
 - [x] Investigar erro "ReferenceError: require is not defined" na página /indicacoes
 - [x] Corrigir código que está causando o erro
 - [x] Testar abertura da página
+
+
+## Reorganização Visual do MainNav - 24/11/2025
+
+- [x] Analisar layout atual do MainNav
+- [x] Reorganizar estrutura para layout simétrico
+- [x] Alinhar botões harmoniosamente
+- [x] Evitar sobreposição de elementos
+- [x] Testar em desktop
