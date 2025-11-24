@@ -29,6 +29,7 @@ import IndicacoesComissoes from "./pages/IndicacoesComissoes";
 import GaleriaParceiros from "./pages/GaleriaParceiros";
 import AdminAvaliacoes from "./pages/AdminAvaliacoes";
 import SugerirParceiro from "./pages/SugerirParceiro";
+import FormularioParceiro from "./pages/FormularioParceiro";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -58,6 +59,7 @@ function Router() {
        <Route path={"admin/materiais"} component={AdminMateriais} />
       <Route path={"admin/notificacoes"} component={AdminNotificacoes} />
       <Route path={"/parceiros"} component={Parceiros} />
+      <Route path={"/formulario-parceiro"} component={FormularioParceiro} />
       <Route path={"/atualizar-dados/:token"} component={AtualizarDados} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

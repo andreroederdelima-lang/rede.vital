@@ -428,6 +428,51 @@ export const appRouter = router({
         await excluirUsuarioAutorizado(input);
         return { success: true };
       }),
+
+    resetarSenha: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { resetarSenhaUsuario } = await import("./db");
+        // Gerar nova senha temporária
+        const novaSenha = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+        await resetarSenhaUsuario(input, novaSenha);
+        return { success: true, novaSenha };
+      }),
+
+    alterarSenha: protectedProcedure
+      .input(z.object({
+        senhaAtual: z.string(),
+        novaSenha: z.string().min(6),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        // Verificar se usuário está autenticado via dados internos
+        const token = ctx.req.cookies?.dados_internos_session;
+        if (!token) {
+          throw new Error("Não autenticado");
+        }
+        
+        const jwt = await import("jsonwebtoken");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+        
+        const { obterUsuarioAutorizadoPorId, alterarSenhaUsuario } = await import("./db");
+        const usuario = await obterUsuarioAutorizadoPorId(decoded.userId);
+        
+        if (!usuario) {
+          throw new Error("Usuário não encontrado");
+        }
+        
+        // Verificar senha atual
+        const bcrypt = await import("bcryptjs");
+        const senhaValida = await bcrypt.compare(input.senhaAtual, usuario.senhaHash);
+        
+        if (!senhaValida) {
+          throw new Error("Senha atual incorreta");
+        }
+        
+        // Alterar senha
+        await alterarSenhaUsuario(usuario.id, input.novaSenha);
+        return { success: true };
+      }),
   }),
 
   atualizacao: router({

@@ -1395,6 +1395,21 @@ function UsuariosAutorizadosTab() {
     },
   });
 
+  const resetarSenhaMutation = trpc.usuariosAutorizados.resetarSenha.useMutation({
+    onSuccess: (data) => {
+      toast.success("Senha resetada com sucesso!", {
+        description: `Nova senha: ${data.novaSenha}`
+      });
+      // Copiar automaticamente para clipboard
+      navigator.clipboard.writeText(data.novaSenha);
+    },
+    onError: (error) => {
+      toast.error("Erro ao resetar senha", {
+        description: error.message
+      });
+    },
+  });
+
   const handleSalvar = () => {
     if (!editingUsuario) return;
 
@@ -1546,6 +1561,19 @@ function UsuariosAutorizadosTab() {
                             }}
                           >
                             <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => {
+                              if (confirm(`Resetar senha de ${usuario.nome}? Uma nova senha será gerada.`)) {
+                                resetarSenhaMutation.mutate(usuario.id);
+                              }
+                            }}
+                            disabled={resetarSenhaMutation.isPending}
+                            title="Resetar senha"
+                          >
+                            <Key className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="destructive"

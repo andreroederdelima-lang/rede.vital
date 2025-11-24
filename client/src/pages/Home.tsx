@@ -7,10 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe, Link2, Home as HomeIcon, TrendingUp, DollarSign } from "lucide-react";
+import { Phone, MapPin, Percent, User, Building2, Search, X, MessageCircle, FileDown, FileText, Handshake, Wallet, Users, Share2, Copy, Globe, Link2, Home as HomeIcon, TrendingUp, DollarSign, Key } from "lucide-react";
 import { formatWhatsAppLink } from "@/lib/utils";
 import { Link } from "wouter";
 import { toast } from "sonner";
@@ -32,6 +32,10 @@ export default function Home() {
   const [medicoSelecionado, setMedicoSelecionado] = useState<any>(null);
   const [instituicaoSelecionada, setInstituicaoSelecionada] = useState<any>(null);
   const [motivoEncaminhamento, setMotivoEncaminhamento] = useState("");
+  const [alterarSenhaDialog, setAlterarSenhaDialog] = useState(false);
+  const [senhaAtual, setSenhaAtual] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
+  const [confirmarNovaSenha, setConfirmarNovaSenha] = useState("");
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -61,6 +65,40 @@ export default function Home() {
       toast.error('Erro ao gerar link de atualização');
     }
   });
+
+  const alterarSenhaMutation = trpc.usuariosAutorizados.alterarSenha.useMutation({
+    onSuccess: () => {
+      toast.success('Senha alterada com sucesso!');
+      setAlterarSenhaDialog(false);
+      setSenhaAtual("");
+      setNovaSenha("");
+      setConfirmarNovaSenha("");
+    },
+    onError: (error) => {
+      toast.error('Erro ao alterar senha', {
+        description: error.message
+      });
+    }
+  });
+
+  const handleAlterarSenha = () => {
+    if (!senhaAtual || !novaSenha || !confirmarNovaSenha) {
+      toast.error('Preencha todos os campos');
+      return;
+    }
+    if (novaSenha.length < 6) {
+      toast.error('Nova senha deve ter no mínimo 6 caracteres');
+      return;
+    }
+    if (novaSenha !== confirmarNovaSenha) {
+      toast.error('Nova senha e confirmação não coincidem');
+      return;
+    }
+    alterarSenhaMutation.mutate({
+      senhaAtual,
+      novaSenha
+    });
+  };
 
   const limparFiltros = () => {
     setBusca("");
@@ -278,7 +316,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            {/* E-mail e Sair */}
+            {/* E-mail, Alterar Senha e Sair */}
             <div className="flex items-center gap-3">
               {user && (
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
@@ -286,6 +324,67 @@ export default function Home() {
                   <span>{user.email}</span>
                 </div>
               )}
+              <Dialog open={alterarSenhaDialog} onOpenChange={setAlterarSenhaDialog}>
+                <DialogTrigger asChild>
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="text-sm hover:bg-white"
+                    style={{ color: VITAL_COLORS.mediumGray }}
+                  >
+                    <Key className="h-4 w-4 mr-1" />
+                    Alterar Senha
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Alterar Senha</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="senhaAtual">Senha Atual *</Label>
+                      <Input
+                        id="senhaAtual"
+                        type="password"
+                        value={senhaAtual}
+                        onChange={(e) => setSenhaAtual(e.target.value)}
+                        placeholder="Digite sua senha atual"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="novaSenha">Nova Senha *</Label>
+                      <Input
+                        id="novaSenha"
+                        type="password"
+                        value={novaSenha}
+                        onChange={(e) => setNovaSenha(e.target.value)}
+                        placeholder="Mínimo 6 caracteres"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="confirmarNovaSenha">Confirmar Nova Senha *</Label>
+                      <Input
+                        id="confirmarNovaSenha"
+                        type="password"
+                        value={confirmarNovaSenha}
+                        onChange={(e) => setConfirmarNovaSenha(e.target.value)}
+                        placeholder="Digite novamente a nova senha"
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setAlterarSenhaDialog(false)}>
+                      Cancelar
+                    </Button>
+                    <Button 
+                      onClick={handleAlterarSenha}
+                      disabled={alterarSenhaMutation.isPending}
+                    >
+                      {alterarSenhaMutation.isPending ? "Alterando..." : "Alterar Senha"}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
               <Button 
                 size="sm" 
                 variant="ghost" 

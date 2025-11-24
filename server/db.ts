@@ -341,6 +341,41 @@ export async function excluirUsuarioAutorizado(id: number) {
   await db.update(usuariosAutorizados).set({ ativo: 0 }).where(eq(usuariosAutorizados.id, id));
 }
 
+export async function obterUsuarioAutorizadoPorId(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(usuariosAutorizados).where(
+    and(eq(usuariosAutorizados.id, id), eq(usuariosAutorizados.ativo, 1))
+  ).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function resetarSenhaUsuario(id: number, novaSenha: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Hash da nova senha
+  const bcrypt = await import("bcryptjs");
+  const senhaHash = await bcrypt.hash(novaSenha, 10);
+  
+  await db.update(usuariosAutorizados)
+    .set({ senhaHash })
+    .where(eq(usuariosAutorizados.id, id));
+}
+
+export async function alterarSenhaUsuario(id: number, novaSenha: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Hash da nova senha
+  const bcrypt = await import("bcryptjs");
+  const senhaHash = await bcrypt.hash(novaSenha, 10);
+  
+  await db.update(usuariosAutorizados)
+    .set({ senhaHash })
+    .where(eq(usuariosAutorizados.id, id));
+}
+
 
 // ========== Solicitações de Atualização ==========
 
@@ -529,18 +564,6 @@ export async function marcarTokenComoUsado(token: string) {
   await db.update(tokensRecuperacao)
     .set({ usado: 1 })
     .where(eq(tokensRecuperacao.token, token));
-}
-
-export async function alterarSenhaUsuario(usuarioId: number, novaSenha: string) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  const bcrypt = await import("bcryptjs");
-  const senhaHash = await bcrypt.hash(novaSenha, 10);
-  
-  await db.update(usuariosAutorizados)
-    .set({ senhaHash })
-    .where(eq(usuariosAutorizados.id, usuarioId));
 }
 
 

@@ -1365,3 +1365,13 @@
 - [x] Alinhar botões harmoniosamente
 - [x] Evitar sobreposição de elementos
 - [x] Testar em desktop
+
+
+## Melhorias no Sistema - 24/11/2025
+
+- [x] Criar página de formulário direto para parceiros (sem conteúdo introdutório)
+- [x] Adicionar funcionalidade de reset de senha no botão de usuários
+- [x] Adicionar funcionalidade de editar senha no botão de usuários (própria senha)
+- [x] Adicionar acesso à gestão de usuários da área administrativa
+- [x] Verificar botão "Autorizar Acesso" (funciona corretamente quando há solicitações)
+- [x] Testar todas as funcionalidades
