@@ -1388,3 +1388,15 @@
 - [x] Desabilitar botão INDIQUE & GANHE no MainNav (manter comentado)
 - [x] Executar db:push para atualizar banco
 - [x] Testar aplicação
+
+
+## Identidade Visual e Botão Empresarial - 25/11/2025
+
+- [x] Adicionar botão "Conheça as Assinaturas Empresariais" na página Parceiros
+- [x] Configurar redirecionamento para https://www.suasaudevital.com.br/para-empresas
+- [x] Analisar site oficial suasaudevital.com.br e extrair paleta de cores
+- [x] Atualizar cores globais no index.css (verde/azul turquesa #0D7377)
+- [x] Atualizar logos para versão oficial (horizontal + símbolo)
+- [x] Atualizar radius dos botões para 0.75rem (mais arredondado)
+- [x] Atualizar cores de charts e ring para match com primary
+- [x] Testar navegação e consistência visual

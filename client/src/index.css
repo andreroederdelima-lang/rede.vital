@@ -43,24 +43,24 @@
 }
 
 :root {
-  /* Verde turquesa vibrante da Vital */
-  --primary: oklch(0.58 0.12 180);
+  /* Verde turquesa escuro da Vital - Cor principal do site oficial #0D7377 */
+  --primary: oklch(0.48 0.08 195);
   --primary-foreground: oklch(1 0 0);
   
-  /* Bege/dourado claro da Vital */
-  --secondary: oklch(0.82 0.06 80);
-  --secondary-foreground: oklch(0.25 0 0);
+  /* Verde turquesa médio para hover e destaques #14AFAF */
+  --secondary: oklch(0.68 0.10 190);
+  --secondary-foreground: oklch(1 0 0);
   
-  --sidebar-primary: oklch(0.58 0.12 180);
+  --sidebar-primary: oklch(0.48 0.08 195);
   --sidebar-primary-foreground: oklch(1 0 0);
   
-  /* Charts em tons de turquesa */
-  --chart-1: oklch(0.75 0.10 180);
-  --chart-2: oklch(0.65 0.11 180);
-  --chart-3: oklch(0.58 0.12 180);
-  --chart-4: oklch(0.50 0.13 180);
-  --chart-5: oklch(0.42 0.14 180);
-  --radius: 0.65rem;
+  /* Charts em tons de turquesa - match com primary */
+  --chart-1: oklch(0.68 0.10 190);
+  --chart-2: oklch(0.58 0.09 193);
+  --chart-3: oklch(0.48 0.08 195);
+  --chart-4: oklch(0.42 0.07 197);
+  --chart-5: oklch(0.36 0.06 200);
+  --radius: 0.75rem;
   
   /* Fundo claro/branco */
   --background: oklch(0.99 0 0);
@@ -79,7 +79,7 @@
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.58 0.12 180);
+  --ring: oklch(0.48 0.08 195);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.235 0.015 65);
   --sidebar-accent: oklch(0.967 0.001 286.375);
@@ -117,5 +117,24 @@
   .flex {
     min-width: 0;
     min-height: 0;
+  }
+  
+  /* Botões estilo Vital - pill shape arredondado */
+  .btn-vital-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-3 font-semibold transition-all duration-300 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-vital-secondary {
+    @apply bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white rounded-full px-8 py-3 font-semibold transition-all duration-300;
+  }
+  
+  /* Cards com hover suave */
+  .card-vital {
+    @apply bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300;
+  }
+  
+  /* Transições suaves globais */
+  * {
+    @apply transition-colors duration-300;
   }
 }
