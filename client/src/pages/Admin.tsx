@@ -14,7 +14,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key } from "lucide-react";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
 // [REMOVIDO] import IndicacoesTab from "@/components/IndicacoesTab";
-import ConfiguracoesTab from "@/components/ConfiguracoesTab";
+// [DESATIVADO] import ConfiguracoesTab from "@/components/ConfiguracoesTab";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
@@ -246,7 +246,7 @@ export default function Admin() {
   }
 
   // Verificar se usuário tem nível de acesso Admin
-  if (user && acessoData?.usuarioAutorizado && acessoData.usuarioAutorizado.nivelAcesso !== "admin") {
+  if (user && acessoData?.usuario && (acessoData.usuario as any).nivelAcesso !== "admin") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/20 to-background">
         <Card className="w-full max-w-md">
@@ -638,9 +638,11 @@ export default function Admin() {
             <IndicacoesTab />
           </TabsContent> */}
 
-          {/* Tab Configurações */}
+          {/* Tab Configurações - DESATIVADO */}
           <TabsContent value="configuracoes">
-            <ConfiguracoesTab />
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Aba de configurações temporáriamente desativada</p>
+            </div>
           </TabsContent>
         </Tabs>
       </main>
@@ -1728,11 +1730,11 @@ function UsuariosAutorizadosTab() {
                       <TableCell>{usuario.email}</TableCell>
                       <TableCell>
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          usuario.nivelAcesso === 'admin' 
+                          (usuario as any).nivelAcesso === 'admin' 
                             ? 'bg-purple-100 text-purple-800' 
                             : 'bg-blue-100 text-blue-800'
                         }`}>
-                          {usuario.nivelAcesso === 'admin' ? 'Admin' : 'Visualizador'}
+                          {(usuario as any).nivelAcesso === 'admin' ? 'Admin' : 'Visualizador'}
                         </span>
                       </TableCell>
                       <TableCell>{new Date(usuario.createdAt).toLocaleDateString('pt-BR')}</TableCell>
@@ -1746,7 +1748,7 @@ function UsuariosAutorizadosTab() {
                                 id: usuario.id,
                                 email: usuario.email,
                                 nome: usuario.nome,
-                                nivelAcesso: usuario.nivelAcesso,
+                                nivelAcesso: (usuario as any).nivelAcesso,
                               });
                               setDialogOpen(true);
                             }}

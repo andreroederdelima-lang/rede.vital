@@ -15,6 +15,9 @@ export const VITAL_COLORS = {
   lightGray: '#F7F7F7',
   darkGray: '#2E2E2E',
   mediumGray: '#444444',
+  
+  // Cor de destaque - Dourado
+  gold: '#D4AF37',
 } as const;
 
 // Municípios do Vale do Itajaí

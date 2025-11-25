@@ -27,7 +27,7 @@ export default function ConfiguracoesTab() {
       toast.success("Comissão atualizada com sucesso!");
       setEditandoTipo(null);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao atualizar comissão: " + error.message);
     },
   });

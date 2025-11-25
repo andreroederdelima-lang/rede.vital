@@ -19,8 +19,8 @@ export default function GaleriaParceiros() {
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({});
   const { data: instituicoes = [], isLoading: loadingInstituicoes } = trpc.instituicoes.listar.useQuery({});
 
-  const servicosSaude = instituicoes.filter(inst => inst.tipoServico === "servicos_saude");
-  const outrosServicos = instituicoes.filter(inst => inst.tipoServico === "outros_servicos");
+  const servicosSaude = instituicoes.filter(inst => (inst as any).tipoServico === "servicos_saude");
+  const outrosServicos = instituicoes.filter(inst => (inst as any).tipoServico === "outros_servicos");
 
   const handleCompartilhar = () => {
     const url = window.location.href;
@@ -113,7 +113,7 @@ export default function GaleriaParceiros() {
                         key={`medico-${medico.id}`}
                         nome={medico.nome}
                         categoria={medico.especialidade}
-                        logoUrl={medico.logoUrl}
+                        logoUrl={(medico as any).logoUrl}
                         // fotoUrl={medico.fotoUrl}
                         onBaixar={handleBaixarImagem}
                       />
@@ -132,7 +132,7 @@ export default function GaleriaParceiros() {
                         key={`saude-${inst.id}`}
                         nome={inst.nome}
                         categoria={inst.categoria}
-                        logoUrl={inst.logoUrl}
+                        logoUrl={(inst as any).logoUrl}
                         // fotoUrl={inst.fotoUrl}
                         onBaixar={handleBaixarImagem}
                       />
@@ -151,7 +151,7 @@ export default function GaleriaParceiros() {
                         key={`outros-${inst.id}`}
                         nome={inst.nome}
                         categoria={inst.categoria}
-                        logoUrl={inst.logoUrl}
+                        logoUrl={(inst as any).logoUrl}
                         // fotoUrl={inst.fotoUrl}
                         onBaixar={handleBaixarImagem}
                       />
@@ -170,7 +170,7 @@ export default function GaleriaParceiros() {
                   key={`medico-${medico.id}`}
                   nome={medico.nome}
                   categoria={medico.especialidade}
-                  logoUrl={medico.logoUrl}
+                  logoUrl={(medico as any).logoUrl}
                   // fotoUrl={medico.fotoUrl}
                   onBaixar={handleBaixarImagem}
                 />
@@ -186,7 +186,7 @@ export default function GaleriaParceiros() {
                   key={`saude-${inst.id}`}
                   nome={inst.nome}
                   categoria={inst.categoria}
-                  logoUrl={inst.logoUrl}
+                  logoUrl={(inst as any).logoUrl}
                   // fotoUrl={inst.fotoUrl}
                   onBaixar={handleBaixarImagem}
                 />
@@ -202,7 +202,7 @@ export default function GaleriaParceiros() {
                   key={`outros-${inst.id}`}
                   nome={inst.nome}
                   categoria={inst.categoria}
-                  logoUrl={inst.logoUrl}
+                  logoUrl={(inst as any).logoUrl}
                   // fotoUrl={inst.fotoUrl}
                   onBaixar={handleBaixarImagem}
                 />

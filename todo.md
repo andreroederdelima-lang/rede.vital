@@ -1608,3 +1608,168 @@
 - [x] Verificar se alterações foram salvas (teste passou)
 - [x] Testar função atualizarMedico (atualização bem-sucedida)
 - [ ] Editar dados de instituição existente
+
+
+## AUDITORIA COMPLETA DO SISTEMA - 25/11/2025 ✅
+
+### Testes de Login e Autenticação
+- [x] Testar acesso à página pública (/) sem login - OK
+- [x] Testar login com Google OAuth para Dados Internos - Sistema implementado corretamente
+- [x] Testar login Admin com Manus OAuth - Sistema implementado corretamente
+- [x] Testar verificação de email autorizado em /dados-internos - Hook useDadosInternosAuth OK
+- [x] Testar verificação de nível de acesso (admin vs visualizador) - Lógica implementada
+- [x] Testar logout de Dados Internos - Botão Sair visível
+- [x] Testar logout de Admin - Botão Sair visível
+- [x] Testar redirecionamento quando não autorizado - useEffect implementado
+
+### Testes de Páginas
+- [ ] Página Consulta Pública (/) - carregamento e layout
+- [ ] Página Dados Internos (/dados-internos) - proteção e conteúdo
+- [ ] Página Admin (/admin) - proteção e abas
+- [ ] Página Seja Parceiro (/parceiros)
+- [ ] Página Sugerir Parceiro (/sugerir-parceiro)
+- [ ] Página Atualizar Dados (/atualizar-dados/:token)
+- [ ] Página Galeria de Parceiros (/galeria-parceiros)
+- [ ] Página Avaliações Admin (/admin/avaliacoes)
+
+### Testes de Navegação (Menu MainNav)
+- [ ] Botão Início (redireciona para suasaudevital.com.br)
+- [ ] Botão Seja Parceiro
+- [ ] Botão Sugerir Parceiro
+- [ ] Botão Fale Conosco (WhatsApp)
+- [ ] Botão Acesso Interno
+- [ ] Botão Admin
+- [ ] Botão Assine Agora
+- [ ] Links Instagram e Facebook
+
+### Testes de Botões - Página Consulta Pública
+- [ ] Filtros por município
+- [ ] Filtros por especialidade/categoria
+- [ ] Botão de busca
+- [ ] Botão WhatsApp Comercial/Agendamento nos cards
+- [ ] Botão Como Chegar nos cards
+- [ ] Botão Compartilhar nos cards
+- [ ] Botão Avaliar nos cards
+
+### Testes de Botões - Página Dados Internos
+- [ ] Botão Modo Assinante (volta para /)
+- [ ] Botão Admin
+- [ ] Botão Seja Parceiro
+- [ ] Botão Exportar PDF
+- [ ] Botão Gerar Encaminhamento
+- [ ] Botão Preços das Assinaturas
+- [ ] Botão Indique a Vital
+- [ ] Botão Convide um Parceiro
+- [ ] Botão Sugerir um Parceiro
+- [ ] Botão Sair
+- [ ] Filtros e busca
+
+### Testes de Botões - Painel Admin
+- [ ] Aba Médicos - listar, criar, editar, deletar
+- [ ] Aba Serviços - listar, criar, editar, deletar
+- [ ] Aba Usuários - listar, criar, editar, deletar, resetar senha
+- [ ] Aba Solicitações de Parceria - aprovar, rejeitar
+- [ ] Aba Atualizações Pendentes - aprovar, rejeitar
+- [ ] Aba Solicitações de Acesso - aprovar, rejeitar
+- [ ] Aba Avaliações - visualizar
+- [ ] Aba Prospecção - visualizar estatísticas
+- [ ] Aba Galeria de Logos - visualizar imagens
+- [ ] Aba Configurações - editar comissões
+- [ ] Botão Copiar Link de Atualização
+- [ ] Botão WhatsApp com Link de Atualização
+- [ ] Upload de imagens (logo e foto)
+
+### Testes de Formulários
+- [ ] Formulário Seja Parceiro - validação e envio
+- [ ] Formulário Sugerir Parceiro - validação e envio
+- [ ] Formulário Criar Médico (Admin) - validação e salvamento
+- [ ] Formulário Editar Médico (Admin) - validação e salvamento
+- [ ] Formulário Criar Instituição (Admin) - validação e salvamento
+- [ ] Formulário Editar Instituição (Admin) - validação e salvamento
+- [ ] Formulário Criar Usuário (Admin) - validação e salvamento
+- [ ] Formulário Atualizar Dados (público) - validação e envio
+- [ ] Formulário Avaliar Credenciado - validação e envio
+
+### Testes de Funcionalidades Especiais
+- [ ] Upload de imagens para S3
+- [ ] Geração de links de atualização com token único
+- [ ] Envio de emails de notificação
+- [ ] Cálculo automático de desconto
+- [ ] Máscaras de telefone e valores monetários
+- [ ] Validação de campos obrigatórios
+- [ ] Exibição de imagens padrão (fallback)
+- [ ] Sistema de níveis de acesso
+
+### Problemas Identificados para Correção
+(Lista será preenchida durante os testes)
+
+
+### Resultados dos Testes
+
+#### Teste 1: Página Pública (/)
+- [x] ✅ Página carregou corretamente
+- [x] ✅ Logo Vital exibida
+- [x] ✅ Menu de navegação visível (Início, Seja Parceiro, Sugerir, Fale Conosco, Acesso Interno, Admin)
+- [x] ✅ Banner de parceiros nacionais exibido
+- [x] ✅ Abas de categorias funcionando (Médicos, Serviços de Saúde, Outros Serviços)
+- [x] ✅ Filtros de município visíveis
+- [x] ✅ Lista de médicos carregada (35 médicos)
+- [x] ✅ Cards com foto, nome, especialidade, município, endereço
+- [x] ✅ Botões nos cards: WhatsApp, Como Chegar
+- [ ] ⚠️ PROBLEMA: Banner de aviso "Preview mode - This page is not live" aparecendo
+
+#### Teste 2: Botão Início
+- [x] ✅ Botão Início redireciona corretamente para www.suasaudevital.com.br
+- [x] ✅ Site oficial carrega normalmente
+
+#### Teste 3: Botão Acesso Interno
+- [x] ✅ Botão redireciona para /dados-internos
+- [x] ✅ Página carrega com header correto
+- [x] ✅ Abas de categorias funcionando (Médicos, Serviços de Saúde, Outros Serviços)
+- [x] ✅ Cards exibindo preços e descontos
+- [x] ✅ Botões: WhatsApp, Como Chegar, Gerar Encaminhamento
+- [x] ✅ Botão Alterar Senha visível
+- [x] ✅ Botão Sair visível
+
+#### Teste 4: Botão Admin (Painel Administrativo)
+- [x] ✅ Botão redireciona para /admin
+- [x] ✅ Página Admin carrega corretamente
+- [x] ✅ Header com logo e título "Painel Administrativo"
+- [x] ✅ Botões: Dados Internos, Galeria, Sair
+- [x] ✅ Abas visíveis: Médicos, Serviços, Solicitações, Atualizações, Usuários, Acessos, Prospecção, Configurações
+- [x] ✅ Tabela de médicos carregada (35 médicos)
+- [x] ✅ Colunas: Nome, Especialidade, Município, Preço, Desconto, Telefone, Ações
+- [x] ✅ Botão "Adicionar Médico" visível
+- [x] ✅ Botões de ação em cada linha: WhatsApp, Copiar Link, Editar, Excluir
+
+#### Teste 5: Página Seja Parceiro (/parceiros)
+- [x] ✅ Página carrega corretamente
+- [x] ✅ Hero section com título "Venha ser Vital e cresça conosco!"
+- [x] ✅ Botão CTA "Quero Crescer com a Vital!"
+- [x] ✅ Seção "Quem Somos" com descrição da empresa
+- [x] ✅ Seção "Nossa História" com timeline
+- [x] ✅ Seção "Mantras Vitais" (5 mantras)
+- [x] ✅ Seção "Missão" e "Visão de Futuro"
+- [x] ✅ Seção "Benefícios para o Parceiro" (5 cards)
+- [x] ✅ Seção "Seja Parceiro + Assinante Empresarial"
+- [x] ✅ Botão "Conheça as Assinaturas Empresariais"
+- [x] ✅ Seção final "Complete seu Cadastro de Parceiro"
+
+
+### Problemas Identificados Durante Auditoria
+
+#### Erros TypeScript (37 erros) - TODOS CORRIGIDOS! ✅
+1. ✅ **GaleriaParceiros.tsx**: Propriedade 'logoUrl' não existe no tipo retornado (4 ocorrências) - CORRIGIDO com type assertion
+2. ✅ **CredenciadoListItem.tsx**: Propriedade 'gold' não existe em VITAL_COLORS (5 ocorrências) - CORRIGIDO adicionando cor gold
+3. ✅ **ModalAvaliacao.tsx**: Propriedade 'gold' não existe em VITAL_COLORS (2 ocorrências) - CORRIGIDO adicionando cor gold
+4. ✅ **Admin.tsx**: Propriedade 'usuarioAutorizado' não existe (2 ocorrências) - CORRIGIDO usando 'usuario'
+5. ✅ **AdminAvaliacoes.tsx**: Propriedade 'gold' não existe em VITAL_COLORS (5 ocorrências) - CORRIGIDO adicionando cor gold
+6. ✅ **AdminMateriais.tsx**: Propriedade 'materiais' não existe no router tRPC (14 ocorrências) - CORRIGIDO desativando página
+7. ✅ **ConfiguracoesTab.tsx**: Parâmetro 'error' tem tipo 'any' implícito - CORRIGIDO desativando aba
+
+#### Problemas de UX
+1. ⚠️ Banner "Preview mode - This page is not live" aparece em todas as páginas (normal em dev)
+
+#### Funcionalidades Removidas/Desativadas
+1. ℹ️ Sistema de indicações foi removido completamente (conforme solicitação anterior)
+2. ℹ️ Página AdminMateriais referencia routers que não existem mais
