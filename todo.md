@@ -1521,3 +1521,17 @@
 - [x] Adicionar campos faltantes no schema de atualização de médicos
 - [x] Adicionar campos faltantes no schema de atualização de instituições
 - [x] Testar salvamento de edição de médicos
+
+
+## Auditoria Completa de Formulários - 25/11/2025
+
+- [x] Verificar campos do schema de médicos no banco
+- [x] Verificar campos do formulário de médicos no Admin
+- [x] Adicionar campos faltantes: numeroRegistroConselho, telefoneOrganizacao, whatsappParceria
+- [x] Atualizar schema tRPC de médicos
+- [x] Verificar campos do schema de instituições no banco
+- [x] Verificar campos do formulário de instituições no Admin
+- [x] Adicionar campos faltantes: subcategoria, telefoneOrganizacao, whatsappParceria
+- [x] Atualizar schema tRPC de instituições
+- [x] Adicionar campos visuais nos formulários de instituições
+- [x] Testar salvamento completo

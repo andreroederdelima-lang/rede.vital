@@ -23,12 +23,14 @@ type MedicoForm = {
   id?: number;
   nome: string;
   especialidade: string;
+  numeroRegistroConselho?: string;
   subespecialidade?: string;
   municipio: string;
   endereco: string;
   telefone?: string;
   whatsapp?: string;
   whatsappSecretaria?: string;
+  telefoneOrganizacao?: string;
   logoUrl?: string;
   fotoUrl?: string;
   logoFile?: File;
@@ -40,6 +42,7 @@ type MedicoForm = {
   descontoPercentual: number;
   observacoes?: string;
   contatoParceria?: string;
+  whatsappParceria?: string;
 };
 
 type InstituicaoForm = {
@@ -47,10 +50,12 @@ type InstituicaoForm = {
   nome: string;
   tipoServico: "servicos_saude" | "outros_servicos";
   categoria: "clinica" | "farmacia" | "laboratorio" | "academia" | "hospital" | "outro";
+  subcategoria?: string;
   municipio: string;
   endereco: string;
   telefone?: string;
   whatsappSecretaria?: string;
+  telefoneOrganizacao?: string;
   logoUrl?: string;
   fotoUrl?: string;
   logoFile?: File;
@@ -62,6 +67,7 @@ type InstituicaoForm = {
   descontoPercentual: number;
   observacoes?: string;
   contatoParceria?: string;
+  whatsappParceria?: string;
 };
 
 export default function Admin() {
@@ -626,18 +632,23 @@ function MedicoFormDialog({
     medico || {
       nome: "",
       especialidade: "",
+      numeroRegistroConselho: "",
       subespecialidade: "",
       municipio: "",
       endereco: "",
       telefone: "",
       whatsapp: "",
       whatsappSecretaria: "",
+      telefoneOrganizacao: "",
       fotoUrl: "",
       tipoAtendimento: "presencial",
       precoConsulta: "",
+      valorParticular: "",
+      valorAssinanteVital: "",
       descontoPercentual: 0,
       observacoes: "",
       contatoParceria: "",
+      whatsappParceria: "",
     }
   );
 
@@ -719,6 +730,16 @@ function MedicoFormDialog({
           />
         </div>
 
+
+        <div>
+          <Label htmlFor="numeroRegistroConselho">Número de Registro (CRM/CRO/etc)</Label>
+          <Input
+            id="numeroRegistroConselho"
+            value={formData.numeroRegistroConselho || ""}
+            onChange={(e) => setFormData({ ...formData, numeroRegistroConselho: e.target.value })}
+            placeholder="Ex: CRM 12345"
+          />
+        </div>
         <div>
           <Label htmlFor="subespecialidade">Subespecialidade</Label>
           <Input
@@ -765,6 +786,16 @@ function MedicoFormDialog({
           />
         </div>
 
+
+        <div>
+          <Label htmlFor="telefoneOrganizacao">Telefone da Organização</Label>
+          <Input
+            id="telefoneOrganizacao"
+            value={formData.telefoneOrganizacao || ""}
+            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: e.target.value })}
+            placeholder="Ex: (47) 3333-4444"
+          />
+        </div>
         <div>
           <Label htmlFor="telefone">Telefone</Label>
           <Input
@@ -873,6 +904,16 @@ function MedicoFormDialog({
         </div>
 
         <div>
+
+        <div>
+          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pela Parceria</Label>
+          <Input
+            id="whatsappParceria"
+            value={formData.whatsappParceria || ""}
+            onChange={(e) => setFormData({ ...formData, whatsappParceria: e.target.value })}
+            placeholder="Ex: 47999999999"
+          />
+        </div>
           <Label htmlFor="contatoParceria">Contato da Parceria</Label>
           <Input
             id="contatoParceria"
@@ -922,16 +963,21 @@ function InstituicaoFormDialog({
       nome: "",
       tipoServico: "servicos_saude",
       categoria: "clinica",
+      subcategoria: "",
       municipio: "",
       endereco: "",
       telefone: "",
       whatsappSecretaria: "",
+      telefoneOrganizacao: "",
       fotoUrl: "",
       email: "",
       precoConsulta: "",
+      valorParticular: "",
+      valorAssinanteVital: "",
       descontoPercentual: 0,
       observacoes: "",
       contatoParceria: "",
+      whatsappParceria: "",
     }
   );
 
@@ -1047,6 +1093,16 @@ function InstituicaoFormDialog({
         </div>
 
         <div>
+          <Label htmlFor="subcategoria">Subcategoria</Label>
+          <Input
+            id="subcategoria"
+            value={formData.subcategoria || ""}
+            onChange={(e) => setFormData({ ...formData, subcategoria: e.target.value })}
+            placeholder="Ex: Fisioterapia Ortopédica"
+          />
+        </div>
+
+        <div>
           <Label htmlFor="municipio">Município *</Label>
           <Input
             id="municipio"
@@ -1072,6 +1128,16 @@ function InstituicaoFormDialog({
             id="telefone"
             value={formData.telefone || ""}
             onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="telefoneOrganizacao">Telefone da Organização</Label>
+          <Input
+            id="telefoneOrganizacao"
+            value={formData.telefoneOrganizacao || ""}
+            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: e.target.value })}
+            placeholder="Ex: (47) 3333-4444"
           />
         </div>
 
@@ -1180,6 +1246,16 @@ function InstituicaoFormDialog({
             placeholder="Ex: Gerente João"
             value={formData.contatoParceria || ""}
             onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pela Parceria</Label>
+          <Input
+            id="whatsappParceria"
+            placeholder="Ex: 47999999999"
+            value={formData.whatsappParceria || ""}
+            onChange={(e) => setFormData({ ...formData, whatsappParceria: e.target.value })}
           />
         </div>
 
