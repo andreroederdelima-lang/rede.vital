@@ -35,6 +35,8 @@ type MedicoForm = {
   fotoFile?: File;
   tipoAtendimento: "presencial" | "telemedicina" | "ambos";
   precoConsulta?: string;
+  valorParticular?: string;
+  valorAssinanteVital?: string;
   descontoPercentual: number;
   observacoes?: string;
   contatoParceria?: string;
@@ -55,6 +57,8 @@ type InstituicaoForm = {
   fotoFile?: File;
   email?: string;
   precoConsulta?: string;
+  valorParticular?: string;
+  valorAssinanteVital?: string;
   descontoPercentual: number;
   observacoes?: string;
   contatoParceria?: string;
@@ -775,18 +779,37 @@ function MedicoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="precoConsulta">Preço da Consulta *</Label>
+          <Label htmlFor="valorParticular">Valor Particular</Label>
+          <Input
+            id="valorParticular"
+            value={formData.valorParticular || ""}
+            onChange={(e) => setFormData({ ...formData, valorParticular: e.target.value })}
+            placeholder="Ex: R$ 200,00"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="valorAssinanteVital">Valor Assinante Vital</Label>
+          <Input
+            id="valorAssinanteVital"
+            value={formData.valorAssinanteVital || ""}
+            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: e.target.value })}
+            placeholder="Ex: R$ 150,00"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="precoConsulta">Preço da Consulta (legado)</Label>
           <Input
             id="precoConsulta"
             value={formData.precoConsulta || ""}
             onChange={(e) => setFormData({ ...formData, precoConsulta: e.target.value })}
             placeholder="Ex: R$ 150,00 ou A combinar"
-            required
           />
         </div>
 
         <div>
-          <Label htmlFor="desconto">% Desconto *</Label>
+          <Label htmlFor="desconto">% Desconto (legado)</Label>
           <Input
             id="desconto"
             type="number"
@@ -794,7 +817,6 @@ function MedicoFormDialog({
             max="100"
             value={formData.descontoPercentual}
             onChange={(e) => setFormData({ ...formData, descontoPercentual: parseInt(e.target.value) || 0 })}
-            required
           />
         </div>
 
@@ -1058,18 +1080,37 @@ function InstituicaoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="precoConsulta">Preço do Serviço *</Label>
+          <Label htmlFor="valorParticular">Valor Particular</Label>
+          <Input
+            id="valorParticular"
+            value={formData.valorParticular || ""}
+            onChange={(e) => setFormData({ ...formData, valorParticular: e.target.value })}
+            placeholder="Ex: R$ 200,00"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="valorAssinanteVital">Valor Assinante Vital</Label>
+          <Input
+            id="valorAssinanteVital"
+            value={formData.valorAssinanteVital || ""}
+            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: e.target.value })}
+            placeholder="Ex: R$ 150,00"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="precoConsulta">Preço do Serviço (legado)</Label>
           <Input
             id="precoConsulta"
             value={formData.precoConsulta || ""}
             onChange={(e) => setFormData({ ...formData, precoConsulta: e.target.value })}
             placeholder="Ex: R$ 150,00 ou A combinar"
-            required
           />
         </div>
 
         <div>
-          <Label htmlFor="desconto">% Desconto *</Label>
+          <Label htmlFor="desconto">% Desconto (legado)</Label>
           <Input
             id="desconto"
             type="number"
@@ -1077,7 +1118,6 @@ function InstituicaoFormDialog({
             max="100"
             value={formData.descontoPercentual}
             onChange={(e) => setFormData({ ...formData, descontoPercentual: parseInt(e.target.value) || 0 })}
-            required
           />
         </div>
 

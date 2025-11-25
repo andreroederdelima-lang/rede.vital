@@ -657,18 +657,55 @@ export default function Home() {
                         )}
 
                         <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t">
-                          <div className="flex items-center gap-2">
-                            <Wallet className="h-4 w-4 text-green-600" />
-                            <span className="text-sm font-medium text-green-600">
-                              {(medico as any).precoConsulta || "Não informado"}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Percent className="h-4 w-4 text-primary" />
-                            <span className="text-sm font-medium text-primary">
-                              {(medico as any).descontoPercentual || 0}% desconto Vital
-                            </span>
-                          </div>
+                          {(medico as any).valorParticular && (
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded" style={{ backgroundColor: "#f0f9ff" }}>
+                              <DollarSign className="h-4 w-4" style={{ color: VITAL_COLORS.turquoise }} />
+                              <span className="text-sm font-medium" style={{ color: VITAL_COLORS.darkGray }}>
+                                Particular: {(medico as any).valorParticular}
+                              </span>
+                            </div>
+                          )}
+                          {(medico as any).valorAssinanteVital && (
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded" style={{ backgroundColor: "#f0fdf4" }}>
+                              <DollarSign className="h-4 w-4" style={{ color: "#16a34a" }} />
+                              <span className="text-sm font-medium" style={{ color: VITAL_COLORS.darkGray }}>
+                                Assinante Vital: {(medico as any).valorAssinanteVital}
+                              </span>
+                            </div>
+                          )}
+                          {(medico as any).valorParticular && (medico as any).valorAssinanteVital && (() => {
+                            const valPart = parseFloat((medico as any).valorParticular.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                            const valVital = parseFloat((medico as any).valorAssinanteVital.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                            if (!isNaN(valPart) && !isNaN(valVital) && valPart > 0) {
+                              const desconto = Math.round(((valPart - valVital) / valPart) * 100);
+                              if (desconto > 0) {
+                                return (
+                                  <Badge className="px-2 py-0.5 text-xs" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }}>
+                                    <Percent className="h-3 w-3 mr-1" />
+                                    {desconto}% desconto Vital
+                                  </Badge>
+                                );
+                              }
+                            }
+                            return null;
+                          })()}
+                          {/* Fallback para dados antigos */}
+                          {!(medico as any).valorParticular && !(medico as any).valorAssinanteVital && (
+                            <>
+                              <div className="flex items-center gap-2">
+                                <Wallet className="h-4 w-4 text-green-600" />
+                                <span className="text-sm font-medium text-green-600">
+                                  {(medico as any).precoConsulta || "Não informado"}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Percent className="h-4 w-4 text-primary" />
+                                <span className="text-sm font-medium text-primary">
+                                  {(medico as any).descontoPercentual || 0}% desconto Vital
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                       
@@ -771,18 +808,55 @@ export default function Home() {
                         )}
 
                         <div className="flex flex-wrap gap-3 mt-3 pt-3 border-t">
-                          <div className="flex items-center gap-2">
-                            <Wallet className="h-4 w-4 text-green-600" />
-                            <span className="text-sm font-medium text-green-600">
-                              {(inst as any).precoConsulta || "Não informado"}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Percent className="h-4 w-4 text-primary" />
-                            <span className="text-sm font-medium text-primary">
-                              {(inst as any).descontoPercentual || 0}% desconto Vital
-                            </span>
-                          </div>
+                          {(inst as any).valorParticular && (
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded" style={{ backgroundColor: "#f0f9ff" }}>
+                              <DollarSign className="h-4 w-4" style={{ color: VITAL_COLORS.turquoise }} />
+                              <span className="text-sm font-medium" style={{ color: VITAL_COLORS.darkGray }}>
+                                Particular: {(inst as any).valorParticular}
+                              </span>
+                            </div>
+                          )}
+                          {(inst as any).valorAssinanteVital && (
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded" style={{ backgroundColor: "#f0fdf4" }}>
+                              <DollarSign className="h-4 w-4" style={{ color: "#16a34a" }} />
+                              <span className="text-sm font-medium" style={{ color: VITAL_COLORS.darkGray }}>
+                                Assinante Vital: {(inst as any).valorAssinanteVital}
+                              </span>
+                            </div>
+                          )}
+                          {(inst as any).valorParticular && (inst as any).valorAssinanteVital && (() => {
+                            const valPart = parseFloat((inst as any).valorParticular.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                            const valVital = parseFloat((inst as any).valorAssinanteVital.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                            if (!isNaN(valPart) && !isNaN(valVital) && valPart > 0) {
+                              const desconto = Math.round(((valPart - valVital) / valPart) * 100);
+                              if (desconto > 0) {
+                                return (
+                                  <Badge className="px-2 py-0.5 text-xs" style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }}>
+                                    <Percent className="h-3 w-3 mr-1" />
+                                    {desconto}% desconto Vital
+                                  </Badge>
+                                );
+                              }
+                            }
+                            return null;
+                          })()}
+                          {/* Fallback para dados antigos */}
+                          {!(inst as any).valorParticular && !(inst as any).valorAssinanteVital && (
+                            <>
+                              <div className="flex items-center gap-2">
+                                <Wallet className="h-4 w-4 text-green-600" />
+                                <span className="text-sm font-medium text-green-600">
+                                  {(inst as any).precoConsulta || "Não informado"}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Percent className="h-4 w-4 text-primary" />
+                                <span className="text-sm font-medium text-primary">
+                                  {(inst as any).descontoPercentual || 0}% desconto Vital
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                       

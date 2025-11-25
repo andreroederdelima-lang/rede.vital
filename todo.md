@@ -1453,3 +1453,18 @@
 - [ ] Atualizar cards para exibir valores e desconto calculado
 - [ ] Adicionar edição de valores no painel Admin
 - [ ] Testar todos os formulários e validações] Testar todas as funcionalidades
+
+
+## Atualização de Cards e Edição de Valores - 25/11/2025
+
+- [x] Atualizar componente CredenciadoListItem para exibir valorParticular e valorAssinanteVital
+- [x] Implementar cálculo automático de desconto nos cards
+- [x] Adicionar campos valorParticular e valorAssinanteVital no formulário de edição de médicos (Admin)
+- [x] Adicionar campos valorParticular e valorAssinanteVital no formulário de edição de instituições (Admin)
+- [x] Atualizar procedures tRPC de atualização para aceitar novos campos
+- [x] Atualizar página /atualizar-dados para incluir campos de valores
+- [x] Atualizar schema solicitacoesAtualizacao
+- [x] Executar db:push para atualizar banco
+- [x] Testar exibição nos cards (Home e Consulta)
+- [x] Testar edição no Admin
+- [x] Testar atualização pelos parceiros

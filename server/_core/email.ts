@@ -54,7 +54,9 @@ export async function enviarEmailNovaParceria(dados: {
   telefone: string;
   whatsappSecretaria?: string;
   email?: string;
-  precoConsulta: string;
+  precoConsulta?: string;
+  valorParticular?: string;
+  valorAssinanteVital?: string;
   descontoPercentual: number;
   imagemUrl?: string;
 }) {
@@ -148,10 +150,26 @@ export async function enviarEmailNovaParceria(dados: {
           </div>
           ` : ''}
           
+          ${dados.valorParticular ? `
           <div class="field">
-            <div class="field-label">Preço da Consulta/Serviço:</div>
+            <div class="field-label">Valor Particular:</div>
+            <div class="field-value">${dados.valorParticular}</div>
+          </div>
+          ` : ''}
+          
+          ${dados.valorAssinanteVital ? `
+          <div class="field">
+            <div class="field-label">Valor Assinante Vital:</div>
+            <div class="field-value">${dados.valorAssinanteVital}</div>
+          </div>
+          ` : ''}
+          
+          ${dados.precoConsulta ? `
+          <div class="field">
+            <div class="field-label">Preço da Consulta/Serviço (legado):</div>
             <div class="field-value">${dados.precoConsulta}</div>
           </div>
+          ` : ''}
           
           <div class="field">
             <div class="field-label">Desconto Oferecido:</div>

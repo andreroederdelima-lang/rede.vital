@@ -16,6 +16,8 @@ interface CredenciadoListItemProps {
   logoUrl?: string | null;
   fotoUrl?: string | null;
   precoConsulta?: string | null;
+  valorParticular?: string | null;
+  valorAssinanteVital?: string | null;
   descontoPercentual?: number;
   mostrarPrecoDesconto?: boolean; // true para Dados Internos, false para público
   onCompartilhar?: () => void;
@@ -37,6 +39,8 @@ export function CredenciadoListItem({
   logoUrl,
   fotoUrl,
   precoConsulta,
+  valorParticular,
+  valorAssinanteVital,
   descontoPercentual,
   mostrarPrecoDesconto = false,
   onCompartilhar,
@@ -247,16 +251,56 @@ export function CredenciadoListItem({
           )}
         </div>
 
-        {/* Linha 4: Preço e Desconto (apenas Dados Internos) */}
+        {/* Linha 4: Valores e Desconto (apenas Dados Internos) */}
         {mostrarPrecoDesconto && (
-          <div className="flex flex-wrap items-center gap-3 text-sm">
-            {precoConsulta && (
+          <div className="flex flex-wrap items-center gap-3 text-sm mt-2">
+            {valorParticular && (
+              <div className="flex items-center gap-1 px-2 py-1 rounded" style={{ backgroundColor: "#f0f9ff" }}>
+                <DollarSign size={14} style={{ color: VITAL_COLORS.turquoise }} />
+                <span style={{ color: VITAL_COLORS.darkGray }} className="font-medium">
+                  Particular: {valorParticular}
+                </span>
+              </div>
+            )}
+            {valorAssinanteVital && (
+              <div className="flex items-center gap-1 px-2 py-1 rounded" style={{ backgroundColor: "#f0fdf4" }}>
+                <DollarSign size={14} style={{ color: "#16a34a" }} />
+                <span style={{ color: VITAL_COLORS.darkGray }} className="font-medium">
+                  Assinante Vital: {valorAssinanteVital}
+                </span>
+              </div>
+            )}
+            {valorParticular && valorAssinanteVital && (() => {
+              // Calcular desconto automaticamente
+              const valPart = parseFloat(valorParticular.replace(/[^0-9.,]/g, '').replace(',', '.'));
+              const valVital = parseFloat(valorAssinanteVital.replace(/[^0-9.,]/g, '').replace(',', '.'));
+              if (!isNaN(valPart) && !isNaN(valVital) && valPart > 0) {
+                const desconto = Math.round(((valPart - valVital) / valPart) * 100);
+                if (desconto > 0) {
+                  return (
+                    <Badge
+                      className="px-2 py-0.5 text-xs"
+                      style={{
+                        backgroundColor: VITAL_COLORS.turquoise,
+                        color: VITAL_COLORS.white,
+                      }}
+                    >
+                      <Percent size={12} className="mr-1" />
+                      {desconto}% desconto Vital
+                    </Badge>
+                  );
+                }
+              }
+              return null;
+            })()}
+            {/* Fallback: mostrar precoConsulta e descontoPercentual se valores novos não existirem */}
+            {!valorParticular && !valorAssinanteVital && precoConsulta && (
               <div className="flex items-center gap-1">
                 <DollarSign size={14} style={{ color: VITAL_COLORS.darkGray }} />
                 <span style={{ color: VITAL_COLORS.darkGray }}>{precoConsulta}</span>
               </div>
             )}
-            {descontoPercentual !== undefined && descontoPercentual > 0 && (
+            {!valorParticular && !valorAssinanteVital && descontoPercentual !== undefined && descontoPercentual > 0 && (
               <Badge
                 className="px-2 py-0.5 text-xs"
                 style={{

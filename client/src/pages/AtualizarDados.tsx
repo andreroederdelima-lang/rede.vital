@@ -23,6 +23,8 @@ export default function AtualizarDados() {
     email: "",
     endereco: "",
     precoConsulta: "",
+    valorParticular: "",
+    valorAssinanteVital: "",
     descontoPercentual: 0,
     observacoes: "",
   });
@@ -59,6 +61,8 @@ export default function AtualizarDados() {
         email: (credenciado.dados as any).email || "",
         endereco: credenciado.dados.endereco || "",
         precoConsulta: (credenciado.dados as any).precoConsulta || "",
+        valorParticular: (credenciado.dados as any).valorParticular || "",
+        valorAssinanteVital: (credenciado.dados as any).valorAssinanteVital || "",
         descontoPercentual: credenciado.dados.descontoPercentual || 0,
         observacoes: (credenciado.dados as any).observacoes || "",
       });
@@ -240,7 +244,29 @@ export default function AtualizarDados() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="precoConsulta">Preço da Consulta/Serviço</Label>
+                  <Label htmlFor="valorParticular">Valor Particular</Label>
+                  <Input
+                    id="valorParticular"
+                    value={formData.valorParticular}
+                    onChange={(e) => setFormData({ ...formData, valorParticular: e.target.value })}
+                    placeholder="Ex: R$ 200,00"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="valorAssinanteVital">Valor Assinante Vital</Label>
+                  <Input
+                    id="valorAssinanteVital"
+                    value={formData.valorAssinanteVital}
+                    onChange={(e) => setFormData({ ...formData, valorAssinanteVital: e.target.value })}
+                    placeholder="Ex: R$ 150,00"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="precoConsulta">Preço da Consulta/Serviço (legado)</Label>
                   <Input
                     id="precoConsulta"
                     value={formData.precoConsulta}
@@ -250,7 +276,7 @@ export default function AtualizarDados() {
                 </div>
                 
                 <div>
-                  <Label htmlFor="desconto">% Desconto Vital</Label>
+                  <Label htmlFor="desconto">% Desconto Vital (legado)</Label>
                   <Input
                     id="desconto"
                     type="number"

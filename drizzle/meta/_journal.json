@@ -260,6 +260,13 @@
       "when": 1764058070688,
       "tag": "0036_awesome_network",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "5",
+      "when": 1764058692640,
+      "tag": "0037_soft_sue_storm",
+      "breakpoints": true
     }
   ]
 }

@@ -167,6 +167,8 @@ export const solicitacoesAtualizacao = mysqlTable("solicitacoesAtualizacao", {
   email: varchar("email", { length: 255 }),
   endereco: text("endereco"),
   precoConsulta: varchar("precoConsulta", { length: 50 }),
+  valorParticular: varchar("valorParticular", { length: 50 }),
+  valorAssinanteVital: varchar("valorAssinanteVital", { length: 50 }),
   descontoPercentual: int("descontoPercentual"),
   observacoes: text("observacoes"),
   status: mysqlEnum("status", ["pendente", "aprovado", "rejeitado"]).default("pendente").notNull(),
