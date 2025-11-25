@@ -1579,3 +1579,32 @@
 - [x] Validar: fotoUrl (obrigatório)
 - [x] Validar: whatsappParceria (obrigatório)
 - [x] Validar: contatoParceria (obrigatório)
+
+
+## Testes Completos de Formulários e Links - 25/11/2025
+
+### Teste de Criação
+- [x] Criar novo médico no Admin com todos os campos obrigatórios (teste passou)
+- [x] Verificar se dados foram salvos corretamente no banco (teste passou)
+- [x] Testar função criarMedico (ID: 30005 criado com sucesso)
+- [ ] Criar nova instituição no Admin com todos os campos obrigatórios
+- [ ] Verificar se credenciados aparecem na listagem
+
+### Teste de Links de Atualização
+- [ ] Gerar link de atualização para médico
+- [ ] Gerar link de atualização para instituição
+- [ ] Acessar link e verificar se formulário carrega dados corretos
+- [ ] Preencher e enviar formulário de atualização
+- [ ] Verificar se solicitação foi salva no banco
+
+### Teste de Validação
+- [x] Criar testes automatizados de validação
+- [x] Testar validação de médico com campos vazios (4 testes passaram)
+- [x] Testar validação de instituição com campos vazios (4 testes passaram)
+- [x] Verificar se mensagens de erro aparecem corretamente
+
+### Teste de Edição
+- [x] Editar dados de médico existente (teste passou)
+- [x] Verificar se alterações foram salvas (teste passou)
+- [x] Testar função atualizarMedico (atualização bem-sucedida)
+- [ ] Editar dados de instituição existente

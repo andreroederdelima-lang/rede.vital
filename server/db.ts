@@ -152,11 +152,18 @@ export async function obterMedicoPorId(id: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function buscarMedicoPorId(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(medicos).where(eq(medicos.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
 export async function criarMedico(data: InsertMedico) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const result = await db.insert(medicos).values(data);
-  return result;
+  return Number(result[0].insertId);
 }
 
 export async function atualizarMedico(id: number, data: Partial<InsertMedico>) {
