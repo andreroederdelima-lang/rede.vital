@@ -1427,3 +1427,12 @@
 - [x] Otimizar layout mobile para match com site oficial
 - [x] Otimizar layout desktop para match com site oficial
 - [x] Testar em ambos os dispositivos
+
+
+## Ajustes de Tamanho e Visual - 25/11/2025
+
+- [x] Ajustar tamanho da logo do header para match com site oficial
+- [x] Ajustar tamanho dos textos do menu para match com site oficial (text-base)
+- [x] Aumentar logo do hero em 150% (h-24 → h-60)
+- [x] Remover fundo branco da logo do hero
+- [x] Verificar e remover pop-ups restantes (já removido)

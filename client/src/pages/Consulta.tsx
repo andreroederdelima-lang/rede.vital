@@ -91,9 +91,9 @@ export default function Consulta() {
       <header className="py-12 px-4" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
         <div className="container max-w-6xl mx-auto text-center">
           <img 
-            src={APP_LOGO} 
-            alt="Vital Serviços Médicos" 
-            className="mx-auto mb-6 h-24 object-contain"
+            src="/logo-horizontal-no-bg.png" 
+            alt="Vital Servi\u00e7os M\u00e9dicos" 
+            className="mx-auto mb-6 h-60 object-contain"
           />
           <h1 
             className="text-3xl font-bold mb-2" 

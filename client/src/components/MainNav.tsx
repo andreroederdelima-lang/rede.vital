@@ -71,7 +71,7 @@ export function MainNav() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:text-primary/80 font-medium transition-colors text-sm whitespace-nowrap"
+                    className="text-primary hover:text-primary/80 font-medium transition-colors text-base whitespace-nowrap"
                   >
                     {item.label}
                   </a>
@@ -81,7 +81,7 @@ export function MainNav() {
               return (
                 <Link key={item.href} href={item.href}>
                   <span
-                    className={`cursor-pointer font-medium transition-colors text-sm whitespace-nowrap ${
+                    className={`cursor-pointer font-medium transition-colors text-base whitespace-nowrap ${
                       isActive
                         ? "text-primary border-b-2 border-primary pb-1"
                         : "text-primary hover:text-primary/80"
