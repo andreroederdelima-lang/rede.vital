@@ -18,6 +18,7 @@ import ConfiguracoesTab from "@/components/ConfiguracoesTab";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
+import { validateMedicoForm, validateInstituicaoForm } from "@/lib/validation";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 
 type MedicoForm = {
@@ -158,22 +159,52 @@ export default function Admin() {
   });
 
   const handleSalvarMedico = (data: MedicoForm) => {
+    // Validar campos obrigatórios
+    const errors = validateMedicoForm(data);
+    if (errors.length > 0) {
+      toast.error("Preencha todos os campos obrigatórios: " + errors.map(e => e.message).join(", "));
+      return;
+    }
+    
     // Remover campos File que não devem ser enviados
-    const { logoFile, fotoFile, ...dadosLimpos } = data;
+    const { logoFile, fotoFile, ...rest } = data;
+    
+    // Converter null para string vazia em campos de texto
+    const dadosLimpos = Object.fromEntries(
+      Object.entries(rest).map(([key, value]) => [
+        key,
+        value === null || value === undefined ? "" : value
+      ])
+    );
     
     if (data.id) {
-      atualizarMedico.mutate({ id: data.id, data: dadosLimpos });
+      atualizarMedico.mutate({ id: data.id, data: dadosLimpos as any });
     } else {
       criarMedico.mutate(dadosLimpos as any);
     }
   };
 
   const handleSalvarInstituicao = (data: InstituicaoForm) => {
+    // Validar campos obrigatórios
+    const errors = validateInstituicaoForm(data);
+    if (errors.length > 0) {
+      toast.error("Preencha todos os campos obrigatórios: " + errors.map(e => e.message).join(", "));
+      return;
+    }
+    
     // Remover campos File que não devem ser enviados
-    const { logoFile, fotoFile, ...dadosLimpos } = data;
+    const { logoFile, fotoFile, ...rest } = data;
+    
+    // Converter null para string vazia em campos de texto
+    const dadosLimpos = Object.fromEntries(
+      Object.entries(rest).map(([key, value]) => [
+        key,
+        value === null || value === undefined ? "" : value
+      ])
+    );
     
     if (data.id) {
-      atualizarInstituicao.mutate({ id: data.id, data: dadosLimpos });
+      atualizarInstituicao.mutate({ id: data.id, data: dadosLimpos as any });
     } else {
       criarInstituicao.mutate(dadosLimpos as any);
     }
@@ -883,27 +914,7 @@ function MedicoFormDialog({
           />
         </div>
 
-        <div>
-          <Label htmlFor="precoConsulta">Preço da Consulta (legado)</Label>
-          <Input
-            id="precoConsulta"
-            value={formData.precoConsulta || ""}
-            onChange={(e) => setFormData({ ...formData, precoConsulta: e.target.value })}
-            placeholder="Ex: R$ 150,00 ou A combinar"
-          />
-        </div>
 
-        <div>
-          <Label htmlFor="desconto">% Desconto (legado)</Label>
-          <Input
-            id="desconto"
-            type="number"
-            min="0"
-            max="100"
-            value={formData.descontoPercentual}
-            onChange={(e) => setFormData({ ...formData, descontoPercentual: parseInt(e.target.value) || 0 })}
-          />
-        </div>
 
         <div>
 
@@ -1220,27 +1231,7 @@ function InstituicaoFormDialog({
           />
         </div>
 
-        <div>
-          <Label htmlFor="precoConsulta">Preço do Serviço (legado)</Label>
-          <Input
-            id="precoConsulta"
-            value={formData.precoConsulta || ""}
-            onChange={(e) => setFormData({ ...formData, precoConsulta: e.target.value })}
-            placeholder="Ex: R$ 150,00 ou A combinar"
-          />
-        </div>
 
-        <div>
-          <Label htmlFor="desconto">% Desconto (legado)</Label>
-          <Input
-            id="desconto"
-            type="number"
-            min="0"
-            max="100"
-            value={formData.descontoPercentual}
-            onChange={(e) => setFormData({ ...formData, descontoPercentual: parseInt(e.target.value) || 0 })}
-          />
-        </div>
 
         <div>
           <Label htmlFor="contatoParceria">Contato da Parceria</Label>

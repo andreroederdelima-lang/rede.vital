@@ -1547,3 +1547,35 @@
 - [x] Aplicar máscaras no formulário Seja Parceiro
 - [x] Aplicar máscaras no formulário de Atualização de Dados
 - [x] Testar todas as máscaras
+
+
+## Correções Urgentes - 25/11/2025
+
+### Remover Campo Legado
+- [x] Remover campo "Preço da Consulta (legado)" do formulário Admin de médicos
+- [x] Remover campo "Preço da Consulta (legado)" do formulário Admin de instituições
+- [x] Remover campo "% Desconto (legado)" dos formulários
+
+### Corrigir Erro de Atualização
+- [x] Investigar erro "expected string, received null" na atualização de médicos
+- [x] Corrigir campos que estão enviando null em vez de string vazia
+- [x] Aplicar conversão null -> "" em handleSalvarMedico
+- [x] Aplicar conversão null -> "" em handleSalvarInstituicao
+- [x] Testar atualização de médicos no Admin
+
+### Validação de Campos Obrigatórios
+- [x] Criar arquivo de validação (validation.ts)
+- [x] Implementar validateMedicoForm
+- [x] Implementar validateInstituicaoForm
+- [x] Integrar validação em handleSalvarMedico
+- [x] Integrar validação em handleSalvarInstituicao
+- [x] Validar: valorParticular (obrigatório)
+- [x] Validar: valorAssinanteVital (obrigatório)
+- [x] Validar: nome do médico (obrigatório)
+- [x] Validar: município (obrigatório)
+- [x] Validar: tipoAtendimento (obrigatório)
+- [x] Validar: endereço (obrigatório)
+- [x] Validar: whatsappSecretaria (obrigatório)
+- [x] Validar: fotoUrl (obrigatório)
+- [x] Validar: whatsappParceria (obrigatório)
+- [x] Validar: contatoParceria (obrigatório)
