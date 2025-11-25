@@ -69,8 +69,6 @@ export function MainNav() {
                   <a
                     key={item.href}
                     href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="text-primary hover:text-primary/80 font-medium transition-colors text-base whitespace-nowrap"
                   >
                     {item.label}
@@ -110,8 +108,6 @@ export function MainNav() {
             {/* Botão Assine Agora */}
             <a
               href="https://www.suasaudevital.com.br/para-voce"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-semibold">
                 Assine Agora
@@ -153,8 +149,6 @@ export function MainNav() {
             </a>
             <a
               href="https://www.suasaudevital.com.br/para-voce"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <Button size="sm" className="bg-primary hover:bg-primary/90 text-white rounded-full px-4">
                 Assinar
@@ -173,8 +167,6 @@ export function MainNav() {
                 <a
                   key={item.href}
                   href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-primary hover:text-primary/80 font-medium transition-colors text-xs whitespace-nowrap"
                 >
                   {item.label}

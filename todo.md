@@ -1436,3 +1436,20 @@
 - [x] Aumentar logo do hero em 150% (h-24 → h-60)
 - [x] Remover fundo branco da logo do hero
 - [x] Verificar e remover pop-ups restantes (já removido)
+
+
+## Campos de Valores e Calculadora de Desconto - 25/11/2025
+
+- [x] Remover target="_blank" dos botões "Assine Agora" e "Início"
+- [x] Adicionar campos valorParticular e valorAssinanteVital ao schema (médicos e instituições)
+- [x] Executar db:push para atualizar banco
+- [x] Adicionar campos ao formulário de credenciamento (Seja Parceiro)
+- [x] Atualizar router tRPC de parceria para aceitar novos campos
+- [x] Atualizar schema solicitacoesParceria com novos campos
+- [x] Executar db:push para atualizar tabela solicitacoesParceria
+- [x] Implementar calculadora automática de desconto no formulário Parceiros
+- [ ] Adicionar campos aos formulários de atualização de dados
+- [ ] Adicionar campos ao formulário de sugestão de parceiro
+- [ ] Atualizar cards para exibir valores e desconto calculado
+- [ ] Adicionar edição de valores no painel Admin
+- [ ] Testar todos os formulários e validações] Testar todas as funcionalidades

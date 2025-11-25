@@ -54,6 +54,8 @@ export default function Parceiros() {
   const [whatsappSecretaria, setWhatsappSecretaria] = useState("");
   const [email, setEmail] = useState("");
   const [precoConsulta, setPrecoConsulta] = useState("");
+  const [valorParticular, setValorParticular] = useState("");
+  const [valorAssinanteVital, setValorAssinanteVital] = useState("");
   const [descontoPercentual, setDescontoPercentual] = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>("");
@@ -120,6 +122,8 @@ export default function Parceiros() {
     setWhatsappSecretaria("");
     setEmail("");
     setPrecoConsulta("");
+    setValorParticular("");
+    setValorAssinanteVital("");
     setDescontoPercentual("");
     setLogoFile(null);
     setLogoPreview("");
@@ -137,8 +141,14 @@ export default function Parceiros() {
     e.preventDefault();
     
     // Validação básica
-    if (!nomeResponsavel || !nomeEstabelecimento || !categoria || !endereco || !cidade || !telefone || !whatsappSecretaria || !precoConsulta || !descontoPercentual) {
+    if (!nomeResponsavel || !nomeEstabelecimento || !categoria || !endereco || !cidade || !telefone || !whatsappSecretaria) {
       toast.error("Preencha todos os campos obrigatórios");
+      return;
+    }
+    
+    // Validação de valores
+    if (!valorParticular || !valorAssinanteVital) {
+      toast.error("Informe o valor particular e o valor para assinante Vital");
       return;
     }
     
@@ -227,6 +237,8 @@ export default function Parceiros() {
       whatsappSecretaria,
       email: email || undefined,
       precoConsulta,
+      valorParticular,
+      valorAssinanteVital,
       descontoPercentual: parseInt(descontoPercentual),
       logoUrl,
       fotoUrl,
@@ -492,18 +504,57 @@ export default function Parceiros() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="preco">Preço da Consulta/Serviço *</Label>
+                  <Label htmlFor="valorParticular">Valor Particular (sem desconto) *</Label>
                   <Input
-                    id="preco"
-                    value={precoConsulta}
-                    onChange={(e) => setPrecoConsulta(e.target.value)}
-                    placeholder="Ex: R$ 150,00 ou A combinar"
+                    id="valorParticular"
+                    value={valorParticular}
+                    onChange={(e) => {
+                      setValorParticular(e.target.value);
+                      // Calcular desconto automaticamente se ambos valores estiverem preenchidos
+                      if (e.target.value && valorAssinanteVital) {
+                        const valPart = parseFloat(e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                        const valVital = parseFloat(valorAssinanteVital.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                        if (!isNaN(valPart) && !isNaN(valVital) && valPart > 0) {
+                          const desconto = Math.round(((valPart - valVital) / valPart) * 100);
+                          setDescontoPercentual(desconto.toString());
+                        }
+                      }
+                    }}
+                    placeholder="Ex: R$ 200,00"
                     required
                   />
+                  <p className="text-sm text-muted-foreground">
+                    Valor cobrado de pacientes não-assinantes
+                  </p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="desconto">Desconto Oferecido (%) *</Label>
+                  <Label htmlFor="valorAssinanteVital">Valor para Assinante Vital *</Label>
+                  <Input
+                    id="valorAssinanteVital"
+                    value={valorAssinanteVital}
+                    onChange={(e) => {
+                      setValorAssinanteVital(e.target.value);
+                      // Calcular desconto automaticamente se ambos valores estiverem preenchidos
+                      if (e.target.value && valorParticular) {
+                        const valPart = parseFloat(valorParticular.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                        const valVital = parseFloat(e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                        if (!isNaN(valPart) && !isNaN(valVital) && valPart > 0) {
+                          const desconto = Math.round(((valPart - valVital) / valPart) * 100);
+                          setDescontoPercentual(desconto.toString());
+                        }
+                      }
+                    }}
+                    placeholder="Ex: R$ 150,00"
+                    required
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    Valor com desconto para assinantes Vital
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="desconto">Desconto Calculado (%)</Label>
                   <Input
                     id="desconto"
                     type="number"
@@ -511,9 +562,12 @@ export default function Parceiros() {
                     max="100"
                     value={descontoPercentual}
                     onChange={(e) => setDescontoPercentual(e.target.value)}
-                    placeholder="Ex: 10, 15, 20..."
-                    required
+                    placeholder="Calculado automaticamente"
+                    disabled
                   />
+                  <p className="text-sm text-muted-foreground">
+                    Calculado automaticamente com base nos valores informados
+                  </p>
                 </div>
 
                 <div className="space-y-2">

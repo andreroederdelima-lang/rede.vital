@@ -239,6 +239,27 @@
       "when": 1764053112120,
       "tag": "0033_slow_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1764057797527,
+      "tag": "0034_overrated_zodiak",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "5",
+      "when": 1764057974330,
+      "tag": "0035_lame_silhouette",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "5",
+      "when": 1764058070688,
+      "tag": "0036_awesome_network",
+      "breakpoints": true
     }
   ]
 }
