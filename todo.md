@@ -1773,3 +1773,24 @@
 #### Funcionalidades Removidas/Desativadas
 1. ℹ️ Sistema de indicações foi removido completamente (conforme solicitação anterior)
 2. ℹ️ Página AdminMateriais referencia routers que não existem mais
+
+
+## Melhorias no Header da Página Pública - 25/11/2025
+
+### Ajustes Solicitados
+- [x] Aumentar tamanho da logo para melhor visibilidade (h-12 md:h-16 lg:h-20)
+- [x] Ajustar espaçamento entre elementos do header
+- [x] Melhorar alinhamento dos itens de menu
+- [x] Ajustar posicionamento do telefone e botão "Assine Agora" (linha 1)
+- [x] Melhorar responsividade para mobile (menu hamburguer)
+- [x] Ajustar ícones de redes sociais (Instagram e Facebook) - linha 2
+- [x] Garantir que layout fique idêntico à referência fornecida (2 linhas)
+
+### Implementações
+- [x] Layout de 2 linhas (Linha 1: Logo + Telefone/Botão | Linha 2: Menu + Redes Sociais)
+- [x] Logo aumentada: 48px mobile, 64px tablet, 80px desktop
+- [x] Ícone WhatsApp verde (#25D366) com fundo circular
+- [x] Cor turquesa (#1E9D9F) para menu e ícones
+- [x] Botão "Assine Agora" com bordas arredondadas e sombra
+- [x] Menu mobile com hamburguer e dropdown completo
+- [x] Redes sociais com ícones maiores (h-6 w-6)
