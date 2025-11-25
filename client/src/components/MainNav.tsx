@@ -12,6 +12,12 @@ export function MainNav() {
 
   const navItems = [
     {
+      href: "https://www.suasaudevital.com.br",
+      label: "In\u00edcio",
+      public: true,
+      external: true,
+    },
+    {
       href: "/parceiros",
       label: "Seja Parceiro",
       public: true,

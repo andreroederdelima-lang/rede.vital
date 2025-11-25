@@ -1419,3 +1419,11 @@
 - [x] Manter ordem: Seja Parceiro, Sugerir Parceiro, Fale Conosco, Acesso Interno, Admin
 - [x] Remover pop-up de "Sugerir um Parceiro"
 - [x] Testar navegação
+
+
+## Adicionar Botão Início e Otimizar Layout - 25/11/2025
+
+- [x] Adicionar botão "Início" redirecionando para www.suasaudevital.com.br
+- [x] Otimizar layout mobile para match com site oficial
+- [x] Otimizar layout desktop para match com site oficial
+- [x] Testar em ambos os dispositivos
