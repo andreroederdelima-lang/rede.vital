@@ -114,7 +114,7 @@ export default function GaleriaParceiros() {
                         nome={medico.nome}
                         categoria={medico.especialidade}
                         logoUrl={medico.logoUrl}
-                        fotoUrl={medico.fotoUrl}
+                        // fotoUrl={medico.fotoUrl}
                         onBaixar={handleBaixarImagem}
                       />
                     ))}
@@ -133,7 +133,7 @@ export default function GaleriaParceiros() {
                         nome={inst.nome}
                         categoria={inst.categoria}
                         logoUrl={inst.logoUrl}
-                        fotoUrl={inst.fotoUrl}
+                        // fotoUrl={inst.fotoUrl}
                         onBaixar={handleBaixarImagem}
                       />
                     ))}
@@ -152,7 +152,7 @@ export default function GaleriaParceiros() {
                         nome={inst.nome}
                         categoria={inst.categoria}
                         logoUrl={inst.logoUrl}
-                        fotoUrl={inst.fotoUrl}
+                        // fotoUrl={inst.fotoUrl}
                         onBaixar={handleBaixarImagem}
                       />
                     ))}
@@ -171,7 +171,7 @@ export default function GaleriaParceiros() {
                   nome={medico.nome}
                   categoria={medico.especialidade}
                   logoUrl={medico.logoUrl}
-                  fotoUrl={medico.fotoUrl}
+                  // fotoUrl={medico.fotoUrl}
                   onBaixar={handleBaixarImagem}
                 />
               ))}
@@ -187,7 +187,7 @@ export default function GaleriaParceiros() {
                   nome={inst.nome}
                   categoria={inst.categoria}
                   logoUrl={inst.logoUrl}
-                  fotoUrl={inst.fotoUrl}
+                  // fotoUrl={inst.fotoUrl}
                   onBaixar={handleBaixarImagem}
                 />
               ))}
@@ -203,7 +203,7 @@ export default function GaleriaParceiros() {
                   nome={inst.nome}
                   categoria={inst.categoria}
                   logoUrl={inst.logoUrl}
-                  fotoUrl={inst.fotoUrl}
+                  // fotoUrl={inst.fotoUrl}
                   onBaixar={handleBaixarImagem}
                 />
               ))}
@@ -221,12 +221,12 @@ interface ParceiroCardProps {
   nome: string;
   categoria: string;
   logoUrl?: string | null;
-  fotoUrl?: string | null;
+  // fotoUrl?: string | null;
   onBaixar: (url: string, nome: string) => void;
 }
 
-function ParceiroCard({ nome, categoria, logoUrl, fotoUrl, onBaixar }: ParceiroCardProps) {
-  const imagemPrincipal = logoUrl || fotoUrl;
+function ParceiroCard({ nome, categoria, logoUrl, /* fotoUrl, */ onBaixar }: ParceiroCardProps) {
+  const imagemPrincipal = logoUrl /* || fotoUrl */;
 
   if (!imagemPrincipal) {
     return null; // Não exibir se não houver imagem

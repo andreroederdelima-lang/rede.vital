@@ -12,20 +12,19 @@ import AtualizarDados from "./pages/AtualizarDados";
 import LoginDadosInternos from "./pages/LoginDadosInternos";
 import SolicitarAcesso from "./pages/SolicitarAcesso";
 import RecuperarSenhaDadosInternos from "./pages/RecuperarSenhaDadosInternos";
-import Indicacoes from "./pages/Indicacoes";
-import CadastroIndicador from "./pages/CadastroIndicador";
-import LoginIndicador from "./pages/LoginIndicador";
-import QRCodes from "./pages/QRCodes";
-import EsqueciSenha from "./pages/EsqueciSenha";
-import RecuperarSenha from "./pages/RecuperarSenha";
+// [REMOVIDO] Imports de indicações removidos
+// import Indicacoes from "./pages/Indicacoes";
+// import CadastroIndicador from "./pages/CadastroIndicador";
+// etc...
 import GaleriaLogos from "./pages/GaleriaLogos";
 import TermosDeUso from "./pages/TermosDeUso";
-import MateriaisDivulgacao from "./pages/MateriaisDivulgacao";
+// [REMOVIDO] import MateriaisDivulgacao from "./pages/MateriaisDivulgacao";
 import AdminMateriais from "./pages/AdminMateriais";
 import AdminNotificacoes from "./pages/AdminNotificacoes";
-import BoasVindasIndicadores from "./pages/BoasVindasIndicadores";
-import IndicacoesEstatisticas from "./pages/IndicacoesEstatisticas";
-import IndicacoesComissoes from "./pages/IndicacoesComissoes";
+// [REMOVIDO] Imports de indicações removidos
+// import BoasVindasIndicadores from "./pages/BoasVindasIndicadores";
+// import IndicacoesEstatisticas from "./pages/IndicacoesEstatisticas";
+// import IndicacoesComissoes from "./pages/IndicacoesComissoes";
 import GaleriaParceiros from "./pages/GaleriaParceiros";
 import AdminAvaliacoes from "./pages/AdminAvaliacoes";
 import SugerirParceiro from "./pages/SugerirParceiro";
@@ -39,15 +38,16 @@ function Router() {
       <Route path={"/login-dados-internos"} component={LoginDadosInternos} />
       <Route path={"/solicitar-acesso"} component={SolicitarAcesso} />
       <Route path="/recuperar-senha-dados-internos" component={RecuperarSenhaDadosInternos} />
-      <Route path="/indicacoes" component={Indicacoes} />
-      <Route path="/indicacoes/estatisticas" component={IndicacoesEstatisticas} />
-      <Route path="/indicacoes/comissoes" component={IndicacoesComissoes} />
-      <Route path="/cadastro-indicador" component={CadastroIndicador} />
-      <Route path="/boas-vindas-indicadores" component={BoasVindasIndicadores} />
-      <Route path="/login-indicador" component={LoginIndicador} />
-      <Route path="/esqueci-senha" component={EsqueciSenha} />
-      <Route path="/recuperar-senha" component={RecuperarSenha} />
-      <Route path="/qr-codes" component={QRCodes} />
+      {/* [REMOVIDO] Rotas de indicações removidas */}
+      {/* <Route path="/indicacoes" component={Indicacoes} /> */}
+      {/* <Route path="/indicacoes/estatisticas" component={IndicacoesEstatisticas} /> */}
+      {/* <Route path="/indicacoes/comissoes" component={IndicacoesComissoes} /> */}
+      {/* <Route path="/cadastro-indicador" component={CadastroIndicador} /> */}
+      {/* <Route path="/boas-vindas-indicadores" component={BoasVindasIndicadores} /> */}
+      {/* <Route path="/login-indicador" component={LoginIndicador} /> */}
+      {/* <Route path="/esqueci-senha" component={EsqueciSenha} /> */}
+      {/* <Route path="/recuperar-senha" component={RecuperarSenha} /> */}
+      {/* [REMOVIDO] <Route path="/qr-codes" component={QRCodes} /> */}
       <Route path={"/dados-internos"} component={Home} />
       <Route path={"/admin"} component={Admin} />
       <Route path={"/galeria-logos"} component={GaleriaLogos} />
@@ -55,7 +55,7 @@ function Router() {
       <Route path={"/sugerir-parceiro"} component={SugerirParceiro} />
       <Route path={"/galeria-parceiros"} component={GaleriaParceiros} />
       <Route path={"/termos-de-uso"} component={TermosDeUso} />
-      <Route path={"/materiais-divulgacao"} component={MateriaisDivulgacao} />
+      {/* [REMOVIDO] <Route path={"/materiais-divulgacao"} component={MateriaisDivulgacao} /> */}
        <Route path={"admin/materiais"} component={AdminMateriais} />
       <Route path={"admin/notificacoes"} component={AdminNotificacoes} />
       <Route path={"/parceiros"} component={Parceiros} />

@@ -202,69 +202,19 @@ export type InsertTokenRecuperacao = typeof tokensRecuperacao.$inferInsert;
 
 // Tabelas do Sistema de Indicações
 
-export const indicadores = mysqlTable("indicadores", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull(), // FK para users
-  nome: varchar("nome", { length: 255 }).notNull(),
-  email: varchar("email", { length: 320 }).notNull(),
-  telefone: varchar("telefone", { length: 20 }),
-  cpf: varchar("cpf", { length: 14 }),
-  pix: varchar("pix", { length: 255 }),
-  fotoUrl: varchar("fotoUrl", { length: 500 }),
-  comissaoPercentual: int("comissaoPercentual"), // Armazenado como inteiro (ex: 1000 = 10.00%)
-  ativo: int("ativo").default(1).notNull(), // 1 = ativo, 0 = inativo
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
+// [REMOVIDO] Tabela de indicadores removida
+// export const indicadores = mysqlTable("indicadores", { ... });
 
-export const indicacoes = mysqlTable("indicacoes", {
-  id: int("id").autoincrement().primaryKey(),
-  indicadorId: int("indicadorId").notNull(), // FK para indicadores
-  nomeCliente: varchar("nomeCliente", { length: 255 }).notNull(),
-  emailCliente: varchar("emailCliente", { length: 320 }),
-  telefoneCliente: varchar("telefoneCliente", { length: 20 }).notNull(),
-  cidadeCliente: varchar("cidadeCliente", { length: 100 }),
-  observacoes: text("observacoes"),
-  status: mysqlEnum("status", [
-    "pendente", 
-    "contatado", 
-    "em_negociacao", 
-    "lead_com_resistencia", 
-    "lead_frio", 
-    "multiplas_objecoes",
-    "venda_feita", 
-    "nao_comprou", 
-    "fechado", 
-    "perdido"
-  ]).default("pendente").notNull(),
-  vendedorId: int("vendedorId"), // FK para indicadores (vendedor responsável)
-  valorVenda: int("valorVenda"), // Armazenado em centavos (ex: 10000 = R$ 100,00)
-  valorComissao: int("valorComissao"), // Armazenado em centavos
-  dataPagamento: timestamp("dataPagamento"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
+// [REMOVIDO] Tabela de indicações removida
+// export const indicacoes = mysqlTable("indicacoes", { ... });
 
-export const comissoes = mysqlTable("comissoes", {
-  id: int("id").autoincrement().primaryKey(),
-  indicacaoId: int("indicacaoId").notNull(), // FK para indicacoes
-  indicadorId: int("indicadorId").notNull(), // FK para indicadores
-  valor: int("valor").notNull(), // Armazenado em centavos
-  status: mysqlEnum("status", ["pendente", "pago", "cancelado"]).default("pendente").notNull(),
-  dataPagamento: timestamp("dataPagamento"),
-  comprovante: varchar("comprovante", { length: 500 }), // URL do comprovante
-  observacoes: text("observacoes"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-});
+// [REMOVIDO] Tabela de comissões removida
+// export const comissoes = mysqlTable("comissoes", { ... });
 
-export type Indicador = typeof indicadores.$inferSelect;
-export type InsertIndicador = typeof indicadores.$inferInsert;
-
-export type Indicacao = typeof indicacoes.$inferSelect;
-export type InsertIndicacao = typeof indicacoes.$inferInsert;
-
-export type Comissao = typeof comissoes.$inferSelect;
-export type InsertComissao = typeof comissoes.$inferInsert;
+// [REMOVIDO] Tipos de indicações removidos
+// export type Indicador = ...
+// export type Indicacao = ...
+// export type Comissao = ...
 
 // Tabela de configurações do sistema
 export const configuracoes = mysqlTable("configuracoes", {
@@ -279,23 +229,10 @@ export const configuracoes = mysqlTable("configuracoes", {
 export type Configuracao = typeof configuracoes.$inferSelect;
 export type InsertConfiguracao = typeof configuracoes.$inferInsert;
 
-// Tabela de comissões por tipo de assinatura
-export const comissoesAssinaturas = mysqlTable("comissoesAssinaturas", {
-  id: int("id").autoincrement().primaryKey(),
-  tipoAssinatura: varchar("tipoAssinatura", { length: 100 }).notNull().unique(), // Ex: "essencial_individual", "premium_familiar"
-  nomeExibicao: varchar("nomeExibicao", { length: 100 }).notNull(), // Ex: "Essencial Individual"
-  precoMensal: int("precoMensal").notNull(), // Preço em centavos (ex: 12900 = R$ 129,00)
-  valorComissaoTotal: int("valorComissaoTotal").notNull(), // Valor total da comissão em centavos (ex: 5000 = R$ 50,00)
-  percentualIndicador: int("percentualIndicador").notNull().default(70), // Percentual para o indicador (ex: 70 = 70%)
-  percentualVendedor: int("percentualVendedor").notNull().default(30), // Percentual para o vendedor (ex: 30 = 30%)
-  ativo: int("ativo").notNull().default(1),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  updatedBy: varchar("updatedBy", { length: 255 }), // Quem alterou por último
-});
-
-export type ComissaoAssinatura = typeof comissoesAssinaturas.$inferSelect;
-export type InsertComissaoAssinatura = typeof comissoesAssinaturas.$inferInsert;
+// [REMOVIDO] Tabela de comissões por assinatura removida
+// export const comissoesAssinaturas = mysqlTable("comissoesAssinaturas", { ... });
+// export type ComissaoAssinatura = ...
+// export type InsertComissaoAssinatura = ...
 
 
 /**
@@ -334,24 +271,10 @@ export type AceiteTermo = typeof aceitesTermos.$inferSelect;
 export type InsertAceiteTermo = typeof aceitesTermos.$inferInsert;
 
 
-/**
- * Tabela de materiais de divulgação para indicadores/vendedores
- */
-export const materiaisDivulgacao = mysqlTable("materiaisDivulgacao", {
-  id: int("id").autoincrement().primaryKey(),
-  tipo: mysqlEnum("tipo", ["link", "arquivo", "audio", "texto"]).notNull(),
-  categoria: varchar("categoria", { length: 100 }).notNull(), // "checkout", "landing_page", "pdf", "apresentacao", "audio", "copy"
-  titulo: varchar("titulo", { length: 255 }).notNull(),
-  descricao: text("descricao"),
-  conteudo: text("conteudo"), // URL para arquivos/áudios, texto para copy, link para URLs
-  ordem: int("ordem").default(0), // Para ordenação personalizada
-  ativo: int("ativo").default(1).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
-export type MaterialDivulgacao = typeof materiaisDivulgacao.$inferSelect;
-export type InsertMaterialDivulgacao = typeof materiaisDivulgacao.$inferInsert;
+// [REMOVIDO] Tabela de materiais de divulgação removida
+// export const materiaisDivulgacao = mysqlTable("materiaisDivulgacao", { ... });
+// export type MaterialDivulgacao = ...
+// export type InsertMaterialDivulgacao = ...
 
 /**
  * Tabela de templates de mensagens WhatsApp

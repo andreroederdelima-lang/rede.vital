@@ -1375,3 +1375,16 @@
 - [x] Adicionar acesso à gestão de usuários da área administrativa
 - [x] Verificar botão "Autorizar Acesso" (funciona corretamente quando há solicitações)
 - [x] Testar todas as funcionalidades
+
+
+## Remoção Completa do Sistema de Indicações - 25/11/2025
+
+- [x] Deletar 10 páginas de indicações
+- [x] Deletar 3 componentes de indicações
+- [x] Remover routers de indicações, indicadores e materiais do backend
+- [x] Remover funções de banco de dados relacionadas
+- [x] Remover tabelas de indicações do schema
+- [x] Atualizar rotas do App.tsx
+- [x] Desabilitar botão INDIQUE & GANHE no MainNav (manter comentado)
+- [x] Executar db:push para atualizar banco
+- [x] Testar aplicação

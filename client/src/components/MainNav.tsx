@@ -13,13 +13,14 @@ export function MainNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    {
-      href: "/indicacoes",
-      label: "INDIQUE & GANHE",
-      icon: DollarSign,
-      public: true,
-      highlight: true,
-    },
+    // [DESABILITADO] Botão INDIQUE & GANHE mantido comentado
+    // {
+    //   href: "/indicacoes",
+    //   label: "INDIQUE & GANHE",
+    //   icon: DollarSign,
+    //   public: true,
+    //   highlight: true,
+    // },
     {
       href: "/sugerir-parceiro",
       label: "Sugerir um Parceiro",

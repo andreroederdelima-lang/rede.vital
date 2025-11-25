@@ -2,15 +2,16 @@ import { eq, sql, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
 // @ts-ignore - TypeScript cache bug: exports exist but not recognized
-import { indicadores, indicacoes, comissoes, copys, avaliacoes } from "../drizzle/schema";
+// [REMOVIDO] import { indicadores, indicacoes, comissoes, copys, avaliacoes } from "../drizzle/schema";
+import { copys, avaliacoes } from "../drizzle/schema";
 
-// Workaround types for indicacoes system (TypeScript cache issue)
-type Indicador = typeof indicadores.$inferSelect;
-type InsertIndicador = typeof indicadores.$inferInsert;
-type Indicacao = typeof indicacoes.$inferSelect;
-type InsertIndicacao = typeof indicacoes.$inferInsert;
-type Comissao = typeof comissoes.$inferSelect;
-type InsertComissao = typeof comissoes.$inferInsert;
+// [REMOVIDO] Types de indicações removidos
+// type Indicador = typeof indicadores.$inferSelect;
+// type InsertIndicador = typeof indicadores.$inferInsert;
+// type Indicacao = typeof indicacoes.$inferSelect;
+// type InsertIndicacao = typeof indicacoes.$inferInsert;
+// type Comissao = typeof comissoes.$inferSelect;
+// type InsertComissao = typeof comissoes.$inferInsert;
 type Copy = typeof copys.$inferSelect;
 type InsertCopy = typeof copys.$inferInsert;
 type Avaliacao = typeof avaliacoes.$inferSelect;
@@ -656,222 +657,167 @@ export async function obterCategoriasUnicas() {
 // ===== Funções para Sistema de Indicações =====
 
 // Indicadores (Promotores/Vendedores)
-export async function criarIndicador(data: InsertIndicador) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  const [result] = await db.insert(indicadores).values(data);
-  return result;
-}
+// [REMOVIDO] Função criarIndicador removida
+// export async function criarIndicador(data: InsertIndicador) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   const [result] = await db.insert(indicadores).values(data);
+//   return result;
+// }
 
-export async function listarIndicadores(tipo?: "promotor" | "vendedor") {
-  const db = await getDb();
-  if (!db) return [];
-  
-  let query = db.select().from(indicadores);
-  
-  if (tipo) {
-    query = query.where(eq(indicadores.tipo, tipo)) as any;
-  }
-  
-  return await query.orderBy(desc(indicadores.createdAt));
-}
+// [REMOVIDO] Função listarIndicadores removida
+// export async function listarIndicadores(tipo?: "promotor" | "vendedor") {
+//   const db = await getDb();
+//   if (!db) return [];
+//   
+//   let query = db.select().from(indicadores);
+//   
+//   if (tipo) {
+//     query = query.where(eq(indicadores.tipo, tipo)) as any;
+//   }
+//   
+//   return await query.orderBy(desc(indicadores.createdAt));
+// }
 
-export async function buscarIndicadorPorUserId(userId: number) {
-  const db = await getDb();
-  if (!db) return null;
-  
-  const result = await db.select().from(indicadores).where(eq(indicadores.userId, userId)).limit(1);
-  return result[0] || null;
-}
+// [REMOVIDO] Função buscarIndicadorPorUserId removida
+// export async function buscarIndicadorPorUserId(userId: number) {
+//   const db = await getDb();
+//   if (!db) return null;
+//   
+//   const result = await db.select().from(indicadores).where(eq(indicadores.userId, userId)).limit(1);
+//   return result[0] || null;
+// }
 
-// Indicações
-export async function criarIndicacao(data: InsertIndicacao) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  const [result] = await db.insert(indicacoes).values(data);
-  
-  // Enviar email de notificação para administrativo e comercial
-  try {
-    const { notifyOwner } = await import("./_core/notification");
-    const indicador = await db.select().from(indicadores).where(eq(indicadores.id, data.indicadorId)).limit(1);
-    const indicadorNome = indicador[0]?.nome || "Indicador";
-    
-    await notifyOwner({
-      title: "📢 Nova Indicação Recebida",
-      content: `**Indicador:** ${indicadorNome}\n**Cliente:** ${data.nomeCliente}\n**Telefone:** ${data.telefoneCliente}\n**Email:** ${data.emailCliente || "Não informado"}\n**Cidade:** ${data.cidadeCliente || "Não informada"}\n\n**Observações:** ${data.observacoes || "Nenhuma"}\n\n⚠️ **Ação necessária:** Esta indicação precisa ser qualificada na plataforma por administrativo@suasaudevital.com.br ou comercial@suasaudevital.com.br (Pedro).`
-    });
-  } catch (error) {
-    console.error("Erro ao enviar notificação de nova indicação:", error);
-    // Não falhar a criação da indicação se o email falhar
-  }
-  
-  return result;
-}
+// [REMOVIDO] Função criarIndicacao removida
+// export async function criarIndicacao(data: InsertIndicacao) { ... }
 
-export async function listarIndicacoes(indicadorId?: number, status?: string) {
-  const db = await getDb();
-  if (!db) return [];
-  
-  let query = db.select().from(indicacoes);
-  
-  if (indicadorId) {
-    query = query.where(eq(indicacoes.indicadorId, indicadorId)) as any;
-  }
-  
-  if (status) {
-    query = query.where(eq(indicacoes.status, status as any)) as any;
-  }
-  
-  return await query.orderBy(desc(indicacoes.createdAt));
-}
+// [REMOVIDO] Função listarIndicacoes removida
+// export async function listarIndicacoes(indicadorId?: number, status?: string) {
+//   const db = await getDb();
+//   if (!db) return [];
+//   
+//   let query = db.select().from(indicacoes);
+//   
+//   if (indicadorId) {
+//     query = query.where(eq(indicacoes.indicadorId, indicadorId)) as any;
+//   }
+//   
+//   if (status) {
+//     query = query.where(eq(indicacoes.status, status as any)) as any;
+//   }
+//   
+//   return await query.orderBy(desc(indicacoes.createdAt));
+// }
 
-export async function atualizarIndicacao(id: number, data: Partial<InsertIndicacao>) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  await db.update(indicacoes).set(data).where(eq(indicacoes.id, id));
-}
+// [REMOVIDO] Função atualizarIndicacao removida
+// export async function atualizarIndicacao(id: number, data: Partial<InsertIndicacao>) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   await db.update(indicacoes).set(data).where(eq(indicacoes.id, id));
+// }
 
 // Comissões
-export async function criarComissao(data: InsertComissao) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  const [result] = await db.insert(comissoes).values(data);
-  return result;
-}
+// [REMOVIDO] Função criarComissao removida
+// export async function criarComissao(data: InsertComissao) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   const [result] = await db.insert(comissoes).values(data);
+//   return result;
+// }
 
-export async function listarComissoes(indicadorId?: number) {
-  const db = await getDb();
-  if (!db) return [];
-  
-  let query = db.select().from(comissoes);
-  
-  if (indicadorId) {
-    query = query.where(eq(comissoes.indicadorId, indicadorId)) as any;
-  }
-  
-  return await query.orderBy(desc(comissoes.createdAt));
-}
+// [REMOVIDO] Função listarComissoes removida
+// export async function listarComissoes(indicadorId?: number) {
+//   const db = await getDb();
+//   if (!db) return [];
+//   
+//   let query = db.select().from(comissoes);
+//   
+//   if (indicadorId) {
+//     query = query.where(eq(comissoes.indicadorId, indicadorId)) as any;
+//   }
+//   
+//   return await query.orderBy(desc(comissoes.createdAt));
+// }
 
 
 // Queries avançadas para Admin
 
-export async function listarTodasIndicacoesComFiltros(filtros?: {
-  indicadorId?: number;
-  status?: string;
-  dataInicio?: Date;
-  dataFim?: Date;
-}) {
-  const db = await getDb();
-  if (!db) return [];
-  
-  let query = db
-    .select({
-      indicacao: indicacoes,
-      indicador: indicadores,
-    })
-    .from(indicacoes)
-    .leftJoin(indicadores, eq(indicacoes.indicadorId, indicadores.id));
-  
-  const condicoes: any[] = [];
-  
-  if (filtros?.indicadorId) {
-    condicoes.push(eq(indicacoes.indicadorId, filtros.indicadorId));
-  }
-  
-  if (filtros?.status) {
-    condicoes.push(eq(indicacoes.status, filtros.status as any));
-  }
-  
-  if (filtros?.dataInicio) {
-    condicoes.push(sql`${indicacoes.createdAt} >= ${filtros.dataInicio}`);
-  }
-  
-  if (filtros?.dataFim) {
-    condicoes.push(sql`${indicacoes.createdAt} <= ${filtros.dataFim}`);
-  }
-  
-  if (condicoes.length > 0) {
-    query = query.where(and(...condicoes)) as any;
-  }
-  
-  const resultado = await query.orderBy(desc(indicacoes.createdAt));
-  
-  return resultado.map(r => ({
-    ...r.indicacao,
-    indicadorNome: r.indicador?.nome || "Desconhecido",
-    indicadorTipo: r.indicador?.tipo || "promotor",
-  }));
-}
+// [REMOVIDO] Função listarTodasIndicacoesComFiltros removida
+// export async function listarTodasIndicacoesComFiltros(...) { ... }
 
-export async function obterEstatisticasIndicacoes() {
-  const db = await getDb();
-  if (!db) return {
-    total: 0,
-    pendentes: 0,
-    contatadas: 0,
-    fechadas: 0,
-    perdidas: 0,
-    taxaConversao: 0,
-  };
-  
-  const stats = await db
-    .select({
-      status: indicacoes.status,
-      quantidade: sql<number>`COUNT(*)`.as('quantidade'),
-    })
-    .from(indicacoes)
-    .groupBy(indicacoes.status);
-  
-  const total = stats.reduce((acc, s) => acc + Number(s.quantidade), 0);
-  const pendentes = stats.find(s => s.status === "pendente")?.quantidade || 0;
-  const contatadas = stats.find(s => s.status === "contatado")?.quantidade || 0;
-  const fechadas = stats.find(s => s.status === "fechado")?.quantidade || 0;
-  const perdidas = stats.find(s => s.status === "perdido")?.quantidade || 0;
-  
-  const taxaConversao = total > 0 ? (Number(fechadas) / total) * 100 : 0;
-  
-  return {
-    total,
-    pendentes: Number(pendentes),
-    contatadas: Number(contatadas),
-    fechadas: Number(fechadas),
-    perdidas: Number(perdidas),
-    taxaConversao: Math.round(taxaConversao * 10) / 10,
-  };
-}
+// [REMOVIDO] Função obterEstatisticasIndicacoes removida
+// export async function obterEstatisticasIndicacoes() {
+//   const db = await getDb();
+//   if (!db) return {
+//     total: 0,
+//     pendentes: 0,
+//     contatadas: 0,
+//     fechadas: 0,
+//     perdidas: 0,
+//     taxaConversao: 0,
+//   };
+//   
+//   const stats = await db
+//     .select({
+//       status: indicacoes.status,
+//       quantidade: sql<number>`COUNT(*)`.as('quantidade'),
+//     })
+//     .from(indicacoes)
+//     .groupBy(indicacoes.status);
+//   
+//   const total = stats.reduce((acc, s) => acc + Number(s.quantidade), 0);
+//   const pendentes = stats.find(s => s.status === "pendente")?.quantidade || 0;
+//   const contatadas = stats.find(s => s.status === "contatado")?.quantidade || 0;
+//   const fechadas = stats.find(s => s.status === "fechado")?.quantidade || 0;
+//   const perdidas = stats.find(s => s.status === "perdido")?.quantidade || 0;
+//   
+//   const taxaConversao = total > 0 ? (Number(fechadas) / total) * 100 : 0;
+//   
+//   return {
+//     total,
+//     pendentes: Number(pendentes),
+//     contatadas: Number(contatadas),
+//     fechadas: Number(fechadas),
+//     perdidas: Number(perdidas),
+//     taxaConversao: Math.round(taxaConversao * 10) / 10,
+//   };
+// }
 
-export async function atualizarIndicador(id: number, data: Partial<InsertIndicador>) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  await db.update(indicadores).set(data).where(eq(indicadores.id, id));
-}
+// [REMOVIDO] Função atualizarIndicador removida
+// export async function atualizarIndicador(id: number, data: Partial<InsertIndicador>) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   await db.update(indicadores).set(data).where(eq(indicadores.id, id));
+// }
 
-export async function obterIndicadorPorId(id: number) {
-  const db = await getDb();
-  if (!db) return null;
-  
-  const result = await db.select().from(indicadores).where(eq(indicadores.id, id)).limit(1);
-  return result[0] || null;
-}
+// [REMOVIDO] Função obterIndicadorPorId removida
+// export async function obterIndicadorPorId(id: number) {
+//   const db = await getDb();
+//   if (!db) return null;
+//   
+//   const result = await db.select().from(indicadores).where(eq(indicadores.id, id)).limit(1);
+//   return result[0] || null;
+// }
 
-export async function listarComissoesPorIndicacao(indicacaoId: number) {
-  const db = await getDb();
-  if (!db) return [];
-  
-  return await db.select().from(comissoes).where(eq(comissoes.indicacaoId, indicacaoId)).orderBy(desc(comissoes.createdAt));
-}
+// [REMOVIDO] Função listarComissoesPorIndicacao removida
+// export async function listarComissoesPorIndicacao(indicacaoId: number) {
+//   const db = await getDb();
+//   if (!db) return [];
+//   
+//   return await db.select().from(comissoes).where(eq(comissoes.indicacaoId, indicacaoId)).orderBy(desc(comissoes.createdAt));
+// }
 
-export async function atualizarComissao(id: number, data: Partial<InsertComissao>) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  await db.update(comissoes).set(data).where(eq(comissoes.id, id));
-}
+// [REMOVIDO] Função atualizarComissao removida
+// export async function atualizarComissao(id: number, data: Partial<InsertComissao>) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   await db.update(comissoes).set(data).where(eq(comissoes.id, id));
+// }
 
 
 // ==================== CONFIGURAÇÕES ====================
@@ -1028,60 +974,64 @@ export async function redefinirSenhaComToken(token: string, novaSenha: string) {
 
 // ===== Materiais de Divulgação =====
 
-export async function listarMateriaisDivulgacao() {
-  const db = await getDb();
-  if (!db) return [];
-  
-  // @ts-ignore
-  const { materiaisDivulgacao } = await import("../drizzle/schema");
-  
-  const materiais = await db.select()
-    .from(materiaisDivulgacao)
-    .where(eq(materiaisDivulgacao.ativo, 1))
-    .orderBy(materiaisDivulgacao.ordem, materiaisDivulgacao.createdAt);
-  
-  return materiais;
-}
+// [REMOVIDO] Função listarMateriaisDivulgacao removida
+// export async function listarMateriaisDivulgacao() {
+//   const db = await getDb();
+//   if (!db) return [];
+//   
+//   // @ts-ignore
+//   const { materiaisDivulgacao } = await import("../drizzle/schema");
+//   
+//   const materiais = await db.select()
+//     .from(materiaisDivulgacao)
+//     .where(eq(materiaisDivulgacao.ativo, 1))
+//     .orderBy(materiaisDivulgacao.ordem, materiaisDivulgacao.createdAt);
+//   
+//   return materiais;
+// }
 
-export async function criarMaterialDivulgacao(data: any) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  // @ts-ignore
-  const { materiaisDivulgacao } = await import("../drizzle/schema");
-  
-  await db.insert(materiaisDivulgacao).values(data);
-  
-  return { success: true };
-}
+// [REMOVIDO] Função criarMaterialDivulgacao removida
+// export async function criarMaterialDivulgacao(data: any) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   // @ts-ignore
+//   const { materiaisDivulgacao } = await import("../drizzle/schema");
+//   
+//   await db.insert(materiaisDivulgacao).values(data);
+//   
+//   return { success: true };
+// }
 
-export async function atualizarMaterialDivulgacao(id: number, data: any) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  // @ts-ignore
-  const { materiaisDivulgacao } = await import("../drizzle/schema");
-  
-  await db.update(materiaisDivulgacao)
-    .set(data)
-    .where(eq(materiaisDivulgacao.id, id));
-  
-  return { success: true };
-}
+// [REMOVIDO] Função atualizarMaterialDivulgacao removida
+// export async function atualizarMaterialDivulgacao(id: number, data: any) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   // @ts-ignore
+//   const { materiaisDivulgacao } = await import("../drizzle/schema");
+//   
+//   await db.update(materiaisDivulgacao)
+//     .set(data)
+//     .where(eq(materiaisDivulgacao.id, id));
+//   
+//   return { success: true };
+// }
 
-export async function deletarMaterialDivulgacao(id: number) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  // @ts-ignore
-  const { materiaisDivulgacao } = await import("../drizzle/schema");
-  
-  await db.update(materiaisDivulgacao)
-    .set({ ativo: 0 })
-    .where(eq(materiaisDivulgacao.id, id));
-  
-  return { success: true };
-}
+// [REMOVIDO] Função deletarMaterialDivulgacao removida
+// export async function deletarMaterialDivulgacao(id: number) {
+//   const db = await getDb();
+//   if (!db) throw new Error("Database not available");
+//   
+//   // @ts-ignore
+//   const { materiaisDivulgacao } = await import("../drizzle/schema");
+//   
+//   await db.update(materiaisDivulgacao)
+//     .set({ ativo: 0 })
+//     .where(eq(materiaisDivulgacao.id, id));
+//   
+//   return { success: true };
+// }
 
 // ===== Templates WhatsApp =====
 
@@ -1236,81 +1186,39 @@ export async function enviarNotificacoesSemestrais() {
 
 // ==================== COMISSÕES DE ASSINATURAS ====================
 
-export async function listarComissoesAssinaturas() {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot list comissões assinaturas: database not available");
-    return [];
-  }
+// [REMOVIDO] Função listarComissoesAssinaturas removida
+// export async function listarComissoesAssinaturas() {
+//   const db = await getDb();
+//   if (!db) {
+//     console.warn("[Database] Cannot list comissões assinaturas: database not available");
+//     return [];
+//   }
+// 
+//   const { comissoesAssinaturas } = await import("../drizzle/schema");
+//   const result = await db.select().from(comissoesAssinaturas).where(eq(comissoesAssinaturas.ativo, 1));
+//   return result;
+// }
 
-  const { comissoesAssinaturas } = await import("../drizzle/schema");
-  const result = await db.select().from(comissoesAssinaturas).where(eq(comissoesAssinaturas.ativo, 1));
-  return result;
-}
+// [REMOVIDO] Função buscarComissaoPorTipo removida
+// export async function buscarComissaoPorTipo(tipoAssinatura: string) {
+//   const db = await getDb();
+//   if (!db) {
+//     console.warn("[Database] Cannot get comissão: database not available");
+//     return null;
+//   }
+// 
+//   const { comissoesAssinaturas } = await import("../drizzle/schema");
+//   const result = await db
+//     .select()
+//     .from(comissoesAssinaturas)
+//     .where(eq(comissoesAssinaturas.tipoAssinatura, tipoAssinatura))
+//     .limit(1);
+// 
+//   return result.length > 0 ? result[0] : null;
+// }
 
-export async function buscarComissaoPorTipo(tipoAssinatura: string) {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot get comissão: database not available");
-    return null;
-  }
-
-  const { comissoesAssinaturas } = await import("../drizzle/schema");
-  const result = await db
-    .select()
-    .from(comissoesAssinaturas)
-    .where(eq(comissoesAssinaturas.tipoAssinatura, tipoAssinatura))
-    .limit(1);
-
-  return result.length > 0 ? result[0] : null;
-}
-
-export async function atualizarComissaoAssinatura(
-  tipoAssinatura: string,
-  valorComissaoTotal: number,
-  percentualIndicador: number,
-  percentualVendedor: number,
-  updatedBy: string
-) {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot update comissão: database not available");
-    return { success: false, message: "Database not available" };
-  }
-
-  // Validar que percentuais somam 100%
-  if (percentualIndicador + percentualVendedor !== 100) {
-    return {
-      success: false,
-      message: "Os percentuais de indicador e vendedor devem somar 100%",
-    };
-  }
-
-  const { comissoesAssinaturas } = await import("../drizzle/schema");
-
-  try {
-    await db
-      .update(comissoesAssinaturas)
-      .set({
-        valorComissaoTotal,
-        percentualIndicador,
-        percentualVendedor,
-        updatedBy,
-      })
-      .where(eq(comissoesAssinaturas.tipoAssinatura, tipoAssinatura));
-
-    return {
-      success: true,
-      message: "Comissão atualizada com sucesso",
-    };
-  } catch (error) {
-    console.error("[Database] Error updating comissão:", error);
-    return {
-      success: false,
-      message: "Erro ao atualizar comissão",
-    };
-  }
-}
+// [REMOVIDO] Função atualizarComissaoAssinatura removida
+// export async function atualizarComissaoAssinatura(...) { ... }
 
 
 // ==================== COPYS ====================
