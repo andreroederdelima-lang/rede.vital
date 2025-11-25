@@ -1400,3 +1400,14 @@
 - [x] Atualizar radius dos botões para 0.75rem (mais arredondado)
 - [x] Atualizar cores de charts e ring para match com primary
 - [x] Testar navegação e consistência visual
+
+
+## Reestruturação Completa do MainNav - 25/11/2025
+
+- [x] Atualizar logo com fundo branco (não transparente)
+- [x] Criar menu horizontal completo: Início, Para Você, Para Empresas, Seja Parceiro, Sugerir Parceiro, Fale Conosco, Acesso Interno, Admin
+- [x] Adicionar WhatsApp + telefone (47) 93385-3726 no lado direito
+- [x] Adicionar botão "Assine Agora" (verde turquesa) no lado direito
+- [x] Adicionar ícones Instagram e Facebook no lado direito
+- [x] Remover menu hamburguer mobile (menu em coluna)
+- [x] Testar navegação e consistência visual

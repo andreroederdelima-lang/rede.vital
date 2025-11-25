@@ -3,47 +3,50 @@ import { Link, useLocation } from "wouter";
 import { APP_LOGO } from "@/const";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Users, TrendingUp, Building2, Shield, Handshake, MessageCircle, Lock, Menu, Images, DollarSign } from "lucide-react";
+import { Phone, Instagram, Facebook } from "lucide-react";
 
 export function MainNav() {
   const [location] = useLocation();
   const { user, isAuthenticated } = useAuth();
   const isAdmin = user?.role === "admin";
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    // [DESABILITADO] Botão INDIQUE & GANHE mantido comentado
-    // {
-    //   href: "/indicacoes",
-    //   label: "INDIQUE & GANHE",
-    //   icon: DollarSign,
-    //   public: true,
-    //   highlight: true,
-    // },
     {
-      href: "/sugerir-parceiro",
-      label: "Sugerir um Parceiro",
-      icon: Handshake,
+      href: "/",
+      label: "Início",
       public: true,
+    },
+    {
+      href: "https://www.suasaudevital.com.br/para-voce",
+      label: "Para Você",
+      public: true,
+      external: true,
+    },
+    {
+      href: "https://www.suasaudevital.com.br/para-empresas",
+      label: "Para Empresas",
+      public: true,
+      external: true,
     },
     {
       href: "/parceiros",
       label: "Seja Parceiro",
-      icon: Handshake,
+      public: true,
+    },
+    {
+      href: "/sugerir-parceiro",
+      label: "Sugerir Parceiro",
       public: true,
     },
     {
       href: "https://wa.me/5547933853726?text=Ol%C3%A1,%20gostaria%20de%20falar%20com%20o%20time%20Vital",
       label: "Fale Conosco",
-      icon: MessageCircle,
       public: true,
       external: true,
     },
     {
       href: "/dados-internos",
       label: "Acesso Interno",
-      icon: Lock,
       public: true,
     },
   ];
@@ -52,174 +55,158 @@ export function MainNav() {
     navItems.push({
       href: "/admin",
       label: "Admin",
-      icon: Shield,
       public: false,
     });
   }
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto px-4">
-        {/* Linha 1: Logo e Título Centralizados */}
-        <div className="flex items-center justify-center py-3 border-b border-gray-100">
+    <nav className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between py-4">
+          {/* Logo à esquerda */}
           <Link href="/">
-            <div className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-              <img src={APP_LOGO} alt="Vital Logo" className="h-12 w-auto" />
-              <div className="flex flex-col gap-0.5">
-                <span className="text-base font-bold text-[#1e9d9f] whitespace-nowrap">
-                  Rede de Parceiros Vital
-                </span>
-                <span className="text-xs text-gray-600 whitespace-nowrap">
-                  Vale do Itajaí - SC
-                </span>
-              </div>
+            <div className="flex items-center hover:opacity-90 transition-opacity cursor-pointer">
+              <img src={APP_LOGO} alt="Vital Logo" className="h-14 w-auto" />
             </div>
           </Link>
-        </div>
 
-        {/* Linha 2: Botões de Navegação Centralizados */}
-        <div className="flex items-center justify-center h-16">
-          {/* Navigation Links Desktop */}
-          <div className="hidden md:flex items-center gap-2 flex-wrap justify-center">
+          {/* Menu horizontal no centro */}
+          <div className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.startsWith(item.href);
+              const isActive = location === item.href;
               
-              // Se não é público e usuário não está autenticado, não mostra
-              if (!item.public && !isAuthenticated) {
-                return null;
-              }
-
-              // Links externos (WhatsApp)
-              if ((item as any).external) {
+              if (item.external) {
                 return (
-                  <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10 text-xs lg:text-sm"
-                    >
-                      <Icon className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
-                      {item.label}
-                    </Button>
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary/80 font-medium transition-colors text-sm whitespace-nowrap"
+                  >
+                    {item.label}
                   </a>
-                );
-              }
-
-              // Botão destacado (INDIQUE & GANHE)
-              if ((item as any).highlight) {
-                return (
-                  <Link key={item.href} href={item.href}>
-                    <Button
-                      size="sm"
-                      className="bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white font-bold shadow-lg text-xs lg:text-sm"
-                    >
-                      <Icon className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
-                      {item.label}
-                    </Button>
-                  </Link>
                 );
               }
 
               return (
                 <Link key={item.href} href={item.href}>
-                  <Button
-                    size="sm"
-                    variant={isActive ? "default" : "ghost"}
-                    className={
+                  <span
+                    className={`cursor-pointer font-medium transition-colors text-sm whitespace-nowrap ${
                       isActive
-                        ? "bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white text-xs lg:text-sm"
-                        : "text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10 text-xs lg:text-sm"
-                    }
+                        ? "text-primary border-b-2 border-primary pb-1"
+                        : "text-primary hover:text-primary/80"
+                    }`}
                   >
-                    <Icon className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
                     {item.label}
-                  </Button>
+                  </span>
                 </Link>
               );
             })}
           </div>
 
-          {/* Mobile Menu */}
-          <div className="md:hidden absolute right-4 top-4">
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  <Menu className="h-5 w-5" />
-                  <span className="ml-2">Menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                <SheetHeader>
-                  <SheetTitle className="text-[#1e9d9f]">Menu</SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-4 mt-6">
-                  {navItems.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = location.startsWith(item.href);
-                    
-                    // Se não é público e usuário não está autenticado, não mostra
-                    if (!item.public && !isAuthenticated) {
-                      return null;
-                    }
+          {/* Lado direito: WhatsApp, Botão Assine Agora, Redes Sociais */}
+          <div className="hidden lg:flex items-center gap-4">
+            {/* WhatsApp + Telefone */}
+            <a
+              href="https://wa.me/5547933853726"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+            >
+              <Phone className="h-5 w-5" />
+              <span className="font-medium text-sm">(47) 93385-3726</span>
+            </a>
 
-                    // Links externos (WhatsApp)
-                    if ((item as any).external) {
-                      return (
-                        <a 
-                          key={item.href} 
-                          href={item.href} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <Button
-                            variant="ghost"
-                            className="w-full justify-start text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10"
-                          >
-                            <Icon className="h-5 w-5 mr-3" />
-                            {item.label}
-                          </Button>
-                        </a>
-                      );
-                    }
+            {/* Botão Assine Agora */}
+            <a
+              href="https://www.suasaudevital.com.br/para-voce"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6 py-2 font-semibold">
+                Assine Agora
+              </Button>
+            </a>
 
-                    // Botão destacado (INDIQUE & GANHE) mobile
-                    if ((item as any).highlight) {
-                      return (
-                        <Link key={item.href} href={item.href}>
-                          <Button
-                            className="w-full justify-start bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white font-bold shadow-lg"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            <Icon className="h-5 w-5 mr-3" />
-                            {item.label}
-                          </Button>
-                        </Link>
-                      );
-                    }
-
-                    return (
-                      <Link key={item.href} href={item.href}>
-                        <Button
-                          variant={isActive ? "default" : "ghost"}
-                          className={
-                            isActive
-                              ? "w-full justify-start bg-[#1e9d9f] hover:bg-[#1a8a8c] text-white"
-                              : "w-full justify-start text-gray-700 hover:text-[#1e9d9f] hover:bg-[#1e9d9f]/10"
-                          }
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <Icon className="h-5 w-5 mr-3" />
-                          {item.label}
-                        </Button>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </SheetContent>
-            </Sheet>
+            {/* Siga-nos */}
+            <div className="flex items-center gap-2 ml-2">
+              <span className="text-gray-500 text-sm">Siga-nos:</span>
+              <a
+                href="https://www.instagram.com/suasaude.vital/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.facebook.com/people/Vital-Servi%C3%A7os-M%C3%A9dicos/61566568477892/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+            </div>
           </div>
+
+          {/* Menu Mobile - Simplificado */}
+          <div className="lg:hidden flex items-center gap-2">
+            <a
+              href="https://wa.me/5547933853726"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button size="sm" variant="outline" className="rounded-full">
+                <Phone className="h-4 w-4" />
+              </Button>
+            </a>
+            <a
+              href="https://www.suasaudevital.com.br/para-voce"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button size="sm" className="bg-primary hover:bg-primary/90 text-white rounded-full px-4">
+                Assinar
+              </Button>
+            </a>
+          </div>
+        </div>
+
+        {/* Menu Mobile - Links Horizontais Compactos */}
+        <div className="lg:hidden flex overflow-x-auto gap-4 pb-3 scrollbar-hide">
+          {navItems.map((item) => {
+            const isActive = location === item.href;
+            
+            if (item.external) {
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:text-primary/80 font-medium transition-colors text-xs whitespace-nowrap"
+                >
+                  {item.label}
+                </a>
+              );
+            }
+
+            return (
+              <Link key={item.href} href={item.href}>
+                <span
+                  className={`cursor-pointer font-medium transition-colors text-xs whitespace-nowrap ${
+                    isActive
+                      ? "text-primary border-b-2 border-primary pb-1"
+                      : "text-primary hover:text-primary/80"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </nav>
