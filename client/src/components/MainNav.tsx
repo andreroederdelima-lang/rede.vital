@@ -12,23 +12,6 @@ export function MainNav() {
 
   const navItems = [
     {
-      href: "/",
-      label: "Início",
-      public: true,
-    },
-    {
-      href: "https://www.suasaudevital.com.br/para-voce",
-      label: "Para Você",
-      public: true,
-      external: true,
-    },
-    {
-      href: "https://www.suasaudevital.com.br/para-empresas",
-      label: "Para Empresas",
-      public: true,
-      external: true,
-    },
-    {
       href: "/parceiros",
       label: "Seja Parceiro",
       public: true,

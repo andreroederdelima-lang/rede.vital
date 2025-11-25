@@ -1411,3 +1411,11 @@
 - [x] Adicionar ícones Instagram e Facebook no lado direito
 - [x] Remover menu hamburguer mobile (menu em coluna)
 - [x] Testar navegação e consistência visual
+
+
+## Simplificação do Menu - 25/11/2025
+
+- [x] Remover menus: Início, Para Você, Para Empresas
+- [x] Manter ordem: Seja Parceiro, Sugerir Parceiro, Fale Conosco, Acesso Interno, Admin
+- [x] Remover pop-up de "Sugerir um Parceiro"
+- [x] Testar navegação

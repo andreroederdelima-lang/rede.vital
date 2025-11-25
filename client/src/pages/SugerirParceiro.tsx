@@ -18,19 +18,13 @@ import {
 } from "@/components/ui/dialog";
 
 export default function SugerirParceiro() {
-  const [showWelcomePopup, setShowWelcomePopup] = useState(false);
+
   const [tipoServico, setTipoServico] = useState("");
   const [nome, setNome] = useState("");
   const [municipio, setMunicipio] = useState("");
   const [observacoes, setObservacoes] = useState("");
 
-  useEffect(() => {
-    // Mostrar popup de boas-vindas
-    const timer = setTimeout(() => {
-      setShowWelcomePopup(true);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+
 
   const enviarSugestao = trpc.system.notifyOwner.useMutation({
     onSuccess: () => {
@@ -162,31 +156,7 @@ ${observacoes ? `\nObservações: ${observacoes}` : ""}
 
       <Footer />
 
-      {/* Popup de Boas-Vindas */}
-      <Dialog open={showWelcomePopup} onOpenChange={setShowWelcomePopup}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle style={{ color: VITAL_COLORS.turquoise }}>
-              Sugira um Parceiro!
-            </DialogTitle>
-            <DialogDescription className="text-base pt-2">
-              Sugira um serviço parceiro ou seu médico de confiança!
-              <br />
-              <br />
-              Sua indicação nos ajuda a expandir nossa rede e oferecer ainda mais opções de qualidade para nossos assinantes.
-            </DialogDescription>
-          </DialogHeader>
-          <Button
-            onClick={() => setShowWelcomePopup(false)}
-            style={{
-              backgroundColor: VITAL_COLORS.turquoise,
-              color: VITAL_COLORS.white,
-            }}
-          >
-            Entendi
-          </Button>
-        </DialogContent>
-      </Dialog>
+
     </div>
   );
 }
