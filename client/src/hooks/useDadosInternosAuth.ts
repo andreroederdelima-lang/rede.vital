@@ -38,5 +38,6 @@ export function useDadosInternosAuth() {
     isLoading,
     logout,
     user,
+    usuarioAutorizado: usuarioAutorizado?.usuario,
   };
 }

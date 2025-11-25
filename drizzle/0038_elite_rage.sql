@@ -1,0 +1,1 @@
+ALTER TABLE `usuariosAutorizados` ADD `nivelAcesso` enum('admin','visualizador') DEFAULT 'visualizador' NOT NULL;

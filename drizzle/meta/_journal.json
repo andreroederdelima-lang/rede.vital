@@ -267,6 +267,13 @@
       "when": 1764058692640,
       "tag": "0037_soft_sue_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "5",
+      "when": 1764059809998,
+      "tag": "0038_elite_rage",
+      "breakpoints": true
     }
   ]
 }

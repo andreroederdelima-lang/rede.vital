@@ -68,6 +68,12 @@ export default function Admin() {
   const { user, loading, logout } = useAuth();
   const utils = trpc.useUtils();
 
+  // Verificar nível de acesso do usuário
+  const { data: acessoData } = trpc.usuariosAutorizados.verificarAcesso.useQuery(
+    user?.email || "",
+    { enabled: !!user?.email }
+  );
+
   const [medicoDialogOpen, setMedicoDialogOpen] = useState(false);
   const [instituicaoDialogOpen, setInstituicaoDialogOpen] = useState(false);
   const [editingMedico, setEditingMedico] = useState<MedicoForm | null>(null);
@@ -193,6 +199,34 @@ export default function Admin() {
               <Button variant="outline" className="w-full mt-2">
                 <Home className="h-4 w-4 mr-2" />
                 Voltar para página inicial
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Verificar se usuário tem nível de acesso Admin
+  if (user && acessoData?.usuarioAutorizado && acessoData.usuarioAutorizado.nivelAcesso !== "admin") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/20 to-background">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <img src={APP_LOGO} alt="Vital Logo" className="h-20 w-auto mx-auto mb-4" />
+            <CardTitle>Acesso Restrito</CardTitle>
+            <p className="text-sm text-muted-foreground mt-2">
+              Você tem nível de acesso "Visualizador" e pode apenas consultar dados internos.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <p className="text-sm text-center text-muted-foreground">
+              Para acessar o painel administrativo completo, solicite ao administrador que altere seu nível de acesso para "Admin".
+            </p>
+            <Link href="/dados-internos">
+              <Button className="w-full mt-4">
+                <Home className="h-4 w-4 mr-2" />
+                Ir para Dados Internos
               </Button>
             </Link>
           </CardContent>
@@ -1407,7 +1441,7 @@ function SolicitacoesTab() {
 function UsuariosAutorizadosTab() {
   const utils = trpc.useUtils();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingUsuario, setEditingUsuario] = useState<{ id?: number; email: string; nome: string; senha?: string } | null>(null);
+  const [editingUsuario, setEditingUsuario] = useState<{ id?: number; email: string; nome: string; senha?: string; nivelAcesso?: "admin" | "visualizador" } | null>(null);
 
   const { data: usuarios, isLoading } = trpc.usuariosAutorizados.listar.useQuery();
 
@@ -1474,6 +1508,7 @@ function UsuariosAutorizadosTab() {
         id: editingUsuario.id,
         email: editingUsuario.email,
         nome: editingUsuario.nome,
+        nivelAcesso: editingUsuario.nivelAcesso,
       });
     } else {
       if (!editingUsuario.senha || editingUsuario.senha.length < 6) {
@@ -1484,6 +1519,7 @@ function UsuariosAutorizadosTab() {
         email: editingUsuario.email,
         nome: editingUsuario.nome,
         senha: editingUsuario.senha,
+        nivelAcesso: editingUsuario.nivelAcesso || "visualizador",
       });
     }
   };
@@ -1542,6 +1578,24 @@ function UsuariosAutorizadosTab() {
                         Este email poderá acessar /dados-internos após fazer login
                       </p>
                     </div>
+                    <div>
+                      <Label htmlFor="nivelAcesso">Nível de Acesso *</Label>
+                      <Select
+                        value={editingUsuario.nivelAcesso || "visualizador"}
+                        onValueChange={(value) => setEditingUsuario({ ...editingUsuario, nivelAcesso: value as "admin" | "visualizador" })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o nível" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="visualizador">Visualizador - Apenas ver dados internos</SelectItem>
+                          <SelectItem value="admin">Admin - Acesso total ao painel administrativo</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Visualizador: acessa apenas /dados-internos | Admin: acessa /admin completo
+                      </p>
+                    </div>
                     {!editingUsuario.id && (
                       <div>
                         <Label htmlFor="senha">Senha *</Label>
@@ -1592,6 +1646,7 @@ function UsuariosAutorizadosTab() {
                   <TableRow>
                     <TableHead>Nome</TableHead>
                     <TableHead>Email</TableHead>
+                    <TableHead>Nível de Acesso</TableHead>
                     <TableHead>Data de Cadastro</TableHead>
                     <TableHead className="text-right">Ações</TableHead>
                   </TableRow>
@@ -1601,6 +1656,15 @@ function UsuariosAutorizadosTab() {
                     <TableRow key={usuario.id}>
                       <TableCell className="font-medium">{usuario.nome}</TableCell>
                       <TableCell>{usuario.email}</TableCell>
+                      <TableCell>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          usuario.nivelAcesso === 'admin' 
+                            ? 'bg-purple-100 text-purple-800' 
+                            : 'bg-blue-100 text-blue-800'
+                        }`}>
+                          {usuario.nivelAcesso === 'admin' ? 'Admin' : 'Visualizador'}
+                        </span>
+                      </TableCell>
                       <TableCell>{new Date(usuario.createdAt).toLocaleDateString('pt-BR')}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
@@ -1612,6 +1676,7 @@ function UsuariosAutorizadosTab() {
                                 id: usuario.id,
                                 email: usuario.email,
                                 nome: usuario.nome,
+                                nivelAcesso: usuario.nivelAcesso,
                               });
                               setDialogOpen(true);
                             }}

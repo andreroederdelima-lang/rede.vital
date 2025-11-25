@@ -343,7 +343,18 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const { obterUsuarioAutorizadoPorEmail } = await import("./db");
         const usuario = await obterUsuarioAutorizadoPorEmail(input);
-        return { autorizado: !!usuario };
+        if (!usuario || !usuario.ativo) {
+          return { autorizado: false, usuario: null };
+        }
+        return { 
+          autorizado: true, 
+          usuario: {
+            id: usuario.id,
+            email: usuario.email,
+            nome: usuario.nome,
+            nivelAcesso: (usuario as any).nivelAcesso || "visualizador",
+          }
+        };
       }),
 
     login: publicProcedure
@@ -407,6 +418,7 @@ export const appRouter = router({
         email: z.string().email(),
         nome: z.string(),
         senha: z.string().min(6),
+        nivelAcesso: z.enum(["admin", "visualizador"]).default("visualizador"),
       }))
       .mutation(async ({ input }) => {
         const { criarUsuarioAutorizado } = await import("./db");
@@ -419,6 +431,7 @@ export const appRouter = router({
         id: z.number(),
         email: z.string().email().optional(),
         nome: z.string().optional(),
+        nivelAcesso: z.enum(["admin", "visualizador"]).optional(),
       }))
       .mutation(async ({ input }) => {
         const { atualizarUsuarioAutorizado } = await import("./db");

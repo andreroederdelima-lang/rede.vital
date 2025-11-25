@@ -1495,3 +1495,20 @@
 - [x] Investigar erro ao editar instituições
 - [x] Corrigir problema - mesma solução de remover campos File
 - [x] Testar edição de instituições
+
+
+## Sistema de Níveis de Acesso - 25/11/2025
+
+- [x] Adicionar campo nivelAcesso ao schema usuariosAutorizados (admin | visualizador)
+- [x] Executar db:push para atualizar banco
+- [x] Atualizar routers tRPC para aceitar nivelAcesso
+- [x] Atualizar formulário de criação de usuário com seleção de nível
+- [x] Atualizar formulário de edição de usuário com seleção de nível
+- [x] Adicionar coluna de nível de acesso na tabela de usuários
+- [x] Atualizar router verificarAcesso para retornar dados do usuário
+- [x] Atualizar hook useDadosInternosAuth para expor usuarioAutorizado
+- [x] Implementar controle de acesso na página Admin (apenas admin)
+- [x] Adicionar tela de bloqueio para visualizadores no Admin
+- [x] Manter acesso de visualizador apenas para Dados Internos
+- [x] Testar criação e edição de usuários com diferentes níveis
+- [x] Testar restrições de acesso
