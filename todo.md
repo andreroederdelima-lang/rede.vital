@@ -1468,3 +1468,10 @@
 - [x] Testar exibição nos cards (Home e Consulta)
 - [x] Testar edição no Admin
 - [x] Testar atualização pelos parceiros
+
+
+## Remover Popup Automático - 25/11/2025
+
+- [x] Localizar código do popup "Sugira um Parceiro!"
+- [x] Remover lógica de exibição automática do popup
+- [x] Testar que o popup não aparece mais automaticamente

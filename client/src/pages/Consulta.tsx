@@ -33,16 +33,6 @@ export default function Consulta() {
     id: number;
     nome: string;
   } | null>(null);
-  const [popupSugestaoOpen, setPopupSugestaoOpen] = useState(false);
-
-  // Popup automático de sugestão após 10 segundos
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPopupSugestaoOpen(true);
-    }, 10000); // 10 segundos
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
@@ -420,42 +410,7 @@ export default function Consulta() {
         />
       )}
 
-      {/* Popup Automático de Sugestão */}
-      <Dialog open={popupSugestaoOpen} onOpenChange={setPopupSugestaoOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-center" style={{ color: VITAL_COLORS.primary }}>
-              🌟 Sugira um Parceiro!
-            </DialogTitle>
-            <DialogDescription className="text-center text-base">
-              Conhece um serviço ou médico de confiança que deveria estar na nossa rede?
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-4 py-4">
-            <p className="text-center text-muted-foreground">
-              Ajude-nos a expandir nossa rede credenciada sugerindo profissionais e serviços de qualidade!
-            </p>
-            <div className="flex flex-col gap-2">
-              <Link href="/sugerir-parceiro">
-                <Button 
-                  className="w-full" 
-                  style={{ backgroundColor: VITAL_COLORS.primary }}
-                  onClick={() => setPopupSugestaoOpen(false)}
-                >
-                  Sugerir Agora
-                </Button>
-              </Link>
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => setPopupSugestaoOpen(false)}
-              >
-                Talvez Depois
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+
     </div>
   );
 }
