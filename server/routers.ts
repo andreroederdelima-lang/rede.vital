@@ -100,6 +100,7 @@ export const appRouter = router({
           endereco: z.string().optional(),
           telefone: z.string().optional(),
           whatsapp: z.string().optional(),
+          whatsappSecretaria: z.string().optional(),
           tipoAtendimento: z.enum(["presencial", "telemedicina", "ambos"]).optional(),
           precoConsulta: z.string().optional(),
           valorParticular: z.string().optional(),
@@ -107,6 +108,8 @@ export const appRouter = router({
           descontoPercentual: z.number().optional(),
           observacoes: z.string().optional(),
           contatoParceria: z.string().optional(),
+          logoUrl: z.string().optional(),
+          fotoUrl: z.string().optional(),
         }),
       }))
       .mutation(async ({ input }) => {
@@ -183,6 +186,7 @@ export const appRouter = router({
           endereco: z.string().optional(),
           telefone: z.string().optional(),
           email: z.string().optional(),
+          whatsappSecretaria: z.string().optional(),
           precoConsulta: z.string().optional(),
           valorParticular: z.string().optional(),
           valorAssinanteVital: z.string().optional(),
@@ -190,6 +194,8 @@ export const appRouter = router({
           observacoes: z.string().optional(),
           contatoParceria: z.string().optional(),
         }),
+          logoUrl: z.string().optional(),
+          fotoUrl: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
         const { atualizarInstituicao } = await import("./db");

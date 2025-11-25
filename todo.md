@@ -1512,3 +1512,12 @@
 - [x] Manter acesso de visualizador apenas para Dados Internos
 - [x] Testar criação e edição de usuários com diferentes níveis
 - [x] Testar restrições de acesso
+
+
+## Corrigir Erro ao Editar Médicos - 25/11/2025
+
+- [x] Investigar erro ao editar dados de médicos no Admin
+- [x] Identificar causa do erro - campos whatsappSecretaria, logoUrl, fotoUrl faltando no schema
+- [x] Adicionar campos faltantes no schema de atualização de médicos
+- [x] Adicionar campos faltantes no schema de atualização de instituições
+- [x] Testar salvamento de edição de médicos
