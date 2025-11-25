@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { trpc } from "@/lib/trpc";
+import { maskTelefone, maskMoeda, calcularDesconto } from "@/lib/masks";
 import { 
   Users, 
   TrendingUp, 
@@ -467,7 +468,7 @@ export default function Parceiros() {
                   <Input
                     id="telefone"
                     value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
+                    onChange={(e) => setTelefone(maskTelefone(e.target.value))}
                     placeholder="(47) 99999-9999"
                     required
                   />
@@ -482,7 +483,7 @@ export default function Parceiros() {
                   <Input
                     id="whatsappSecretaria"
                     value={whatsappSecretaria}
-                    onChange={(e) => setWhatsappSecretaria(e.target.value)}
+                    onChange={(e) => setWhatsappSecretaria(maskTelefone(e.target.value))}
                     placeholder="(47) 99999-9999"
                     required
                   />
@@ -509,15 +510,12 @@ export default function Parceiros() {
                     id="valorParticular"
                     value={valorParticular}
                     onChange={(e) => {
-                      setValorParticular(e.target.value);
+                      const masked = maskMoeda(e.target.value);
+                      setValorParticular(masked);
                       // Calcular desconto automaticamente se ambos valores estiverem preenchidos
-                      if (e.target.value && valorAssinanteVital) {
-                        const valPart = parseFloat(e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.'));
-                        const valVital = parseFloat(valorAssinanteVital.replace(/[^0-9.,]/g, '').replace(',', '.'));
-                        if (!isNaN(valPart) && !isNaN(valVital) && valPart > 0) {
-                          const desconto = Math.round(((valPart - valVital) / valPart) * 100);
-                          setDescontoPercentual(desconto.toString());
-                        }
+                      if (masked && valorAssinanteVital) {
+                        const desconto = calcularDesconto(masked, valorAssinanteVital);
+                        setDescontoPercentual(desconto.toString());
                       }
                     }}
                     placeholder="Ex: R$ 200,00"
@@ -534,15 +532,12 @@ export default function Parceiros() {
                     id="valorAssinanteVital"
                     value={valorAssinanteVital}
                     onChange={(e) => {
-                      setValorAssinanteVital(e.target.value);
+                      const masked = maskMoeda(e.target.value);
+                      setValorAssinanteVital(masked);
                       // Calcular desconto automaticamente se ambos valores estiverem preenchidos
-                      if (e.target.value && valorParticular) {
-                        const valPart = parseFloat(valorParticular.replace(/[^0-9.,]/g, '').replace(',', '.'));
-                        const valVital = parseFloat(e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.'));
-                        if (!isNaN(valPart) && !isNaN(valVital) && valPart > 0) {
-                          const desconto = Math.round(((valPart - valVital) / valPart) * 100);
-                          setDescontoPercentual(desconto.toString());
-                        }
+                      if (masked && valorParticular) {
+                        const desconto = calcularDesconto(valorParticular, masked);
+                        setDescontoPercentual(desconto.toString());
                       }
                     }}
                     placeholder="Ex: R$ 150,00"

@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { APP_LOGO, APP_TITLE } from "@/const";
+import { maskTelefone, maskMoeda } from "@/lib/masks";
 
 export default function AtualizarDados() {
   const [, params] = useRoute("/atualizar-dados/:token");
@@ -169,7 +170,7 @@ export default function AtualizarDados() {
                   <Input
                     id="telefone"
                     value={formData.telefone}
-                    onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
                     placeholder="(47) 3333-4444"
                   />
                 </div>
@@ -179,7 +180,7 @@ export default function AtualizarDados() {
                   <Input
                     id="whatsapp"
                     value={formData.whatsapp}
-                    onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, whatsapp: maskTelefone(e.target.value) })}
                     placeholder="(47) 99999-8888"
                   />
                 </div>
@@ -191,7 +192,7 @@ export default function AtualizarDados() {
                   <Input
                     id="whatsappSecretaria"
                     value={formData.whatsappSecretaria}
-                    onChange={(e) => setFormData({ ...formData, whatsappSecretaria: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
                     placeholder="(47) 99999-7777"
                   />
                 </div>
@@ -201,7 +202,7 @@ export default function AtualizarDados() {
                   <Input
                     id="telefoneOrganizacao"
                     value={formData.telefoneOrganizacao}
-                    onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: maskTelefone(e.target.value) })}
                     placeholder="(47) 3333-5555"
                   />
                 </div>
@@ -248,7 +249,7 @@ export default function AtualizarDados() {
                   <Input
                     id="valorParticular"
                     value={formData.valorParticular}
-                    onChange={(e) => setFormData({ ...formData, valorParticular: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, valorParticular: maskMoeda(e.target.value) })}
                     placeholder="Ex: R$ 200,00"
                   />
                 </div>
@@ -258,7 +259,7 @@ export default function AtualizarDados() {
                   <Input
                     id="valorAssinanteVital"
                     value={formData.valorAssinanteVital}
-                    onChange={(e) => setFormData({ ...formData, valorAssinanteVital: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, valorAssinanteVital: maskMoeda(e.target.value) })}
                     placeholder="Ex: R$ 150,00"
                   />
                 </div>

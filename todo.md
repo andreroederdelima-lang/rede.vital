@@ -1535,3 +1535,15 @@
 - [x] Atualizar schema tRPC de instituições
 - [x] Adicionar campos visuais nos formulários de instituições
 - [x] Testar salvamento completo
+
+
+## Máscaras de Entrada - 25/11/2025
+
+- [x] Criar funções de máscara para telefone/WhatsApp brasileiro
+- [x] Criar funções de máscara para valores monetários (R$)
+- [x] Criar função de cálculo de desconto
+- [x] Aplicar máscaras nos formulários do Admin (médicos)
+- [x] Aplicar máscaras nos formulários do Admin (instituições)
+- [x] Aplicar máscaras no formulário Seja Parceiro
+- [x] Aplicar máscaras no formulário de Atualização de Dados
+- [x] Testar todas as máscaras

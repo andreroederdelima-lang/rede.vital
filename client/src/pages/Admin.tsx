@@ -18,6 +18,7 @@ import ConfiguracoesTab from "@/components/ConfiguracoesTab";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
+import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 
 type MedicoForm = {
   id?: number;
@@ -792,7 +793,7 @@ function MedicoFormDialog({
           <Input
             id="telefoneOrganizacao"
             value={formData.telefoneOrganizacao || ""}
-            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: maskTelefone(e.target.value) })}
             placeholder="Ex: (47) 3333-4444"
           />
         </div>
@@ -801,7 +802,8 @@ function MedicoFormDialog({
           <Input
             id="telefone"
             value={formData.telefone || ""}
-            onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
+            placeholder="(XX) XXXXX-XXXX"
           />
         </div>
 
@@ -810,7 +812,7 @@ function MedicoFormDialog({
           <Input
             id="whatsapp"
             value={formData.whatsapp || ""}
-            onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, whatsapp: maskTelefone(e.target.value) })}
             placeholder="Ex: 47999999999"
           />
         </div>
@@ -820,7 +822,7 @@ function MedicoFormDialog({
           <Input
             id="whatsappSecretaria"
             value={formData.whatsappSecretaria || ""}
-            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
             placeholder="Ex: 47999999999"
           />
         </div>
@@ -866,7 +868,7 @@ function MedicoFormDialog({
           <Input
             id="valorParticular"
             value={formData.valorParticular || ""}
-            onChange={(e) => setFormData({ ...formData, valorParticular: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, valorParticular: maskMoeda(e.target.value) })}
             placeholder="Ex: R$ 200,00"
           />
         </div>
@@ -876,7 +878,7 @@ function MedicoFormDialog({
           <Input
             id="valorAssinanteVital"
             value={formData.valorAssinanteVital || ""}
-            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: maskMoeda(e.target.value) })}
             placeholder="Ex: R$ 150,00"
           />
         </div>
@@ -910,7 +912,7 @@ function MedicoFormDialog({
           <Input
             id="whatsappParceria"
             value={formData.whatsappParceria || ""}
-            onChange={(e) => setFormData({ ...formData, whatsappParceria: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
             placeholder="Ex: 47999999999"
           />
         </div>
@@ -1127,7 +1129,8 @@ function InstituicaoFormDialog({
           <Input
             id="telefone"
             value={formData.telefone || ""}
-            onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
+            placeholder="(XX) XXXXX-XXXX"
           />
         </div>
 
@@ -1136,7 +1139,7 @@ function InstituicaoFormDialog({
           <Input
             id="telefoneOrganizacao"
             value={formData.telefoneOrganizacao || ""}
-            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: maskTelefone(e.target.value) })}
             placeholder="Ex: (47) 3333-4444"
           />
         </div>
@@ -1156,7 +1159,7 @@ function InstituicaoFormDialog({
           <Input
             id="whatsappSecretaria"
             value={formData.whatsappSecretaria || ""}
-            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
             placeholder="Ex: 47999999999"
           />
         </div>
@@ -1202,7 +1205,7 @@ function InstituicaoFormDialog({
           <Input
             id="valorParticular"
             value={formData.valorParticular || ""}
-            onChange={(e) => setFormData({ ...formData, valorParticular: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, valorParticular: maskMoeda(e.target.value) })}
             placeholder="Ex: R$ 200,00"
           />
         </div>
@@ -1212,7 +1215,7 @@ function InstituicaoFormDialog({
           <Input
             id="valorAssinanteVital"
             value={formData.valorAssinanteVital || ""}
-            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: maskMoeda(e.target.value) })}
             placeholder="Ex: R$ 150,00"
           />
         </div>
@@ -1255,7 +1258,7 @@ function InstituicaoFormDialog({
             id="whatsappParceria"
             placeholder="Ex: 47999999999"
             value={formData.whatsappParceria || ""}
-            onChange={(e) => setFormData({ ...formData, whatsappParceria: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
           />
         </div>
 

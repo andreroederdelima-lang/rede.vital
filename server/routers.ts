@@ -270,7 +270,7 @@ export const appRouter = router({
         await criarSolicitacaoParceria({
           ...input,
           status: "pendente",
-        });
+        } as any);
         
         // Enviar e-mail de notificação
         await enviarEmailNovaParceria(input);
