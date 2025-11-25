@@ -145,18 +145,24 @@ export default function Admin() {
   });
 
   const handleSalvarMedico = (data: MedicoForm) => {
+    // Remover campos File que não devem ser enviados
+    const { logoFile, fotoFile, ...dadosLimpos } = data;
+    
     if (data.id) {
-      atualizarMedico.mutate({ id: data.id, data });
+      atualizarMedico.mutate({ id: data.id, data: dadosLimpos });
     } else {
-      criarMedico.mutate(data);
+      criarMedico.mutate(dadosLimpos as any);
     }
   };
 
   const handleSalvarInstituicao = (data: InstituicaoForm) => {
+    // Remover campos File que não devem ser enviados
+    const { logoFile, fotoFile, ...dadosLimpos } = data;
+    
     if (data.id) {
-      atualizarInstituicao.mutate({ id: data.id, data });
+      atualizarInstituicao.mutate({ id: data.id, data: dadosLimpos });
     } else {
-      criarInstituicao.mutate(data);
+      criarInstituicao.mutate(dadosLimpos as any);
     }
   };
 
@@ -337,11 +343,17 @@ export default function Admin() {
                                   variant="ghost"
                                   size="icon"
                                   className="h-8 w-8"
-                                  onClick={() => {
-                                    const baseUrl = window.location.origin;
-                                    const linkAtualizacao = `${baseUrl}/atualizar-dados/medico-${medico.id}`;
-                                    navigator.clipboard.writeText(linkAtualizacao);
-                                    toast.success("Link copiado!");
+                                  onClick={async () => {
+                                    try {
+                                      const result = await utils.client.atualizacao.gerarLink.mutate({
+                                        tipo: "medico",
+                                        id: medico.id
+                                      });
+                                      await navigator.clipboard.writeText(result.link);
+                                      toast.success("Link copiado!");
+                                    } catch (error) {
+                                      toast.error("Erro ao gerar link");
+                                    }
                                   }}
                                   title="Copiar link de atualização"
                                 >
@@ -468,11 +480,17 @@ export default function Admin() {
                                   variant="ghost"
                                   size="icon"
                                   className="h-8 w-8"
-                                  onClick={() => {
-                                    const baseUrl = window.location.origin;
-                                    const linkAtualizacao = `${baseUrl}/atualizar-dados/instituicao-${inst.id}`;
-                                    navigator.clipboard.writeText(linkAtualizacao);
-                                    toast.success("Link copiado!");
+                                  onClick={async () => {
+                                    try {
+                                      const result = await utils.client.atualizacao.gerarLink.mutate({
+                                        tipo: "instituicao",
+                                        id: inst.id
+                                      });
+                                      await navigator.clipboard.writeText(result.link);
+                                      toast.success("Link copiado!");
+                                    } catch (error) {
+                                      toast.error("Erro ao gerar link");
+                                    }
                                   }}
                                   title="Copiar link de atualização"
                                 >

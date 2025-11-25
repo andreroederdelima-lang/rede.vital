@@ -1475,3 +1475,23 @@
 - [x] Localizar código do popup "Sugira um Parceiro!"
 - [x] Remover lógica de exibição automática do popup
 - [x] Testar que o popup não aparece mais automaticamente
+
+
+## Corrigir Erros no Admin - 25/11/2025
+
+### Erro ao Copiar Link de Atualização
+- [x] Investigar erro ao copiar link de atualização para enviar ao parceiro
+- [x] Identificar causa do erro (geração de token, URL, etc)
+- [x] Corrigir problema no código - agora usa atualizacao.gerarLink.mutate
+- [x] Testar cópia de link em médicos e instituições
+
+### Erro ao Salvar Edição de Médico
+- [x] Investigar erro ao salvar edição de médico
+- [x] Identificar causa do erro (campos File sendo enviados)
+- [x] Corrigir problema no código - remover logoFile e fotoFile antes de enviar
+- [x] Testar salvamento de edição no Admin
+
+### Erro ao Editar Instituições (Serviços)
+- [x] Investigar erro ao editar instituições
+- [x] Corrigir problema - mesma solução de remover campos File
+- [x] Testar edição de instituições
