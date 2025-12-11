@@ -76,11 +76,7 @@ export default function Admin() {
   const { user, loading, logout } = useAuth();
   const utils = trpc.useUtils();
 
-  // Verificar nível de acesso do usuário
-  const { data: acessoData } = trpc.usuariosAutorizados.verificarAcesso.useQuery(
-    user?.email || "",
-    { enabled: !!user?.email }
-  );
+  // Nota: Admin usa Manus OAuth e verifica user.role (não usuáriosAutorizados)
 
   const [medicoDialogOpen, setMedicoDialogOpen] = useState(false);
   const [instituicaoDialogOpen, setInstituicaoDialogOpen] = useState(false);
@@ -245,8 +241,8 @@ export default function Admin() {
     );
   }
 
-  // Verificar se usuário tem nível de acesso Admin
-  if (user && acessoData?.usuario && (acessoData.usuario as any).nivelAcesso !== "admin") {
+  // Verificar se usuário tem role Admin (Manus OAuth)
+  if (user && user.role !== "admin") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/20 to-background">
         <Card className="w-full max-w-md">

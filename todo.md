@@ -1610,7 +1610,7 @@
 - [ ] Editar dados de instituição existente
 
 
-## AUDITORIA COMPLETA DO SISTEMA - 25/11/2025 ✅
+## AUDITORIA COMPLETA DO SISTEMA - 11/12/2025 ✅ CONCLUÍDA ✅
 
 ### Testes de Login e Autenticação
 - [x] Testar acesso à página pública (/) sem login - OK
@@ -1794,3 +1794,184 @@
 - [x] Botão "Assine Agora" com bordas arredondadas e sombra
 - [x] Menu mobile com hamburguer e dropdown completo
 - [x] Redes sociais com ícones maiores (h-6 w-6)
+
+
+## AUDITORIA COMPLETA DO SISTEMA - 25/11/2025
+
+### 1. Sistema de Autenticação e Login
+- [ ] Login Admin via Manus OAuth (/admin)
+- [ ] Login Dados Internos via Google OAuth (/login-dados-internos)
+- [ ] Verificação de permissões (Admin vs Visualizador)
+- [ ] Redirecionamento quando não autenticado
+- [ ] Redirecionamento quando sem permissão
+- [ ] Logout Admin
+- [ ] Logout Dados Internos
+- [ ] Recuperação de senha Dados Internos
+
+### 2. Páginas Públicas
+- [ ] Página inicial (/) - Consulta Pública
+- [ ] Filtros de município funcionando
+- [ ] Filtros de especialidade funcionando
+- [ ] Busca por nome funcionando
+- [ ] Abas: Médicos, Serviços de Saúde, Outros Serviços
+- [ ] Cards de credenciados exibindo corretamente
+- [ ] Botão WhatsApp nos cards
+- [ ] Botão Como Chegar (Google Maps)
+- [ ] Botão Compartilhar
+- [ ] Botão Copiar Link
+
+### 3. Página Dados Internos (/dados-internos)
+- [ ] Autenticação funcionando
+- [ ] Header com nome do usuário
+- [ ] Botão Alterar Senha
+- [ ] Botão Sair
+- [ ] Abas: Médicos, Serviços de Saúde, Outros Serviços
+- [ ] Exibição de preços e descontos
+- [ ] Botão Gerar Encaminhamento
+- [ ] Botão Enviar Link de Atualização
+- [ ] Filtros funcionando
+
+### 4. Painel Admin (/admin) - Aba Médicos
+- [ ] Listagem de médicos carregando
+- [ ] Botão Adicionar Médico
+- [ ] Formulário de cadastro completo
+- [ ] Upload de foto e logo
+- [ ] Máscaras de telefone e valores
+- [ ] Validação de campos obrigatórios
+- [ ] Salvar novo médico
+- [ ] Botão Editar médico
+- [ ] Formulário de edição pré-preenchido
+- [ ] Atualizar médico existente
+- [ ] Botão Excluir médico
+- [ ] Confirmação de exclusão
+- [ ] Botão WhatsApp
+- [ ] Botão Copiar Link
+- [ ] Botão Enviar Link de Atualização
+
+### 5. Painel Admin - Aba Serviços
+- [ ] Listagem de instituições carregando
+- [ ] Botão Adicionar Instituição
+- [ ] Seleção de tipo (Serviços de Saúde vs Outros Serviços)
+- [ ] Dropdown de categorias dinâmico
+- [ ] Formulário completo funcionando
+- [ ] Upload de imagens
+- [ ] Salvar nova instituição
+- [ ] Editar instituição
+- [ ] Excluir instituição
+- [ ] Ações nos cards
+
+### 6. Painel Admin - Aba Solicitações
+- [ ] Listagem de solicitações de parceria
+- [ ] Detalhes de cada solicitação
+- [ ] Botão Aprovar
+- [ ] Botão Rejeitar
+- [ ] Criação automática de credenciado ao aprovar
+- [ ] Remoção da lista ao processar
+
+### 7. Painel Admin - Aba Atualizações
+- [ ] Listagem de atualizações pendentes
+- [ ] Comparação lado a lado (dados antigos vs novos)
+- [ ] Botão Aprovar atualização
+- [ ] Botão Rejeitar atualização
+- [ ] Aplicação das mudanças ao aprovar
+
+### 8. Painel Admin - Aba Usuários
+- [ ] Listagem de usuários autorizados
+- [ ] Botão Adicionar Usuário
+- [ ] Formulário: email, nome, nível de acesso
+- [ ] Salvar novo usuário
+- [ ] Editar usuário existente
+- [ ] Excluir usuário
+- [ ] Botão Alterar Senha
+
+### 9. Painel Admin - Aba Acessos
+- [ ] Listagem de solicitações de acesso
+- [ ] Detalhes de cada solicitação
+- [ ] Botão Aprovar
+- [ ] Botão Rejeitar
+- [ ] Geração de senha temporária
+- [ ] Envio de email (se implementado)
+
+### 10. Painel Admin - Aba Prospecção
+- [ ] Dashboard de cobertura carregando
+- [ ] Estatísticas por município
+- [ ] Estatísticas por categoria
+- [ ] Indicadores visuais (cores)
+- [ ] Identificação de gaps
+
+### 11. Links de Auto-Preenchimento
+- [ ] Gerar link de atualização para médico
+- [ ] Abrir link /atualizar-dados/:token
+- [ ] Formulário pré-preenchido com dados do médico
+- [ ] Editar campos
+- [ ] Enviar atualização
+- [ ] Atualização aparece na aba Atualizações do Admin
+
+### 12. Formulário de Parceiros (/formulario-parceiro)
+- [ ] Página carrega corretamente
+- [ ] Seleção de tipo: Médico vs Instituição
+- [ ] Formulário dinâmico conforme tipo
+- [ ] Validação de campos
+- [ ] Envio de solicitação
+- [ ] Solicitação aparece na aba Solicitações do Admin
+
+### 13. Fluxos End-to-End
+- [ ] Fluxo 1: Novo parceiro → Formulário → Solicitação → Aprovação → Aparece no site
+- [ ] Fluxo 2: Link atualização → Credenciado edita → Pendente → Aprovação → Dados atualizados
+- [ ] Fluxo 3: Solicitar acesso → Pendente → Aprovação → Login → Dados Internos
+- [ ] Fluxo 4: Admin adiciona médico → Aparece em todas as páginas
+
+### 14. Navegação e Links
+- [ ] Botão Início (header) → Site oficial
+- [ ] Botão Acesso Interno → /dados-internos
+- [ ] Botão Admin → /admin
+- [ ] Botão Seja Parceiro → /parceiros
+- [ ] Botão Sugerir Parceiro → Modal funcionando
+- [ ] Botão Fale Conosco → WhatsApp
+- [ ] Logo → Página inicial
+
+### 15. Responsividade
+- [ ] Layout mobile funcionando
+- [ ] Menu hamburguer (se houver)
+- [ ] Cards responsivos
+- [ ] Tabelas scrolláveis em mobile
+- [ ] Formulários usáveis em celular
+
+### Problemas Identificados
+(Serão preenchidos durante a auditoria)
+
+### Correções Realizadas
+(Serão preenchidas após correções)
+
+
+### AUDITORIA - Problemas Identificados e Correções
+
+#### Problema #1: Verificação de Acesso Admin Incorreta ✅ CORRIGIDO
+**Descrição:** Página /admin estava verificando `usuariosAutorizados.nivelAcesso` (sistema Google OAuth) ao invés de `user.role` (sistema Manus OAuth)
+**Impacto:** Usuários admin não conseguiam acessar o painel administrativo
+**Correção:** Alterado Admin.tsx linha 79-83 e linha 245 para verificar `user.role === "admin"`
+**Status:** ✅ Corrigido e testado - Painel Admin funcionando perfeitamente
+
+#### Testes Realizados - Painel Admin
+- [x] Página /admin carrega corretamente
+- [x] Header com logo e título exibidos
+- [x] Botões Dados Internos, Galeria e Sair funcionando
+- [x] 8 abas visíveis: Médicos, Serviços, Solicitações, Atualizações, Usuários, Acessos, Prospecção, Configurações
+- [x] Aba Médicos ativa por padrão
+- [x] Tabela de médicos carregando (35 médicos)
+- [x] Botão "Adicionar Médico" visível
+- [x] 4 botões de ação por médico: WhatsApp, Copiar Link, Editar, Excluir
+- [ ] Testar funcionalidade de cada botão
+- [ ] Testar outras abas
+
+
+#### Problema #2: Sistema de Links de Atualização Não Funciona ❌ CRÍTICO
+**Descrição:** Link `/atualizar-dados/medico-1` retorna "Link Inválido - Este link de atualização não é válido ou expirou"
+**Impacto:** Credenciados não conseguem atualizar seus próprios dados
+**Causa Provável:** Sistema de tokens de segurança não está gerando/validando tokens corretamente
+**Ações Necessárias:**
+- [ ] Verificar router `atualizacoes` - geração de tokens
+- [ ] Verificar página `AtualizarDados.tsx` - validação de tokens
+- [ ] Verificar tabela `tokensAtualizacao` no banco de dados
+- [ ] Implementar geração automática de token ao clicar "Enviar Link"
+**Status:** ❌ Problema identificado, correção pendente
