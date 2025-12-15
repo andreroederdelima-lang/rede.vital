@@ -942,39 +942,31 @@ function MedicoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="logoFile">Logo do Estabelecimento</Label>
-          <Input
-            id="logoFile"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                setFormData({ ...formData, logoFile: file });
-              }
+          <ImageUpload
+            label="Logo do Estabelecimento"
+            value={formData.logoUrl}
+            onChange={(file, preview) => {
+              setFormData({ 
+                ...formData, 
+                logoFile: file || undefined,
+                logoUrl: preview || formData.logoUrl
+              });
             }}
           />
-          {formData.logoUrl && (
-            <p className="text-sm text-gray-600 mt-1">Logo atual: {formData.logoUrl}</p>
-          )}
         </div>
 
         <div>
-          <Label htmlFor="fotoFile">Foto do Médico</Label>
-          <Input
-            id="fotoFile"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                setFormData({ ...formData, fotoFile: file });
-              }
+          <ImageUpload
+            label="Foto do Médico"
+            value={formData.fotoUrl}
+            onChange={(file, preview) => {
+              setFormData({ 
+                ...formData, 
+                fotoFile: file || undefined,
+                fotoUrl: preview || formData.fotoUrl
+              });
             }}
           />
-          {formData.fotoUrl && (
-            <p className="text-sm text-gray-600 mt-1">Foto atual: {formData.fotoUrl}</p>
-          )}
         </div>
 
         <div>
@@ -1259,39 +1251,31 @@ function InstituicaoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="logoFile">Logo do Estabelecimento</Label>
-          <Input
-            id="logoFile"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                setFormData({ ...formData, logoFile: file });
-              }
+          <ImageUpload
+            label="Logo do Estabelecimento"
+            value={formData.logoUrl}
+            onChange={(file, preview) => {
+              setFormData({ 
+                ...formData, 
+                logoFile: file || undefined,
+                logoUrl: preview || formData.logoUrl
+              });
             }}
           />
-          {formData.logoUrl && (
-            <p className="text-sm text-gray-600 mt-1">Logo atual: {formData.logoUrl}</p>
-          )}
         </div>
 
         <div>
-          <Label htmlFor="fotoFile">Foto do Estabelecimento</Label>
-          <Input
-            id="fotoFile"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                setFormData({ ...formData, fotoFile: file });
-              }
+          <ImageUpload
+            label="Foto do Estabelecimento"
+            value={formData.fotoUrl}
+            onChange={(file, preview) => {
+              setFormData({ 
+                ...formData, 
+                fotoFile: file || undefined,
+                fotoUrl: preview || formData.fotoUrl
+              });
             }}
           />
-          {formData.fotoUrl && (
-            <p className="text-sm text-gray-600 mt-1">Foto atual: {formData.fotoUrl}</p>
-          )}
         </div>
 
         <div>
