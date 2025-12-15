@@ -346,3 +346,26 @@ export const avaliacoes = mysqlTable("avaliacoes", {
 
 export type Avaliacao = typeof avaliacoes.$inferSelect;
 export type InsertAvaliacao = typeof avaliacoes.$inferInsert;
+
+
+/**
+ * Tabela de tokens para links de atualização e cadastro
+ * Permite que credenciados atualizem seus dados ou novos médicos se cadastrem
+ */
+export const tokens = mysqlTable("tokens", {
+  id: int("id").autoincrement().primaryKey(),
+  token: varchar("token", { length: 64 }).notNull().unique(), // Token único gerado
+  tipo: mysqlEnum("tipo", ["atualizacao", "cadastro"]).notNull(), // Tipo de operação
+  tipoCredenciado: mysqlEnum("tipoCredenciado", ["medico", "instituicao"]).notNull(),
+  credenciadoId: int("credenciadoId"), // NULL para cadastro de novo credenciado
+  email: varchar("email", { length: 320 }), // Email do destinatário
+  telefone: varchar("telefone", { length: 100 }), // Telefone do destinatário
+  usado: int("usado").default(0).notNull(), // 0 = não usado, 1 = usado
+  expiresAt: timestamp("expiresAt").notNull(), // Data de expiração
+  usadoEm: timestamp("usadoEm"), // Quando foi usado
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  createdBy: varchar("createdBy", { length: 255 }), // Quem gerou o token
+});
+
+export type Token = typeof tokens.$inferSelect;
+export type InsertToken = typeof tokens.$inferInsert;

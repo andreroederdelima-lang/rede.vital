@@ -1320,3 +1320,85 @@ export async function estatisticasAvaliacoes() {
     media: Math.round(media * 10) / 10,
   };
 }
+
+
+// ========== TOKENS ==========
+import { tokens, type InsertToken } from "../drizzle/schema";
+import { randomBytes } from "crypto";
+
+export async function criarToken(data: Omit<InsertToken, "token" | "expiresAt" | "createdAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Gerar token único de 32 caracteres
+  const token = randomBytes(32).toString("hex");
+  
+  // Expiração em 7 dias
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 7);
+
+  await db.insert(tokens).values({
+    ...data,
+    token,
+    expiresAt,
+  });
+
+  return token;
+}
+
+export async function verificarToken(token: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db
+    .select()
+    .from(tokens)
+    .where(eq(tokens.token, token))
+    .limit(1);
+
+  if (result.length === 0) {
+    return { valido: false, motivo: "Token não encontrado" };
+  }
+
+  const tokenData = result[0];
+
+  // Verificar se já foi usado
+  if (tokenData.usado === 1) {
+    return { valido: false, motivo: "Token já foi utilizado" };
+  }
+
+  // Verificar se expirou
+  if (new Date() > new Date(tokenData.expiresAt)) {
+    return { valido: false, motivo: "Token expirado" };
+  }
+
+  return {
+    valido: true,
+    token: tokenData,
+  };
+}
+
+export async function marcarTokenUsado(token: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(tokens)
+    .set({
+      usado: 1,
+      usadoEm: new Date(),
+    })
+    .where(eq(tokens.token, token));
+}
+
+export async function listarTokens() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db
+    .select()
+    .from(tokens)
+    .orderBy(desc(tokens.createdAt));
+
+  return result;
+}

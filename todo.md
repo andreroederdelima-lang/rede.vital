@@ -1975,3 +1975,193 @@
 - [ ] Verificar tabela `tokensAtualizacao` no banco de dados
 - [ ] Implementar geração automática de token ao clicar "Enviar Link"
 **Status:** ❌ Problema identificado, correção pendente
+
+
+## Verificação e Correção do Sistema de Login Admin - 11/12/2025
+
+- [x] Analisar sistema de login atual (OAuth vs Senha) - Usa Manus OAuth
+- [x] Verificar se administrativo@suasaudevital.com.br existe no banco - EXISTE
+- [x] Verificar role do usuário administrativo - Verificado
+- [x] Garantir acesso admin para administrativo@suasaudevital.com.br - UPDATE executado
+- [ ] Testar login completo
+- [ ] Documentar processo de login para o usuário
+
+
+## AUDITORIA COMPLETA E SISTEMÁTICA - 11/12/2025
+
+### Páginas Públicas
+- [ ] Página inicial (/)
+- [ ] Seja Parceiro (/parceiros)
+- [ ] Sugerir Parceiro (/sugerir)
+- [ ] Fale Conosco (/fale-conosco)
+- [ ] Galeria de Parceiros (/galeria)
+- [ ] Formulário de Parceria
+
+### Navegação e Menu
+- [ ] Botão Início
+- [ ] Botão Seja Parceiro
+- [ ] Botão Sugerir Parceiro
+- [ ] Botão Fale Conosco
+- [ ] Botão Acesso Interno
+- [ ] Botão Admin
+- [ ] Links Instagram e Facebook
+- [ ] Botão WhatsApp do header
+- [ ] Botão Assine Agora
+
+### Cards de Credenciados (Página Pública)
+- [ ] Exibição de fotos
+- [ ] Exibição de nome, especialidade, município
+- [ ] Botão WhatsApp
+- [ ] Botão Como Chegar
+- [ ] Botão Compartilhar
+- [ ] Botão Copiar Link
+
+### Sistema de Filtros
+- [ ] Filtro por Tipo (Médicos/Serviços/Outros)
+- [ ] Filtro por Município
+- [ ] Filtro por Especialidade/Categoria
+- [ ] Busca por nome
+- [ ] Combinação de filtros
+
+### Painel Admin - Aba Médicos
+- [ ] Listagem de médicos
+- [ ] Botão Adicionar Médico
+- [ ] Botão Enviar Link de Atualização
+- [ ] Botão Copiar Link
+- [ ] Botão Editar
+- [ ] Botão Excluir
+- [ ] Formulário Adicionar Médico (todos os campos)
+- [ ] Formulário Editar Médico
+- [ ] Upload de foto
+- [ ] Upload de logo
+- [ ] Validações de campos obrigatórios
+- [ ] Máscaras de telefone e valores
+- [ ] Cálculo automático de desconto
+
+### Painel Admin - Aba Serviços
+- [ ] Listagem de instituições
+- [ ] Botão Adicionar Clínica
+- [ ] Botão Enviar Link de Atualização
+- [ ] Botão Copiar Link
+- [ ] Botão Editar
+- [ ] Botão Excluir
+- [ ] Formulário Adicionar Instituição
+- [ ] Formulário Editar Instituição
+- [ ] Seleção de tipo de serviço
+- [ ] Seleção de categoria
+
+### Painel Admin - Aba Solicitações
+- [ ] Listagem de solicitações
+- [ ] Botão Aprovar
+- [ ] Botão Rejeitar
+- [ ] Visualização de detalhes
+
+### Painel Admin - Aba Atualizações
+- [ ] Listagem de atualizações pendentes
+- [ ] Comparação dados antigos vs novos
+- [ ] Botão Aprovar
+- [ ] Botão Rejeitar
+
+### Painel Admin - Aba Usuários
+- [ ] Listagem de usuários
+- [ ] Botão Adicionar Usuário
+- [ ] Botão Editar
+- [ ] Botão Resetar Senha
+- [ ] Botão Excluir
+- [ ] Seleção de nível de acesso
+
+### Painel Admin - Aba Acessos
+- [ ] Listagem de solicitações de acesso
+- [ ] Botão Aprovar
+- [ ] Botão Rejeitar
+
+### Painel Admin - Aba Prospecção
+- [ ] Dashboard de municípios
+- [ ] Indicadores visuais (vermelho/amarelo/verde)
+- [ ] Contagem de credenciados por categoria
+
+### Área de Dados Internos
+- [ ] Login com Google OAuth
+- [ ] Verificação de email autorizado
+- [ ] Listagem de credenciados com preços
+- [ ] Botão Gerar Encaminhamento
+- [ ] Botão Alterar Senha
+- [ ] Botão Sair
+- [ ] Filtros funcionando
+
+### Sistema de Atualização de Dados
+- [ ] Geração de token ao clicar "Enviar Link"
+- [ ] Link de atualização funcionando
+- [ ] Formulário pré-preenchido
+- [ ] Salvamento de atualização
+- [ ] Notificação ao admin
+
+### Feedback Visual
+- [ ] Loading states em botões
+- [ ] Toast notifications de sucesso
+- [ ] Toast notifications de erro
+- [ ] Confirmações para exclusões
+- [ ] Indicadores de progresso
+
+### Validações e Segurança
+- [ ] Campos obrigatórios validados
+- [ ] Máscaras aplicadas corretamente
+- [ ] Proteção contra duplicatas
+- [ ] Verificação de permissões
+- [ ] Sanitização de inputs
+
+
+## IMPLEMENTAÇÃO OPÇÃO C - LANÇAMENTO PREMIUM - 11/12/2025
+
+### FASE 1: Correções Críticas (3h) - 90% CONCLUÍDA
+- [x] Deletar 6 registros de teste do banco
+- [x] Criar tabela `tokens` no schema
+- [x] Criar router `tokens.criar`
+- [x] Criar router `tokens.verificar`
+- [x] Modificar botão "Enviar Link de Atualização" para gerar token
+- [x] Implementar expiração de tokens (7 dias)
+- [ ] Refatorar página AtualizarDados.tsx (em progresso)
+- [ ] Testar fluxo completo de atualização
+
+### FASE 2: Correções Médias (6-7h)
+- [ ] Adicionar loading states em todos os botões
+- [ ] Adicionar toast notifications de sucesso
+- [ ] Adicionar toast notifications de erro
+- [ ] Adicionar confirmação para exclusões
+- [ ] Implementar validação de telefone obrigatório
+- [ ] Implementar validação de preços > 0
+- [ ] Implementar validação de endereço completo
+- [ ] Padronizar máscaras de telefone (XX) XXXXX-XXXX
+- [ ] Aplicar máscaras em todos os telefones do banco
+
+### FASE 3: Melhorias (5-6h)
+- [ ] Implementar paginação na listagem (20 por página)
+- [ ] Adicionar campo de busca por nome
+- [ ] Adicionar contador "X médicos encontrados"
+- [ ] Adicionar botão "Limpar Filtros"
+- [ ] Melhorar mensagens de erro (específicas)
+- [ ] Adicionar indicador de carregamento na listagem
+- [ ] Otimizar queries do banco
+
+### NOVA FUNCIONALIDADE: Link de Cadastro para Novos Médicos (2-3h)
+- [ ] Adicionar botão "Enviar Link de Cadastro" no Admin
+- [ ] Criar router `tokens.criarCadastro`
+- [ ] Criar página `/cadastro-medico/{token}`
+- [ ] Formulário completo de cadastro
+- [ ] Salvar como "status: pendente"
+- [ ] Notificar admin de nova solicitação
+- [ ] Aba Solicitações mostrar novos cadastros
+- [ ] Botão aprovar/rejeitar solicitação
+- [ ] Testar fluxo completo
+
+### TESTES FINAIS
+- [ ] Testar todos os formulários
+- [ ] Testar todos os botões
+- [ ] Testar sistema de filtros
+- [ ] Testar paginação
+- [ ] Testar busca
+- [ ] Testar tokens de atualização
+- [ ] Testar tokens de cadastro
+- [ ] Testar validações
+- [ ] Testar feedback visual
+- [ ] Testar em mobile

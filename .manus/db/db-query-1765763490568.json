@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM medicos WHERE nome IN ('Dr. Teste Integração', 'Dr. Para Atualizar');",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute DELETE FROM medicos WHERE nome IN ('Dr. Teste Integração', 'Dr. Para Atualizar');",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 64
+}

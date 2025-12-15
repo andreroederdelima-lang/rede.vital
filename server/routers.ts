@@ -977,6 +977,73 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       }),
   }),
 
+  // ========== TOKENS ==========
+  tokens: router({    
+    // Criar token para atualização de dados
+    criar: protectedProcedure
+      .input(z.object({
+        tipoCredenciado: z.enum(["medico", "instituicao"]),
+        credenciadoId: z.number(),
+        email: z.string().email().optional(),
+        telefone: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem gerar tokens");
+        }
+        const { criarToken } = await import("./db");
+        const token = await criarToken({
+          tipo: "atualizacao",
+          tipoCredenciado: input.tipoCredenciado,
+          credenciadoId: input.credenciadoId,
+          email: input.email,
+          telefone: input.telefone,
+          createdBy: ctx.user.email || ctx.user.name || "admin",
+        });
+        return { token };
+      }),
+
+    // Criar token para cadastro de novo credenciado
+    criarCadastro: protectedProcedure
+      .input(z.object({
+        tipoCredenciado: z.enum(["medico", "instituicao"]),
+        email: z.string().email().optional(),
+        telefone: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem gerar tokens");
+        }
+        const { criarToken } = await import("./db");
+        const token = await criarToken({
+          tipo: "cadastro",
+          tipoCredenciado: input.tipoCredenciado,
+          credenciadoId: null,
+          email: input.email,
+          telefone: input.telefone,
+          createdBy: ctx.user.email || ctx.user.name || "admin",
+        });
+        return { token };
+      }),
+
+    // Verificar validade do token
+    verificar: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .query(async ({ input }) => {
+        const { verificarToken } = await import("./db");
+        return await verificarToken(input.token);
+      }),
+
+    // Marcar token como usado
+    marcarUsado: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        const { marcarTokenUsado } = await import("./db");
+        await marcarTokenUsado(input.token);
+        return { success: true };
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

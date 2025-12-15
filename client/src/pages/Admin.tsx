@@ -98,6 +98,12 @@ export default function Admin() {
     },
   });
 
+  const criarTokenAtualizacao = trpc.tokens.criar.useMutation({
+    onError: (error) => {
+      toast.error("Erro ao gerar token: " + error.message);
+    },
+  });
+
   const atualizarMedico = trpc.medicos.atualizar.useMutation({
     onSuccess: () => {
       utils.medicos.listar.invalidate();
@@ -394,12 +400,24 @@ export default function Admin() {
                                   variant="ghost"
                                   size="icon"
                                   className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
-                                  onClick={() => {
-                                    const baseUrl = window.location.origin;
-                                    const linkAtualizacao = `${baseUrl}/atualizar-dados/medico-${medico.id}`;
-                                    const mensagem = `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, Dr(a). ${medico.nome}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n${linkAtualizacao}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
-                                    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-                                    window.open(whatsappUrl, "_blank");
+                                  onClick={async () => {
+                                    try {
+                                      // Gerar token de atualização
+                                      const result = await criarTokenAtualizacao.mutateAsync({
+                                        tipoCredenciado: "medico",
+                                        credenciadoId: medico.id,
+                                        telefone: medico.telefone || medico.whatsapp || undefined,
+                                      });
+
+                                      const baseUrl = window.location.origin;
+                                      const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
+                                      const mensagem = `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, Dr(a). ${medico.nome}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n${linkAtualizacao}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                                      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+                                      window.open(whatsappUrl, "_blank");
+                                      toast.success("Link de atualização gerado com sucesso!");
+                                    } catch (error) {
+                                      console.error("Erro ao gerar token:", error);
+                                    }
                                   }}
                                   title="Enviar link de atualização via WhatsApp"
                                 >
@@ -531,12 +549,24 @@ export default function Admin() {
                                   variant="ghost"
                                   size="icon"
                                   className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
-                                  onClick={() => {
-                                    const baseUrl = window.location.origin;
-                                    const linkAtualizacao = `${baseUrl}/atualizar-dados/instituicao-${inst.id}`;
-                                    const mensagem = `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, ${inst.nome}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n${linkAtualizacao}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
-                                    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
-                                    window.open(whatsappUrl, "_blank");
+                                  onClick={async () => {
+                                    try {
+                                      // Gerar token de atualização
+                                      const result = await criarTokenAtualizacao.mutateAsync({
+                                        tipoCredenciado: "instituicao",
+                                        credenciadoId: inst.id,
+                                        telefone: inst.telefone || inst.whatsappSecretaria || undefined,
+                                      });
+
+                                      const baseUrl = window.location.origin;
+                                      const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
+                                      const mensagem = `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, ${inst.nome}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n${linkAtualizacao}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                                      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+                                      window.open(whatsappUrl, "_blank");
+                                      toast.success("Link de atualização gerado com sucesso!");
+                                    } catch (error) {
+                                      console.error("Erro ao gerar token:", error);
+                                    }
                                   }}
                                   title="Enviar link de atualização via WhatsApp"
                                 >

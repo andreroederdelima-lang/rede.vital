@@ -33,9 +33,25 @@ export default function AtualizarDados() {
   const [enviado, setEnviado] = useState(false);
   const [aceitouTermos, setAceitouTermos] = useState(false);
   
-  const { data: credenciado, isLoading } = trpc.atualizacao.obterPorToken.useQuery(token, {
-    enabled: !!token,
-  });
+  // Verificar validade do token
+  const { data: tokenData, isLoading: loadingToken } = trpc.tokens.verificar.useQuery(
+    { token },
+    { enabled: !!token }
+  );
+
+  // Carregar dados do credenciado se token válido
+  const { data: medico, isLoading: loadingMedico } = trpc.medicos.obter.useQuery(
+    tokenData?.token?.credenciadoId || 0,
+    { enabled: tokenData?.valido && tokenData?.token?.tipoCredenciado === "medico" }
+  );
+
+  const { data: instituicao, isLoading: loadingInstituicao } = trpc.instituicoes.obter.useQuery(
+    tokenData?.token?.credenciadoId || 0,
+    { enabled: tokenData?.valido && tokenData?.token?.tipoCredenciado === "instituicao" }
+  );
+
+  const isLoading = loadingToken || loadingMedico || loadingInstituicao;
+  const credenciado = medico || instituicao;
   
   const enviarMutation = trpc.atualizacao.enviar.useMutation({
     onSuccess: () => {
@@ -53,19 +69,20 @@ export default function AtualizarDados() {
   
   useEffect(() => {
     if (credenciado) {
+      const c = credenciado as any; // Type assertion para acessar campos
       setFormData({
-        telefone: credenciado.dados.telefone || "",
-        whatsapp: (credenciado.dados as any).whatsapp || "",
-        whatsappSecretaria: (credenciado.dados as any).whatsappSecretaria || "",
-        telefoneOrganizacao: (credenciado.dados as any).telefoneOrganizacao || "",
-        fotoUrl: (credenciado.dados as any).fotoUrl || "",
-        email: (credenciado.dados as any).email || "",
-        endereco: credenciado.dados.endereco || "",
-        precoConsulta: (credenciado.dados as any).precoConsulta || "",
-        valorParticular: (credenciado.dados as any).valorParticular || "",
-        valorAssinanteVital: (credenciado.dados as any).valorAssinanteVital || "",
-        descontoPercentual: credenciado.dados.descontoPercentual || 0,
-        observacoes: (credenciado.dados as any).observacoes || "",
+        telefone: c.telefone || "",
+        whatsapp: c.whatsapp || "",
+        whatsappSecretaria: c.whatsappSecretaria || "",
+        telefoneOrganizacao: c.telefoneOrganizacao || "",
+        fotoUrl: c.fotoUrl || "",
+        email: c.email || "",
+        endereco: c.endereco || "",
+        precoConsulta: c.precoConsulta || "",
+        valorParticular: c.valorParticular || "",
+        valorAssinanteVital: c.valorAssinanteVital || "",
+        descontoPercentual: c.descontoPercentual || 0,
+        observacoes: c.observacoes || "",
       });
     }
   }, [credenciado]);
@@ -150,7 +167,7 @@ export default function AtualizarDados() {
             Atualizar Dados
           </h1>
           <p className="text-muted-foreground">
-            {credenciado.tipo === "medico" ? "Dr(a). " : ""}{credenciado.dados.nome}
+            {tokenData?.token?.tipoCredenciado === "medico" ? "Dr(a). " : ""}{(credenciado as any).nome}
           </p>
         </div>
         
