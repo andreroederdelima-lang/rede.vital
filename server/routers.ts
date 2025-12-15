@@ -1044,6 +1044,38 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       }),
   }),
 
+  // ========== UPLOAD DE IMAGENS ==========
+  upload: router({
+    imagem: protectedProcedure
+      .input(z.object({
+        base64: z.string(),
+        filename: z.string(),
+        contentType: z.string(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem fazer upload de imagens");
+        }
+        
+        const { storagePut } = await import("./storage");
+        
+        // Remover prefixo data:image/...;base64, se existir
+        const base64Data = input.base64.replace(/^data:image\/\w+;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+        
+        // Gerar nome único para o arquivo
+        const timestamp = Date.now();
+        const randomSuffix = Math.random().toString(36).substring(2, 8);
+        const extension = input.filename.split(".").pop() || "jpg";
+        const uniqueFilename = `credenciados/${timestamp}-${randomSuffix}.${extension}`;
+        
+        // Upload para S3
+        const result = await storagePut(uniqueFilename, buffer, input.contentType);
+        
+        return { url: result.url };
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

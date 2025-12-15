@@ -2222,3 +2222,35 @@
 - [x] Confirmações antes de excluir (já existiam)
 - [x] Toasts informativos em todas as ações (já existiam)
 - [x] Botões desabilitados durante processamento
+
+
+## NOVA FEATURE - UPLOAD DE IMAGENS
+
+### Fase 1: Componente de Upload ✅
+- [x] Criar componente ImageUpload.tsx reutilizável
+- [x] Implementar preview visual da imagem selecionada
+- [x] Validar tamanho máximo (5MB)
+- [x] Validar formato (jpg, png, webp)
+- [x] Mostrar mensagens de erro claras
+- [x] Botão para remover imagem selecionada
+
+### Fase 2: Backend S3 ✅
+- [x] Criar endpoint tRPC upload.imagem
+- [x] Integrar com storagePut do S3
+- [x] Gerar nomes únicos para arquivos
+- [x] Retornar URL pública da imagem
+- [x] Tratamento de erros
+
+### Fase 3: Integração nos Formulários ✅
+- [x] Substituir campo fotoUrl por upload em formulário de médicos
+- [x] Substituir campo logoUrl por upload em formulário de médicos
+- [x] Substituir campo fotoUrl por upload em formulário de instituições
+- [x] Substituir campo logoUrl por upload em formulário de instituições
+- [x] Manter compatibilidade com URLs existentes
+
+### Fase 4: Testes e Checkpoint ✅
+- [x] Testar upload de foto de médico
+- [x] Testar upload de logo de instituição
+- [x] Verificar preview funciona
+- [x] Verificar validações funcionam
+- [x] Salvar checkpoint final

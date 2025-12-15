@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2 } from "lucide-react";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
+import ImageUpload from "@/components/ImageUpload";
 // [REMOVIDO] import IndicacoesTab from "@/components/IndicacoesTab";
 // [DESATIVADO] import ConfiguracoesTab from "@/components/ConfiguracoesTab";
 import { Link } from "wouter";
@@ -740,7 +741,7 @@ function MedicoFormDialog({
   onCancel: () => void;
 }) {
   const [uploading, setUploading] = useState(false);
-  const uploadImagem = trpc.medicos.uploadImagem.useMutation();
+  const uploadImagem = trpc.upload.imagem.useMutation();
 
   const [formData, setFormData] = useState<MedicoForm>(
     medico || {
@@ -786,9 +787,9 @@ function MedicoFormDialog({
         });
 
         const { url } = await uploadImagem.mutateAsync({
-          base64Data,
+          base64: base64Data,
           filename: formData.logoFile.name,
-          mimeType: formData.logoFile.type,
+          contentType: formData.logoFile.type,
         });
         updatedData.logoUrl = url;
       }
@@ -806,9 +807,9 @@ function MedicoFormDialog({
         });
 
         const { url } = await uploadImagem.mutateAsync({
-          base64Data,
+          base64: base64Data,
           filename: formData.fotoFile.name,
-          mimeType: formData.fotoFile.type,
+          contentType: formData.fotoFile.type,
         });
         updatedData.fotoUrl = url;
       }
@@ -1051,7 +1052,7 @@ function InstituicaoFormDialog({
   onCancel: () => void;
 }) {
   const [uploading, setUploading] = useState(false);
-  const uploadImagem = trpc.instituicoes.uploadImagem.useMutation();
+  const uploadImagem = trpc.upload.imagem.useMutation();
 
   const [formData, setFormData] = useState<InstituicaoForm>(
     instituicao || {
@@ -1096,9 +1097,9 @@ function InstituicaoFormDialog({
         });
 
         const { url } = await uploadImagem.mutateAsync({
-          base64Data,
+          base64: base64Data,
           filename: formData.logoFile.name,
-          mimeType: formData.logoFile.type,
+          contentType: formData.logoFile.type,
         });
         updatedData.logoUrl = url;
       }
@@ -1116,9 +1117,9 @@ function InstituicaoFormDialog({
         });
 
         const { url } = await uploadImagem.mutateAsync({
-          base64Data,
+          base64: base64Data,
           filename: formData.fotoFile.name,
-          mimeType: formData.fotoFile.type,
+          contentType: formData.fotoFile.type,
         });
         updatedData.fotoUrl = url;
       }
