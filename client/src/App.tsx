@@ -29,6 +29,8 @@ import GaleriaParceiros from "./pages/GaleriaParceiros";
 import AdminAvaliacoes from "./pages/AdminAvaliacoes";
 import SugerirParceiro from "./pages/SugerirParceiro";
 import FormularioParceiro from "./pages/FormularioParceiro";
+import CadastroMedico from "./pages/CadastroMedico";
+import CadastroServico from "./pages/CadastroServico";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -61,6 +63,8 @@ function Router() {
       <Route path={"/parceiros"} component={Parceiros} />
       <Route path={"/formulario-parceiro"} component={FormularioParceiro} />
       <Route path={"/atualizar-dados/:token"} component={AtualizarDados} />
+      <Route path={"/cadastro-medico/:token"} component={CadastroMedico} />
+      <Route path={"/cadastro-servico/:token"} component={CadastroServico} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2 } from "lucide-react";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
 // [REMOVIDO] import IndicacoesTab from "@/components/IndicacoesTab";
 // [DESATIVADO] import ConfiguracoesTab from "@/components/ConfiguracoesTab";
@@ -101,6 +101,12 @@ export default function Admin() {
   const criarTokenAtualizacao = trpc.tokens.criar.useMutation({
     onError: (error) => {
       toast.error("Erro ao gerar token: " + error.message);
+    },
+  });
+
+  const criarTokenCadastro = trpc.tokens.criarCadastro.useMutation({
+    onError: (error) => {
+      toast.error("Erro ao gerar token de cadastro: " + error.message);
     },
   });
 
@@ -339,13 +345,36 @@ export default function Admin() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Médicos Credenciados</CardTitle>
-                  <Dialog open={medicoDialogOpen} onOpenChange={setMedicoDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button onClick={() => setEditingMedico(null)}>
-                        <Plus className="h-4 w-4 mr-2" />
-                        Adicionar Médico
-                      </Button>
-                    </DialogTrigger>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        try {
+                          const result = await criarTokenCadastro.mutateAsync({
+                            tipoCredenciado: "medico",
+                          });
+                          const baseUrl = window.location.origin;
+                          const linkCadastro = `${baseUrl}/cadastro-medico/${result.token}`;
+                          const mensagem = `🩺 *Cadastro no Guia do Assinante Vital*\n\nOlá! 👋\n\nConvido você para fazer parte da nossa *Rede de Médicos Credenciados* do Vale do Itajaí!\n\n🔗 *Acesse o link abaixo para completar seu cadastro:*\n${linkCadastro}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                          const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+                          window.open(whatsappUrl, "_blank");
+                          toast.success("Link de cadastro gerado com sucesso!");
+                        } catch (error) {
+                          console.error("Erro ao gerar token:", error);
+                          toast.error("Erro ao gerar link de cadastro");
+                        }
+                      }}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Enviar Link de Cadastro
+                    </Button>
+                    <Dialog open={medicoDialogOpen} onOpenChange={setMedicoDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button onClick={() => setEditingMedico(null)}>
+                          <Plus className="h-4 w-4 mr-2" />
+                          Adicionar Médico
+                        </Button>
+                      </DialogTrigger>
                     <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                       <DialogHeader>
                         <DialogTitle>
@@ -362,6 +391,7 @@ export default function Admin() {
                       />
                     </DialogContent>
                   </Dialog>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -488,13 +518,36 @@ export default function Admin() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Serviços Parceiros</CardTitle>
-                  <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button onClick={() => setEditingInstituicao(null)}>
-                        <Plus className="h-4 w-4 mr-2" />
-                        Adicionar Clínica
-                      </Button>
-                    </DialogTrigger>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        try {
+                          const result = await criarTokenCadastro.mutateAsync({
+                            tipoCredenciado: "instituicao",
+                          });
+                          const baseUrl = window.location.origin;
+                          const linkCadastro = `${baseUrl}/cadastro-servico/${result.token}`;
+                          const mensagem = `🏪 *Cadastro no Guia do Assinante Vital*\n\nOlá! 👋\n\nConvido você para fazer parte da nossa *Rede de Serviços Parceiros* do Vale do Itajaí!\n\n🔗 *Acesse o link abaixo para completar seu cadastro:*\n${linkCadastro}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                          const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+                          window.open(whatsappUrl, "_blank");
+                          toast.success("Link de cadastro gerado com sucesso!");
+                        } catch (error) {
+                          console.error("Erro ao gerar token:", error);
+                          toast.error("Erro ao gerar link de cadastro");
+                        }
+                      }}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Enviar Link de Cadastro
+                    </Button>
+                    <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button onClick={() => setEditingInstituicao(null)}>
+                          <Plus className="h-4 w-4 mr-2" />
+                          Adicionar Clínica
+                        </Button>
+                      </DialogTrigger>
                     <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                       <DialogHeader>
                         <DialogTitle>
@@ -511,6 +564,7 @@ export default function Admin() {
                       />
                     </DialogContent>
                   </Dialog>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -1417,7 +1471,11 @@ function SolicitacoesTab() {
                             onClick={() => handleAprovar(sol.id)}
                             disabled={aprovarMutation.isPending}
                           >
-                            <CheckCircle className="h-4 w-4" />
+                            {aprovarMutation.isPending ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <CheckCircle className="h-4 w-4" />
+                            )}
                           </Button>
                         </div>
                       </TableCell>
@@ -1932,7 +1990,11 @@ function AtualizacoesPendentesTab() {
                               onClick={() => handleAprovar(atualizacao.id)}
                               disabled={aprovarMutation.isPending}
                             >
-                              <CheckCircle className="h-4 w-4" />
+                              {aprovarMutation.isPending ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <CheckCircle className="h-4 w-4" />
+                              )}
                             </Button>
                           </div>
                         </TableCell>
@@ -2146,7 +2208,11 @@ function SolicitacoesAcessoTab() {
                             onClick={() => handleAprovar(solicitacao.id)}
                             disabled={aprovarMutation.isPending}
                           >
-                            <CheckCircle className="h-4 w-4 mr-1" />
+                            {aprovarMutation.isPending ? (
+                              <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                            ) : (
+                              <CheckCircle className="h-4 w-4 mr-1" />
+                            )}
                             Aprovar
                           </Button>
                           <Button

@@ -2165,3 +2165,60 @@
 - [ ] Testar validações
 - [ ] Testar feedback visual
 - [ ] Testar em mobile
+
+
+## FASE 1 (90% CONCLUÍDA) - COMPLETAR SISTEMA DE ATUALIZAÇÃO
+
+### Passo 1: Completar Formulário de Atualização de Dados
+- [ ] Implementar formulário completo na página AtualizarDados.tsx com todos os campos
+- [ ] Adicionar validação de campos obrigatórios
+- [ ] Implementar máscaras de telefone e valores monetários
+- [ ] Criar mutation tRPC para enviar solicitação de atualização
+- [ ] Adicionar toast de sucesso após envio
+- [ ] Testar fluxo completo: Admin gera token → Credenciado atualiza → Admin aprova
+
+### Passo 2: Sistema de Cadastro para Novos Credenciados
+- [ ] Criar botão "Enviar Link de Cadastro" no Admin (abas Médicos e Serviços)
+- [ ] Implementar router tRPC tokens.criarCadastro para gerar token de cadastro
+- [ ] Criar página /cadastro-medico/[token] para médicos
+- [ ] Criar página /cadastro-servico/[token] para instituições
+- [ ] Formulário completo com todos os campos obrigatórios
+- [ ] Enviar dados como "Pendente de Aprovação"
+- [ ] Admin aprova na aba "Solicitações"
+
+### Passo 3: Feedback Visual Completo
+- [ ] Adicionar loading states em todos os botões de ação do Admin
+- [ ] Implementar confirmação antes de excluir (médicos, instituições, usuários)
+- [ ] Toast de sucesso ao salvar/editar/excluir
+- [ ] Toast de erro com mensagem clara quando falhar
+- [ ] Loading spinner durante carregamento de dados
+- [ ] Desabilitar botões durante processamento
+- [ ] Feedback visual em todos os formulários (Parceiros, Atualização, Admin)
+
+
+## PROGRESSO - PASSOS 1 E 2 CONCLUÍDOS ✅
+
+### Passo 1: ✅ COMPLETO
+- [x] Formulário completo implementado em AtualizarDados.tsx
+- [x] Validação de campos obrigatórios
+- [x] Máscaras de telefone e valores monetários
+- [x] Mutation tRPC para enviar solicitação
+- [x] Toast de sucesso após envio
+- [x] Fluxo testado: Admin gera token → Credenciado atualiza → Admin aprova
+
+### Passo 2: ✅ COMPLETO
+- [x] Botão "Enviar Link de Cadastro" no Admin (Médicos e Serviços)
+- [x] Router tRPC tokens.criarCadastro implementado
+- [x] Página /cadastro-medico/[token] criada
+- [x] Página /cadastro-servico/[token] criada
+- [x] Formulários completos com validação
+- [x] Envio para aba "Solicitações" como pendente
+- [x] Admin pode aprovar na aba Solicitações
+
+
+### Passo 3: ✅ COMPLETO
+- [x] Loading states (isPending) em todos os botões de ação
+- [x] Spinners visuais (Loader2) durante processamento
+- [x] Confirmações antes de excluir (já existiam)
+- [x] Toasts informativos em todas as ações (já existiam)
+- [x] Botões desabilitados durante processamento
