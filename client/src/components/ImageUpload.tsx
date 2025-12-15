@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Upload, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import ImageCropModal from "@/components/ImageCropModal";
 
 interface ImageUploadProps {
   label: string;
@@ -21,6 +22,9 @@ export default function ImageUpload({
 }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(value || null);
   const [isValidating, setIsValidating] = useState(false);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [tempImageSrc, setTempImageSrc] = useState<string | null>(null);
+  const [tempFile, setTempFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateFile = (file: File): boolean => {
@@ -60,16 +64,14 @@ export default function ImageUpload({
       return;
     }
 
-    // Criar preview
+    // Abrir modal de crop
     const reader = new FileReader();
     reader.onloadend = () => {
-      const previewUrl = reader.result as string;
-      setPreview(previewUrl);
-      onChange(file, previewUrl);
+      const imageUrl = reader.result as string;
+      setTempImageSrc(imageUrl);
+      setTempFile(file);
+      setShowCropModal(true);
       setIsValidating(false);
-      toast.success("Imagem selecionada", {
-        description: "A imagem será enviada ao salvar o formulário.",
-      });
     };
     reader.readAsDataURL(file);
   };
@@ -81,6 +83,34 @@ export default function ImageUpload({
       fileInputRef.current.value = "";
     }
     toast.info("Imagem removida");
+  };
+
+  const handleCropComplete = (croppedBlob: Blob, croppedUrl: string) => {
+    // Converter blob para File
+    const croppedFile = new File(
+      [croppedBlob],
+      tempFile?.name || "cropped-image.jpg",
+      { type: "image/jpeg" }
+    );
+    
+    setPreview(croppedUrl);
+    onChange(croppedFile, croppedUrl);
+    setShowCropModal(false);
+    setTempImageSrc(null);
+    setTempFile(null);
+    
+    toast.success("Imagem recortada", {
+      description: "A imagem será enviada ao salvar o formulário.",
+    });
+  };
+
+  const handleCropCancel = () => {
+    setShowCropModal(false);
+    setTempImageSrc(null);
+    setTempFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   return (
@@ -148,6 +178,16 @@ export default function ImageUpload({
           </div>
         )}
       </div>
+      
+      {/* Modal de Crop */}
+      {tempImageSrc && (
+        <ImageCropModal
+          open={showCropModal}
+          imageSrc={tempImageSrc}
+          onCropComplete={handleCropComplete}
+          onCancel={handleCropCancel}
+        />
+      )}
     </div>
   );
 }

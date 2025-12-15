@@ -2254,3 +2254,26 @@
 - [x] Verificar preview funciona
 - [x] Verificar validações funcionam
 - [x] Salvar checkpoint final
+
+
+## NOVA FEATURE - CROP DE IMAGEM
+
+### Fase 1: Componente de Crop ✅
+- [x] Instalar biblioteca react-image-crop
+- [x] Criar componente ImageCropModal.tsx
+- [x] Implementar interface de recorte com preview
+- [x] Adicionar proporções predefinidas (1:1, 4:3, 16:9, livre)
+- [x] Botões de confirmar/cancelar recorte
+- [x] Converter imagem recortada para base64
+
+### Fase 2: Integração ✅
+- [x] Integrar modal de crop no ImageUpload
+- [x] Abrir modal automaticamente após seleção de arquivo
+- [x] Passar imagem recortada para ImageUpload
+- [x] Manter validações de tamanho e formato
+
+### Fase 3: Testes e Checkpoint ✅
+- [x] Testar crop com diferentes proporções
+- [x] Testar upload após crop
+- [x] Verificar preview funciona corretamente
+- [x] Salvar checkpoint final
