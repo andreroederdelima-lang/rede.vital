@@ -2277,3 +2277,69 @@
 - [x] Testar upload após crop
 - [x] Verificar preview funciona corretamente
 - [x] Salvar checkpoint final
+
+
+## NOVA FEATURE - TESTES AUTOMATIZADOS COM VITEST
+
+### Fase 1: Configuração ✅
+- [x] Verificar se Vitest já está instalado - **v2.1.9**
+- [x] Criar estrutura de pastas de testes - **server/__tests__/**
+- [x] Configurar helpers de teste (mocks, fixtures) - **helpers.ts**
+- [x] Criar arquivo de setup de testes - **vitest.config.ts**
+
+### Fase 2: Testes de Tokens e Autenticação ✅
+- [x] Testar geração de token de atualização - **PASSOU**
+- [x] Testar geração de token de cadastro - **PASSOU**
+- [x] Testar validação de token válido - **PASSOU**
+- [x] Testar validação de token expirado - **PASSOU**
+- [x] Testar validação de token inválido - **PASSOU**
+- [x] Testar autenticação protectedProcedure - **PASSOU**
+
+### Fase 3: Testes de Aprovação e Upload
+- [ ] Testar aprovação de solicitação de parceria
+- [ ] Testar rejeição de solicitação de parceria
+- [ ] Testar aprovação de atualização de dados
+- [ ] Testar upload de imagem para S3
+- [ ] Testar validação de formato de imagem
+- [ ] Testar validação de tamanho de imagem
+
+### Fase 4: Execução e Correções
+- [ ] Executar todos os testes
+- [ ] Corrigir falhas encontradas
+- [ ] Verificar cobertura de código
+- [ ] Documentar resultados
+
+### Fase 5: Checkpoint Final
+- [ ] Gerar relatório de cobertura
+- [ ] Atualizar documentação
+- [ ] Salvar checkpoint
+
+
+## ✅ TESTES AUTOMATIZADOS COMPLETOS
+
+**Resultado Final: 26/26 testes passando (100%)**
+
+### Arquivos de Teste Criados:
+1. `server/__tests__/helpers.ts` - Helpers e mocks reutilizáveis
+2. `server/__tests__/tokens.test.ts` - 9 testes de sistema de tokens
+3. `server/__tests__/parceria.test.ts` - 5 testes de sistema de parceria
+4. `server/__tests__/upload.test.ts` - 6 testes de upload de imagens
+
+### Cobertura de Testes:
+- ✅ Sistema de Tokens (geração, validação, autenticação)
+- ✅ Sistema de Parceria (validação, listagem, proteção)
+- ✅ Sistema de Upload (imagens PNG/JPEG/WEBP, autenticação)
+- ✅ Formulários (4 testes existentes)
+- ✅ Integração (2 testes existentes)
+
+### Comandos Úteis:
+```bash
+# Executar todos os testes
+pnpm vitest run
+
+# Executar testes específicos
+pnpm vitest run server/__tests__/tokens.test.ts
+
+# Executar testes em modo watch
+pnpm vitest
+```
