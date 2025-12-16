@@ -903,41 +903,23 @@ function MedicoFormDialog({
 
 
         <div>
-          <Label htmlFor="telefoneOrganizacao">Telefone da Organização</Label>
-          <Input
-            id="telefoneOrganizacao"
-            value={formData.telefoneOrganizacao || ""}
-            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: maskTelefone(e.target.value) })}
-            placeholder="Ex: (47) 3333-4444"
-          />
-        </div>
-        <div>
-          <Label htmlFor="telefone">Telefone</Label>
+          <Label htmlFor="telefone">Telefone Fixo</Label>
           <Input
             id="telefone"
             value={formData.telefone || ""}
             onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
-            placeholder="(XX) XXXXX-XXXX"
+            placeholder="(47) 3333-4444"
           />
         </div>
 
         <div>
-          <Label htmlFor="whatsapp">WhatsApp</Label>
-          <Input
-            id="whatsapp"
-            value={formData.whatsapp || ""}
-            onChange={(e) => setFormData({ ...formData, whatsapp: maskTelefone(e.target.value) })}
-            placeholder="Ex: 47999999999"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="whatsappSecretaria">WhatsApp Comercial/Secretaria</Label>
+          <Label htmlFor="whatsappSecretaria">WhatsApp Secretária/Agendamento *</Label>
           <Input
             id="whatsappSecretaria"
             value={formData.whatsappSecretaria || ""}
             onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
-            placeholder="Ex: 47999999999"
+            placeholder="(47) 99999-8888"
+            required
           />
         </div>
 
@@ -992,22 +974,23 @@ function MedicoFormDialog({
 
 
         <div>
+          <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
+          <Input
+            id="contatoParceria"
+            placeholder="Nome do responsável"
+            value={formData.contatoParceria || ""}
+            onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
+          />
+        </div>
 
         <div>
-          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pela Parceria</Label>
+          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pelo Cadastro *</Label>
           <Input
             id="whatsappParceria"
             value={formData.whatsappParceria || ""}
             onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
-            placeholder="Ex: 47999999999"
-          />
-        </div>
-          <Label htmlFor="contatoParceria">Contato da Parceria</Label>
-          <Input
-            id="contatoParceria"
-            placeholder="Ex: Secretária Ana"
-            value={formData.contatoParceria || ""}
-            onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
+            placeholder="(47) 99999-6666"
+            required
           />
         </div>
 
@@ -1211,22 +1194,23 @@ function InstituicaoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="telefone">Telefone</Label>
+          <Label htmlFor="telefone">Telefone Fixo</Label>
           <Input
             id="telefone"
             value={formData.telefone || ""}
             onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
-            placeholder="(XX) XXXXX-XXXX"
+            placeholder="(47) 3333-4444"
           />
         </div>
 
         <div>
-          <Label htmlFor="telefoneOrganizacao">Telefone da Organização</Label>
+          <Label htmlFor="whatsappSecretaria">WhatsApp Comercial/Agendamento *</Label>
           <Input
-            id="telefoneOrganizacao"
-            value={formData.telefoneOrganizacao || ""}
-            onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: maskTelefone(e.target.value) })}
-            placeholder="Ex: (47) 3333-4444"
+            id="whatsappSecretaria"
+            value={formData.whatsappSecretaria || ""}
+            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
+            placeholder="(47) 99999-8888"
+            required
           />
         </div>
 
@@ -1237,16 +1221,6 @@ function InstituicaoFormDialog({
             type="email"
             value={formData.email || ""}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="whatsappSecretaria">WhatsApp Comercial</Label>
-          <Input
-            id="whatsappSecretaria"
-            value={formData.whatsappSecretaria || ""}
-            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
-            placeholder="Ex: 47999999999"
           />
         </div>
 
@@ -1301,22 +1275,23 @@ function InstituicaoFormDialog({
 
 
         <div>
-          <Label htmlFor="contatoParceria">Contato da Parceria</Label>
+          <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
           <Input
             id="contatoParceria"
-            placeholder="Ex: Gerente João"
+            placeholder="Nome do responsável"
             value={formData.contatoParceria || ""}
             onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
           />
         </div>
 
         <div>
-          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pela Parceria</Label>
+          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pelo Cadastro *</Label>
           <Input
             id="whatsappParceria"
-            placeholder="Ex: 47999999999"
+            placeholder="(47) 99999-6666"
             value={formData.whatsappParceria || ""}
             onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
+            required
           />
         </div>
 

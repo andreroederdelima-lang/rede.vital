@@ -2363,3 +2363,20 @@ pnpm vitest
 - [x] Testar formulário de cadastro médico
 - [x] Testar formulário de cadastro serviço
 - [x] Salvar checkpoint
+
+
+## AJUSTE - SIMPLIFICAR TELEFONES NO ADMIN
+
+### Fase 1: MedicoFormDialog ✅
+- [x] Remover campos duplicados de telefone
+- [x] Manter: Telefone Fixo, WhatsApp Secretária/Agendamento, WhatsApp Responsável Cadastro
+- [x] Ajustar labels para clareza
+
+### Fase 2: InstituicaoFormDialog ✅
+- [x] Remover campos duplicados de telefone
+- [x] Manter: Telefone Fixo, WhatsApp Comercial/Agendamento, WhatsApp Responsável Cadastro
+- [x] Ajustar labels para clareza
+
+### Fase 3: Testes ✅
+- [x] Verificar formulários funcionando
+- [x] Salvar checkpoint
