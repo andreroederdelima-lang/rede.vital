@@ -34,11 +34,13 @@ export default function CadastroServico() {
     contatoParceria: "",
     whatsappParceria: "",
     logoUrl: "",
+    fotoUrl: "",
   });
   
   const [enviado, setEnviado] = useState(false);
   const [aceitouTermos, setAceitouTermos] = useState(false);
   const [logoBase64, setLogoBase64] = useState<string | null>(null);
+  const [fotoBase64, setFotoBase64] = useState<string | null>(null);
   
   // Upload de imagem
   const uploadMutation = trpc.upload.imagem.useMutation();
@@ -107,6 +109,17 @@ export default function CadastroServico() {
         logoUrl = uploadResult.url;
       }
       
+      // Upload da foto se houver
+      let fotoUrl = formData.fotoUrl;
+      if (fotoBase64) {
+        const uploadResult = await uploadMutation.mutateAsync({
+          base64: fotoBase64,
+          filename: `foto-servico-${Date.now()}.jpg`,
+          contentType: "image/jpeg",
+        });
+        fotoUrl = uploadResult.url;
+      }
+      
       enviarMutation.mutate({
         tipoCredenciado: "instituicao",
         nomeResponsavel: formData.contatoParceria || formData.nome,
@@ -125,6 +138,7 @@ export default function CadastroServico() {
         contatoParceria: formData.contatoParceria,
         whatsappParceria: formData.whatsappParceria,
         logoUrl: logoUrl,
+        fotoUrl: fotoUrl,
       });
     } catch (error) {
       toast.error("Erro ao processar cadastro", {
@@ -368,6 +382,26 @@ export default function CadastroServico() {
                     }
                   }}
                   label="Logo"
+                />
+              </div>
+              
+              {/* Foto do Estabelecimento */}
+              <div>
+                <Label>Foto do Estabelecimento (opcional)</Label>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Envie uma foto da fachada ou interior do estabelecimento.
+                </p>
+                <ImageUpload
+                  value={formData.fotoUrl}
+                  onChange={(file, previewUrl) => {
+                    setFormData({ ...formData, fotoUrl: previewUrl || "" });
+                    if (previewUrl) {
+                      setFotoBase64(previewUrl);
+                    } else {
+                      setFotoBase64(null);
+                    }
+                  }}
+                  label="Foto"
                 />
               </div>
               

@@ -34,11 +34,13 @@ export default function CadastroMedico() {
     contatoParceria: "",
     whatsappParceria: "",
     fotoUrl: "",
+    logoUrl: "",
   });
   
   const [enviado, setEnviado] = useState(false);
   const [aceitouTermos, setAceitouTermos] = useState(false);
   const [fotoBase64, setFotoBase64] = useState<string | null>(null);
+  const [logoBase64, setLogoBase64] = useState<string | null>(null);
   
   // Upload de imagem
   const uploadMutation = trpc.upload.imagem.useMutation();
@@ -107,6 +109,17 @@ export default function CadastroMedico() {
         fotoUrl = uploadResult.url;
       }
       
+      // Upload do logo se houver
+      let logoUrl = formData.logoUrl;
+      if (logoBase64) {
+        const uploadResult = await uploadMutation.mutateAsync({
+          base64: logoBase64,
+          filename: `logo-medico-${Date.now()}.jpg`,
+          contentType: "image/jpeg",
+        });
+        logoUrl = uploadResult.url;
+      }
+      
       enviarMutation.mutate({
         tipoCredenciado: "medico",
         nomeResponsavel: formData.contatoParceria || formData.nome,
@@ -128,6 +141,7 @@ export default function CadastroMedico() {
         whatsappParceria: formData.whatsappParceria,
         tipoServico: "servicos_saude",
         fotoUrl: fotoUrl,
+        logoUrl: logoUrl,
       });
     } catch (error) {
       toast.error("Erro ao processar cadastro", {
@@ -375,6 +389,26 @@ export default function CadastroMedico() {
                     }
                   }}
                   label="Foto"
+                />
+              </div>
+              
+              {/* Logo do Consultório/Clínica */}
+              <div>
+                <Label>Logo do Consultório/Clínica (opcional)</Label>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Envie o logo do seu consultório ou clínica, se houver.
+                </p>
+                <ImageUpload
+                  value={formData.logoUrl}
+                  onChange={(file, previewUrl) => {
+                    setFormData({ ...formData, logoUrl: previewUrl || "" });
+                    if (previewUrl) {
+                      setLogoBase64(previewUrl);
+                    } else {
+                      setLogoBase64(null);
+                    }
+                  }}
+                  label="Logo"
                 />
               </div>
               

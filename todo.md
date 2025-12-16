@@ -2397,3 +2397,23 @@ pnpm vitest
 - [x] Testar exportação de médicos
 - [x] Testar exportação de instituições
 - [x] Salvar checkpoint
+
+
+## CORREÇÃO - CAMPOS DE FOTO E LOGO
+
+### Fase 1: Verificar Campos Existentes ✅
+- [x] Verificar CadastroMedico.tsx - campos de foto e logo
+- [x] Verificar CadastroServico.tsx - campos de foto e logo
+- [x] Verificar Admin.tsx - MedicoFormDialog
+- [x] Verificar Admin.tsx - InstituicaoFormDialog
+
+### Fase 2: Adicionar Campos Faltantes ✅
+- [x] Adicionar campo de Logo em CadastroMedico.tsx - **ADICIONADO**
+- [x] Adicionar campo de Foto em CadastroServico.tsx - **ADICIONADO**
+- [x] Adicionar campo de Logo em CadastroServico.tsx - Já existia
+- [x] Garantir consistência entre todos os formulários
+
+### Fase 3: Testes ✅
+- [x] Testar upload de foto e logo em médicos
+- [x] Testar upload de foto e logo em serviços
+- [x] Salvar checkpoint
