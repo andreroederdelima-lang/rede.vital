@@ -356,7 +356,7 @@ export default function Admin() {
                           });
                           const baseUrl = window.location.origin;
                           const linkCadastro = `${baseUrl}/cadastro-medico/${result.token}`;
-                          const mensagem = `🩺 *Cadastro no Guia do Assinante Vital*\n\nOlá! 👋\n\nConvido você para fazer parte da nossa *Rede de Médicos Credenciados* do Vale do Itajaí!\n\n🔗 *Acesse o link abaixo para completar seu cadastro:*\n${linkCadastro}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                          const mensagem = `🩺 *Cadastro no Guia do Assinante Vital*\n\nOlá! 👋\n\n🔗 Acesse o link abaixo para completar seu cadastro na plataforma de Credenciados Vital:\n${linkCadastro}\n\n*Sua Saúde Vital - sempre ao seu lado.*`;
                           const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
                           window.open(whatsappUrl, "_blank");
                           toast.success("Link de cadastro gerado com sucesso!");

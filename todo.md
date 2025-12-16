@@ -2343,3 +2343,23 @@ pnpm vitest run server/__tests__/tokens.test.ts
 # Executar testes em modo watch
 pnpm vitest
 ```
+
+
+## AJUSTE - CAMPOS DE TELEFONE E FOTO
+
+### Fase 1: Simplificar Campos de Telefone ✅
+- [x] Remover campos duplicados/desnecessários
+- [x] Manter apenas: Telefone Fixo, WhatsApp Secretária/Agendamento, WhatsApp Responsável Cadastro
+- [x] Ajustar labels para clareza
+- [x] Aplicar no CadastroMedico.tsx
+- [x] Aplicar no CadastroServico.tsx
+
+### Fase 2: Adicionar Foto no Cadastro via Link ✅
+- [x] Adicionar campo de upload de foto em CadastroMedico.tsx
+- [x] Adicionar campo de upload de foto em CadastroServico.tsx
+- [x] Usar componente ImageUpload existente
+
+### Fase 3: Testes ✅
+- [x] Testar formulário de cadastro médico
+- [x] Testar formulário de cadastro serviço
+- [x] Salvar checkpoint

@@ -13,6 +13,7 @@ import { APP_LOGO } from "@/const";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function CadastroServico() {
   const [, params] = useRoute("/cadastro-servico/:token");
@@ -24,19 +25,23 @@ export default function CadastroServico() {
     categoria: "",
     municipio: "",
     endereco: "",
-    telefone: "",
+    telefoneFixo: "",
     whatsappSecretaria: "",
-    telefoneOrganizacao: "",
     email: "",
     valorParticular: "",
     valorAssinanteVital: "",
     observacoes: "",
     contatoParceria: "",
     whatsappParceria: "",
+    logoUrl: "",
   });
   
   const [enviado, setEnviado] = useState(false);
   const [aceitouTermos, setAceitouTermos] = useState(false);
+  const [logoBase64, setLogoBase64] = useState<string | null>(null);
+  
+  // Upload de imagem
+  const uploadMutation = trpc.upload.imagem.useMutation();
   
   // Verificar validade do token
   const { data: tokenData, isLoading: loadingToken } = trpc.tokens.verificar.useQuery(
@@ -58,7 +63,7 @@ export default function CadastroServico() {
     },
   });
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!aceitouTermos) {
@@ -83,24 +88,49 @@ export default function CadastroServico() {
       return;
     }
     
-    enviarMutation.mutate({
-      tipoCredenciado: "instituicao",
-      nomeResponsavel: formData.contatoParceria || formData.nome,
-      nomeEstabelecimento: formData.nome,
-      tipoServico: formData.tipoServico,
-      categoria: formData.categoria,
-      cidade: formData.municipio,
-      endereco: formData.endereco,
-      telefone: formData.telefone || formData.whatsappSecretaria || "",
-      whatsappSecretaria: formData.whatsappSecretaria || formData.telefone || "",
-      email: formData.email,
-      valorParticular: unmaskMoeda(formData.valorParticular),
-      valorAssinanteVital: unmaskMoeda(formData.valorAssinanteVital),
-      descontoPercentual: calcularDesconto(formData.valorParticular, formData.valorAssinanteVital),
-      observacoes: formData.observacoes,
-      contatoParceria: formData.contatoParceria,
-      whatsappParceria: formData.whatsappParceria,
-    });
+    if (!formData.whatsappSecretaria) {
+      toast.error("WhatsApp obrigatório", {
+        description: "Preencha o WhatsApp Comercial/Agendamento.",
+      });
+      return;
+    }
+    
+    try {
+      // Upload do logo se houver
+      let logoUrl = formData.logoUrl;
+      if (logoBase64) {
+        const uploadResult = await uploadMutation.mutateAsync({
+          base64: logoBase64,
+          filename: `logo-servico-${Date.now()}.jpg`,
+          contentType: "image/jpeg",
+        });
+        logoUrl = uploadResult.url;
+      }
+      
+      enviarMutation.mutate({
+        tipoCredenciado: "instituicao",
+        nomeResponsavel: formData.contatoParceria || formData.nome,
+        nomeEstabelecimento: formData.nome,
+        tipoServico: formData.tipoServico,
+        categoria: formData.categoria,
+        cidade: formData.municipio,
+        endereco: formData.endereco,
+        telefone: formData.telefoneFixo || formData.whatsappSecretaria || "",
+        whatsappSecretaria: formData.whatsappSecretaria || "",
+        email: formData.email,
+        valorParticular: unmaskMoeda(formData.valorParticular),
+        valorAssinanteVital: unmaskMoeda(formData.valorAssinanteVital),
+        descontoPercentual: calcularDesconto(formData.valorParticular, formData.valorAssinanteVital),
+        observacoes: formData.observacoes,
+        contatoParceria: formData.contatoParceria,
+        whatsappParceria: formData.whatsappParceria,
+        logoUrl: logoUrl,
+      });
+    } catch (error) {
+      toast.error("Erro ao processar cadastro", {
+        description: "Tente novamente.",
+      });
+    }
   };
   
   if (loadingToken) {
@@ -229,30 +259,18 @@ export default function CadastroServico() {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="municipio">Município *</Label>
-                  <Select value={formData.municipio} onValueChange={(value) => setFormData({ ...formData, municipio: value })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o município" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {MUNICIPIOS_VALE_ITAJAI.map((mun: string) => (
-                        <SelectItem key={mun} value={mun}>{mun}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <Label htmlFor="telefone">Telefone</Label>
-                  <Input
-                    id="telefone"
-                    value={formData.telefone}
-                    onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
-                    placeholder="(47) 3333-4444"
-                  />
-                </div>
+              <div>
+                <Label htmlFor="municipio">Município *</Label>
+                <Select value={formData.municipio} onValueChange={(value) => setFormData({ ...formData, municipio: value })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o município" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {MUNICIPIOS_VALE_ITAJAI.map((mun: string) => (
+                      <SelectItem key={mun} value={mun}>{mun}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               
               <div>
@@ -266,24 +284,26 @@ export default function CadastroServico() {
                 />
               </div>
               
+              {/* Campos de Telefone Simplificados */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="whatsappSecretaria">WhatsApp Comercial</Label>
+                  <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
+                  <Input
+                    id="telefoneFixo"
+                    value={formData.telefoneFixo}
+                    onChange={(e) => setFormData({ ...formData, telefoneFixo: maskTelefone(e.target.value) })}
+                    placeholder="(47) 3333-4444"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="whatsappSecretaria">WhatsApp Comercial/Agendamento *</Label>
                   <Input
                     id="whatsappSecretaria"
                     value={formData.whatsappSecretaria}
                     onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
                     placeholder="(47) 99999-8888"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="telefoneOrganizacao">Telefone Organização</Label>
-                  <Input
-                    id="telefoneOrganizacao"
-                    value={formData.telefoneOrganizacao}
-                    onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: maskTelefone(e.target.value) })}
-                    placeholder="(47) 3333-5555"
+                    required
                   />
                 </div>
               </div>
@@ -331,25 +351,54 @@ export default function CadastroServico() {
                 </div>
               )}
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="contatoParceria">Contato Responsável pela Parceria</Label>
-                  <Input
-                    id="contatoParceria"
-                    value={formData.contatoParceria}
-                    onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
-                    placeholder="Nome do responsável"
-                  />
-                </div>
+              {/* Logo do Estabelecimento */}
+              <div>
+                <Label>Logo do Estabelecimento</Label>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Envie o logo para exibição no guia de credenciados.
+                </p>
+                <ImageUpload
+                  value={formData.logoUrl}
+                  onChange={(file, previewUrl) => {
+                    setFormData({ ...formData, logoUrl: previewUrl || "" });
+                    if (previewUrl) {
+                      setLogoBase64(previewUrl);
+                    } else {
+                      setLogoBase64(null);
+                    }
+                  }}
+                  label="Logo"
+                />
+              </div>
+              
+              {/* Responsável pelo Cadastro */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-semibold text-lg mb-3">Responsável pelo Cadastro na Rede</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Informações de contato para atualizações futuras do cadastro.
+                </p>
                 
-                <div>
-                  <Label htmlFor="whatsappParceria">WhatsApp Responsável Parceria</Label>
-                  <Input
-                    id="whatsappParceria"
-                    value={formData.whatsappParceria}
-                    onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
-                    placeholder="(47) 99999-6666"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="contatoParceria">Nome do Responsável</Label>
+                    <Input
+                      id="contatoParceria"
+                      value={formData.contatoParceria}
+                      onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
+                      placeholder="Nome do responsável"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável *</Label>
+                    <Input
+                      id="whatsappParceria"
+                      value={formData.whatsappParceria}
+                      onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
+                      placeholder="(47) 99999-6666"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
               
@@ -359,7 +408,7 @@ export default function CadastroServico() {
                   id="observacoes"
                   value={formData.observacoes}
                   onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-                  placeholder="Informações adicionais, horários de atendimento, etc."
+                  placeholder="Informações adicionais, horários de funcionamento, etc."
                   rows={4}
                 />
               </div>
@@ -381,36 +430,32 @@ export default function CadastroServico() {
                       href="/termos-de-uso" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-teal-600 underline hover:text-teal-700"
+                      className="text-teal-600 underline hover:text-teal-800"
                     >
-                      Ler termos completos
+                      Ver termos completos
                     </a>
                   </label>
                 </div>
-                <p className="text-xs text-gray-600 ml-8">
-                  Ao aceitar, você autoriza a divulgação pública de suas informações e se compromete a cumprir todas as regras estabelecidas.
-                </p>
               </div>
               
-              <div className="flex gap-3 pt-4">
-                <Button
-                  type="submit"
-                  className="flex-1"
-                  disabled={enviarMutation.isPending}
-                >
-                  {enviarMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Enviar Cadastro
-                </Button>
-              </div>
+              <Button 
+                type="submit" 
+                className="w-full" 
+                size="lg"
+                disabled={enviarMutation.isPending || uploadMutation.isPending}
+              >
+                {(enviarMutation.isPending || uploadMutation.isPending) ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  "Enviar Cadastro"
+                )}
+              </Button>
             </form>
           </CardContent>
         </Card>
-        
-        <p className="text-center text-sm text-muted-foreground mt-6">
-          Dúvidas? Entre em contato: <a href="https://wa.me/5547933853726" className="text-primary hover:underline">+55 47 93385-3726</a>
-        </p>
       </div>
     </div>
   );

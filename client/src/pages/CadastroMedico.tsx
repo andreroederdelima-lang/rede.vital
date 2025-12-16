@@ -12,6 +12,7 @@ import { Loader2, CheckCircle2 } from "lucide-react";
 import { APP_LOGO } from "@/const";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function CadastroMedico() {
   const [, params] = useRoute("/cadastro-medico/:token");
@@ -23,10 +24,8 @@ export default function CadastroMedico() {
     numeroRegistroConselho: "",
     municipio: "",
     endereco: "",
-    telefone: "",
-    whatsapp: "",
+    telefoneFixo: "",
     whatsappSecretaria: "",
-    telefoneOrganizacao: "",
     email: "",
     tipoAtendimento: "presencial" as "presencial" | "telemedicina" | "ambos",
     valorParticular: "",
@@ -34,10 +33,15 @@ export default function CadastroMedico() {
     observacoes: "",
     contatoParceria: "",
     whatsappParceria: "",
+    fotoUrl: "",
   });
   
   const [enviado, setEnviado] = useState(false);
   const [aceitouTermos, setAceitouTermos] = useState(false);
+  const [fotoBase64, setFotoBase64] = useState<string | null>(null);
+  
+  // Upload de imagem
+  const uploadMutation = trpc.upload.imagem.useMutation();
   
   // Verificar validade do token
   const { data: tokenData, isLoading: loadingToken } = trpc.tokens.verificar.useQuery(
@@ -59,7 +63,7 @@ export default function CadastroMedico() {
     },
   });
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!aceitouTermos) {
@@ -84,27 +88,52 @@ export default function CadastroMedico() {
       return;
     }
     
-    enviarMutation.mutate({
-      tipoCredenciado: "medico",
-      nomeResponsavel: formData.contatoParceria || formData.nome,
-      nomeEstabelecimento: formData.nome,
-      especialidade: formData.especialidade,
-      numeroRegistroConselho: formData.numeroRegistroConselho,
-      categoria: formData.especialidade,
-      cidade: formData.municipio,
-      endereco: formData.endereco,
-      telefone: formData.telefone || formData.whatsapp || "",
-      whatsappSecretaria: formData.whatsappSecretaria || formData.whatsapp || "",
-      email: formData.email,
-      tipoAtendimento: formData.tipoAtendimento,
-      valorParticular: unmaskMoeda(formData.valorParticular),
-      valorAssinanteVital: unmaskMoeda(formData.valorAssinanteVital),
-      descontoPercentual: calcularDesconto(formData.valorParticular, formData.valorAssinanteVital),
-      observacoes: formData.observacoes,
-      contatoParceria: formData.contatoParceria,
-      whatsappParceria: formData.whatsappParceria,
-      tipoServico: "servicos_saude",
-    });
+    if (!formData.whatsappSecretaria) {
+      toast.error("WhatsApp obrigatório", {
+        description: "Preencha o WhatsApp da Secretária/Agendamento.",
+      });
+      return;
+    }
+    
+    try {
+      // Upload da foto se houver
+      let fotoUrl = formData.fotoUrl;
+      if (fotoBase64) {
+        const uploadResult = await uploadMutation.mutateAsync({
+          base64: fotoBase64,
+          filename: `foto-medico-${Date.now()}.jpg`,
+          contentType: "image/jpeg",
+        });
+        fotoUrl = uploadResult.url;
+      }
+      
+      enviarMutation.mutate({
+        tipoCredenciado: "medico",
+        nomeResponsavel: formData.contatoParceria || formData.nome,
+        nomeEstabelecimento: formData.nome,
+        especialidade: formData.especialidade,
+        numeroRegistroConselho: formData.numeroRegistroConselho,
+        categoria: formData.especialidade,
+        cidade: formData.municipio,
+        endereco: formData.endereco,
+        telefone: formData.telefoneFixo || formData.whatsappSecretaria || "",
+        whatsappSecretaria: formData.whatsappSecretaria || "",
+        email: formData.email,
+        tipoAtendimento: formData.tipoAtendimento,
+        valorParticular: unmaskMoeda(formData.valorParticular),
+        valorAssinanteVital: unmaskMoeda(formData.valorAssinanteVital),
+        descontoPercentual: calcularDesconto(formData.valorParticular, formData.valorAssinanteVital),
+        observacoes: formData.observacoes,
+        contatoParceria: formData.contatoParceria,
+        whatsappParceria: formData.whatsappParceria,
+        tipoServico: "servicos_saude",
+        fotoUrl: fotoUrl,
+      });
+    } catch (error) {
+      toast.error("Erro ao processar cadastro", {
+        description: "Tente novamente.",
+      });
+    }
   };
   
   if (loadingToken) {
@@ -262,46 +291,26 @@ export default function CadastroMedico() {
                 />
               </div>
               
+              {/* Campos de Telefone Simplificados */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="telefone">Telefone</Label>
+                  <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
                   <Input
-                    id="telefone"
-                    value={formData.telefone}
-                    onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
+                    id="telefoneFixo"
+                    value={formData.telefoneFixo}
+                    onChange={(e) => setFormData({ ...formData, telefoneFixo: maskTelefone(e.target.value) })}
                     placeholder="(47) 3333-4444"
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="whatsapp">WhatsApp</Label>
-                  <Input
-                    id="whatsapp"
-                    value={formData.whatsapp}
-                    onChange={(e) => setFormData({ ...formData, whatsapp: maskTelefone(e.target.value) })}
-                    placeholder="(47) 99999-8888"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="whatsappSecretaria">WhatsApp Comercial/Secretaria</Label>
+                  <Label htmlFor="whatsappSecretaria">WhatsApp Secretária/Agendamento *</Label>
                   <Input
                     id="whatsappSecretaria"
                     value={formData.whatsappSecretaria}
                     onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
-                    placeholder="(47) 99999-7777"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="telefoneOrganizacao">Telefone Organização</Label>
-                  <Input
-                    id="telefoneOrganizacao"
-                    value={formData.telefoneOrganizacao}
-                    onChange={(e) => setFormData({ ...formData, telefoneOrganizacao: maskTelefone(e.target.value) })}
-                    placeholder="(47) 3333-5555"
+                    placeholder="(47) 99999-8888"
+                    required
                   />
                 </div>
               </div>
@@ -349,25 +358,54 @@ export default function CadastroMedico() {
                 </div>
               )}
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="contatoParceria">Contato Responsável pela Parceria</Label>
-                  <Input
-                    id="contatoParceria"
-                    value={formData.contatoParceria}
-                    onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
-                    placeholder="Nome do responsável"
-                  />
-                </div>
+              {/* Foto do Médico */}
+              <div>
+                <Label>Foto do Médico</Label>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Envie uma foto profissional para exibição no guia de credenciados.
+                </p>
+                <ImageUpload
+                  value={formData.fotoUrl}
+                  onChange={(file, previewUrl) => {
+                    setFormData({ ...formData, fotoUrl: previewUrl || "" });
+                    if (previewUrl) {
+                      setFotoBase64(previewUrl);
+                    } else {
+                      setFotoBase64(null);
+                    }
+                  }}
+                  label="Foto"
+                />
+              </div>
+              
+              {/* Responsável pelo Cadastro */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-semibold text-lg mb-3">Responsável pelo Cadastro na Rede</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Informações de contato para atualizações futuras do cadastro.
+                </p>
                 
-                <div>
-                  <Label htmlFor="whatsappParceria">WhatsApp Responsável Parceria</Label>
-                  <Input
-                    id="whatsappParceria"
-                    value={formData.whatsappParceria}
-                    onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
-                    placeholder="(47) 99999-6666"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="contatoParceria">Nome do Responsável</Label>
+                    <Input
+                      id="contatoParceria"
+                      value={formData.contatoParceria}
+                      onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
+                      placeholder="Nome do responsável"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável *</Label>
+                    <Input
+                      id="whatsappParceria"
+                      value={formData.whatsappParceria}
+                      onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
+                      placeholder="(47) 99999-6666"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
               
@@ -399,36 +437,32 @@ export default function CadastroMedico() {
                       href="/termos-de-uso" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-teal-600 underline hover:text-teal-700"
+                      className="text-teal-600 underline hover:text-teal-800"
                     >
-                      Ler termos completos
+                      Ver termos completos
                     </a>
                   </label>
                 </div>
-                <p className="text-xs text-gray-600 ml-8">
-                  Ao aceitar, você autoriza a divulgação pública de suas informações profissionais e se compromete a cumprir todas as regras estabelecidas.
-                </p>
               </div>
               
-              <div className="flex gap-3 pt-4">
-                <Button
-                  type="submit"
-                  className="flex-1"
-                  disabled={enviarMutation.isPending}
-                >
-                  {enviarMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Enviar Cadastro
-                </Button>
-              </div>
+              <Button 
+                type="submit" 
+                className="w-full" 
+                size="lg"
+                disabled={enviarMutation.isPending || uploadMutation.isPending}
+              >
+                {(enviarMutation.isPending || uploadMutation.isPending) ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  "Enviar Cadastro"
+                )}
+              </Button>
             </form>
           </CardContent>
         </Card>
-        
-        <p className="text-center text-sm text-muted-foreground mt-6">
-          Dúvidas? Entre em contato: <a href="https://wa.me/5547933853726" className="text-primary hover:underline">+55 47 93385-3726</a>
-        </p>
       </div>
     </div>
   );
