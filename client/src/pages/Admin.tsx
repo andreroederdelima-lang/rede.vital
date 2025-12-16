@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2, Download } from "lucide-react";
+import { exportToExcel, MEDICO_COLUMNS, INSTITUICAO_COLUMNS } from "@/lib/exportExcel";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
 import ImageUpload from "@/components/ImageUpload";
 // [REMOVIDO] import IndicacoesTab from "@/components/IndicacoesTab";
@@ -349,6 +350,20 @@ export default function Admin() {
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
+                      onClick={() => {
+                        if (medicos.length === 0) {
+                          toast.error("Nenhum médico para exportar");
+                          return;
+                        }
+                        exportToExcel(medicos, MEDICO_COLUMNS, `medicos_credenciados_${new Date().toISOString().split('T')[0]}`);
+                        toast.success(`${medicos.length} médicos exportados com sucesso!`);
+                      }}
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Exportar Excel
+                    </Button>
+                    <Button
+                      variant="outline"
                       onClick={async () => {
                         try {
                           const result = await criarTokenCadastro.mutateAsync({
@@ -520,6 +535,20 @@ export default function Admin() {
                 <div className="flex items-center justify-between">
                   <CardTitle>Serviços Parceiros</CardTitle>
                   <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        if (instituicoes.length === 0) {
+                          toast.error("Nenhum serviço para exportar");
+                          return;
+                        }
+                        exportToExcel(instituicoes, INSTITUICAO_COLUMNS, `servicos_parceiros_${new Date().toISOString().split('T')[0]}`);
+                        toast.success(`${instituicoes.length} serviços exportados com sucesso!`);
+                      }}
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Exportar Excel
+                    </Button>
                     <Button
                       variant="outline"
                       onClick={async () => {

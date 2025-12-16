@@ -2380,3 +2380,20 @@ pnpm vitest
 ### Fase 3: Testes ✅
 - [x] Verificar formulários funcionando
 - [x] Salvar checkpoint
+
+
+## NOVA FEATURE - EXPORTAÇÃO EXCEL/CSV
+
+### Fase 1: Biblioteca e Utilitário ✅
+- [x] Instalar biblioteca xlsx para exportação Excel
+- [x] Criar função utilitária de exportação
+
+### Fase 2: Botões de Exportação ✅
+- [x] Adicionar botão "Exportar Excel" na aba Médicos
+- [x] Adicionar botão "Exportar Excel" na aba Serviços
+- [x] Configurar colunas relevantes para cada exportação
+
+### Fase 3: Testes ✅
+- [x] Testar exportação de médicos
+- [x] Testar exportação de instituições
+- [x] Salvar checkpoint
