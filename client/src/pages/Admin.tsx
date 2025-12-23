@@ -480,9 +480,10 @@ export default function Admin() {
                                   className="h-8 w-8"
                                   onClick={async () => {
                                     try {
-                                      const result = await utils.client.atualizacao.gerarLink.mutate({
-                                        tipo: "medico",
-                                        id: medico.id
+                                      const result = await criarTokenAtualizacao.mutateAsync({
+                                        tipoCredenciado: "medico",
+                                        credenciadoId: medico.id,
+                                        telefone: medico.telefone || medico.whatsapp || undefined,
                                       });
                                       const baseUrl = window.location.origin;
                                       const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
@@ -673,9 +674,10 @@ export default function Admin() {
                                   className="h-8 w-8"
                                   onClick={async () => {
                                     try {
-                                      const result = await utils.client.atualizacao.gerarLink.mutate({
-                                        tipo: "instituicao",
-                                        id: inst.id
+                                      const result = await criarTokenAtualizacao.mutateAsync({
+                                        tipoCredenciado: "instituicao",
+                                        credenciadoId: inst.id,
+                                        telefone: inst.telefone || inst.whatsappSecretaria || undefined,
                                       });
                                       const baseUrl = window.location.origin;
                                       const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;

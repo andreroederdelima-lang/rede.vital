@@ -1,0 +1,13 @@
+{
+  "query": "SELECT token FROM tokens WHERE tipo = 'atualizacao' AND tipoCredenciado = 'medico' AND credenciadoId = 1 ORDER BY createdAt DESC LIMIT 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT token FROM tokens WHERE tipo = 'atualizacao' AND tipoCredenciado = 'medico' AND credenciadoId = 1 ORDER BY createdAt DESC LIMIT 1",
+  "rows": [
+    {
+      "token": "19c928bab5c8780874a06bbcc9774afe4ecc79338e4efcfdebcb60479bc7507b"
+    }
+  ],
+  "messages": [],
+  "stdout": "token\n19c928bab5c8780874a06bbcc9774afe4ecc79338e4efcfdebcb60479bc7507b\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

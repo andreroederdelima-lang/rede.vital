@@ -2546,3 +2546,14 @@ pnpm vitest
 - [x] Página /atualizar-dados/:token carrega corretamente
 - [x] Formulário pré-preenchido com dados do credenciado
 - [x] Links sempre usam domínio correto do projeto
+
+
+## BUG: Botão Copiar Link usa API diferente do Enviar WhatsApp
+
+- [x] Botão "Enviar via WhatsApp" funciona corretamente
+- [x] Botão "Copiar link" estava usando API diferente (utils.client.atualizacao.gerarLink)
+- [x] SOLUÇÃO: Ajustado botão Copiar para usar criarTokenAtualizacao.mutateAsync
+- [x] Corrigido para médicos (linha 483-487 Admin.tsx)
+- [x] Corrigido para instituições (linha 677-681 Admin.tsx)
+- [x] Ambos botões agora usam mesma API e geram links válidos
+- [x] Testado e funcionando perfeitamente
