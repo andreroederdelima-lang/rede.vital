@@ -52,6 +52,38 @@ export default function CadastroMedico() {
     { enabled: !!token }
   );
   
+  // Carregar dados do médico se for atualização
+  const { data: medicoExistente, isLoading: loadingMedico } = trpc.medicos.obter.useQuery(
+    tokenData?.token?.credenciadoId || 0,
+    { enabled: tokenData?.valido && tokenData?.token?.tipoCredenciado === "medico" && tokenData?.token?.tipo === "atualizacao" }
+  );
+  
+  // Pré-preencher formulário com dados existentes
+  useEffect(() => {
+    if (medicoExistente) {
+      setFormData({
+        nome: medicoExistente.nome || "",
+        especialidade: medicoExistente.especialidade || "",
+        numeroRegistroConselho: medicoExistente.numeroRegistroConselho || "",
+        areaAtuacao: medicoExistente.areaAtuacao || "",
+        municipio: medicoExistente.municipio || "",
+        endereco: medicoExistente.endereco || "",
+        telefoneFixo: medicoExistente.telefone || "",
+        whatsappSecretaria: medicoExistente.whatsapp || "",
+        email: medicoExistente.email || "",
+        tipoAtendimento: (medicoExistente.tipoAtendimento as any) || "presencial",
+        valorParticular: medicoExistente.valorParticular || "",
+        valorAssinanteVital: medicoExistente.valorAssinanteVital || "",
+        observacoes: medicoExistente.observacoes || "",
+        contatoParceria: "",
+        whatsappParceria: medicoExistente.whatsapp || "",
+        fotoUrl: medicoExistente.fotoUrl || "",
+        logoUrl: medicoExistente.logoUrl || "",
+      });
+      setAceitouTermos(true); // Auto-aceitar termos para atualização
+    }
+  }, [medicoExistente]);
+  
   const enviarMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
       setEnviado(true);

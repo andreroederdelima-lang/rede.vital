@@ -2557,3 +2557,18 @@ pnpm vitest
 - [x] Corrigido para instituições (linha 677-681 Admin.tsx)
 - [x] Ambos botões agora usam mesma API e geram links válidos
 - [x] Testado e funcionando perfeitamente
+
+
+## Unificar Formulários de Cadastro e Atualização
+
+- [x] SOLUÇÃO IMPLEMENTADA: Usar formulários de cadastro existentes para atualização
+- [x] Modificada página AtualizarDados.tsx para redirecionar automaticamente
+- [x] Redirecionamento para /cadastro-medico/:token (médicos)
+- [x] Redirecionamento para /cadastro-servico/:token (instituições)
+- [x] Adicionado carregamento de dados existentes em CadastroMedico.tsx
+- [x] Adicionado carregamento de dados existentes em CadastroServico.tsx
+- [x] Pré-preenchimento automático de todos os campos
+- [x] Auto-aceite de termos para atualização
+- [x] Upload de foto disponível (ImageUpload component)
+- [x] Testado com token válido - FUNCIONANDO PERFEITAMENTE
+- [x] Credenciados podem atualizar qualquer informação incluindo fotos

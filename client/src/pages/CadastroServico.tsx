@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRoute } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
@@ -50,6 +50,36 @@ export default function CadastroServico() {
     { token },
     { enabled: !!token }
   );
+  
+  // Carregar dados da instituição se for atualização
+  const { data: instituicaoExistente, isLoading: loadingInstituicao } = trpc.instituicoes.obter.useQuery(
+    tokenData?.token?.credenciadoId || 0,
+    { enabled: tokenData?.valido && tokenData?.token?.tipoCredenciado === "instituicao" && tokenData?.token?.tipo === "atualizacao" }
+  );
+  
+  // Pré-preencher formulário com dados existentes
+  useEffect(() => {
+    if (instituicaoExistente) {
+      setFormData({
+        nome: instituicaoExistente.nome || "",
+        tipoServico: (instituicaoExistente.categoria as any) || "servicos_saude",
+        categoria: instituicaoExistente.tipoServico || "",
+        municipio: instituicaoExistente.municipio || "",
+        endereco: instituicaoExistente.endereco || "",
+        telefoneFixo: instituicaoExistente.telefone || "",
+        whatsappSecretaria: instituicaoExistente.whatsappSecretaria || "",
+        email: instituicaoExistente.email || "",
+        valorParticular: instituicaoExistente.valorParticular || "",
+        valorAssinanteVital: instituicaoExistente.valorAssinanteVital || "",
+        observacoes: instituicaoExistente.observacoes || "",
+        contatoParceria: "",
+        whatsappParceria: instituicaoExistente.whatsappSecretaria || "",
+        logoUrl: instituicaoExistente.logoUrl || "",
+        fotoUrl: instituicaoExistente.fotoUrl || "",
+      });
+      setAceitouTermos(true); // Auto-aceitar termos para atualização
+    }
+  }, [instituicaoExistente]);
   
   const enviarMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
