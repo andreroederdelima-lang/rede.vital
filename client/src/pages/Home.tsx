@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import React from "react";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO, APP_TITLE } from "@/const";
 import { Button } from "@/components/ui/button";
@@ -529,7 +530,8 @@ export default function Home() {
 
             {/* Filtros */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {tipoCredenciado === "medicos" ? (
+              {/* Dropdown de Especialidades (apenas para médicos) */}
+              {tipoCredenciado === "medicos" && (
                 <Select value={especialidade || "all"} onValueChange={(v) => setEspecialidade(v === "all" ? "" : v)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as especialidades" />
@@ -541,7 +543,10 @@ export default function Home() {
                     ))}
                   </SelectContent>
                 </Select>
-              ) : (
+              )}
+              
+              {/* Dropdown de Categorias (apenas para serviços) */}
+              {tipoCredenciado !== "medicos" && (
                 <Select value={categoria || "all"} onValueChange={(v) => setCategoria(v === "all" ? "" : v)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as categorias" />
@@ -560,6 +565,7 @@ export default function Home() {
                 </Select>
               )}
 
+              {/* Dropdown de Procedimentos (apenas para serviços) */}
               {tipoCredenciado !== "medicos" && (
                 <Select value={procedimento || "all"} onValueChange={(v) => setProcedimento(v === "all" ? "" : v)}>
                   <SelectTrigger>
@@ -574,6 +580,7 @@ export default function Home() {
                 </Select>
               )}
 
+              {/* Dropdown de Municípios (sempre visível) */}
               <Select value={municipio || "all"} onValueChange={(v) => setMunicipio(v === "all" ? "" : v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Todos os municípios" />
@@ -585,8 +592,6 @@ export default function Home() {
                   ))}
                 </SelectContent>
               </Select>
-
-
             </div>
 
             {filtrosAtivos && (

@@ -2521,5 +2521,10 @@ pnpm vitest
 - [x] Adicionar dropdown de procedimentos no frontend (página pública)
 - [x] Integrar filtro com busca existente
 - [x] Ajustar layout do grid de filtros (md:grid-cols-3)
-- [ ] BUG: Dropdown de procedimentos não aparece na interface - precisa debug adicional
+- [ ] BUG PRIORITÁRIO: Dropdown de procedimentos não aparece na interface
+  - [x] Investigar causa - Backend funciona, frontend tem código correto
+  - [x] Backend completo - API retorna procedimentos corretamente
+  - [x] Frontend implementado - Código correto mas não renderiza no DOM
+  - [ ] DEBUG ADICIONAL NECESSÁRIO - Ver arquivo BUG-FILTRO-PROCEDIMENTOS.md
+  - [ ] Testar soluções: grid-cols-2, keys nos componentes, remover condicionais
 - [ ] Testar filtro combinado com outros filtros (município, categoria)
