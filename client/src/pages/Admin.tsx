@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 import { validateMedicoForm, validateInstituicaoForm } from "@/lib/validation";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
+import { GerenciarProcedimentos } from "@/components/GerenciarProcedimentos";
 
 type MedicoForm = {
   id?: number;
@@ -631,6 +632,10 @@ export default function Admin() {
                             <TableCell>{inst.telefone || "-"}</TableCell>
                             <TableCell>
                               <div className="flex items-center gap-2">
+                                <GerenciarProcedimentos 
+                                  instituicaoId={inst.id} 
+                                  instituicaoNome={inst.nome} 
+                                />
                                 <Button
                                   variant="ghost"
                                   size="icon"

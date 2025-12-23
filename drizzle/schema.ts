@@ -371,3 +371,21 @@ export const tokens = mysqlTable("tokens", {
 
 export type Token = typeof tokens.$inferSelect;
 export type InsertToken = typeof tokens.$inferInsert;
+
+/**
+ * Tabela de procedimentos oferecidos por instituições
+ * Ex: Endoscopia, Colonoscopia, Ultrassom, etc.
+ */
+export const procedimentos = mysqlTable("procedimentos", {
+  id: int("id").autoincrement().primaryKey(),
+  instituicaoId: int("instituicaoId").notNull(), // FK para instituicoes
+  nome: varchar("nome", { length: 255 }).notNull(), // Nome do procedimento
+  valorParticular: varchar("valorParticular", { length: 50 }), // Valor para não-assinantes
+  valorAssinanteVital: varchar("valorAssinanteVital", { length: 50 }), // Valor para assinantes Vital
+  ativo: int("ativo").notNull().default(1),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Procedimento = typeof procedimentos.$inferSelect;
+export type InsertProcedimento = typeof procedimentos.$inferInsert;

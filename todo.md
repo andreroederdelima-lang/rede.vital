@@ -2471,3 +2471,14 @@ pnpm vitest
 - [ ] Criar interface editável de procedimentos no formulário de Serviços de Saúde
 - [ ] Permitir gestor da clínica adicionar, editar e remover procedimentos
 - [ ] Exibir procedimentos na página pública e Dados Internos
+
+
+## Sistema de Procedimentos para Clínicas - 23/12/2025
+
+- [x] Criar tabela `procedimentos` no banco de dados
+- [x] Adicionar campos: instituicaoId, nome, valorParticular, valorAssinanteVital
+- [x] Implementar CRUD no backend (criar, listar, atualizar, deletar)
+- [x] Criar interface de gestão no Admin para adicionar/editar/remover procedimentos
+- [x] Exibir procedimentos na página pública (Consulta)
+- [x] Exibir procedimentos em Dados Internos
+- [x] Testar fluxo completo - Sistema funcional, testes unitários precisam ajustes

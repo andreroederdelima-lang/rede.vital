@@ -104,7 +104,7 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-import { Medico, Instituicao, InsertMedico, InsertInstituicao } from "../drizzle/schema";
+import { Medico, Instituicao, InsertMedico, InsertInstituicao, procedimentos, InsertProcedimento } from "../drizzle/schema";
 import { like, or, gte } from "drizzle-orm";
 
 // ========== MÉDICOS ==========
@@ -1433,4 +1433,44 @@ export async function listarTokens() {
     .orderBy(desc(tokens.createdAt));
 
   return result;
+}
+
+
+// ========== PROCEDIMENTOS ==========
+
+export async function listarProcedimentos(instituicaoId?: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  if (instituicaoId) {
+    return db.select().from(procedimentos).where(and(eq(procedimentos.instituicaoId, instituicaoId), eq(procedimentos.ativo, 1)));
+  }
+  
+  return db.select().from(procedimentos).where(eq(procedimentos.ativo, 1));
+}
+
+export async function obterProcedimentoPorId(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(procedimentos).where(eq(procedimentos.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function criarProcedimento(data: InsertProcedimento) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(procedimentos).values(data);
+  return Number(result[0].insertId);
+}
+
+export async function atualizarProcedimento(id: number, data: Partial<InsertProcedimento>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(procedimentos).set(data).where(eq(procedimentos.id, id));
+}
+
+export async function excluirProcedimento(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(procedimentos).set({ ativo: 0 }).where(eq(procedimentos.id, id));
 }

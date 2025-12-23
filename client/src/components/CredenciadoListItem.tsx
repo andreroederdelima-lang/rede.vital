@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { trpc } from "@/lib/trpc";
 import { MapPin, Phone, MessageCircle, Share2, DollarSign, Percent } from "lucide-react";
 import { formatWhatsAppLink, abrirComoChegar } from "@/lib/utils";
 import { VITAL_COLORS } from "@shared/colors";
@@ -26,6 +27,7 @@ interface CredenciadoListItemProps {
   onEditar?: () => void;
   onAvaliar?: () => void;
   credenciadoId?: number;
+  procedimentos?: Array<{ id: number; nome: string; valorParticular?: string | null; valorAssinanteVital?: string | null }>;
 }
 
 export function CredenciadoListItem({
@@ -50,7 +52,16 @@ export function CredenciadoListItem({
   onEditar,
   onAvaliar,
   credenciadoId,
+  procedimentos: procedimentosProp,
 }: CredenciadoListItemProps) {
+  // Buscar procedimentos automaticamente se for instituição
+  const { data: procedimentosData } = trpc.procedimentos.listar.useQuery(
+    { instituicaoId: tipo === "instituicao" ? credenciadoId : undefined },
+    { enabled: tipo === "instituicao" && !!credenciadoId }
+  );
+  
+  const procedimentos = procedimentosProp || procedimentosData || [];
+  
   // Determinar imagem padrão baseado no tipo e categoria
   const getPlaceholderImage = () => {
     if (tipo === "medico") return "/medico-placeholder.png";
@@ -261,7 +272,35 @@ export function CredenciadoListItem({
           )}
         </div>
 
-        {/* Linha 4: Valores e Desconto (apenas Dados Internos) */}
+        {/* Linha 4: Procedimentos (apenas para instituições) */}
+        {tipo === "instituicao" && procedimentos && procedimentos.length > 0 && (
+          <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: "#f8f9fa" }}>
+            <h4 className="text-sm font-semibold mb-2" style={{ color: VITAL_COLORS.turquoise }}>
+              Procedimentos Disponíveis:
+            </h4>
+            <div className="space-y-1">
+              {procedimentos.map((proc) => (
+                <div key={proc.id} className="flex justify-between items-center text-xs">
+                  <span style={{ color: VITAL_COLORS.darkGray }}>{proc.nome}</span>
+                  <div className="flex gap-2">
+                    {proc.valorParticular && (
+                      <span className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+                        Particular: {proc.valorParticular}
+                      </span>
+                    )}
+                    {proc.valorAssinanteVital && (
+                      <span className="text-xs font-medium" style={{ color: VITAL_COLORS.turquoise }}>
+                        Vital: {proc.valorAssinanteVital}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Linha 5: Valores e Desconto (apenas Dados Internos) */}
         {mostrarPrecoDesconto && (
           <div className="flex flex-wrap items-center gap-3 text-sm mt-2">
             {valorParticular && (

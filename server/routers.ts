@@ -1095,6 +1095,62 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       }),
   }),
 
+  // ========== PROCEDIMENTOS ==========
+  procedimentos: router({
+    listar: publicProcedure
+      .input(z.object({
+        instituicaoId: z.number().optional(),
+      }).optional())
+      .query(async ({ input }) => {
+        const { listarProcedimentos } = await import("./db");
+        return await listarProcedimentos(input?.instituicaoId);
+      }),
+
+    criar: protectedProcedure
+      .input(z.object({
+        instituicaoId: z.number(),
+        nome: z.string().min(1, "Nome do procedimento é obrigatório"),
+        valorParticular: z.string().optional(),
+        valorAssinanteVital: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem criar procedimentos");
+        }
+        const { criarProcedimento } = await import("./db");
+        const id = await criarProcedimento(input);
+        return { id, success: true };
+      }),
+
+    atualizar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        nome: z.string().optional(),
+        valorParticular: z.string().optional(),
+        valorAssinanteVital: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem atualizar procedimentos");
+        }
+        const { atualizarProcedimento } = await import("./db");
+        const { id, ...data } = input;
+        await atualizarProcedimento(id, data);
+        return { success: true };
+      }),
+
+    excluir: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new Error("Apenas administradores podem excluir procedimentos");
+        }
+        const { excluirProcedimento } = await import("./db");
+        await excluirProcedimento(input);
+        return { success: true };
+      }),
+  }),
+
   // ========== UPLOAD DE IMAGENS ==========
   upload: router({
     imagem: protectedProcedure
