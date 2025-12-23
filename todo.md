@@ -2532,3 +2532,17 @@ pnpm vitest
   - [x] Alterado grid de md:grid-cols-2 para md:grid-cols-3
   - [x] Testado em ambas páginas - FUNCIONANDO PERFEITAMENTE
 - [x] Testar filtro combinado com outros filtros (município, categoria)
+
+
+## BUG CRÍTICO: Link de Atualização de Cadastro - Erro 404
+
+- [x] PROBLEMA IDENTIFICADO: Backend gerava link com domínio errado (forge.manus.ai)
+- [x] CAUSA: server/routers.ts usava process.env.VITE_FRONTEND_FORGE_API_URL
+- [x] SOLUÇÃO: Backend agora retorna apenas token, frontend gera link completo
+- [x] Corrigido server/routers.ts - Removida propriedade 'link' do retorno
+- [x] Corrigido client/src/pages/Admin.tsx - Botões de copiar link (médicos e instituições)
+- [x] Adicionado window.location.origin + token para gerar link correto
+- [x] Testado com token válido no banco - FUNCIONANDO PERFEITAMENTE
+- [x] Página /atualizar-dados/:token carrega corretamente
+- [x] Formulário pré-preenchido com dados do credenciado
+- [x] Links sempre usam domínio correto do projeto

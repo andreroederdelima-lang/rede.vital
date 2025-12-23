@@ -578,10 +578,8 @@ export const appRouter = router({
           nome = instituicao?.nome || "";
         }
         
-        const baseUrl = process.env.VITE_FRONTEND_FORGE_API_URL?.replace("/api", "") || "";
-        const link = `${baseUrl}/atualizar-dados/${token}`;
-        
-        return { token, link, nome };
+        // Link será gerado no frontend usando window.location.origin
+        return { token, nome };
       }),
     
     obterPorToken: publicProcedure

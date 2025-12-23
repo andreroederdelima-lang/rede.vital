@@ -484,7 +484,9 @@ export default function Admin() {
                                         tipo: "medico",
                                         id: medico.id
                                       });
-                                      await navigator.clipboard.writeText(result.link);
+                                      const baseUrl = window.location.origin;
+                                      const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
+                                      await navigator.clipboard.writeText(linkAtualizacao);
                                       toast.success("Link copiado!");
                                     } catch (error) {
                                       toast.error("Erro ao gerar link");
@@ -675,7 +677,9 @@ export default function Admin() {
                                         tipo: "instituicao",
                                         id: inst.id
                                       });
-                                      await navigator.clipboard.writeText(result.link);
+                                      const baseUrl = window.location.origin;
+                                      const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
+                                      await navigator.clipboard.writeText(linkAtualizacao);
                                       toast.success("Link copiado!");
                                     } catch (error) {
                                       toast.error("Erro ao gerar link");
