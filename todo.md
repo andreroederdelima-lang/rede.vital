@@ -2521,10 +2521,14 @@ pnpm vitest
 - [x] Adicionar dropdown de procedimentos no frontend (página pública)
 - [x] Integrar filtro com busca existente
 - [x] Ajustar layout do grid de filtros (md:grid-cols-3)
-- [ ] BUG PRIORITÁRIO: Dropdown de procedimentos não aparece na interface
+- [x] BUG PRIORITÁRIO: Dropdown de procedimentos não aparece na interface
   - [x] Investigar causa - Backend funciona, frontend tem código correto
   - [x] Backend completo - API retorna procedimentos corretamente
   - [x] Frontend implementado - Código correto mas não renderiza no DOM
-  - [ ] DEBUG ADICIONAL NECESSÁRIO - Ver arquivo BUG-FILTRO-PROCEDIMENTOS.md
-  - [ ] Testar soluções: grid-cols-2, keys nos componentes, remover condicionais
-- [ ] Testar filtro combinado com outros filtros (município, categoria)
+  - [x] CAUSA IDENTIFICADA - Filtro estava implementado apenas em Home.tsx (Dados Internos)
+  - [x] SOLUÇÃO APLICADA - Implementado filtro em Consulta.tsx (página pública)
+  - [x] Adicionado estado procedimento e query procedimentos.listarNomes
+  - [x] Adicionado dropdown de procedimentos na seção de filtros
+  - [x] Alterado grid de md:grid-cols-2 para md:grid-cols-3
+  - [x] Testado em ambas páginas - FUNCIONANDO PERFEITAMENTE
+- [x] Testar filtro combinado com outros filtros (município, categoria)

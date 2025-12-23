@@ -26,6 +26,7 @@ export default function Consulta() {
   const [especialidade, setEspecialidade] = useState<string>("");
   const [municipio, setMunicipio] = useState<string>("");
   const [categoria, setCategoria] = useState<string>("");
+  const [procedimento, setProcedimento] = useState<string>("");
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "servicos_saude" | "outros_servicos">("medicos");
   const [modalAvaliacaoOpen, setModalAvaliacaoOpen] = useState(false);
   const [credenciadoSelecionado, setCredenciadoSelecionado] = useState<{
@@ -44,21 +45,24 @@ export default function Consulta() {
     busca: busca || undefined,
     categoria: categoria && categoria !== "_all" ? categoria : undefined,
     municipio: municipio || undefined,
+    procedimento: procedimento || undefined,
     tipoServico: tipoCredenciado === "servicos_saude" ? "servicos_saude" : tipoCredenciado === "outros_servicos" ? "outros_servicos" : undefined,
   }, { enabled: tipoCredenciado !== "medicos" });
 
   const { data: especialidades = [] } = trpc.medicos.listarEspecialidades.useQuery();
+  const { data: procedimentos = [] } = trpc.procedimentos.listarNomes.useQuery();
 
   const limparFiltros = () => {
     setBusca("");
     setEspecialidade("");
     setMunicipio("");
     setCategoria("");
+    setProcedimento("");
   };
 
   const filtrosAtivos = useMemo(() => {
-    return !!(busca || especialidade || municipio || categoria);
-  }, [busca, especialidade, municipio, categoria]);
+    return !!(busca || especialidade || municipio || categoria || procedimento);
+  }, [busca, especialidade, municipio, categoria, procedimento]);
 
   const compartilharCredenciado = (nome: string, endereco: string, telefone?: string) => {
     // Formato organizado e visual para WhatsApp
@@ -218,7 +222,7 @@ export default function Consulta() {
           </div>
 
           {/* Filtros Adicionais */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             {tipoCredenciado === "medicos" && (
               <div>
                 <Label className="mb-2 block" style={{ color: VITAL_COLORS.darkGray }}>
@@ -242,25 +246,47 @@ export default function Consulta() {
             )}
 
             {tipoCredenciado !== "medicos" && (
-              <div>
-                <Label className="mb-2 block" style={{ color: VITAL_COLORS.darkGray }}>
-                  Categoria
-                </Label>
-                <Select value={categoria} onValueChange={setCategoria}>
-                  <SelectTrigger 
-                    className="rounded-lg"
-                    style={{ border: `1px solid ${VITAL_COLORS.turquoise}` }}
-                  >
-                    <SelectValue placeholder="Todas as categorias" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-[300px]">
-                    <SelectItem value="_all">Todas as categorias</SelectItem>
-                    {(tipoCredenciado === "servicos_saude" ? CATEGORIAS_SERVICOS_SAUDE : CATEGORIAS_OUTROS_SERVICOS).map((cat) => (
-                      <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <>
+                <div>
+                  <Label className="mb-2 block" style={{ color: VITAL_COLORS.darkGray }}>
+                    Categoria
+                  </Label>
+                  <Select value={categoria} onValueChange={setCategoria}>
+                    <SelectTrigger 
+                      className="rounded-lg"
+                      style={{ border: `1px solid ${VITAL_COLORS.turquoise}` }}
+                    >
+                      <SelectValue placeholder="Todas as categorias" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      <SelectItem value="_all">Todas as categorias</SelectItem>
+                      {(tipoCredenciado === "servicos_saude" ? CATEGORIAS_SERVICOS_SAUDE : CATEGORIAS_OUTROS_SERVICOS).map((cat) => (
+                        <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="mb-2 block" style={{ color: VITAL_COLORS.darkGray }}>
+                    Procedimento
+                  </Label>
+                  <Select value={procedimento || "_all"} onValueChange={(v) => setProcedimento(v === "_all" ? "" : v)}>
+                    <SelectTrigger 
+                      className="rounded-lg"
+                      style={{ border: `1px solid ${VITAL_COLORS.turquoise}` }}
+                    >
+                      <SelectValue placeholder="Todos os procedimentos" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      <SelectItem value="_all">Todos os procedimentos</SelectItem>
+                      {procedimentos.map((proc) => (
+                        <SelectItem key={proc} value={proc}>{proc}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </>
             )}
           </div>
 

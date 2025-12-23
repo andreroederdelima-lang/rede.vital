@@ -1,0 +1,25 @@
+{
+  "query": "SELECT id, nome, instituicaoId FROM procedimentos LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, instituicaoId FROM procedimentos LIMIT 10",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Endoscopia Digestiva",
+      "instituicaoId": "1"
+    },
+    {
+      "id": "2",
+      "nome": "Colonoscopia",
+      "instituicaoId": "1"
+    },
+    {
+      "id": "3",
+      "nome": "Ultrassom Abdominal",
+      "instituicaoId": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tinstituicaoId\n1\tEndoscopia Digestiva\t1\n2\tColonoscopia\t1\n3\tUltrassom Abdominal\t1\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}
