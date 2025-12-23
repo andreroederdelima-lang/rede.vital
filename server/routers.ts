@@ -1154,6 +1154,56 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         await excluirProcedimento(input);
         return { success: true };
       }),
+      
+    // Gerenciar procedimentos via token de atualização (sem autenticação)
+    gerenciarComToken: publicProcedure
+      .input(z.object({
+        token: z.string(),
+        procedimentos: z.array(z.object({
+          id: z.number().optional(),
+          nome: z.string(),
+          valorParticular: z.string(),
+          valorAssinanteVital: z.string(),
+          _action: z.enum(['create', 'update', 'delete']).optional(),
+        })),
+      }))
+      .mutation(async ({ input }) => {
+        const { verificarToken } = await import("./db");
+        const { criarProcedimento, atualizarProcedimento, excluirProcedimento } = await import("./db");
+        
+        // Verificar token
+        const result = await verificarToken(input.token);
+        if (!result.valido || !result.token || result.token.tipo !== "atualizacao" || result.token.tipoCredenciado !== "instituicao") {
+          throw new Error("Token inválido ou expirado");
+        }
+        
+        const instituicaoId = result.token.credenciadoId;
+        if (!instituicaoId) {
+          throw new Error("ID da instituição não encontrado");
+        }
+        
+        // Processar cada procedimento
+        for (const proc of input.procedimentos) {
+          if (proc._action === 'create') {
+            await criarProcedimento({
+              instituicaoId,
+              nome: proc.nome,
+              valorParticular: proc.valorParticular,
+              valorAssinanteVital: proc.valorAssinanteVital,
+            });
+          } else if (proc._action === 'update' && proc.id) {
+            await atualizarProcedimento(proc.id, {
+              nome: proc.nome,
+              valorParticular: proc.valorParticular,
+              valorAssinanteVital: proc.valorAssinanteVital,
+            });
+          } else if (proc._action === 'delete' && proc.id) {
+            await excluirProcedimento(proc.id);
+          }
+        }
+        
+        return { success: true };
+      }),
   }),
 
   // ========== UPLOAD DE IMAGENS ==========

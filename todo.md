@@ -2584,3 +2584,22 @@ pnpm vitest
 - [x] Nenhuma informação perdida - sistema funciona perfeitamente
 - [x] Formulário permite atualizar dados básicos e fotos
 - [x] Procedimentos mantidos no banco, não afetados pela atualização
+
+
+## Adicionar Seção de Procedimentos no Formulário
+
+- [x] IMPLEMENTAÇÃO COMPLETA E FUNCIONAL
+- [x] Adicionado estado para gerenciar procedimentos (useState)
+- [x] Implementado carregamento de procedimentos existentes (useQuery)
+- [x] Criada API backend gerenciarComToken (server/routers.ts)
+- [x] Funções implementadas: adicionar, editar, remover, salvar, cancelar
+- [x] Interface visual completa com cards e botões
+- [x] Lista de procedimentos existentes com valores
+- [x] Formulário inline para adicionar novos
+- [x] Modo de edição inline para cada procedimento
+- [x] Integração com backend via token de atualização
+- [x] Testado: adicionar novo procedimento - FUNCIONANDO
+- [x] Testado: editar procedimento existente - FUNCIONANDO
+- [x] Testado: cancelar edição - FUNCIONANDO
+- [x] Validação de campos obrigatórios
+- [x] Procedimentos marcados com _action para salvar no backend

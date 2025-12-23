@@ -42,6 +42,23 @@ export default function CadastroServico() {
   const [logoBase64, setLogoBase64] = useState<string | null>(null);
   const [fotoBase64, setFotoBase64] = useState<string | null>(null);
   
+  // Gerenciamento de procedimentos
+  type Procedimento = {
+    id?: number;
+    nome: string;
+    valorParticular: string;
+    valorAssinanteVital: string;
+    _action?: 'create' | 'update' | 'delete';
+  };
+  
+  const [procedimentos, setProcedimentos] = useState<Procedimento[]>([]);
+  const [novoProcedimento, setNovoProcedimento] = useState<Procedimento>({
+    nome: "",
+    valorParticular: "",
+    valorAssinanteVital: "",
+  });
+  const [editandoProcedimentoId, setEditandoProcedimentoId] = useState<number | null>(null);
+  
   // Upload de imagem
   const uploadMutation = trpc.upload.imagem.useMutation();
   
@@ -54,6 +71,12 @@ export default function CadastroServico() {
   // Carregar dados da instituição se for atualização
   const { data: instituicaoExistente, isLoading: loadingInstituicao } = trpc.instituicoes.obter.useQuery(
     tokenData?.token?.credenciadoId || 0,
+    { enabled: tokenData?.valido && tokenData?.token?.tipoCredenciado === "instituicao" && tokenData?.token?.tipo === "atualizacao" }
+  );
+  
+  // Carregar procedimentos existentes da instituição
+  const { data: procedimentosExistentes } = trpc.procedimentos.listar.useQuery(
+    { instituicaoId: tokenData?.token?.credenciadoId || 0 },
     { enabled: tokenData?.valido && tokenData?.token?.tipoCredenciado === "instituicao" && tokenData?.token?.tipo === "atualizacao" }
   );
   
@@ -80,6 +103,59 @@ export default function CadastroServico() {
       setAceitouTermos(true); // Auto-aceitar termos para atualização
     }
   }, [instituicaoExistente]);
+  
+  // Carregar procedimentos existentes
+  useEffect(() => {
+    if (procedimentosExistentes && procedimentosExistentes.length > 0) {
+      setProcedimentos(procedimentosExistentes.map(p => ({
+        id: p.id,
+        nome: p.nome,
+        valorParticular: p.valorParticular || "",
+        valorAssinanteVital: p.valorAssinanteVital || "",
+      })));
+    }
+  }, [procedimentosExistentes]);
+  
+  // Funções de gerenciamento de procedimentos
+  const adicionarProcedimento = () => {
+    if (!novoProcedimento.nome || !novoProcedimento.valorParticular || !novoProcedimento.valorAssinanteVital) {
+      toast.error("Campos obrigatórios", {
+        description: "Preencha nome e valores do procedimento.",
+      });
+      return;
+    }
+    
+    setProcedimentos([...procedimentos, { ...novoProcedimento, _action: 'create' }]);
+    setNovoProcedimento({ nome: "", valorParticular: "", valorAssinanteVital: "" });
+    toast.success("Procedimento adicionado");
+  };
+  
+  const editarProcedimento = (index: number) => {
+    const proc = procedimentos[index];
+    setEditandoProcedimentoId(proc.id || index);
+  };
+  
+  const salvarEdicao = (index: number, procedimento: Procedimento) => {
+    const novosProcs = [...procedimentos];
+    novosProcs[index] = { ...procedimento, _action: procedimento.id ? 'update' : 'create' };
+    setProcedimentos(novosProcs);
+    setEditandoProcedimentoId(null);
+    toast.success("Procedimento atualizado");
+  };
+  
+  const removerProcedimento = (index: number) => {
+    const proc = procedimentos[index];
+    if (proc.id) {
+      // Marcar para deleção se já existe no banco
+      const novosProcs = [...procedimentos];
+      novosProcs[index] = { ...proc, _action: 'delete' };
+      setProcedimentos(novosProcs);
+    } else {
+      // Remover diretamente se ainda não foi salvo
+      setProcedimentos(procedimentos.filter((_, i) => i !== index));
+    }
+    toast.success("Procedimento removido");
+  };
   
   const enviarMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
@@ -147,6 +223,18 @@ export default function CadastroServico() {
           contentType: "image/jpeg",
         });
         fotoUrl = uploadResult.url;
+      }
+      
+      // Salvar procedimentos se for atualização
+      if (tokenData?.token?.tipo === "atualizacao" && procedimentos.length > 0) {
+        const procsComAcao = procedimentos.filter(p => p._action);
+        if (procsComAcao.length > 0) {
+          const utils = trpc.useUtils();
+          await utils.client.procedimentos.gerenciarComToken.mutate({
+            token,
+            procedimentos: procsComAcao,
+          });
+        }
       }
       
       enviarMutation.mutate({
@@ -433,6 +521,139 @@ export default function CadastroServico() {
                   label="Foto"
                 />
               </div>
+              
+              {/* Procedimentos Oferecidos */}
+              {tokenData?.token?.tipo === "atualizacao" && (
+                <div className="border-t pt-4 mt-4">
+                  <h3 className="font-semibold text-lg mb-3">Procedimentos Oferecidos</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Gerencie os procedimentos e serviços oferecidos pelo seu estabelecimento.
+                  </p>
+                  
+                  {/* Lista de procedimentos existentes */}
+                  {procedimentos.filter(p => p._action !== 'delete').length > 0 && (
+                    <div className="space-y-2 mb-4">
+                      {procedimentos.map((proc, index) => {
+                        if (proc._action === 'delete') return null;
+                        
+                        const isEditing = editandoProcedimentoId === (proc.id || index);
+                        
+                        if (isEditing) {
+                          return (
+                            <div key={proc.id || index} className="p-3 border rounded-lg bg-muted/50">
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+                                <Input
+                                  placeholder="Nome do procedimento"
+                                  value={proc.nome}
+                                  onChange={(e) => {
+                                    const novosProcs = [...procedimentos];
+                                    novosProcs[index] = { ...proc, nome: e.target.value };
+                                    setProcedimentos(novosProcs);
+                                  }}
+                                />
+                                <Input
+                                  placeholder="Valor Particular"
+                                  value={proc.valorParticular}
+                                  onChange={(e) => {
+                                    const novosProcs = [...procedimentos];
+                                    novosProcs[index] = { ...proc, valorParticular: maskMoeda(e.target.value) };
+                                    setProcedimentos(novosProcs);
+                                  }}
+                                />
+                                <Input
+                                  placeholder="Valor Vital"
+                                  value={proc.valorAssinanteVital}
+                                  onChange={(e) => {
+                                    const novosProcs = [...procedimentos];
+                                    novosProcs[index] = { ...proc, valorAssinanteVital: maskMoeda(e.target.value) };
+                                    setProcedimentos(novosProcs);
+                                  }}
+                                />
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  onClick={() => salvarEdicao(index, proc)}
+                                >
+                                  Salvar
+                                </Button>
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setEditandoProcedimentoId(null)}
+                                >
+                                  Cancelar
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        }
+                        
+                        return (
+                          <div key={proc.id || index} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex-1">
+                              <p className="font-medium">{proc.nome}</p>
+                              <p className="text-sm text-muted-foreground">
+                                Particular: {proc.valorParticular} | Vital: {proc.valorAssinanteVital}
+                              </p>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                onClick={() => editarProcedimento(index)}
+                              >
+                                Editar
+                              </Button>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => removerProcedimento(index)}
+                              >
+                                Remover
+                              </Button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  
+                  {/* Formulário para adicionar novo procedimento */}
+                  <div className="p-3 border rounded-lg bg-muted/10">
+                    <p className="text-sm font-medium mb-2">Adicionar Novo Procedimento</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+                      <Input
+                        placeholder="Nome do procedimento *"
+                        value={novoProcedimento.nome}
+                        onChange={(e) => setNovoProcedimento({ ...novoProcedimento, nome: e.target.value })}
+                      />
+                      <Input
+                        placeholder="Valor Particular *"
+                        value={novoProcedimento.valorParticular}
+                        onChange={(e) => setNovoProcedimento({ ...novoProcedimento, valorParticular: maskMoeda(e.target.value) })}
+                      />
+                      <Input
+                        placeholder="Valor Assinante Vital *"
+                        value={novoProcedimento.valorAssinanteVital}
+                        onChange={(e) => setNovoProcedimento({ ...novoProcedimento, valorAssinanteVital: maskMoeda(e.target.value) })}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={adicionarProcedimento}
+                      className="w-full md:w-auto"
+                    >
+                      Adicionar Procedimento
+                    </Button>
+                  </div>
+                </div>
+              )}
               
               {/* Responsável pelo Cadastro */}
               <div className="border-t pt-4 mt-4">
