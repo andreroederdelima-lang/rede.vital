@@ -75,24 +75,23 @@ export default function CadastroServico() {
       return;
     }
     
-    // Validar campos obrigatórios
-    if (!formData.nome || !formData.categoria || !formData.municipio || !formData.endereco) {
-      toast.error("Campos obrigatórios", {
-        description: "Preencha nome, categoria, município e endereço.",
-      });
-      return;
-    }
+    // Validar campos obrigatórios com mensagens específicas
+    const camposFaltantes: string[] = [];
     
-    if (!formData.valorParticular || !formData.valorAssinanteVital) {
-      toast.error("Valores obrigatórios", {
-        description: "Preencha o valor particular e o valor para assinante Vital.",
-      });
-      return;
-    }
+    if (!formData.nome) camposFaltantes.push("Nome do Estabelecimento");
+    if (!formData.categoria) camposFaltantes.push("Categoria");
+    if (!formData.municipio) camposFaltantes.push("Município");
+    if (!formData.endereco) camposFaltantes.push("Endereço");
+    if (!formData.whatsappSecretaria) camposFaltantes.push("WhatsApp Comercial/Agendamento");
+    if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
+    if (!formData.valorParticular) camposFaltantes.push("Valor Particular");
+    if (!formData.valorAssinanteVital) camposFaltantes.push("Valor Assinante Vital");
+    if (!logoBase64) camposFaltantes.push("Logo do Estabelecimento");
     
-    if (!formData.whatsappSecretaria) {
-      toast.error("WhatsApp obrigatório", {
-        description: "Preencha o WhatsApp Comercial/Agendamento.",
+    if (camposFaltantes.length > 0) {
+      toast.error("Campos obrigatórios não preenchidos", {
+        description: `Por favor, preencha: ${camposFaltantes.join(", ")}.`,
+        duration: 6000,
       });
       return;
     }
@@ -230,7 +229,7 @@ export default function CadastroServico() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div>
                 <Label htmlFor="nome">Nome do Estabelecimento *</Label>
                 <Input

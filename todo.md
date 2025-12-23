@@ -2482,3 +2482,12 @@ pnpm vitest
 - [x] Exibir procedimentos na página pública (Consulta)
 - [x] Exibir procedimentos em Dados Internos
 - [x] Testar fluxo completo - Sistema funcional, testes unitários precisam ajustes
+
+## Melhorar Validação de Formulários de Cadastro
+
+- [x] Implementar validação campo a campo com mensagens específicas
+- [x] Adicionar mensagens de erro claras indicando qual campo está faltando
+- [x] Substituir erro genérico por lista de campos obrigatórios não preenchidos
+- [x] Aplicar em CadastroMedico.tsx
+- [x] Aplicar em CadastroServico.tsx
+- [x] Testar cenários de campos faltantes

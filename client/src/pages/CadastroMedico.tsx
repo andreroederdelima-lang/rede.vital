@@ -76,24 +76,23 @@ export default function CadastroMedico() {
       return;
     }
     
-    // Validar campos obrigatórios
-    if (!formData.nome || !formData.especialidade || !formData.municipio || !formData.endereco) {
-      toast.error("Campos obrigatórios", {
-        description: "Preencha nome, especialidade, município e endereço.",
-      });
-      return;
-    }
+    // Validar campos obrigatórios com mensagens específicas
+    const camposFaltantes: string[] = [];
     
-    if (!formData.valorParticular || !formData.valorAssinanteVital) {
-      toast.error("Valores obrigatórios", {
-        description: "Preencha o valor particular e o valor para assinante Vital.",
-      });
-      return;
-    }
+    if (!formData.nome) camposFaltantes.push("Nome do Médico");
+    if (!formData.especialidade) camposFaltantes.push("Especialidade");
+    if (!formData.municipio) camposFaltantes.push("Município");
+    if (!formData.endereco) camposFaltantes.push("Endereço");
+    if (!formData.whatsappSecretaria) camposFaltantes.push("WhatsApp Secretária/Agendamento");
+    if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
+    if (!formData.valorParticular) camposFaltantes.push("Valor Particular");
+    if (!formData.valorAssinanteVital) camposFaltantes.push("Valor Assinante Vital");
+    if (!fotoBase64) camposFaltantes.push("Foto do Médico");
     
-    if (!formData.whatsappSecretaria) {
-      toast.error("WhatsApp obrigatório", {
-        description: "Preencha o WhatsApp da Secretária/Agendamento.",
+    if (camposFaltantes.length > 0) {
+      toast.error("Campos obrigatórios não preenchidos", {
+        description: `Por favor, preencha: ${camposFaltantes.join(", ")}.`,
+        duration: 6000,
       });
       return;
     }
@@ -231,7 +230,7 @@ export default function CadastroMedico() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div>
                 <Label htmlFor="nome">Nome Completo *</Label>
                 <Input
