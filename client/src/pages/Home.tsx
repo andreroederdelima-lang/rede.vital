@@ -591,6 +591,11 @@ export default function Home() {
                             {medico.especialidade}
                             {medico.subespecialidade && ` • ${medico.subespecialidade}`}
                           </p>
+                          {(medico as any).areaAtuacao && (
+                            <p className="text-sm text-primary/80 mt-1 italic">
+                              {(medico as any).areaAtuacao}
+                            </p>
+                          )}
                         </div>
 
                         <div className="flex flex-wrap gap-2">

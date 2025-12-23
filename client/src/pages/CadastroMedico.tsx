@@ -274,6 +274,9 @@ export default function CadastroMedico() {
                   onChange={(e) => setFormData({ ...formData, areaAtuacao: e.target.value })}
                   placeholder="Ex: foco em saúde mental, atendimento infantil, etc."
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  👁️ Este campo aparece aos pacientes
+                </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -464,6 +467,9 @@ export default function CadastroMedico() {
                   placeholder="Informações adicionais, horários de atendimento, etc."
                   rows={4}
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  🔒 Este campo aparece apenas internamente para o comercial Vital
+                </p>
               </div>
               
               {/* Checkbox de Aceite de Termos */}

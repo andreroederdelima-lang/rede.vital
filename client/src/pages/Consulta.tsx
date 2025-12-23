@@ -306,6 +306,7 @@ export default function Consulta() {
                       tipo="medico"
                       nome={medico.nome}
                       especialidadeOuCategoria={medico.especialidade}
+                      areaAtuacao={medico.areaAtuacao}
                       municipio={medico.municipio}
                       endereco={medico.endereco}
                       telefone={medico.telefone}

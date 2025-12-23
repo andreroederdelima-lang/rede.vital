@@ -159,17 +159,51 @@ export async function buscarMedicoPorId(id: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+/**
+ * Formata nome do médico adicionando Dr. ou Dra. automaticamente
+ */
+function formatarNomeMedico(nome: string): string {
+  const nomeTrimmed = nome.trim();
+  
+  // Se já começa com Dr., Dra., Dr ou Dra, retorna como está
+  if (/^(Dr\.|Dra\.|Dr|Dra)\s/i.test(nomeTrimmed)) {
+    return nomeTrimmed;
+  }
+  
+  // Detecta se é nome feminino (termina com 'a' ou contém nomes femininos comuns)
+  const nomesComuns = nomeTrimmed.toLowerCase();
+  const isFeminino = 
+    nomesComuns.endsWith('a') || 
+    /\b(maria|ana|julia|fernanda|patricia|carla|paula|beatriz|leticia|gabriela|camila|amanda|barbara|daniela|mariana|adriana|luciana|renata|cristina|monica|sandra|vanessa|simone|claudia|silvia|andrea|roberta|tatiana|viviane)\b/.test(nomesComuns);
+  
+  return isFeminino ? `Dra. ${nomeTrimmed}` : `Dr. ${nomeTrimmed}`;
+}
+
 export async function criarMedico(data: InsertMedico) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(medicos).values(data);
+  
+  // Formatar nome com Dr./Dra. automaticamente
+  const dataFormatted = {
+    ...data,
+    nome: data.nome ? formatarNomeMedico(data.nome) : data.nome,
+  };
+  
+  const result = await db.insert(medicos).values(dataFormatted);
   return Number(result[0].insertId);
 }
 
 export async function atualizarMedico(id: number, data: Partial<InsertMedico>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  await db.update(medicos).set(data).where(eq(medicos.id, id));
+  
+  // Formatar nome com Dr./Dra. se estiver sendo atualizado
+  const dataFormatted = {
+    ...data,
+    ...(data.nome ? { nome: formatarNomeMedico(data.nome) } : {}),
+  };
+  
+  await db.update(medicos).set(dataFormatted).where(eq(medicos.id, id));
 }
 
 export async function excluirMedico(id: number) {

@@ -8,6 +8,7 @@ interface CredenciadoListItemProps {
   tipo: "medico" | "instituicao";
   nome: string;
   especialidadeOuCategoria: string;
+  areaAtuacao?: string | null; // Área de atuação principal (apenas médicos)
   municipio: string;
   endereco: string;
   telefone?: string | null;
@@ -31,6 +32,7 @@ export function CredenciadoListItem({
   tipo,
   nome,
   especialidadeOuCategoria,
+  areaAtuacao,
   municipio,
   endereco,
   telefone,
@@ -113,6 +115,14 @@ export function CredenciadoListItem({
             >
               {especialidadeOuCategoria}
             </p>
+            {areaAtuacao && tipo === "medico" && (
+              <p
+                className="text-xs md:text-sm italic mt-1"
+                style={{ color: VITAL_COLORS.turquoise }}
+              >
+                {areaAtuacao}
+              </p>
+            )}
           </div>
 
           {/* Botões de ação (desktop) - posicionados no topo para não sobrepor logo */}

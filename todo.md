@@ -2447,3 +2447,27 @@ pnpm vitest
 - [x] Formulário de cadastro via link já usa CATEGORIAS_SERVICOS_SAUDE (automático)
 - [x] Schema já usa varchar (não precisa migração)
 - [x] Testar criação de instituição com novas categorias - Sistema funcionando
+
+
+## Correções e Melhorias Urgentes - 23/12/2025
+
+### Bugs Críticos
+- [ ] BUG: Link de atualização não está funcionando para médicos (INVESTIGAR - sistema existe)
+- [ ] BUG: Link de atualização não está funcionando para serviços de saúde (INVESTIGAR - sistema existe)
+- [ ] BUG: Link de atualização não está funcionando para outros serviços (INVESTIGAR - sistema existe)
+- [x] BUG: Foto do médico não está aparecendo na aba Dados Internos - CÓDIGO OK, problema é foto não salva
+
+### Melhorias de UX
+- [x] Adicionar "Dr." ou "Dra." automaticamente no nome do médico
+- [x] Exibir "Área de Atuação Principal" em Dados Internos
+- [x] Exibir "Área de Atuação Principal" em modo assinante (página pública)
+- [x] Adicionar texto explicativo no campo "Área de Atuação": "Este campo aparece aos pacientes"
+- [x] Adicionar texto explicativo no campo "Observações": "Este campo aparece apenas internamente para o comercial Vital"
+
+### Sistema de Procedimentos
+- [ ] Criar tabela de procedimentos no banco (endoscopia, colonoscopia, etc)
+- [ ] Adicionar campos: nome do procedimento, valor particular, valor Vital
+- [ ] Implementar CRUD de procedimentos no backend
+- [ ] Criar interface editável de procedimentos no formulário de Serviços de Saúde
+- [ ] Permitir gestor da clínica adicionar, editar e remover procedimentos
+- [ ] Exibir procedimentos na página pública e Dados Internos
