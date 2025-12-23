@@ -1,0 +1,37 @@
+{
+  "query": "SELECT * FROM instituicoes WHERE id = 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT * FROM instituicoes WHERE id = 1",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Única Medicina Avançada",
+      "categoria": "clinica",
+      "municipio": "Timbó",
+      "endereco": "Rua Professor Alwin Laemmel, 277 – Sala 02 – Timbó / SC",
+      "telefone": "NULL",
+      "email": "NULL",
+      "descontoPercentual": "20",
+      "observacoes": "NULL",
+      "contatoParceria": "NULL",
+      "ativo": "1",
+      "createdAt": "2025-11-14 04:57:19",
+      "updatedAt": "2025-12-23 07:07:15",
+      "precoConsulta": "NULL",
+      "tokenAtualizacao": "instituicao_1_1766473635708_69n0p",
+      "whatsapp": "NULL",
+      "tipoServico": "servicos_saude",
+      "whatsappSecretaria": "NULL",
+      "telefoneOrganizacao": "NULL",
+      "fotoUrl": "NULL",
+      "subcategoria": "NULL",
+      "logoUrl": "NULL",
+      "whatsappParceria": "NULL",
+      "valorParticular": "NULL",
+      "valorAssinanteVital": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tcategoria\tmunicipio\tendereco\ttelefone\temail\tdescontoPercentual\tobservacoes\tcontatoParceria\tativo\tcreatedAt\tupdatedAt\tprecoConsulta\ttokenAtualizacao\twhatsapp\ttipoServico\twhatsappSecretaria\ttelefoneOrganizacao\tfotoUrl\tsubcategoria\tlogoUrl\twhatsappParceria\tvalorParticular\tvalorAssinanteVital\n1\tÚnica Medicina Avançada\tclinica\tTimbó\tRua Professor Alwin Laemmel, 277 – Sala 02 – Timbó / SC\tNULL\tNULL\t20\tNULL\tNULL\t1\t2025-11-14 04:57:19\t2025-12-23 07:07:15\tNULL\tinstituicao_1_1766473635708_69n0p\tNULL\tservicos_saude\tNULL\tNULL\tNULL\tNULL\tNULL\tNULL\tNULL\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

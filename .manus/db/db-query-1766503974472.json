@@ -1,0 +1,9 @@
+{
+  "query": "INSERT INTO tokens (token, tipo, tipoCredenciado, credenciadoId, createdAt, expiresAt) VALUES ('teste_instituicao_123', 'atualizacao', 'instituicao', 1, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY))",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute INSERT INTO tokens (token, tipo, tipoCredenciado, credenciadoId, createdAt, expiresAt) VALUES ('teste_instituicao_123', 'atualizacao', 'instituicao', 1, NOW(), DATE_ADD(NOW(), INTERVAL 30 DAY))",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2775
+}

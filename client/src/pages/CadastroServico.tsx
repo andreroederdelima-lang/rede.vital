@@ -62,8 +62,8 @@ export default function CadastroServico() {
     if (instituicaoExistente) {
       setFormData({
         nome: instituicaoExistente.nome || "",
-        tipoServico: (instituicaoExistente.categoria as any) || "servicos_saude",
-        categoria: instituicaoExistente.tipoServico || "",
+        tipoServico: (instituicaoExistente.tipoServico as any) || "servicos_saude",
+        categoria: instituicaoExistente.categoria || "",
         municipio: instituicaoExistente.municipio || "",
         endereco: instituicaoExistente.endereco || "",
         telefoneFixo: instituicaoExistente.telefone || "",

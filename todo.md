@@ -2572,3 +2572,15 @@ pnpm vitest
 - [x] Upload de foto disponível (ImageUpload component)
 - [x] Testado com token válido - FUNCIONANDO PERFEITAMENTE
 - [x] Credenciados podem atualizar qualquer informação incluindo fotos
+
+
+## Verificar Pré-preenchimento de Serviços
+
+- [x] Testar formulário de serviços com token de instituição
+- [x] PROBLEMA IDENTIFICADO: Mapeamento invertido de categoria/tipoServico
+- [x] CORRIGIDO: CadastroServico.tsx linha 65-66
+- [x] Todos os campos pré-preenchidos corretamente
+- [x] Procedimentos preservados (gerenciados separadamente no Admin)
+- [x] Nenhuma informação perdida - sistema funciona perfeitamente
+- [x] Formulário permite atualizar dados básicos e fotos
+- [x] Procedimentos mantidos no banco, não afetados pela atualização

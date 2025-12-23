@@ -1,0 +1,28 @@
+{
+  "query": "SELECT id, nome, valorParticular, valorAssinanteVital FROM procedimentos WHERE instituicaoId = 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, valorParticular, valorAssinanteVital FROM procedimentos WHERE instituicaoId = 1",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Endoscopia Digestiva",
+      "valorParticular": "350.00",
+      "valorAssinanteVital": "250.00"
+    },
+    {
+      "id": "2",
+      "nome": "Colonoscopia",
+      "valorParticular": "400.00",
+      "valorAssinanteVital": "300.00"
+    },
+    {
+      "id": "3",
+      "nome": "Ultrassom Abdominal",
+      "valorParticular": "200.00",
+      "valorAssinanteVital": "150.00"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tvalorParticular\tvalorAssinanteVital\n1\tEndoscopia Digestiva\t350.00\t250.00\n2\tColonoscopia\t400.00\t300.00\n3\tUltrassom Abdominal\t200.00\t150.00\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}
