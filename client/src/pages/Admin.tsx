@@ -29,6 +29,7 @@ type MedicoForm = {
   especialidade: string;
   numeroRegistroConselho?: string;
   subespecialidade?: string;
+  areaAtuacao?: string;
   municipio: string;
   endereco: string;
   telefone?: string;
@@ -47,6 +48,7 @@ type MedicoForm = {
   observacoes?: string;
   contatoParceria?: string;
   whatsappParceria?: string;
+  email?: string;
 };
 
 type InstituicaoForm = {
@@ -748,11 +750,9 @@ export default function Admin() {
             <IndicacoesTab />
           </TabsContent> */}
 
-          {/* Tab Configurações - DESATIVADO */}
+          {/* Tab Configurações */}
           <TabsContent value="configuracoes">
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">Aba de configurações temporáriamente desativada</p>
-            </div>
+            <ConfiguracoesTab />
           </TabsContent>
         </Tabs>
       </main>
@@ -778,6 +778,7 @@ function MedicoFormDialog({
       especialidade: "",
       numeroRegistroConselho: "",
       subespecialidade: "",
+      areaAtuacao: "",
       municipio: "",
       endereco: "",
       telefone: "",
@@ -890,6 +891,16 @@ function MedicoFormDialog({
             id="subespecialidade"
             value={formData.subespecialidade || ""}
             onChange={(e) => setFormData({ ...formData, subespecialidade: e.target.value })}
+          />
+        </div>
+
+        <div className="col-span-2">
+          <Label htmlFor="areaAtuacao">Área de Atuação Principal</Label>
+          <Input
+            id="areaAtuacao"
+            value={formData.areaAtuacao || ""}
+            onChange={(e) => setFormData({ ...formData, areaAtuacao: e.target.value })}
+            placeholder="Ex: foco em saúde mental, atendimento infantil, etc."
           />
         </div>
 
@@ -2257,5 +2268,62 @@ function SolicitacoesAcessoTab() {
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+
+function ConfiguracoesTab() {
+  const utils = trpc.useUtils();
+  const { data: users, isLoading } = trpc.auth.me.useQuery();
+  
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Gestão de Administradores Manus</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Para gerenciar quem tem acesso ao painel Admin, você precisa atualizar diretamente no banco de dados.
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h4 className="font-semibold text-yellow-900 mb-2">⚠️ Como adicionar um novo Admin:</h4>
+            <ol className="list-decimal list-inside space-y-2 text-sm text-yellow-800">
+              <li>Peça para o usuário fazer login no sistema pelo menos uma vez</li>
+              <li>Acesse o banco de dados via Management UI → Database</li>
+              <li>Encontre o usuário na tabela <code className="bg-yellow-100 px-1 rounded">users</code></li>
+              <li>Altere o campo <code className="bg-yellow-100 px-1 rounded">role</code> de <code className="bg-yellow-100 px-1 rounded">user</code> para <code className="bg-yellow-100 px-1 rounded">admin</code></li>
+              <li>O usuário terá acesso total ao painel Admin no próximo login</li>
+            </ol>
+          </div>
+          
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h4 className="font-semibold text-blue-900 mb-2">ℹ️ Diferença entre sistemas:</h4>
+            <ul className="list-disc list-inside space-y-1 text-sm text-blue-800">
+              <li><strong>Tabela users (Manus OAuth):</strong> Controla acesso ao painel /admin</li>
+              <li><strong>Tabela usuariosAutorizados:</strong> Controla acesso à página /dados-internos</li>
+              <li>São sistemas independentes e não se afetam mutuamente</li>
+            </ul>
+          </div>
+
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 className="font-semibold text-gray-900 mb-2">🔧 Outras Configurações</h4>
+            <p className="text-sm text-muted-foreground mb-3">
+              Configurações adicionais do sistema serão implementadas aqui conforme necessário.
+            </p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-2 bg-white rounded border">
+                <span className="text-sm">Título do Sistema</span>
+                <span className="text-sm text-muted-foreground">Guia de Credenciados - Sua Saúde Vital</span>
+              </div>
+              <div className="flex items-center justify-between p-2 bg-white rounded border">
+                <span className="text-sm">Região de Atuação</span>
+                <span className="text-sm text-muted-foreground">Vale do Itajaí - Santa Catarina</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

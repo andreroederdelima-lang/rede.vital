@@ -40,12 +40,14 @@ export const medicos = mysqlTable("medicos", {
   especialidade: varchar("especialidade", { length: 255 }).notNull(),
   numeroRegistroConselho: varchar("numeroRegistroConselho", { length: 100 }), // CRM, CRO, etc
   subespecialidade: varchar("subespecialidade", { length: 255 }),
+  areaAtuacao: varchar("areaAtuacao", { length: 500 }), // Área de atuação principal (ex: "foco em saúde mental")
   municipio: varchar("municipio", { length: 100 }).notNull(),
   endereco: text("endereco").notNull(),
   telefone: varchar("telefone", { length: 100 }),
   whatsapp: varchar("whatsapp", { length: 100 }), // WhatsApp Comercial/Agendamento
   whatsappSecretaria: varchar("whatsappSecretaria", { length: 100 }),
   telefoneOrganizacao: varchar("telefoneOrganizacao", { length: 100 }),
+  email: varchar("email", { length: 255 }),
   logoUrl: varchar("logoUrl", { length: 500 }),
   fotoUrl: varchar("fotoUrl", { length: 500 }),
   tipoAtendimento: mysqlEnum("tipoAtendimento", ["presencial", "telemedicina", "ambos"]).default("presencial").notNull(),

@@ -22,6 +22,7 @@ export default function CadastroMedico() {
     nome: "",
     especialidade: "",
     numeroRegistroConselho: "",
+    areaAtuacao: "",
     municipio: "",
     endereco: "",
     telefoneFixo: "",
@@ -126,6 +127,7 @@ export default function CadastroMedico() {
         nomeEstabelecimento: formData.nome,
         especialidade: formData.especialidade,
         numeroRegistroConselho: formData.numeroRegistroConselho,
+        areaAtuacao: formData.areaAtuacao,
         categoria: formData.especialidade,
         cidade: formData.municipio,
         endereco: formData.endereco,
@@ -262,6 +264,16 @@ export default function CadastroMedico() {
                     placeholder="Ex: CRM 12345"
                   />
                 </div>
+              </div>
+              
+              <div>
+                <Label htmlFor="areaAtuacao">Área de Atuação Principal</Label>
+                <Input
+                  id="areaAtuacao"
+                  value={formData.areaAtuacao}
+                  onChange={(e) => setFormData({ ...formData, areaAtuacao: e.target.value })}
+                  placeholder="Ex: foco em saúde mental, atendimento infantil, etc."
+                />
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

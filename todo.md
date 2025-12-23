@@ -2417,3 +2417,14 @@ pnpm vitest
 - [x] Testar upload de foto e logo em médicos
 - [x] Testar upload de foto e logo em serviços
 - [x] Salvar checkpoint
+
+
+## BUGS CRÍTICOS REPORTADOS - PRIORIDADE MÁXIMA
+
+- [x] BUG: Link de cadastro de médico está criando registro como serviço/instituição - CORRIGIDO: função aprovar agora verifica tipoCredenciado
+- [x] BUG: Dados não estão sendo salvos no cadastro (foto, preços, etc) - CORRIGIDO: função aprovar agora salva todos os campos
+- [x] BUG: Preços da consulta não estão sendo salvos - CORRIGIDO: inclusos na aprovação
+- [x] FEATURE: Adicionar campo "Área de Atuação Principal" para médicos (ex: "foco em saúde mental") - IMPLEMENTADO
+- [x] BUG: Gestão de usuários não está mudando role para admin de verdade - ESCLARECIDO: aba Usuários gerencia /dados-internos, não Manus OAuth
+- [x] BUG: Senhas atualizadas na gestão de usuários não estão funcionando - ESCLARECIDO: funciona para usuários de /dados-internos
+- [x] BUG: Aba Configurações não está ativa/implementada - IMPLEMENTADO com instruções de gestão de admins

@@ -74,15 +74,26 @@ export const appRouter = router({
       .input(z.object({
         nome: z.string(),
         especialidade: z.string(),
+        numeroRegistroConselho: z.string().optional(),
         subespecialidade: z.string().optional(),
+        areaAtuacao: z.string().optional(),
         municipio: z.string(),
         endereco: z.string(),
         telefone: z.string().optional(),
         whatsapp: z.string().optional(),
+        whatsappSecretaria: z.string().optional(),
         tipoAtendimento: z.enum(["presencial", "telemedicina", "ambos"]).default("presencial"),
+        precoConsulta: z.string().optional(),
+        valorParticular: z.string().optional(),
+        valorAssinanteVital: z.string().optional(),
         descontoPercentual: z.number().default(0),
         observacoes: z.string().optional(),
         contatoParceria: z.string().optional(),
+        whatsappParceria: z.string().optional(),
+        email: z.string().optional(),
+        logoUrl: z.string().optional(),
+        fotoUrl: z.string().optional(),
+        ativo: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
         const { criarMedico } = await import("./db");
@@ -95,8 +106,9 @@ export const appRouter = router({
         data: z.object({
           nome: z.string().optional(),
           especialidade: z.string().optional(),
-          subespecialidade: z.string().optional(),
           numeroRegistroConselho: z.string().optional(),
+          subespecialidade: z.string().optional(),
+          areaAtuacao: z.string().optional(),
           municipio: z.string().optional(),
           endereco: z.string().optional(),
           telefone: z.string().optional(),
@@ -113,6 +125,7 @@ export const appRouter = router({
           logoUrl: z.string().optional(),
           fotoUrl: z.string().optional(),
           whatsappParceria: z.string().optional(),
+          email: z.string().optional(),
         }),
       }))
       .mutation(async ({ input }) => {
@@ -291,23 +304,61 @@ export const appRouter = router({
     aprovar: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao } = await import("./db");
+        const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao, criarMedico } = await import("./db");
         
         // Obter solicitação
         const solicitacao = await obterSolicitacaoParceriaPorId(input);
         if (!solicitacao) throw new Error("Solicitação não encontrada");
         
-        // Criar instituição na rede credenciada
-        await criarInstituicao({
-          nome: solicitacao.nomeEstabelecimento,
-          categoria: solicitacao.categoria as any,
-          municipio: solicitacao.cidade,
-          endereco: solicitacao.endereco,
-          telefone: solicitacao.telefone,
-          descontoPercentual: solicitacao.descontoPercentual,
-          contatoParceria: solicitacao.nomeResponsavel,
-          ativo: 1,
-        });
+        // Criar médico ou instituição baseado no tipoCredenciado
+        if (solicitacao.tipoCredenciado === "medico") {
+          // Criar médico na rede credenciada
+          await criarMedico({
+            nome: solicitacao.nomeEstabelecimento,
+            especialidade: solicitacao.especialidade || solicitacao.categoria,
+            numeroRegistroConselho: solicitacao.numeroRegistroConselho,
+            areaAtuacao: solicitacao.areaAtuacao,
+            municipio: solicitacao.cidade,
+            endereco: solicitacao.endereco,
+            telefone: solicitacao.telefone,
+            whatsapp: solicitacao.whatsappSecretaria,
+            whatsappSecretaria: solicitacao.whatsappSecretaria,
+            tipoAtendimento: solicitacao.tipoAtendimento || "presencial",
+            precoConsulta: solicitacao.precoConsulta,
+            valorParticular: solicitacao.valorParticular,
+            valorAssinanteVital: solicitacao.valorAssinanteVital,
+            descontoPercentual: solicitacao.descontoPercentual,
+            observacoes: solicitacao.observacoes,
+            contatoParceria: solicitacao.nomeResponsavel,
+            whatsappParceria: solicitacao.whatsappParceria,
+            email: solicitacao.email,
+            logoUrl: solicitacao.logoUrl,
+            fotoUrl: solicitacao.fotoUrl,
+            ativo: 1,
+          });
+        } else {
+          // Criar instituição na rede credenciada
+          await criarInstituicao({
+            nome: solicitacao.nomeEstabelecimento,
+            tipoServico: solicitacao.tipoServico || "servicos_saude",
+            categoria: solicitacao.categoria as any,
+            municipio: solicitacao.cidade,
+            endereco: solicitacao.endereco,
+            telefone: solicitacao.telefone,
+            whatsappSecretaria: solicitacao.whatsappSecretaria,
+            email: solicitacao.email,
+            precoConsulta: solicitacao.precoConsulta,
+            valorParticular: solicitacao.valorParticular,
+            valorAssinanteVital: solicitacao.valorAssinanteVital,
+            descontoPercentual: solicitacao.descontoPercentual,
+            observacoes: solicitacao.observacoes,
+            contatoParceria: solicitacao.nomeResponsavel,
+            whatsappParceria: solicitacao.whatsappParceria,
+            logoUrl: solicitacao.logoUrl,
+            fotoUrl: solicitacao.fotoUrl,
+            ativo: 1,
+          });
+        }
         
         // Atualizar status da solicitação
         await atualizarStatusSolicitacao(input, "aprovado");

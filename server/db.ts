@@ -1131,7 +1131,7 @@ export async function enviarNotificacaoSemestral(tipo: "medico" | "instituicao",
   const db = await getDb();
   if (!db) return { success: false, message: "Database not available" };
   
-  let credenciado;
+  let credenciado: any;
   if (tipo === "medico") {
     const resultado = await db.select().from(medicos).where(eq(medicos.id, id)).limit(1);
     credenciado = resultado[0];
@@ -1147,9 +1147,7 @@ export async function enviarNotificacaoSemestral(tipo: "medico" | "instituicao",
   // Aqui você implementaria o envio real de email
   // Por enquanto, apenas retornamos sucesso simulado
   
-  const destinatario = 'email' in credenciado 
-    ? (credenciado.email || ('whatsapp' in credenciado ? credenciado.whatsapp : null))
-    : ('whatsapp' in credenciado ? credenciado.whatsapp : null);
+  const destinatario = credenciado.email || credenciado.whatsapp || credenciado.whatsappSecretaria || null;
   
   return {
     success: true,

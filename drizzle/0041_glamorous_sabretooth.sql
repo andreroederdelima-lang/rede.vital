@@ -1,0 +1,1 @@
+ALTER TABLE `medicos` ADD `email` varchar(255);

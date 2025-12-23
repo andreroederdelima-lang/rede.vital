@@ -1,0 +1,1 @@
+ALTER TABLE `medicos` ADD `areaAtuacao` varchar(500);

@@ -281,6 +281,20 @@
       "when": 1765763533593,
       "tag": "0039_daffy_mojo",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "5",
+      "when": 1766467024088,
+      "tag": "0040_moaning_shiver_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "5",
+      "when": 1766467131261,
+      "tag": "0041_glamorous_sabretooth",
+      "breakpoints": true
     }
   ]
 }
