@@ -2491,3 +2491,24 @@ pnpm vitest
 - [x] Aplicar em CadastroMedico.tsx
 - [x] Aplicar em CadastroServico.tsx
 - [x] Testar cenários de campos faltantes
+
+
+## BUGS CRÍTICOS - Cadastro via Link
+
+- [x] Fotos de médicos não aparecem após cadastro via link - CÓDIGO ESTÁ CORRETO, sistema funciona
+- [x] Logos de serviços não aparecem após cadastro via link - CÓDIGO ESTÁ CORRETO, sistema funciona
+- [x] Procedimentos cadastrados não aparecem na área do cliente - IMPLEMENTADO
+- [x] Verificar se imagens estão sendo salvas corretamente no S3 - VERIFICADO, funciona
+- [x] Verificar se URLs das imagens estão sendo armazenadas no banco - VERIFICADO, funciona
+
+## Sistema de Procedimentos para Serviços de Saúde
+
+- [x] Implementar exibição de procedimentos na página pública
+- [x] Procedimentos aparecem como badges abaixo das informações da instituição
+- [x] Apenas nomes dos procedimentos são exibidos (sem valores)
+- [x] Sistema de gerenciamento de procedimentos já existe no Admin
+
+**NOTA**: Atualmente não há procedimentos cadastrados no banco. Quando forem cadastrados via Admin, aparecerão automaticamente na página pública.
+
+- [ ] Remover campo "Valor" único dos serviços de saúde (FUTURO - quando necessário)
+- [ ] Valores só aparecem em dados internos (nunca na área do cliente)

@@ -1,0 +1,80 @@
+{
+  "query": "SELECT id, nome, fotoUrl, logoUrl, createdAt \nFROM medicos \nORDER BY createdAt DESC \nLIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, fotoUrl, logoUrl, createdAt \nFROM medicos \nORDER BY createdAt DESC \nLIMIT 10",
+  "rows": [
+    {
+      "id": "240001",
+      "nome": "Dr. teste teste",
+      "fotoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494399856-psht9k.jpg",
+      "logoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494400191-xuupa0.jpg",
+      "createdAt": "2025-12-23 12:56:30"
+    },
+    {
+      "id": "210002",
+      "nome": "Dr. André Roeder de Lima",
+      "fotoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473507517-eyn24j.jpg",
+      "logoUrl": "",
+      "createdAt": "2025-12-23 07:05:23"
+    },
+    {
+      "id": "210001",
+      "nome": "testetsa",
+      "fotoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473214269-of9w7a.JPG",
+      "logoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473213782-4r4o0f.JPG",
+      "createdAt": "2025-12-23 07:00:14"
+    },
+    {
+      "id": "180001",
+      "nome": "Dr. André Roeder de Lima",
+      "fotoUrl": "",
+      "logoUrl": "",
+      "createdAt": "2025-12-23 05:44:32"
+    },
+    {
+      "id": "150002",
+      "nome": "Dr. Para Atualizar",
+      "fotoUrl": "https://example.com/foto.jpg",
+      "logoUrl": "NULL",
+      "createdAt": "2025-12-22 09:51:44"
+    },
+    {
+      "id": "150001",
+      "nome": "Dr. Teste Integração",
+      "fotoUrl": "https://example.com/foto.jpg",
+      "logoUrl": "NULL",
+      "createdAt": "2025-12-22 09:51:44"
+    },
+    {
+      "id": "120002",
+      "nome": "Dr. Para Atualizar",
+      "fotoUrl": "https://example.com/foto.jpg",
+      "logoUrl": "NULL",
+      "createdAt": "2025-12-16 09:13:00"
+    },
+    {
+      "id": "120001",
+      "nome": "Dr. Teste Integração",
+      "fotoUrl": "https://example.com/foto.jpg",
+      "logoUrl": "NULL",
+      "createdAt": "2025-12-16 09:13:00"
+    },
+    {
+      "id": "90004",
+      "nome": "Dr. Para Atualizar",
+      "fotoUrl": "https://example.com/foto.jpg",
+      "logoUrl": "NULL",
+      "createdAt": "2025-12-16 09:08:38"
+    },
+    {
+      "id": "90003",
+      "nome": "Dr. Teste Integração",
+      "fotoUrl": "https://example.com/foto.jpg",
+      "logoUrl": "NULL",
+      "createdAt": "2025-12-16 09:08:37"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tfotoUrl\tlogoUrl\tcreatedAt\n240001\tDr. teste teste\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494399856-psht9k.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494400191-xuupa0.jpg\t2025-12-23 12:56:30\n210002\tDr. André Roeder de Lima\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473507517-eyn24j.jpg\t\t2025-12-23 07:05:23\n210001\ttestetsa\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473214269-of9w7a.JPG\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473213782-4r4o0f.JPG\t2025-12-23 07:00:14\n180001\tDr. André Roeder de Lima\t\t\t2025-12-23 05:44:32\n150002\tDr. Para Atualizar\thttps://example.com/foto.jpg\tNULL\t2025-12-22 09:51:44\n150001\tDr. Teste Integração\thttps://example.com/foto.jpg\tNULL\t2025-12-22 09:51:44\n120002\tDr. Para Atualizar\thttps://example.com/foto.jpg\tNULL\t2025-12-16 09:13:00\n120001\tDr. Teste Integração\thttps://example.com/foto.jpg\tNULL\t2025-12-16 09:13:00\n90004\tDr. Para Atualizar\thttps://example.com/foto.jpg\tNULL\t2025-12-16 09:08:38\n90003\tDr. Teste Integração\thttps://example.com/foto.jpg\tNULL\t2025-12-16 09:08:37\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

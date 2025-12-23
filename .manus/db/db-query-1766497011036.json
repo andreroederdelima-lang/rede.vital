@@ -1,0 +1,55 @@
+{
+  "query": "SELECT id, nomeEstabelecimento, tipoCredenciado, status, fotoUrl, logoUrl, createdAt \nFROM solicitacoesParceria \nORDER BY createdAt DESC \nLIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nomeEstabelecimento, tipoCredenciado, status, fotoUrl, logoUrl, createdAt \nFROM solicitacoesParceria \nORDER BY createdAt DESC \nLIMIT 5",
+  "rows": [
+    {
+      "id": "180002",
+      "nomeEstabelecimento": "CLINICA FLAMENGO",
+      "tipoCredenciado": "instituicao",
+      "status": "aprovado",
+      "fotoUrl": "",
+      "logoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494567877-tm8mo3.jpg",
+      "createdAt": "2025-12-23 12:56:08"
+    },
+    {
+      "id": "180001",
+      "nomeEstabelecimento": "teste teste ",
+      "tipoCredenciado": "medico",
+      "status": "aprovado",
+      "fotoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494399856-psht9k.jpg",
+      "logoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494400191-xuupa0.jpg",
+      "createdAt": "2025-12-23 12:53:20"
+    },
+    {
+      "id": "150001",
+      "nomeEstabelecimento": "André Roeder de Lima",
+      "tipoCredenciado": "medico",
+      "status": "aprovado",
+      "fotoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473507517-eyn24j.jpg",
+      "logoUrl": "",
+      "createdAt": "2025-12-23 07:05:07"
+    },
+    {
+      "id": "120001",
+      "nomeEstabelecimento": "Dr. André Roeder de Lima",
+      "tipoCredenciado": "medico",
+      "status": "aprovado",
+      "fotoUrl": "",
+      "logoUrl": "",
+      "createdAt": "2025-12-23 05:40:38"
+    },
+    {
+      "id": "90001",
+      "nomeEstabelecimento": "André Roeder de Lima",
+      "tipoCredenciado": "medico",
+      "status": "aprovado",
+      "fotoUrl": "https://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766466303763-3529qt.jpg",
+      "logoUrl": "",
+      "createdAt": "2025-12-23 05:05:04"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnomeEstabelecimento\ttipoCredenciado\tstatus\tfotoUrl\tlogoUrl\tcreatedAt\n180002\tCLINICA FLAMENGO\tinstituicao\taprovado\t\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494567877-tm8mo3.jpg\t2025-12-23 12:56:08\n180001\tteste teste \tmedico\taprovado\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494399856-psht9k.jpg\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766494400191-xuupa0.jpg\t2025-12-23 12:53:20\n150001\tAndré Roeder de Lima\tmedico\taprovado\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766473507517-eyn24j.jpg\t\t2025-12-23 07:05:07\n120001\tDr. André Roeder de Lima\tmedico\taprovado\t\t\t2025-12-23 05:40:38\n90001\tAndré Roeder de Lima\tmedico\taprovado\thttps://d2xsxph8kpxj0f.cloudfront.net/310519663205270242/QrgB7CmSLRUFiNpMh46Kpu/credenciados/1766466303763-3529qt.jpg\t\t2025-12-23 05:05:04\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}

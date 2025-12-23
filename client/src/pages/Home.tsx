@@ -18,6 +18,27 @@ import { useDadosInternosAuth } from "@/hooks/useDadosInternosAuth";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 
+// Componente para exibir procedimentos de uma instituição
+function ProcedimentosInstituicao({ instituicaoId }: { instituicaoId: number }) {
+  const { data: procedimentos = [], isLoading } = trpc.procedimentos.listar.useQuery({ instituicaoId });
+  
+  if (isLoading) return null;
+  if (procedimentos.length === 0) return null;
+  
+  return (
+    <div className="mt-3 pt-3 border-t">
+      <h4 className="text-sm font-semibold text-primary mb-2">Procedimentos oferecidos:</h4>
+      <div className="flex flex-wrap gap-2">
+        {procedimentos.map((proc) => (
+          <Badge key={proc.id} variant="outline" className="text-xs">
+            {proc.nome}
+          </Badge>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const { isAuthenticated, isLoading: authLoading, logout, user } = useDadosInternosAuth();
   
@@ -805,6 +826,9 @@ export default function Home() {
                             {inst.observacoes}
                           </p>
                         )}
+
+                        {/* Procedimentos oferecidos */}
+                        <ProcedimentosInstituicao instituicaoId={inst.id} />
 
                         {inst.contatoParceria && (
                           <p className="text-xs text-muted-foreground">
