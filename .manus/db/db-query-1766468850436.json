@@ -1,0 +1,16 @@
+{
+  "query": "SELECT nomeEstabelecimento, valorParticular, valorAssinanteVital, status FROM solicitacoesParceria WHERE nomeEstabelecimento LIKE '%André Roeder%' ORDER BY id DESC LIMIT 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT nomeEstabelecimento, valorParticular, valorAssinanteVital, status FROM solicitacoesParceria WHERE nomeEstabelecimento LIKE '%André Roeder%' ORDER BY id DESC LIMIT 1",
+  "rows": [
+    {
+      "nomeEstabelecimento": "Dr. André Roeder de Lima",
+      "valorParticular": "3.00",
+      "valorAssinanteVital": "2.25",
+      "status": "aprovado"
+    }
+  ],
+  "messages": [],
+  "stdout": "nomeEstabelecimento\tvalorParticular\tvalorAssinanteVital\tstatus\nDr. André Roeder de Lima\t3.00\t2.25\taprovado\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

@@ -1,0 +1,17 @@
+{
+  "query": "SELECT nome, valorParticular, valorAssinanteVital, precoConsulta, descontoPercentual FROM medicos WHERE nome LIKE '%André Roeder%'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT nome, valorParticular, valorAssinanteVital, precoConsulta, descontoPercentual FROM medicos WHERE nome LIKE '%André Roeder%'",
+  "rows": [
+    {
+      "nome": "Dr. André Roeder de Lima",
+      "valorParticular": "3.00",
+      "valorAssinanteVital": "2.25",
+      "precoConsulta": "NULL",
+      "descontoPercentual": "25"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tvalorParticular\tvalorAssinanteVital\tprecoConsulta\tdescontoPercentual\nDr. André Roeder de Lima\t3.00\t2.25\tNULL\t25\n",
+  "stderr": "",
+  "execution_time_ms": 48
+}

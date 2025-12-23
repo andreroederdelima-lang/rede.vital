@@ -1,0 +1,8 @@
+{
+  "query": "SELECT nomeEstabelecimento, valorParticular, valorAssinanteVital, precoConsulta, status FROM solicitacoes_parceria WHERE nomeEstabelecimento LIKE '%André Roeder%' ORDER BY id DESC LIMIT 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT nomeEstabelecimento, valorParticular, valorAssinanteVital, precoConsulta, status FROM solicitacoes_parceria WHERE nomeEstabelecimento LIKE '%André Roeder%' ORDER BY id DESC LIMIT 1",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1146 (42S02) at line 1: Table 'qrgb7cmslrufinpmh46kpu.solicitacoes_parceria' doesn't exist"
+  ]
+}

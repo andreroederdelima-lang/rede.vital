@@ -2428,3 +2428,12 @@ pnpm vitest
 - [x] BUG: Gestão de usuários não está mudando role para admin de verdade - ESCLARECIDO: aba Usuários gerencia /dados-internos, não Manus OAuth
 - [x] BUG: Senhas atualizadas na gestão de usuários não estão funcionando - ESCLARECIDO: funciona para usuários de /dados-internos
 - [x] BUG: Aba Configurações não está ativa/implementada - IMPLEMENTADO com instruções de gestão de admins
+
+
+## BUGS ENCONTRADOS NO TESTE DE CADASTRO - 23/12/2025
+
+- [ ] BUG CRÍTICO: Valores (valorParticular e valorAssinanteVital) não estão sendo salvos na aprovação de solicitações
+- [ ] BUG: window.confirm bloqueia aprovação em navegadores automatizados - precisa usar componente React Dialog
+- [ ] TESTE PENDENTE: Upload de foto e logo no cadastro de médico
+- [ ] TESTE PENDENTE: Cadastro completo de serviço/instituição via link
+- [ ] TESTE PENDENTE: Verificar se dados aparecem corretamente na página pública

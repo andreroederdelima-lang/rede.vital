@@ -1,0 +1,39 @@
+{
+  "query": "SELECT * FROM medicos WHERE nome LIKE '%André Roeder%' ORDER BY id DESC LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT * FROM medicos WHERE nome LIKE '%André Roeder%' ORDER BY id DESC LIMIT 5",
+  "rows": [
+    {
+      "id": "180001",
+      "nome": "Dr. André Roeder de Lima",
+      "especialidade": "Psiquiatria",
+      "subespecialidade": "NULL",
+      "municipio": "Timbó",
+      "endereco": "Rua das Flores, 123, Centro",
+      "telefone": "(47) 3333-5555",
+      "whatsapp": "(47) 99888-7777",
+      "tipoAtendimento": "presencial",
+      "descontoPercentual": "25",
+      "observacoes": "",
+      "contatoParceria": "André Roeder",
+      "ativo": "1",
+      "createdAt": "2025-12-23 05:44:32",
+      "updatedAt": "2025-12-23 05:44:32",
+      "precoConsulta": "NULL",
+      "tokenAtualizacao": "NULL",
+      "whatsappSecretaria": "(47) 99888-7777",
+      "telefoneOrganizacao": "NULL",
+      "fotoUrl": "",
+      "logoUrl": "",
+      "numeroRegistroConselho": "CRM 54321-SC",
+      "whatsappParceria": "(47) 99888-7777",
+      "valorParticular": "3.00",
+      "valorAssinanteVital": "2.25",
+      "areaAtuacao": "Foco em saúde mental e atendimento de ansiedade",
+      "email": "andre.roeder@clinica.com"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tespecialidade\tsubespecialidade\tmunicipio\tendereco\ttelefone\twhatsapp\ttipoAtendimento\tdescontoPercentual\tobservacoes\tcontatoParceria\tativo\tcreatedAt\tupdatedAt\tprecoConsulta\ttokenAtualizacao\twhatsappSecretaria\ttelefoneOrganizacao\tfotoUrl\tlogoUrl\tnumeroRegistroConselho\twhatsappParceria\tvalorParticular\tvalorAssinanteVital\tareaAtuacao\temail\n180001\tDr. André Roeder de Lima\tPsiquiatria\tNULL\tTimbó\tRua das Flores, 123, Centro\t(47) 3333-5555\t(47) 99888-7777\tpresencial\t25\t\tAndré Roeder\t1\t2025-12-23 05:44:32\t2025-12-23 05:44:32\tNULL\tNULL\t(47) 99888-7777\tNULL\t\t\tCRM 54321-SC\t(47) 99888-7777\t3.00\t2.25\tFoco em saúde mental e atendimento de ansiedade\tandre.roeder@clinica.com\n",
+  "stderr": "",
+  "execution_time_ms": 398
+}
