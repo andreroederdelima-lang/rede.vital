@@ -2437,3 +2437,13 @@ pnpm vitest
 - [ ] TESTE PENDENTE: Upload de foto e logo no cadastro de médico
 - [ ] TESTE PENDENTE: Cadastro completo de serviço/instituição via link
 - [ ] TESTE PENDENTE: Verificar se dados aparecem corretamente na página pública
+
+
+## Adicionar Novas Categorias em Serviços de Saúde - 23/12/2025
+
+- [x] Adicionar categoria "Clínica de Multiespecialidades" em shared/categorias.ts
+- [x] Adicionar categoria "Clínica Médica" em shared/categorias.ts
+- [x] Atualizar formulários Admin para aceitar novas categorias (tipo genérico string)
+- [x] Formulário de cadastro via link já usa CATEGORIAS_SERVICOS_SAUDE (automático)
+- [x] Schema já usa varchar (não precisa migração)
+- [x] Testar criação de instituição com novas categorias - Sistema funcionando

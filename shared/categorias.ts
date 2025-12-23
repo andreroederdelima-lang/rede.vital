@@ -63,6 +63,10 @@ export const CATEGORIAS_SERVICOS_SAUDE = [
   { value: "Clínica de Vacinação", label: "Clínica de Vacinação" },
   { value: "Imunização Domiciliar", label: "Imunização Domiciliar" },
   
+  // Clínicas
+  { value: "Clínica de Multiespecialidades", label: "Clínica de Multiespecialidades" },
+  { value: "Clínica Médica", label: "Clínica Médica" },
+  
   // Outros
   { value: "Banco de Sangue / Hemoterapia", label: "Banco de Sangue / Hemoterapia" },
   { value: "Ótica", label: "Ótica" },

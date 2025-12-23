@@ -55,7 +55,7 @@ type InstituicaoForm = {
   id?: number;
   nome: string;
   tipoServico: "servicos_saude" | "outros_servicos";
-  categoria: "clinica" | "farmacia" | "laboratorio" | "academia" | "hospital" | "outro";
+  categoria: string; // Categoria flexível baseada em CATEGORIAS_SERVICOS_SAUDE ou CATEGORIAS_OUTROS_SERVICOS
   subcategoria?: string;
   municipio: string;
   endereco: string;
@@ -1073,7 +1073,7 @@ function InstituicaoFormDialog({
     instituicao || {
       nome: "",
       tipoServico: "servicos_saude",
-      categoria: "clinica",
+      categoria: "Clínica de Multiespecialidades",
       subcategoria: "",
       municipio: "",
       endereco: "",
@@ -1403,15 +1403,8 @@ function SolicitacoesTab() {
   };
 
   const getCategoriaLabel = (categoria: string) => {
-    const labels: Record<string, string> = {
-      clinica: "Clínica",
-      farmacia: "Farmácia",
-      laboratorio: "Laboratório",
-      academia: "Academia",
-      hospital: "Hospital",
-      outro: "Outro",
-    };
-    return labels[categoria] || categoria;
+    // Retorna a própria categoria como label (já está formatada)
+    return categoria;
   };
 
   return (
