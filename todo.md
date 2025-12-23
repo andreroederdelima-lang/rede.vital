@@ -2512,3 +2512,14 @@ pnpm vitest
 
 - [ ] Remover campo "Valor" único dos serviços de saúde (FUTURO - quando necessário)
 - [ ] Valores só aparecem em dados internos (nunca na área do cliente)
+
+
+## Filtro de Busca por Procedimento
+
+- [x] Criar endpoint backend para listar todos os procedimentos únicos
+- [x] Modificar query de listagem de instituições para filtrar por procedimento
+- [x] Adicionar dropdown de procedimentos no frontend (página pública)
+- [x] Integrar filtro com busca existente
+- [x] Ajustar layout do grid de filtros (md:grid-cols-3)
+- [ ] BUG: Dropdown de procedimentos não aparece na interface - precisa debug adicional
+- [ ] Testar filtro combinado com outros filtros (município, categoria)

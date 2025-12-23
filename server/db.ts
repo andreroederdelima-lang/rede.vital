@@ -227,10 +227,52 @@ export async function listarInstituicoes(filtros?: {
   municipio?: string;
   descontoMinimo?: number;
   tipoServico?: "servicos_saude" | "outros_servicos";
+  procedimento?: string;
 }) {
   const db = await getDb();
   if (!db) return [];
 
+  // Se houver filtro de procedimento, precisamos fazer JOIN com a tabela procedimentos
+  if (filtros?.procedimento) {
+    const condicoes = [eq(instituicoes.ativo, 1), eq(procedimentos.ativo, 1), eq(procedimentos.nome, filtros.procedimento)];
+
+    if (filtros?.busca) {
+      condicoes.push(
+        or(
+          like(instituicoes.nome, `%${filtros.busca}%`),
+          like(instituicoes.endereco, `%${filtros.busca}%`),
+          like(instituicoes.observacoes, `%${filtros.busca}%`)
+        )!
+      );
+    }
+
+    if (filtros?.categoria) {
+      condicoes.push(eq(instituicoes.categoria, filtros.categoria as any));
+    }
+
+    if (filtros?.municipio) {
+      condicoes.push(eq(instituicoes.municipio, filtros.municipio));
+    }
+
+    if (filtros?.tipoServico) {
+      condicoes.push(eq((instituicoes as any).tipoServico, filtros.tipoServico));
+    }
+
+    if (filtros?.descontoMinimo !== undefined) {
+      condicoes.push(gte(instituicoes.descontoPercentual, filtros.descontoMinimo));
+    }
+
+    // JOIN com procedimentos e retornar instituições únicas
+    const result = await db
+      .selectDistinct()
+      .from(instituicoes)
+      .innerJoin(procedimentos, eq(procedimentos.instituicaoId, instituicoes.id))
+      .where(and(...condicoes));
+    
+    return result.map(r => r.instituicoes);
+  }
+
+  // Filtro normal sem procedimento
   const condicoes = [eq(instituicoes.ativo, 1)];
 
   if (filtros?.busca) {
@@ -1447,6 +1489,19 @@ export async function listarProcedimentos(instituicaoId?: number) {
   }
   
   return db.select().from(procedimentos).where(eq(procedimentos.ativo, 1));
+}
+
+export async function listarNomesProcedimentos() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const result = await db
+    .selectDistinct({ nome: procedimentos.nome })
+    .from(procedimentos)
+    .where(eq(procedimentos.ativo, 1))
+    .orderBy(procedimentos.nome);
+  
+  return result.map(r => r.nome);
 }
 
 export async function obterProcedimentoPorId(id: number) {

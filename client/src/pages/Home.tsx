@@ -47,6 +47,7 @@ export default function Home() {
   const [especialidade, setEspecialidade] = useState<string>("");
   const [municipio, setMunicipio] = useState<string>("");
   const [categoria, setCategoria] = useState<string>("");
+  const [procedimento, setProcedimento] = useState<string>("");
   const [descontoMinimo, setDescontoMinimo] = useState<number | undefined>();
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "servicos_saude" | "outros_servicos">("medicos");
   const [encaminhamentoDialog, setEncaminhamentoDialog] = useState(false);
@@ -71,10 +72,12 @@ export default function Home() {
     municipio: municipio || undefined,
     descontoMinimo,
     tipoServico: tipoCredenciado === "servicos_saude" || tipoCredenciado === "outros_servicos" ? tipoCredenciado : undefined,
+    procedimento: procedimento || undefined,
   }, { enabled: tipoCredenciado === "servicos_saude" || tipoCredenciado === "outros_servicos" });
 
   const { data: especialidades = [] } = trpc.medicos.listarEspecialidades.useQuery();
   const { data: municipios = [] } = trpc.municipios.listar.useQuery();
+  const { data: procedimentos = [] } = trpc.procedimentos.listarNomes.useQuery();
 
   const gerarLinkMutation = trpc.atualizacao.gerarLink.useMutation({
     onSuccess: async (data) => {
@@ -126,12 +129,13 @@ export default function Home() {
     setEspecialidade("");
     setMunicipio("");
     setCategoria("");
+    setProcedimento("");
     setDescontoMinimo(undefined);
   };
 
   const filtrosAtivos = useMemo(() => {
-    return !!(busca || especialidade || municipio || categoria || descontoMinimo);
-  }, [busca, especialidade, municipio, categoria, descontoMinimo]);
+    return !!(busca || especialidade || municipio || categoria || procedimento || descontoMinimo);
+  }, [busca, especialidade, municipio, categoria, procedimento, descontoMinimo]);
 
   const exportarParaPDF = () => {
     const dados = tipoCredenciado === "medicos" ? medicos : instituicoes;
@@ -551,6 +555,20 @@ export default function Home() {
                       <SelectItem key={cat.value} value={cat.value}>
                         {cat.label}
                       </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+
+              {tipoCredenciado !== "medicos" && (
+                <Select value={procedimento || "all"} onValueChange={(v) => setProcedimento(v === "all" ? "" : v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Todos os procedimentos" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    <SelectItem value="all">Todos os procedimentos</SelectItem>
+                    {procedimentos.map((proc) => (
+                      <SelectItem key={proc} value={proc}>{proc}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

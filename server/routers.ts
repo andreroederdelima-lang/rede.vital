@@ -160,6 +160,7 @@ export const appRouter = router({
         municipio: z.string().optional(),
         descontoMinimo: z.number().optional(),
         tipoServico: z.enum(["servicos_saude", "outros_servicos"]).optional(),
+        procedimento: z.string().optional(),
       }).optional())
       .query(async ({ input }) => {
         const { listarInstituicoes } = await import("./db");
@@ -1104,6 +1105,12 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       .query(async ({ input }) => {
         const { listarProcedimentos } = await import("./db");
         return await listarProcedimentos(input?.instituicaoId);
+      }),
+
+    listarNomes: publicProcedure
+      .query(async () => {
+        const { listarNomesProcedimentos } = await import("./db");
+        return await listarNomesProcedimentos();
       }),
 
     criar: protectedProcedure
