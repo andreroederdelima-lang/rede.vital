@@ -427,3 +427,43 @@ export const apiLogs = mysqlTable("apiLogs", {
 
 export type ApiLog = typeof apiLogs.$inferSelect;
 export type InsertApiLog = typeof apiLogs.$inferInsert;
+
+/**
+ * Tabela de Webhooks configurados
+ * Permite notificar plataformas externas sobre atualizações
+ */
+export const webhooks = mysqlTable("webhooks", {
+  id: int("id").autoincrement().primaryKey(),
+  apiKeyId: int("apiKeyId").notNull(), // FK para apiKeys
+  nome: varchar("nome", { length: 255 }).notNull(), // Nome descritivo
+  url: varchar("url", { length: 500 }).notNull(), // URL do webhook
+  eventos: text("eventos").notNull(), // JSON array: ["medico.criado", "medico.atualizado", "instituicao.criada", "instituicao.atualizada"]
+  ativo: int("ativo").default(1).notNull(), // 0 = desativado, 1 = ativo
+  secret: varchar("secret", { length: 64 }), // Secret para validação HMAC
+  maxRetries: int("maxRetries").default(3).notNull(), // Número máximo de tentativas
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Webhook = typeof webhooks.$inferSelect;
+export type InsertWebhook = typeof webhooks.$inferInsert;
+
+/**
+ * Tabela de logs de disparos de webhooks
+ * Registra todas as tentativas de envio
+ */
+export const webhookLogs = mysqlTable("webhookLogs", {
+  id: int("id").autoincrement().primaryKey(),
+  webhookId: int("webhookId").notNull(), // FK para webhooks
+  evento: varchar("evento", { length: 100 }).notNull(), // Ex: "medico.criado"
+  payload: text("payload").notNull(), // JSON com dados enviados
+  statusCode: int("statusCode"), // HTTP status code da resposta
+  responseBody: text("responseBody"), // Corpo da resposta
+  erro: text("erro"), // Mensagem de erro se houver
+  tentativa: int("tentativa").default(1).notNull(), // Número da tentativa (1, 2, 3...)
+  sucesso: int("sucesso").default(0).notNull(), // 0 = falha, 1 = sucesso
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type WebhookLog = typeof webhookLogs.$inferSelect;
+export type InsertWebhookLog = typeof webhookLogs.$inferInsert;

@@ -96,8 +96,24 @@ export const appRouter = router({
         ativo: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarMedico } = await import("./db");
-        return criarMedico(input);
+        const { criarMedico, dispararWebhook, obterMedicoPorId } = await import("./db");
+        const medicoId = await criarMedico(input);
+        
+        // Buscar médico recém-criado
+        const medico = await obterMedicoPorId(medicoId);
+        
+        // Disparar webhook
+        if (medico) {
+          await dispararWebhook("medico.criado", {
+            id: medico.id,
+            nome: medico.nome,
+            especialidade: medico.especialidade,
+            municipio: medico.municipio,
+            timestamp: new Date().toISOString(),
+          }).catch(err => console.error('Erro ao disparar webhook:', err));
+        }
+        
+        return medicoId;
       }),
 
     atualizar: protectedProcedure
@@ -129,8 +145,24 @@ export const appRouter = router({
         }),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarMedico } = await import("./db");
-        return atualizarMedico(input.id, input.data);
+        const { atualizarMedico, dispararWebhook, obterMedicoPorId } = await import("./db");
+        await atualizarMedico(input.id, input.data);
+        
+        // Buscar médico atualizado
+        const medico = await obterMedicoPorId(input.id);
+        
+        // Disparar webhook
+        if (medico) {
+          await dispararWebhook("medico.atualizado", {
+            id: medico.id,
+            nome: medico.nome,
+            especialidade: medico.especialidade,
+            municipio: medico.municipio,
+            timestamp: new Date().toISOString(),
+          }).catch(err => console.error('Erro ao disparar webhook:', err));
+        }
+        
+        return { success: true };
       }),
 
     excluir: protectedProcedure
@@ -188,8 +220,24 @@ export const appRouter = router({
         contatoParceria: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarInstituicao } = await import("./db");
-        return criarInstituicao(input);
+        const { criarInstituicao, dispararWebhook, obterInstituicaoPorId } = await import("./db");
+        const instituicaoId = await criarInstituicao(input);
+        
+        // Buscar instituição recém-criada
+        const instituicao = await obterInstituicaoPorId(instituicaoId);
+        
+        // Disparar webhook
+        if (instituicao) {
+          await dispararWebhook("instituicao.criada", {
+            id: instituicao.id,
+            nome: instituicao.nome,
+            categoria: instituicao.categoria,
+            municipio: instituicao.municipio,
+            timestamp: new Date().toISOString(),
+          }).catch(err => console.error('Erro ao disparar webhook:', err));
+        }
+        
+        return instituicaoId;
       }),
 
     atualizar: protectedProcedure
@@ -218,8 +266,24 @@ export const appRouter = router({
           fotoUrl: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarInstituicao } = await import("./db");
-        return atualizarInstituicao(input.id, input.data);
+        const { atualizarInstituicao, dispararWebhook, obterInstituicaoPorId } = await import("./db");
+        await atualizarInstituicao(input.id, input.data);
+        
+        // Buscar instituição atualizada
+        const instituicao = await obterInstituicaoPorId(input.id);
+        
+        // Disparar webhook
+        if (instituicao) {
+          await dispararWebhook("instituicao.atualizada", {
+            id: instituicao.id,
+            nome: instituicao.nome,
+            categoria: instituicao.categoria,
+            municipio: instituicao.municipio,
+            timestamp: new Date().toISOString(),
+          }).catch(err => console.error('Erro ao disparar webhook:', err));
+        }
+        
+        return { success: true };
       }),
 
     excluir: protectedProcedure
@@ -1296,6 +1360,133 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       .query(async ({ input }) => {
         const { estatisticasApiKey } = await import("./db");
         return estatisticasApiKey(input);
+      }),
+  }),
+
+  // ============================================
+  // WEBHOOKS - Sistema de notificações
+  // ============================================
+  webhooks: router({
+    // Listar todos os webhooks
+    listar: protectedProcedure
+      .input(z.object({
+        apiKeyId: z.number().optional(),
+      }).optional())
+      .query(async ({ input }) => {
+        const { listarWebhooks } = await import("./db");
+        return listarWebhooks(input?.apiKeyId);
+      }),
+
+    // Criar novo webhook
+    criar: protectedProcedure
+      .input(z.object({
+        apiKeyId: z.number(),
+        nome: z.string().min(1, "Nome é obrigatório"),
+        url: z.string().url("URL inválida"),
+        eventos: z.array(z.enum([
+          "medico.criado",
+          "medico.atualizado",
+          "instituicao.criada",
+          "instituicao.atualizada"
+        ])).min(1, "Selecione pelo menos um evento"),
+        maxRetries: z.number().min(1).max(10).optional().default(3),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarWebhook } = await import("./db");
+        return criarWebhook({
+          apiKeyId: input.apiKeyId,
+          nome: input.nome,
+          url: input.url,
+          eventos: JSON.stringify(input.eventos),
+          maxRetries: input.maxRetries,
+          ativo: 1,
+        });
+      }),
+
+    // Atualizar webhook
+    atualizar: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        nome: z.string().optional(),
+        url: z.string().url().optional(),
+        eventos: z.array(z.string()).optional(),
+        maxRetries: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarWebhook } = await import("./db");
+        const { id, ...data } = input;
+        
+        const updateData: any = { ...data };
+        if (data.eventos) {
+          updateData.eventos = JSON.stringify(data.eventos);
+        }
+        
+        await atualizarWebhook(id, updateData);
+        return { success: true };
+      }),
+
+    // Ativar/Desativar webhook
+    toggle: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        ativo: z.boolean(),
+      }))
+      .mutation(async ({ input }) => {
+        const { toggleWebhook } = await import("./db");
+        await toggleWebhook(input.id, input.ativo);
+        return { success: true };
+      }),
+
+    // Deletar webhook
+    deletar: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { deletarWebhook } = await import("./db");
+        await deletarWebhook(input);
+        return { success: true };
+      }),
+
+    // Testar webhook (disparo manual)
+    testar: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { buscarWebhookPorId, dispararWebhook } = await import("./db");
+        
+        const webhook = await buscarWebhookPorId(input);
+        if (!webhook) {
+          throw new Error("Webhook não encontrado");
+        }
+
+        // Payload de teste
+        const payloadTeste = {
+          evento: "teste",
+          timestamp: new Date().toISOString(),
+          data: {
+            mensagem: "Este é um disparo de teste do webhook"
+          }
+        };
+
+        await dispararWebhook("teste", payloadTeste);
+        return { success: true, mensagem: "Webhook disparado com sucesso!" };
+      }),
+
+    // Listar logs de um webhook
+    logs: protectedProcedure
+      .input(z.object({
+        webhookId: z.number(),
+        limit: z.number().optional().default(100),
+      }))
+      .query(async ({ input }) => {
+        const { listarLogsWebhook } = await import("./db");
+        return listarLogsWebhook(input.webhookId, input.limit);
+      }),
+
+    // Estatísticas de um webhook
+    estatisticas: protectedProcedure
+      .input(z.number())
+      .query(async ({ input }) => {
+        const { estatisticasWebhook } = await import("./db");
+        return estatisticasWebhook(input);
       }),
   }),
 

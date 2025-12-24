@@ -2649,3 +2649,38 @@ pnpm vitest
 - [x] Testar integração end-to-end
 - [x] Validar segurança
 - [ ] Salvar checkpoint final
+
+
+## Rate Limiting e Sistema de Webhooks
+
+### Fase 1: Rate Limiting Real
+- [x] Instalar biblioteca express-rate-limit
+- [x] Implementar rate limiter por API Key (100 req/min)
+- [x] Implementar rate limiter por API Key (1000 req/hora)
+- [x] Adicionar headers de rate limit nas respostas
+- [x] Testar comportamento quando limite é excedido
+- [x] Documentar rate limiting
+
+### Fase 2: Sistema de Webhooks
+- [x] Criar tabela webhooks no banco de dados
+- [x] Criar tabela webhookLogs no banco de dados
+- [x] Implementar funções CRUD de webhooks
+- [x] Criar routers tRPC para webhooks
+- [x] Implementar disparo automático quando credenciado é criado
+- [x] Implementar disparo automático quando credenciado é atualizado
+- [x] Implementar retry automático em caso de falha
+- [x] Criar aba "Webhooks" no painel Admin
+- [x] Interface para cadastrar/listar/testar webhooks
+- [x] Exibir logs de disparos de webhooks
+
+### Fase 3: Testes
+- [x] Criar testes vitest para rate limiting
+- [x] Criar testes vitest para webhooks
+- [x] Testar disparo real de webhooks
+- [x] Validar retry em caso de falha
+
+### Fase 4: Documentação e Entrega
+- [x] Atualizar DOCUMENTACAO_API.md com rate limiting
+- [x] Adicionar documentação de webhooks
+- [x] Atualizar GUIA_RAPIDO_INTEGRACAO.md
+- [ ] Salvar checkpoint final

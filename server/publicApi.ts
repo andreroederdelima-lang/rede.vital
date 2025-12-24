@@ -3,8 +3,48 @@ import { getDb } from './db';
 import { apiKeys, apiLogs, medicos, instituicoes, procedimentos } from '../drizzle/schema';
 import { eq, and, like, sql } from 'drizzle-orm';
 import crypto from 'crypto';
+import rateLimit from 'express-rate-limit';
 
 const router = Router();
+
+/**
+ * Rate Limiter: 100 requisições por minuto por API Key
+ */
+const perMinuteLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minuto
+  max: 100, // 100 requisições
+  standardHeaders: true, // Retorna headers `RateLimit-*`
+  legacyHeaders: false, // Desabilita headers `X-RateLimit-*`
+  keyGenerator: (req: Request) => {
+    // Usar API Key como identificador
+    return req.headers['x-api-key'] as string || req.ip || 'unknown';
+  },
+  handler: (req: Request, res: Response) => {
+    res.status(429).json({
+      success: false,
+      error: 'Limite de requisições excedido. Máximo de 100 requisições por minuto.'
+    });
+  },
+});
+
+/**
+ * Rate Limiter: 1000 requisições por hora por API Key
+ */
+const perHourLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hora
+  max: 1000, // 1000 requisições
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req: Request) => {
+    return req.headers['x-api-key'] as string || req.ip || 'unknown';
+  },
+  handler: (req: Request, res: Response) => {
+    res.status(429).json({
+      success: false,
+      error: 'Limite de requisições excedido. Máximo de 1000 requisições por hora.'
+    });
+  },
+});
 
 /**
  * Middleware de autenticação via API Key
@@ -120,8 +160,10 @@ async function logApiAccess(req: Request, res: Response, next: NextFunction) {
 }
 
 // Aplicar middlewares em todas as rotas
-router.use(authenticateApiKey);
-router.use(logApiAccess);
+router.use(perMinuteLimiter); // Rate limit por minuto
+router.use(perHourLimiter); // Rate limit por hora
+router.use(authenticateApiKey); // Autenticação
+router.use(logApiAccess); // Logs
 
 /**
  * GET /api/public/credenciados/medicos

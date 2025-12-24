@@ -317,7 +317,7 @@ export async function criarInstituicao(data: InsertInstituicao) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const result = await db.insert(instituicoes).values(data);
-  return result;
+  return Number(result[0].insertId);
 }
 
 export async function atualizarInstituicao(id: number, data: Partial<InsertInstituicao>) {
@@ -1689,5 +1689,243 @@ export async function estatisticasApiKey(apiKeyId: number): Promise<{
     avgResponseTime: Math.round(Number(stats?.avgResponseTime || 0)),
     successRate: totalRequests > 0 ? Math.round((successRequests / totalRequests) * 100) : 0,
     lastUsed: key?.lastUsedAt || null,
+  };
+}
+
+
+// ============================================
+// WEBHOOKS - Sistema de notificações
+// ============================================
+
+import { webhooks, webhookLogs, InsertWebhook, Webhook, InsertWebhookLog, WebhookLog } from "../drizzle/schema";
+
+/**
+ * Cria um novo webhook
+ */
+export async function criarWebhook(data: Omit<InsertWebhook, 'createdAt' | 'updatedAt'>): Promise<Webhook> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Gerar secret se não fornecido
+  const secret = data.secret || randomBytes(32).toString('hex');
+
+  const [result] = await db.insert(webhooks).values({
+    ...data,
+    secret,
+  });
+
+  const [newWebhook] = await db
+    .select()
+    .from(webhooks)
+    .where(eq(webhooks.id, Number(result.insertId)))
+    .limit(1);
+
+  return newWebhook;
+}
+
+/**
+ * Lista todos os webhooks
+ */
+export async function listarWebhooks(apiKeyId?: number): Promise<Webhook[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  if (apiKeyId) {
+    return await db
+      .select()
+      .from(webhooks)
+      .where(eq(webhooks.apiKeyId, apiKeyId))
+      .orderBy(desc(webhooks.createdAt));
+  }
+
+  return await db.select().from(webhooks).orderBy(desc(webhooks.createdAt));
+}
+
+/**
+ * Busca webhook por ID
+ */
+export async function buscarWebhookPorId(id: number): Promise<Webhook | undefined> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const [webhook] = await db
+    .select()
+    .from(webhooks)
+    .where(eq(webhooks.id, id))
+    .limit(1);
+
+  return webhook;
+}
+
+/**
+ * Atualiza webhook
+ */
+export async function atualizarWebhook(id: number, data: Partial<Omit<InsertWebhook, 'createdAt'>>): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(webhooks)
+    .set(data)
+    .where(eq(webhooks.id, id));
+}
+
+/**
+ * Ativa ou desativa webhook
+ */
+export async function toggleWebhook(id: number, ativo: boolean): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(webhooks)
+    .set({ ativo: ativo ? 1 : 0 })
+    .where(eq(webhooks.id, id));
+}
+
+/**
+ * Deleta webhook
+ */
+export async function deletarWebhook(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Deletar logs associados primeiro
+  await db.delete(webhookLogs).where(eq(webhookLogs.webhookId, id));
+
+  // Deletar webhook
+  await db.delete(webhooks).where(eq(webhooks.id, id));
+}
+
+/**
+ * Dispara webhook para um evento
+ */
+export async function dispararWebhook(
+  evento: string,
+  payload: any,
+  tentativa: number = 1
+): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Buscar webhooks ativos que escutam este evento
+  const webhooksAtivos = await db
+    .select()
+    .from(webhooks)
+    .where(eq(webhooks.ativo, 1));
+
+  for (const webhook of webhooksAtivos) {
+    // Verificar se webhook escuta este evento
+    const eventos = JSON.parse(webhook.eventos || '[]');
+    if (!eventos.includes(evento)) continue;
+
+    try {
+      // Fazer requisição HTTP
+      const response = await fetch(webhook.url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Webhook-Secret': webhook.secret || '',
+          'X-Webhook-Event': evento,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const responseBody = await response.text();
+
+      // Registrar log
+      await db.insert(webhookLogs).values({
+        webhookId: webhook.id,
+        evento,
+        payload: JSON.stringify(payload),
+        statusCode: response.status,
+        responseBody,
+        tentativa,
+        sucesso: response.ok ? 1 : 0,
+      });
+
+      // Se falhou e ainda tem tentativas, reagendar
+      if (!response.ok && tentativa < webhook.maxRetries) {
+        // Aguardar antes de tentar novamente (exponential backoff)
+        const delay = Math.pow(2, tentativa) * 1000; // 2s, 4s, 8s...
+        setTimeout(() => {
+          dispararWebhook(evento, payload, tentativa + 1);
+        }, delay);
+      }
+    } catch (error: any) {
+      // Registrar erro
+      await db.insert(webhookLogs).values({
+        webhookId: webhook.id,
+        evento,
+        payload: JSON.stringify(payload),
+        erro: error.message,
+        tentativa,
+        sucesso: 0,
+      });
+
+      // Se falhou e ainda tem tentativas, reagendar
+      if (tentativa < webhook.maxRetries) {
+        const delay = Math.pow(2, tentativa) * 1000;
+        setTimeout(() => {
+          dispararWebhook(evento, payload, tentativa + 1);
+        }, delay);
+      }
+    }
+  }
+}
+
+/**
+ * Lista logs de um webhook
+ */
+export async function listarLogsWebhook(webhookId: number, limit: number = 100): Promise<WebhookLog[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  return await db
+    .select()
+    .from(webhookLogs)
+    .where(eq(webhookLogs.webhookId, webhookId))
+    .orderBy(desc(webhookLogs.createdAt))
+    .limit(limit);
+}
+
+/**
+ * Estatísticas de um webhook
+ */
+export async function estatisticasWebhook(webhookId: number): Promise<{
+  totalDisparos: number;
+  sucessos: number;
+  falhas: number;
+  taxaSucesso: number;
+  ultimoDisparo: Date | null;
+}> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const [stats] = await db
+    .select({
+      totalDisparos: sql<number>`COUNT(*)`,
+      sucessos: sql<number>`SUM(CASE WHEN ${webhookLogs.sucesso} = 1 THEN 1 ELSE 0 END)`,
+    })
+    .from(webhookLogs)
+    .where(eq(webhookLogs.webhookId, webhookId));
+
+  const [ultimoLog] = await db
+    .select()
+    .from(webhookLogs)
+    .where(eq(webhookLogs.webhookId, webhookId))
+    .orderBy(desc(webhookLogs.createdAt))
+    .limit(1);
+
+  const totalDisparos = Number(stats?.totalDisparos || 0);
+  const sucessos = Number(stats?.sucessos || 0);
+  const falhas = totalDisparos - sucessos;
+
+  return {
+    totalDisparos,
+    sucessos,
+    falhas,
+    taxaSucesso: totalDisparos > 0 ? Math.round((sucessos / totalDisparos) * 100) : 0,
+    ultimoDisparo: ultimoLog?.createdAt || null,
   };
 }

@@ -24,6 +24,7 @@ import { validateMedicoForm, validateInstituicaoForm } from "@/lib/validation";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { GerenciarProcedimentos } from "@/components/GerenciarProcedimentos";
 import ApiKeysTab from "@/components/ApiKeysTab";
+import WebhooksTab from "@/components/WebhooksTab";
 
 type MedicoForm = {
   id?: number;
@@ -341,7 +342,7 @@ export default function Admin() {
               <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Acessos</TabsTrigger>
               <TabsTrigger value="prospeccao" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Prospecção</TabsTrigger>
               <TabsTrigger value="apikeys" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">API Keys</TabsTrigger>
-              {/* [REMOVIDO] <TabsTrigger value="indicacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Indicações</TabsTrigger> */}
+              <TabsTrigger value="webhooks" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Webhooks</TabsTrigger>
               <TabsTrigger value="configuracoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Configurações</TabsTrigger>
             </TabsList>
           </div>
@@ -766,6 +767,11 @@ export default function Admin() {
           {/* Tab API Keys */}
           <TabsContent value="apikeys">
             <ApiKeysTab />
+          </TabsContent>
+
+          {/* Tab Webhooks */}
+          <TabsContent value="webhooks">
+            <WebhooksTab />
           </TabsContent>
 
           {/* Tab Configurações */}

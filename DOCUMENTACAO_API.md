@@ -340,6 +340,20 @@ Para garantir a qualidade do serviço, implementamos os seguintes limites:
 
 Quando o limite for excedido, você receberá um erro `429 Too Many Requests`.
 
+### Headers de Rate Limit
+
+Todas as respostas incluem headers informativos:
+
+```
+RateLimit-Limit: 100
+RateLimit-Remaining: 95
+RateLimit-Reset: 1640000000
+```
+
+- `RateLimit-Limit`: Número máximo de requisições permitidas
+- `RateLimit-Remaining`: Requisições restantes na janela atual
+- `RateLimit-Reset`: Timestamp Unix quando o limite será resetado
+
 ---
 
 ## Exemplos de Integração
@@ -458,7 +472,110 @@ Para dúvidas, problemas ou solicitação de API Keys, entre em contato:
 
 ---
 
+## Webhooks
+
+Webhooks permitem que sua plataforma receba notificações automáticas quando credenciados forem criados ou atualizados.
+
+### Configurar Webhook
+
+1. Acesse o painel Admin
+2. Vá para a aba "Webhooks"
+3. Clique em "Novo Webhook"
+4. Configure:
+   - **Nome**: Identificação do webhook
+   - **URL**: Endpoint da sua plataforma que receberá as notificações
+   - **Eventos**: Selecione quais eventos deseja receber
+   - **Máximo de Tentativas**: Número de retries em caso de falha (1-10)
+
+### Eventos Disponíveis
+
+- `medico.criado` - Disparado quando um novo médico é cadastrado
+- `medico.atualizado` - Disparado quando um médico é editado
+- `instituicao.criada` - Disparado quando uma nova instituição é cadastrada
+- `instituicao.atualizada` - Disparado quando uma instituição é editada
+
+### Formato da Requisição
+
+Quando um evento ocorre, enviaremos uma requisição POST para sua URL:
+
+```http
+POST https://sua-plataforma.com/webhook
+Content-Type: application/json
+X-Webhook-Secret: seu_secret_aqui
+X-Webhook-Event: medico.criado
+
+{
+  "id": 123,
+  "nome": "Dr. João Silva",
+  "especialidade": "Cardiologia",
+  "municipio": "Blumenau",
+  "timestamp": "2025-01-15T10:30:00Z"
+}
+```
+
+### Validar Webhook
+
+Para garantir que a requisição veio da Vital, valide o header `X-Webhook-Secret`:
+
+```javascript
+app.post('/webhook', (req, res) => {
+  const secret = req.headers['x-webhook-secret'];
+  const evento = req.headers['x-webhook-event'];
+  
+  // Validar secret
+  if (secret !== 'SEU_SECRET_CONFIGURADO') {
+    return res.status(401).json({ error: 'Secret inválido' });
+  }
+  
+  // Processar evento
+  console.log(`Evento recebido: ${evento}`, req.body);
+  
+  // IMPORTANTE: Responder rapidamente (< 5 segundos)
+  res.status(200).json({ success: true });
+  
+  // Processar dados de forma assíncrona
+  processarDadosAsync(req.body);
+});
+```
+
+### Retry Automático
+
+Se sua plataforma não responder com sucesso (status 2xx), faremos retry automático:
+
+- **1ª tentativa**: Imediato
+- **2ª tentativa**: Após 2 segundos
+- **3ª tentativa**: Após 4 segundos
+- **4ª tentativa**: Após 8 segundos
+
+O número máximo de tentativas é configurável (1-10).
+
+### Boas Práticas
+
+1. **Responda rapidamente**: Retorne status 200 em menos de 5 segundos
+2. **Processe de forma assíncrona**: Não faça processamento pesado no handler do webhook
+3. **Valide o secret**: Sempre verifique o header `X-Webhook-Secret`
+4. **Seja idempotente**: O mesmo evento pode ser enviado mais de uma vez
+5. **Monitore logs**: Acompanhe os logs no painel Admin
+
+### Testar Webhook
+
+No painel Admin, você pode testar seu webhook manualmente:
+
+1. Expanda o card do webhook
+2. Clique em "Testar"
+3. Verifique se sua plataforma recebeu a requisição
+4. Confira os logs para ver o resultado
+
+---
+
 ## Changelog
+
+### v1.1.0 (Janeiro 2025)
+- Sistema de Webhooks para notificações automáticas
+- Rate limiting real (100 req/min, 1000 req/hora)
+- Headers de rate limit nas respostas
+- Retry automático de webhooks
+- Logs detalhados de disparos
 
 ### v1.0.0 (Janeiro 2025)
 - Lançamento inicial da API
