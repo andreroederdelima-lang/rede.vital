@@ -389,3 +389,41 @@ export const procedimentos = mysqlTable("procedimentos", {
 
 export type Procedimento = typeof procedimentos.$inferSelect;
 export type InsertProcedimento = typeof procedimentos.$inferInsert;
+
+/**
+ * Tabela de API Keys para integração externa
+ * Permite que outras plataformas acessem dados dos credenciados via API REST
+ */
+export const apiKeys = mysqlTable("apiKeys", {
+  id: int("id").autoincrement().primaryKey(),
+  nome: varchar("nome", { length: 255 }).notNull(), // Nome do cliente (ex: "Plataforma Cartão Benefícios")
+  apiKey: varchar("apiKey", { length: 64 }).notNull().unique(), // Chave gerada (UUID)
+  ativa: int("ativa").default(1).notNull(), // 0 = desativada, 1 = ativa
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  lastUsedAt: timestamp("lastUsedAt"), // Última vez que foi usada
+  requestCount: int("requestCount").default(0).notNull(), // Contador de requisições
+  createdBy: varchar("createdBy", { length: 255 }), // Quem criou a API Key
+});
+
+export type ApiKey = typeof apiKeys.$inferSelect;
+export type InsertApiKey = typeof apiKeys.$inferInsert;
+
+/**
+ * Tabela de logs de acesso à API
+ * Registra todas as requisições feitas via API Keys
+ */
+export const apiLogs = mysqlTable("apiLogs", {
+  id: int("id").autoincrement().primaryKey(),
+  apiKeyId: int("apiKeyId").notNull(), // FK para apiKeys
+  endpoint: varchar("endpoint", { length: 255 }).notNull(), // Ex: "/api/public/credenciados/medicos"
+  method: varchar("method", { length: 10 }).notNull(), // GET, POST, etc
+  statusCode: int("statusCode").notNull(), // 200, 404, 500, etc
+  responseTime: int("responseTime").notNull(), // Em milissegundos
+  queryParams: text("queryParams"), // JSON com parâmetros da query
+  ipAddress: varchar("ipAddress", { length: 45 }), // IPv4 ou IPv6
+  userAgent: text("userAgent"), // User agent do cliente
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ApiLog = typeof apiLogs.$inferSelect;
+export type InsertApiLog = typeof apiLogs.$inferInsert;

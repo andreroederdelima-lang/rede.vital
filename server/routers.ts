@@ -1238,6 +1238,67 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       }),
   }),
 
+  // ============================================
+  // API KEYS - Gerenciamento de chaves de API
+  // ============================================
+  apiKeys: router({
+    // Listar todas as API Keys
+    listar: protectedProcedure.query(async () => {
+      const { listarApiKeys } = await import("./db");
+      return listarApiKeys();
+    }),
+
+    // Criar nova API Key
+    criar: protectedProcedure
+      .input(z.object({
+        nome: z.string().min(1, "Nome é obrigatório"),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const { criarApiKey } = await import("./db");
+        return criarApiKey(input.nome, ctx.user?.name || 'admin');
+      }),
+
+    // Ativar/Desativar API Key
+    toggle: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        ativa: z.boolean(),
+      }))
+      .mutation(async ({ input }) => {
+        const { toggleApiKey } = await import("./db");
+        await toggleApiKey(input.id, input.ativa);
+        return { success: true };
+      }),
+
+    // Deletar API Key
+    deletar: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { deletarApiKey } = await import("./db");
+        await deletarApiKey(input);
+        return { success: true };
+      }),
+
+    // Listar logs de uma API Key
+    logs: protectedProcedure
+      .input(z.object({
+        apiKeyId: z.number(),
+        limit: z.number().optional().default(100),
+      }))
+      .query(async ({ input }) => {
+        const { listarLogsApiKey } = await import("./db");
+        return listarLogsApiKey(input.apiKeyId, input.limit);
+      }),
+
+    // Estatísticas de uma API Key
+    estatisticas: protectedProcedure
+      .input(z.number())
+      .query(async ({ input }) => {
+        const { estatisticasApiKey } = await import("./db");
+        return estatisticasApiKey(input);
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

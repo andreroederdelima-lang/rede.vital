@@ -17,6 +17,7 @@ type InsertCopy = typeof copys.$inferInsert;
 type Avaliacao = typeof avaliacoes.$inferSelect;
 type InsertAvaliacao = typeof avaliacoes.$inferInsert;
 import { ENV } from './_core/env';
+import { randomBytes } from 'crypto';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -1398,7 +1399,6 @@ export async function estatisticasAvaliacoes() {
 
 // ========== TOKENS ==========
 import { tokens, type InsertToken } from "../drizzle/schema";
-import { randomBytes } from "crypto";
 
 export async function criarToken(data: Omit<InsertToken, "token" | "expiresAt" | "createdAt">) {
   const db = await getDb();
@@ -1528,4 +1528,166 @@ export async function excluirProcedimento(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(procedimentos).set({ ativo: 0 }).where(eq(procedimentos.id, id));
+}
+
+
+// ============================================
+// API KEYS - Gerenciamento de chaves de API
+// ============================================
+
+import { apiKeys, apiLogs, InsertApiKey, ApiKey, InsertApiLog, ApiLog } from "../drizzle/schema";
+
+/**
+ * Gera uma nova API Key única
+ */
+export function gerarApiKey(): string {
+  return randomBytes(32).toString('hex');
+}
+
+/**
+ * Cria uma nova API Key
+ */
+export async function criarApiKey(nome: string, createdBy?: string): Promise<ApiKey> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const apiKey = gerarApiKey();
+
+  const [result] = await db.insert(apiKeys).values({
+    nome,
+    apiKey,
+    ativa: 1,
+    createdBy: createdBy || 'admin',
+    requestCount: 0,
+  });
+
+  const [newKey] = await db
+    .select()
+    .from(apiKeys)
+    .where(eq(apiKeys.id, Number(result.insertId)))
+    .limit(1);
+
+  return newKey;
+}
+
+/**
+ * Lista todas as API Keys
+ */
+export async function listarApiKeys(): Promise<ApiKey[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  return await db.select().from(apiKeys).orderBy(desc(apiKeys.createdAt));
+}
+
+/**
+ * Busca uma API Key por ID
+ */
+export async function buscarApiKeyPorId(id: number): Promise<ApiKey | undefined> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const [key] = await db
+    .select()
+    .from(apiKeys)
+    .where(eq(apiKeys.id, id))
+    .limit(1);
+
+  return key;
+}
+
+/**
+ * Busca uma API Key pela chave
+ */
+export async function buscarApiKeyPorChave(apiKey: string): Promise<ApiKey | undefined> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const [key] = await db
+    .select()
+    .from(apiKeys)
+    .where(eq(apiKeys.apiKey, apiKey))
+    .limit(1);
+
+  return key;
+}
+
+/**
+ * Ativa ou desativa uma API Key
+ */
+export async function toggleApiKey(id: number, ativa: boolean): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(apiKeys)
+    .set({ ativa: ativa ? 1 : 0 })
+    .where(eq(apiKeys.id, id));
+}
+
+/**
+ * Deleta uma API Key
+ */
+export async function deletarApiKey(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Deletar logs associados primeiro
+  await db.delete(apiLogs).where(eq(apiLogs.apiKeyId, id));
+
+  // Deletar API Key
+  await db.delete(apiKeys).where(eq(apiKeys.id, id));
+}
+
+/**
+ * Lista logs de uma API Key específica
+ */
+export async function listarLogsApiKey(apiKeyId: number, limit: number = 100): Promise<ApiLog[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  return await db
+    .select()
+    .from(apiLogs)
+    .where(eq(apiLogs.apiKeyId, apiKeyId))
+    .orderBy(desc(apiLogs.createdAt))
+    .limit(limit);
+}
+
+/**
+ * Estatísticas de uso de uma API Key
+ */
+export async function estatisticasApiKey(apiKeyId: number): Promise<{
+  totalRequests: number;
+  avgResponseTime: number;
+  successRate: number;
+  lastUsed: Date | null;
+}> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const [stats] = await db
+    .select({
+      totalRequests: sql<number>`COUNT(*)`,
+      avgResponseTime: sql<number>`AVG(${apiLogs.responseTime})`,
+      successRequests: sql<number>`SUM(CASE WHEN ${apiLogs.statusCode} < 400 THEN 1 ELSE 0 END)`,
+    })
+    .from(apiLogs)
+    .where(eq(apiLogs.apiKeyId, apiKeyId));
+
+  const [key] = await db
+    .select()
+    .from(apiKeys)
+    .where(eq(apiKeys.id, apiKeyId))
+    .limit(1);
+
+  const totalRequests = Number(stats?.totalRequests || 0);
+  const successRequests = Number(stats?.successRequests || 0);
+
+  return {
+    totalRequests,
+    avgResponseTime: Math.round(Number(stats?.avgResponseTime || 0)),
+    successRate: totalRequests > 0 ? Math.round((successRequests / totalRequests) * 100) : 0,
+    lastUsed: key?.lastUsedAt || null,
+  };
 }

@@ -23,6 +23,7 @@ import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/c
 import { validateMedicoForm, validateInstituicaoForm } from "@/lib/validation";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { GerenciarProcedimentos } from "@/components/GerenciarProcedimentos";
+import ApiKeysTab from "@/components/ApiKeysTab";
 
 type MedicoForm = {
   id?: number;
@@ -336,9 +337,10 @@ export default function Admin() {
               <TabsTrigger value="usuarios" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Usuários</TabsTrigger>
             </TabsList>
             {/* Segunda linha */}
-            <TabsList className="grid w-full grid-cols-4 gap-2 bg-transparent p-1">
+            <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1">
               <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Acessos</TabsTrigger>
               <TabsTrigger value="prospeccao" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Prospecção</TabsTrigger>
+              <TabsTrigger value="apikeys" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">API Keys</TabsTrigger>
               {/* [REMOVIDO] <TabsTrigger value="indicacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Indicações</TabsTrigger> */}
               <TabsTrigger value="configuracoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Configurações</TabsTrigger>
             </TabsList>
@@ -760,6 +762,11 @@ export default function Admin() {
           {/* <TabsContent value="indicacoes">
             <IndicacoesTab />
           </TabsContent> */}
+
+          {/* Tab API Keys */}
+          <TabsContent value="apikeys">
+            <ApiKeysTab />
+          </TabsContent>
 
           {/* Tab Configurações */}
           <TabsContent value="configuracoes">

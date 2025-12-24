@@ -2603,3 +2603,49 @@ pnpm vitest
 - [x] Testado: cancelar edição - FUNCIONANDO
 - [x] Validação de campos obrigatórios
 - [x] Procedimentos marcados com _action para salvar no backend
+
+
+## API REST para Integração com Plataforma de Cartão de Benefícios
+
+### Fase 1: Planejamento e Arquitetura
+- [x] Definir estrutura de endpoints REST
+- [x] Planejar sistema de autenticação via API Key
+- [x] Definir formato de resposta JSON padronizado
+- [x] Planejar rate limiting e segurança
+- [x] Documentar requisitos de integração
+
+### Fase 2: Implementação Backend
+- [x] Criar tabela apiKeys no banco de dados
+- [x] Implementar middleware de autenticação API Key
+- [x] Criar endpoint GET /api/public/credenciados/medicos
+- [x] Criar endpoint GET /api/public/credenciados/servicos
+- [x] Criar endpoint GET /api/public/credenciados/:id
+- [x] Implementar filtros (município, categoria, especialidade)
+- [x] Implementar paginação
+- [x] Adicionar rate limiting
+- [x] Criar logs de acesso à API
+
+### Fase 3: Documentação e Testes
+- [x] Criar documentação Swagger/OpenAPI
+- [x] Documentar todos os endpoints
+- [x] Documentar parâmetros e filtros
+- [x] Documentar formato de resposta
+- [x] Criar exemplos de requisição/resposta
+- [ ] Testar endpoints com Postman/Insomnia
+- [ ] Validar autenticação
+- [ ] Validar filtros e paginação
+
+### Fase 4: Painel Admin
+- [x] Criar aba "API Keys" no painel Admin
+- [x] Implementar geração de API Keys
+- [x] Implementar listagem de API Keys
+- [x] Implementar revogação de API Keys
+- [x] Exibir logs de uso por API Key
+- [x] Exibir estatísticas de acesso
+
+### Fase 5: Entrega
+- [x] Criar documento de integração completo
+- [x] Gerar primeira API Key para produção
+- [x] Testar integração end-to-end
+- [x] Validar segurança
+- [ ] Salvar checkpoint final
