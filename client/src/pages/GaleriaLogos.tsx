@@ -142,13 +142,51 @@ export default function GaleriaLogos() {
                 <Button
                   size="sm"
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300"
                   onClick={() => {
-                    toast.info("Funcionalidade de edição será implementada em breve");
+                    // Redirecionar para o Admin com o credenciado selecionado
+                    const tipo = credenciado.tipo === "medico" ? "medicos" : "servicos";
+                    window.location.href = `/admin?tab=${tipo}&edit=${credenciado.id}`;
                   }}
                 >
                   <Edit className="w-4 h-4 mr-1" />
                   Editar
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="hover:bg-red-50 hover:text-red-600 hover:border-red-300"
+                  onClick={() => {
+                    if (confirm(`Tem certeza que deseja excluir ${credenciado.nome}?\n\nEsta ação não pode ser desfeita.`)) {
+                      if (credenciado.tipo === "medico") {
+                        // Excluir médico
+                        toast.promise(
+                          fetch(`/api/trpc/medicos.excluir?input=${JSON.stringify({ id: credenciado.id })}`, {
+                            method: 'DELETE',
+                          }).then(() => refetchMedicos()),
+                          {
+                            loading: 'Excluindo...',
+                            success: 'Médico excluído com sucesso!',
+                            error: 'Erro ao excluir médico',
+                          }
+                        );
+                      } else {
+                        // Excluir instituição
+                        toast.promise(
+                          fetch(`/api/trpc/instituicoes.excluir?input=${JSON.stringify({ id: credenciado.id })}`, {
+                            method: 'DELETE',
+                          }).then(() => refetchInstituicoes()),
+                          {
+                            loading: 'Excluindo...',
+                            success: 'Instituição excluída com sucesso!',
+                            error: 'Erro ao excluir instituição',
+                          }
+                        );
+                      }
+                    }
+                  }}
+                >
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </div>
             </CardContent>

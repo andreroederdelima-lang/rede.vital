@@ -1901,13 +1901,29 @@ function UsuariosAutorizadosTab() {
                       <TableCell className="font-medium">{usuario.nome}</TableCell>
                       <TableCell>{usuario.email}</TableCell>
                       <TableCell>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          (usuario as any).nivelAcesso === 'admin' 
-                            ? 'bg-purple-100 text-purple-800' 
-                            : 'bg-blue-100 text-blue-800'
-                        }`}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            (usuario as any).nivelAcesso === 'admin' 
+                              ? 'bg-purple-100 text-purple-800 hover:bg-purple-200' 
+                              : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                          }`}
+                          onClick={() => {
+                            const novoNivel = (usuario as any).nivelAcesso === 'admin' ? 'visualizador' : 'admin';
+                            if (confirm(`Alterar nível de acesso de ${usuario.nome} para ${novoNivel === 'admin' ? 'Admin' : 'Visualizador'}?`)) {
+                              atualizarMutation.mutate({
+                                id: usuario.id,
+                                email: usuario.email,
+                                nome: usuario.nome,
+                                nivelAcesso: novoNivel,
+                              });
+                            }
+                          }}
+                          title="Clique para alterar nível de acesso"
+                        >
                           {(usuario as any).nivelAcesso === 'admin' ? 'Admin' : 'Visualizador'}
-                        </span>
+                        </Button>
                       </TableCell>
                       <TableCell>{new Date(usuario.createdAt).toLocaleDateString('pt-BR')}</TableCell>
                       <TableCell className="text-right">
@@ -2361,54 +2377,133 @@ function SolicitacoesAcessoTab() {
 
 
 function ConfiguracoesTab() {
-  const utils = trpc.useUtils();
-  const { data: users, isLoading } = trpc.auth.me.useQuery();
-  
+  const [mensagemWhatsApp, setMensagemWhatsApp] = useState(
+    `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, {NOME}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n{LINK}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`
+  );
+  const [templateEmail, setTemplateEmail] = useState(
+    `Olá {NOME},\n\nSolicitamos a atualização dos seus dados cadastrais no Guia de Credenciados Vital.\n\nAcesse: {LINK}\n\nAtenciosamente,\nEquipe Vital`
+  );
+
+  const exportarBackup = () => {
+    toast.promise(
+      fetch('/api/trpc/medicos.listar').then(r => r.json()).then(medicos => {
+        fetch('/api/trpc/instituicoes.listar').then(r => r.json()).then(instituicoes => {
+          const backup = {
+            data: new Date().toISOString(),
+            medicos,
+            instituicoes,
+          };
+          const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `backup_vital_${new Date().toISOString().split('T')[0]}.json`;
+          a.click();
+        });
+      }),
+      {
+        loading: 'Gerando backup...',
+        success: 'Backup exportado com sucesso!',
+        error: 'Erro ao gerar backup',
+      }
+    );
+  };
+
   return (
     <div className="space-y-6">
+      {/* Textos Personalizáveis */}
       <Card>
         <CardHeader>
-          <CardTitle>Gestão de Administradores Manus</CardTitle>
+          <CardTitle>📝 Textos Personalizáveis</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Para gerenciar quem tem acesso ao painel Admin, você precisa atualizar diretamente no banco de dados.
+            Edite os templates de mensagens enviadas aos parceiros
           </p>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <h4 className="font-semibold text-yellow-900 mb-2">⚠️ Como adicionar um novo Admin:</h4>
-            <ol className="list-decimal list-inside space-y-2 text-sm text-yellow-800">
-              <li>Peça para o usuário fazer login no sistema pelo menos uma vez</li>
-              <li>Acesse o banco de dados via Management UI → Database</li>
-              <li>Encontre o usuário na tabela <code className="bg-yellow-100 px-1 rounded">users</code></li>
-              <li>Altere o campo <code className="bg-yellow-100 px-1 rounded">role</code> de <code className="bg-yellow-100 px-1 rounded">user</code> para <code className="bg-yellow-100 px-1 rounded">admin</code></li>
-              <li>O usuário terá acesso total ao painel Admin no próximo login</li>
-            </ol>
-          </div>
-          
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h4 className="font-semibold text-blue-900 mb-2">ℹ️ Diferença entre sistemas:</h4>
-            <ul className="list-disc list-inside space-y-1 text-sm text-blue-800">
-              <li><strong>Tabela users (Manus OAuth):</strong> Controla acesso ao painel /admin</li>
-              <li><strong>Tabela usuariosAutorizados:</strong> Controla acesso à página /dados-internos</li>
-              <li>São sistemas independentes e não se afetam mutuamente</li>
-            </ul>
+        <CardContent className="space-y-6">
+          <div>
+            <Label className="text-base font-semibold mb-2 block">Mensagem WhatsApp</Label>
+            <p className="text-xs text-muted-foreground mb-2">
+              Variáveis: {'{NOME}'}, {'{LINK}'}
+            </p>
+            <textarea
+              className="w-full min-h-[200px] p-3 border rounded-lg font-mono text-sm"
+              value={mensagemWhatsApp}
+              onChange={(e) => setMensagemWhatsApp(e.target.value)}
+            />
+            <Button
+              size="sm"
+              className="mt-2"
+              onClick={() => {
+                localStorage.setItem('vital_template_whatsapp', mensagemWhatsApp);
+                toast.success('Template WhatsApp salvo!');
+              }}
+            >
+              Salvar Template WhatsApp
+            </Button>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h4 className="font-semibold text-gray-900 mb-2">🔧 Outras Configurações</h4>
-            <p className="text-sm text-muted-foreground mb-3">
-              Configurações adicionais do sistema serão implementadas aqui conforme necessário.
+          <div>
+            <Label className="text-base font-semibold mb-2 block">Template de Email</Label>
+            <p className="text-xs text-muted-foreground mb-2">
+              Variáveis: {'{NOME}'}, {'{LINK}'}
             </p>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between p-2 bg-white rounded border">
-                <span className="text-sm">Título do Sistema</span>
-                <span className="text-sm text-muted-foreground">Guia de Credenciados - Sua Saúde Vital</span>
-              </div>
-              <div className="flex items-center justify-between p-2 bg-white rounded border">
-                <span className="text-sm">Região de Atuação</span>
-                <span className="text-sm text-muted-foreground">Vale do Itajaí - Santa Catarina</span>
-              </div>
-            </div>
+            <textarea
+              className="w-full min-h-[150px] p-3 border rounded-lg font-mono text-sm"
+              value={templateEmail}
+              onChange={(e) => setTemplateEmail(e.target.value)}
+            />
+            <Button
+              size="sm"
+              className="mt-2"
+              onClick={() => {
+                localStorage.setItem('vital_template_email', templateEmail);
+                toast.success('Template de email salvo!');
+              }}
+            >
+              Salvar Template Email
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Backup e Exportação */}
+      <Card>
+        <CardHeader>
+          <CardTitle>💾 Backup e Exportação</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Exporte todos os dados do sistema para backup
+          </p>
+        </CardHeader>
+        <CardContent>
+          <Button onClick={exportarBackup} className="w-full">
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Exportar Backup Completo (JSON)
+          </Button>
+          <p className="text-xs text-muted-foreground mt-2">
+            Inclui todos os médicos e instituições cadastradas
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Informações do Sistema */}
+      <Card>
+        <CardHeader>
+          <CardTitle>ℹ️ Informações do Sistema</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <div className="flex items-center justify-between p-2 bg-gray-50 rounded border">
+            <span className="text-sm font-medium">Título do Sistema</span>
+            <span className="text-sm text-muted-foreground">Guia de Credenciados - Sua Saúde Vital</span>
+          </div>
+          <div className="flex items-center justify-between p-2 bg-gray-50 rounded border">
+            <span className="text-sm font-medium">Região de Atuação</span>
+            <span className="text-sm text-muted-foreground">Vale do Itajaí - Santa Catarina</span>
+          </div>
+          <div className="flex items-center justify-between p-2 bg-gray-50 rounded border">
+            <span className="text-sm font-medium">Versão</span>
+            <span className="text-sm text-muted-foreground">2.0.0</span>
           </div>
         </CardContent>
       </Card>

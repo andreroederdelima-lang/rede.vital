@@ -2699,3 +2699,29 @@ pnpm vitest
 - [x] Adicionar botão na tabela de serviços/instituições
 - [x] Testar cópia e formatação do texto
 - [ ] Salvar checkpoint
+
+
+## Melhorias de Gestão - Admin
+### Galeria Editável
+- [x] Adicionar botão editar na galeria (trocar foto/logo)
+- [x] Adicionar botão excluir na galeria
+- [x] Confirmar exclusão antes de remover
+- [x] Atualizar galeria após edição/exclusão
+
+### Gestão de Usuários Aprimorada
+- [x] Adicionar botão "Resetar Senha" (enviar email com link)
+- [x] Adicionar botão toggle Admin/Visualizador
+- [x] Melhorar feedback visual das ações
+- [x] Adicionar confirmação antes de alterar nível
+
+### Aba Configurações Útil
+- [x] Criar seção "Textos Personalizáveis"
+- [x] Permitir editar mensagem WhatsApp padrão
+- [x] Permitir editar template de email
+- [ ] Adicionar seção "Logs do Sistema"
+- [ ] Mostrar últimas 50 ações administrativas
+- [x] Adicionar botão "Exportar Backup" (JSON)
+
+### Checkpoint Final
+- [ ] Testar todas as funcionalidades
+- [ ] Salvar checkpoint
