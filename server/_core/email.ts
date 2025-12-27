@@ -273,3 +273,193 @@ export async function enviarEmailSugestaoParceiro(dados: {
     html,
   });
 }
+
+/**
+ * Envia e-mail de boas-vindas com credenciais para novo usuário autorizado
+ */
+export async function enviarEmailNovoUsuario(dados: {
+  nome: string;
+  email: string;
+  senha: string;
+  nivelAcesso: "admin" | "visualizador";
+}) {
+  const urlAcesso = dados.nivelAcesso === "admin" 
+    ? "https://credenciados.suasaudevital.com.br/admin"
+    : "https://credenciados.suasaudevital.com.br/dados-internos";
+
+  const descricaoAcesso = dados.nivelAcesso === "admin"
+    ? "Acesso total ao painel administrativo"
+    : "Acesso à área de dados internos com informações de descontos";
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #1e9d9f; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+        .credentials-box { background-color: white; border: 2px solid #1e9d9f; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .field { margin: 15px 0; }
+        .field-label { font-weight: bold; color: #1e9d9f; }
+        .field-value { margin-top: 5px; font-size: 16px; background-color: #f0f0f0; padding: 10px; border-radius: 4px; font-family: monospace; }
+        .button { display: inline-block; background-color: #1e9d9f; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+        .warning { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🎉 Bem-vindo à Sua Saúde Vital!</h1>
+          <p>Suas credenciais de acesso</p>
+        </div>
+        
+        <div class="content">
+          <p>Olá <strong>${dados.nome}</strong>,</p>
+          
+          <p>Você foi cadastrado como usuário autorizado no sistema de gestão de credenciados da Sua Saúde Vital.</p>
+          
+          <div class="credentials-box">
+            <h3 style="color: #1e9d9f; margin-top: 0;">📋 Suas Credenciais de Acesso</h3>
+            
+            <div class="field">
+              <div class="field-label">Email de acesso:</div>
+              <div class="field-value">${dados.email}</div>
+            </div>
+            
+            <div class="field">
+              <div class="field-label">Senha temporária:</div>
+              <div class="field-value">${dados.senha}</div>
+            </div>
+            
+            <div class="field">
+              <div class="field-label">Nível de acesso:</div>
+              <div class="field-value">${dados.nivelAcesso === "admin" ? "👑 Administrador" : "👁️ Visualizador"}</div>
+            </div>
+            
+            <div class="field">
+              <div class="field-label">Permissões:</div>
+              <div class="field-value">${descricaoAcesso}</div>
+            </div>
+          </div>
+          
+          <div class="warning">
+            <strong>⚠️ Importante:</strong> Por segurança, recomendamos que você altere sua senha após o primeiro acesso. Entre em contato com o administrador caso precise de assistência.
+          </div>
+          
+          <div style="text-align: center;">
+            <a href="${urlAcesso}" class="button">Acessar Sistema</a>
+          </div>
+          
+          <p style="margin-top: 30px; font-size: 14px; color: #666;">
+            <strong>Link de acesso:</strong><br>
+            <a href="${urlAcesso}" style="color: #1e9d9f;">${urlAcesso}</a>
+          </p>
+        </div>
+        
+        <div class="footer">
+          <p>© 2025 Sua Saúde Vital - Sistema de Gestão de Credenciados</p>
+          <p>Este é um e-mail automático, por favor não responda.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: dados.email,
+    subject: '🎉 Bem-vindo à Sua Saúde Vital - Suas Credenciais de Acesso',
+    html,
+  });
+}
+
+/**
+ * Envia e-mail de notificação de senha resetada
+ */
+export async function enviarEmailSenhaResetada(dados: {
+  nome: string;
+  email: string;
+  novaSenha: string;
+  nivelAcesso: "admin" | "visualizador";
+}) {
+  const urlAcesso = dados.nivelAcesso === "admin" 
+    ? "https://credenciados.suasaudevital.com.br/admin"
+    : "https://credenciados.suasaudevital.com.br/dados-internos";
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #1e9d9f; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+        .credentials-box { background-color: white; border: 2px solid #1e9d9f; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .field { margin: 15px 0; }
+        .field-label { font-weight: bold; color: #1e9d9f; }
+        .field-value { margin-top: 5px; font-size: 16px; background-color: #f0f0f0; padding: 10px; border-radius: 4px; font-family: monospace; }
+        .button { display: inline-block; background-color: #1e9d9f; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+        .warning { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🔐 Senha Resetada</h1>
+          <p>Sua Saúde Vital</p>
+        </div>
+        
+        <div class="content">
+          <p>Olá <strong>${dados.nome}</strong>,</p>
+          
+          <p>Sua senha foi resetada pelo administrador do sistema. Abaixo estão suas novas credenciais de acesso:</p>
+          
+          <div class="credentials-box">
+            <h3 style="color: #1e9d9f; margin-top: 0;">🔑 Nova Senha de Acesso</h3>
+            
+            <div class="field">
+              <div class="field-label">Email de acesso:</div>
+              <div class="field-value">${dados.email}</div>
+            </div>
+            
+            <div class="field">
+              <div class="field-label">Nova senha:</div>
+              <div class="field-value">${dados.novaSenha}</div>
+            </div>
+          </div>
+          
+          <div class="warning">
+            <strong>⚠️ Importante:</strong> Por segurança, recomendamos que você altere sua senha após fazer login. Se você não solicitou esta alteração, entre em contato com o administrador imediatamente.
+          </div>
+          
+          <div style="text-align: center;">
+            <a href="${urlAcesso}" class="button">Acessar Sistema</a>
+          </div>
+          
+          <p style="margin-top: 30px; font-size: 14px; color: #666;">
+            <strong>Link de acesso:</strong><br>
+            <a href="${urlAcesso}" style="color: #1e9d9f;">${urlAcesso}</a>
+          </p>
+        </div>
+        
+        <div class="footer">
+          <p>© 2025 Sua Saúde Vital - Sistema de Gestão de Credenciados</p>
+          <p>Este é um e-mail automático, por favor não responda.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: dados.email,
+    subject: '🔐 Sua senha foi resetada - Sua Saúde Vital',
+    html,
+  });
+}

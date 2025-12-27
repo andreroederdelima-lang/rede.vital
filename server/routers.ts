@@ -551,6 +551,21 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const { criarUsuarioAutorizado } = await import("./db");
         await criarUsuarioAutorizado(input);
+        
+        // Enviar email de boas-vindas com credenciais
+        const { enviarEmailNovoUsuario } = await import("./_core/email");
+        try {
+          await enviarEmailNovoUsuario({
+            nome: input.nome,
+            email: input.email,
+            senha: input.senha,
+            nivelAcesso: input.nivelAcesso,
+          });
+        } catch (error) {
+          console.error('[Email] Erro ao enviar email de boas-vindas:', error);
+          // Não falhar a criação se o email falhar
+        }
+        
         return { success: true };
       }),
 
@@ -579,10 +594,32 @@ export const appRouter = router({
     resetarSenha: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { resetarSenhaUsuario } = await import("./db");
+        const { resetarSenhaUsuario, obterUsuarioAutorizadoPorId } = await import("./db");
+        
+        // Buscar dados do usuário antes de resetar
+        const usuario = await obterUsuarioAutorizadoPorId(input);
+        if (!usuario) {
+          throw new Error("Usuário não encontrado");
+        }
+        
         // Gerar nova senha temporária
         const novaSenha = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
         await resetarSenhaUsuario(input, novaSenha);
+        
+        // Enviar email com nova senha
+        const { enviarEmailSenhaResetada } = await import("./_core/email");
+        try {
+          await enviarEmailSenhaResetada({
+            nome: usuario.nome,
+            email: usuario.email,
+            novaSenha: novaSenha,
+            nivelAcesso: (usuario as any).nivelAcesso || "visualizador",
+          });
+        } catch (error) {
+          console.error('[Email] Erro ao enviar email de senha resetada:', error);
+          // Não falhar o reset se o email falhar
+        }
+        
         return { success: true, novaSenha };
       }),
 

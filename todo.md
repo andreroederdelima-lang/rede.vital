@@ -2780,3 +2780,14 @@ pnpm vitest
 - [x] Testar todas as funcionalidades restauradas
 - [x] Renomear aba "Acessos" para "Usuários Internos" para maior clareza
 - [x] Vincular componente UsuariosAutorizadosTab à aba correta
+
+
+## Notificação por Email para Usuários
+- [x] Verificar sistema de email existente no projeto
+- [x] Criar função de envio de email para novo usuário com credenciais
+- [x] Criar função de envio de email para senha resetada
+- [x] Integrar envio de email na mutação de criar usuário
+- [x] Integrar envio de email na mutação de resetar senha
+- [x] Design profissional com cores da Vital (turquesa)
+- [x] Incluir credenciais completas e link de acesso
+- [x] Avisos de segurança e instruções claras
