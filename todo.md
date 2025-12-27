@@ -2684,3 +2684,10 @@ pnpm vitest
 - [x] Adicionar documentação de webhooks
 - [x] Atualizar GUIA_RAPIDO_INTEGRACAO.md
 - [ ] Salvar checkpoint final
+
+
+## Correção Visual - Logo com Fundo Branco
+- [x] Identificar componente onde logo aparece com fundo branco
+- [x] Remover fundo branco ou ajustar para transparente
+- [x] Testar em diferentes páginas
+- [ ] Salvar checkpoint
