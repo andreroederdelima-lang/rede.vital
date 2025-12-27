@@ -2007,3 +2007,23 @@ export async function obterEstatisticasCrescimento() {
     crescimentoPercentual: parseFloat(crescimentoPercentual as string),
   };
 }
+
+
+// ========== GESTÃO DE USUÁRIOS MANUS (tabela users) ==========
+export async function listarUsuariosManus() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(users).orderBy(users.createdAt);
+}
+
+export async function atualizarRoleUsuario(userId: number, novaRole: "admin" | "user") {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(users)
+    .set({ role: novaRole, updatedAt: new Date() })
+    .where(eq(users.id, userId));
+  
+  return { success: true };
+}

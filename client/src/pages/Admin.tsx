@@ -818,9 +818,9 @@ export default function Admin() {
             <AtualizacoesPendentesTab />
           </TabsContent>
 
-          {/* Tab Usuários Autorizados */}
+          {/* Tab Usuários Manus (OAuth) */}
           <TabsContent value="usuarios">
-            <UsuariosAutorizadosTab />
+            <UsuariosManusTab />
           </TabsContent>
 
           {/* Tab Solicitações de Acesso */}
@@ -1797,6 +1797,118 @@ function SolicitacoesTab() {
   );
 }
 
+
+function UsuariosManusTab() {
+  const utils = trpc.useUtils();
+  const { data: usuarios, isLoading } = trpc.usuariosManus.listar.useQuery();
+  const atualizarRoleMutation = trpc.usuariosManus.atualizarRole.useMutation({
+    onSuccess: () => {
+      toast.success("Nível de acesso atualizado com sucesso!");
+      utils.usuariosManus.listar.invalidate();
+    },
+    onError: (error) => {
+      toast.error("Erro ao atualizar nível de acesso", {
+        description: error.message
+      });
+    },
+  });
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1e9d9f]"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Usuários Manus (OAuth)</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              Gerencie níveis de acesso dos usuários autenticados via Manus OAuth
+            </p>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {!usuarios || usuarios.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <p>Nenhum usuário encontrado</p>
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Método de Login</TableHead>
+                <TableHead>Nível de Acesso</TableHead>
+                <TableHead>Último Login</TableHead>
+                <TableHead>Cadastrado em</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {usuarios.map((usuario) => (
+                <TableRow key={usuario.id}>
+                  <TableCell className="font-medium">{usuario.name || '(sem nome)'}</TableCell>
+                  <TableCell>{usuario.email || '(sem email)'}</TableCell>
+                  <TableCell>
+                    <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+                      {usuario.loginMethod || 'oauth'}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        usuario.role === 'admin' 
+                          ? 'bg-purple-100 text-purple-800 hover:bg-purple-200' 
+                          : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                      }`}
+                      onClick={() => {
+                        const novaRole = usuario.role === 'admin' ? 'user' : 'admin';
+                        if (confirm(`Alterar nível de acesso de ${usuario.name || usuario.email} para ${novaRole === 'admin' ? 'Admin' : 'Usuário'}?`)) {
+                          atualizarRoleMutation.mutate({
+                            userId: usuario.id,
+                            novaRole: novaRole,
+                          });
+                        }
+                      }}
+                      title="Clique para alterar nível de acesso"
+                      disabled={atualizarRoleMutation.isPending}
+                    >
+                      {usuario.role === 'admin' ? 'Admin' : 'Usuário'}
+                    </Button>
+                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
+                    {new Date(usuario.lastSignedIn).toLocaleDateString('pt-BR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
+                    {new Date(usuario.createdAt).toLocaleDateString('pt-BR')}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 function UsuariosAutorizadosTab() {
   const utils = trpc.useUtils();

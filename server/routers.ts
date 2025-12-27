@@ -1498,6 +1498,24 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     }),
   }),
 
+  // ========== GESTÃO DE USUÁRIOS MANUS (tabela users) ==========
+  usuariosManus: router({
+    listar: protectedProcedure.query(async () => {
+      const { listarUsuariosManus } = await import("./db");
+      return listarUsuariosManus();
+    }),
+    
+    atualizarRole: protectedProcedure
+      .input(z.object({
+        userId: z.number(),
+        novaRole: z.enum(["admin", "user"]),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarRoleUsuario } = await import("./db");
+        return atualizarRoleUsuario(input.userId, input.novaRole);
+      }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

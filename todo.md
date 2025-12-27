@@ -2747,3 +2747,11 @@ pnpm vitest
 ### Checkpoint Final
 - [ ] Testar todas as funcionalidades
 - [ ] Salvar checkpoint
+
+
+## BUG: Toggle Admin/Visualizador Não Salva
+- [x] Investigar função de toggle no frontend
+- [x] Verificar se mutation está sendo chamada corretamente
+- [x] Verificar se backend está atualizando o banco
+- [x] Testar alteração e confirmar persistência
+- [ ] Salvar checkpoint com correção
