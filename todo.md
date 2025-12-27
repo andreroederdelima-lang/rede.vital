@@ -2725,3 +2725,25 @@ pnpm vitest
 ### Checkpoint Final
 - [ ] Testar todas as funcionalidades
 - [ ] Salvar checkpoint
+
+
+## Dashboard de Crescimento e Validação Admin
+### Validação Gestão de Usuários
+- [x] Verificar tabela users e campo role no banco
+- [x] Validar proteção de rotas no backend (adminProcedure)
+- [x] Testar alternar Admin/Visualizador
+- [x] Testar resetar senha
+- [x] Confirmar que apenas Admin acessa /admin
+
+### Dashboard de Crescimento
+- [x] Criar query para crescimento semanal
+- [x] Criar query para crescimento mensal vs mês passado
+- [x] Adicionar cards de métricas no topo do Admin
+- [x] Mostrar total de médicos e instituições
+- [x] Mostrar novos credenciados esta semana
+- [x] Mostrar crescimento mensal (% comparado ao mês passado)
+- [x] Adicionar gráfico de evolução (opcional)
+
+### Checkpoint Final
+- [ ] Testar todas as funcionalidades
+- [ ] Salvar checkpoint

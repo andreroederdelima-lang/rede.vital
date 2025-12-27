@@ -327,6 +327,9 @@ export default function Admin() {
 
       {/* Main Content */}
       <main className="container py-8">
+        {/* Dashboard de Crescimento */}
+        <DashboardCrescimento />
+        
         <Tabs defaultValue="medicos">
           <div className="max-w-6xl mx-auto mb-6 space-y-2">
             {/* Primeira linha */}
@@ -851,6 +854,119 @@ export default function Admin() {
           </TabsContent>
         </Tabs>
       </main>
+    </div>
+  );
+}
+
+function DashboardCrescimento() {
+  const { data: stats, isLoading } = trpc.estatisticas.crescimento.useQuery();
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        {[1, 2, 3, 4].map(i => (
+          <Card key={i} className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+              <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  if (!stats) return null;
+
+  const crescimentoPositivo = stats.crescimentoPercentual >= 0;
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      {/* Total de Credenciados */}
+      <Card className="border-l-4 border-l-[#1e9d9f]">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground font-medium">Total de Credenciados</p>
+              <p className="text-3xl font-bold text-[#1e9d9f] mt-2">{stats.totalCredenciados}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {stats.totalMedicos} médicos + {stats.totalInstituicoes} instituições
+              </p>
+            </div>
+            <div className="h-12 w-12 rounded-full bg-[#1e9d9f]/10 flex items-center justify-center">
+              <svg className="w-6 h-6 text-[#1e9d9f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Ativos */}
+      <Card className="border-l-4 border-l-green-500">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground font-medium">Credenciados Ativos</p>
+              <p className="text-3xl font-bold text-green-600 mt-2">{stats.totalAtivos}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {((stats.totalAtivos / stats.totalCredenciados) * 100).toFixed(1)}% do total
+              </p>
+            </div>
+            <div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
+              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Novos Esta Semana */}
+      <Card className="border-l-4 border-l-blue-500">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground font-medium">Novos Esta Semana</p>
+              <p className="text-3xl font-bold text-blue-600 mt-2">+{stats.novosSemana}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {stats.novosMedicosSemana} médicos + {stats.novasInstituicoesSemana} instituições
+              </p>
+            </div>
+            <div className="h-12 w-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Crescimento Mensal */}
+      <Card className={`border-l-4 ${crescimentoPositivo ? 'border-l-emerald-500' : 'border-l-orange-500'}`}>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground font-medium">Crescimento Mensal</p>
+              <p className={`text-3xl font-bold mt-2 ${crescimentoPositivo ? 'text-emerald-600' : 'text-orange-600'}`}>
+                {crescimentoPositivo ? '+' : ''}{stats.crescimentoPercentual}%
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {stats.novosMesAtual} este mês vs {stats.novosMesPassado} mês passado
+              </p>
+            </div>
+            <div className={`h-12 w-12 rounded-full ${crescimentoPositivo ? 'bg-emerald-500/10' : 'bg-orange-500/10'} flex items-center justify-center`}>
+              <svg className={`w-6 h-6 ${crescimentoPositivo ? 'text-emerald-600' : 'text-orange-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {crescimentoPositivo ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                )}
+              </svg>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

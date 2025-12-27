@@ -1490,6 +1490,14 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       }),
   }),
 
+  // ========== ESTATÍSTICAS DE CRESCIMENTO ==========
+  estatisticas: router({
+    crescimento: protectedProcedure.query(async () => {
+      const { obterEstatisticasCrescimento } = await import("./db");
+      return obterEstatisticasCrescimento();
+    }),
+  }),
+
 });
 
 export type AppRouter = typeof appRouter;

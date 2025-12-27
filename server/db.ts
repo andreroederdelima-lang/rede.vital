@@ -1929,3 +1929,81 @@ export async function estatisticasWebhook(webhookId: number): Promise<{
     ultimoDisparo: ultimoLog?.createdAt || null,
   };
 }
+
+
+// ========== ESTATÍSTICAS DE CRESCIMENTO ==========
+export async function obterEstatisticasCrescimento() {
+  const db = await getDb();
+  if (!db) return null;
+
+  const agora = new Date();
+  const inicioSemana = new Date(agora);
+  inicioSemana.setDate(agora.getDate() - 7);
+  
+  const inicioMesAtual = new Date(agora.getFullYear(), agora.getMonth(), 1);
+  const inicioMesPassado = new Date(agora.getFullYear(), agora.getMonth() - 1, 1);
+  const fimMesPassado = new Date(agora.getFullYear(), agora.getMonth(), 0, 23, 59, 59);
+
+  // Total geral
+  const [totalMedicos] = await db.select({ count: sql<number>`COUNT(*)` }).from(medicos);
+  const [totalInstituicoes] = await db.select({ count: sql<number>`COUNT(*)` }).from(instituicoes);
+  
+  // Ativos
+  const [medicosAtivos] = await db.select({ count: sql<number>`COUNT(*)` }).from(medicos).where(eq(medicos.ativo, 1));
+  const [instituicoesAtivas] = await db.select({ count: sql<number>`COUNT(*)` }).from(instituicoes).where(eq(instituicoes.ativo, 1));
+
+  // Novos esta semana
+  const [novosMedicosSemana] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(medicos)
+    .where(sql`${medicos.createdAt} >= ${inicioSemana}`);
+  
+  const [novasInstituicoesSemana] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(instituicoes)
+    .where(sql`${instituicoes.createdAt} >= ${inicioSemana}`);
+
+  // Novos no mês atual
+  const [novosMedicosMesAtual] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(medicos)
+    .where(sql`${medicos.createdAt} >= ${inicioMesAtual}`);
+  
+  const [novasInstituicoesMesAtual] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(instituicoes)
+    .where(sql`${instituicoes.createdAt} >= ${inicioMesAtual}`);
+
+  // Novos no mês passado
+  const [novosMedicosMesPassado] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(medicos)
+    .where(sql`${medicos.createdAt} >= ${inicioMesPassado} AND ${medicos.createdAt} <= ${fimMesPassado}`);
+  
+  const [novasInstituicoesMesPassado] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(instituicoes)
+    .where(sql`${instituicoes.createdAt} >= ${inicioMesPassado} AND ${instituicoes.createdAt} <= ${fimMesPassado}`);
+
+  const totalCredenciados = (totalMedicos?.count || 0) + (totalInstituicoes?.count || 0);
+  const totalAtivos = (medicosAtivos?.count || 0) + (instituicoesAtivas?.count || 0);
+  const novosSemana = (novosMedicosSemana?.count || 0) + (novasInstituicoesSemana?.count || 0);
+  const novosMesAtual = (novosMedicosMesAtual?.count || 0) + (novasInstituicoesMesAtual?.count || 0);
+  const novosMesPassado = (novosMedicosMesPassado?.count || 0) + (novasInstituicoesMesPassado?.count || 0);
+
+  // Calcular crescimento percentual
+  const crescimentoPercentual = novosMesPassado > 0 
+    ? ((novosMesAtual - novosMesPassado) / novosMesPassado * 100).toFixed(1)
+    : novosMesAtual > 0 ? 100 : 0;
+
+  return {
+    totalCredenciados,
+    totalMedicos: totalMedicos?.count || 0,
+    totalInstituicoes: totalInstituicoes?.count || 0,
+    totalAtivos,
+    medicosAtivos: medicosAtivos?.count || 0,
+    instituicoesAtivas: instituicoesAtivas?.count || 0,
+    novosSemana,
+    novosMedicosSemana: novosMedicosSemana?.count || 0,
+    novasInstituicoesSemana: novasInstituicoesSemana?.count || 0,
+    novosMesAtual,
+    novosMedicosMesAtual: novosMedicosMesAtual?.count || 0,
+    novasInstituicoesMesAtual: novasInstituicoesMesAtual?.count || 0,
+    novosMesPassado,
+    crescimentoPercentual: parseFloat(crescimentoPercentual as string),
+  };
+}
