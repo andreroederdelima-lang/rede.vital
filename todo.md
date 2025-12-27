@@ -2755,3 +2755,17 @@ pnpm vitest
 - [x] Verificar se backend está atualizando o banco
 - [x] Testar alteração e confirmar persistência
 - [ ] Salvar checkpoint com correção
+
+## Sistema de Exportação PDF por Categorias
+- [x] Instalar biblioteca jsPDF
+- [x] Criar utilitário de geração de PDF com logo e estética Vital
+- [x] Implementar função de exportação para Médicos
+- [x] Implementar função de exportação para Serviços de Saúde
+- [x] Implementar função de exportação para Outros Serviços
+- [x] Adicionar botões de exportação PDF no Admin (abas Médicos e Serviços)
+- [x] Testar exportação de todas as categorias
+- [x] Design profissional com cores da marca (turquesa e bege)
+- [x] Cabeçalho com logo e slogan "Vital, sempre ao seu lado"
+- [x] Cards organizados com informações completas (valores e descontos)
+- [x] Rodapé com numeração de páginas
+- [x] Cálculo automático de porcentagem de desconto

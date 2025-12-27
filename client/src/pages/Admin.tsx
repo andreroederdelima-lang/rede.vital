@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2, Download } from "lucide-react";
 import { exportToExcel, MEDICO_COLUMNS, INSTITUICAO_COLUMNS } from "@/lib/exportExcel";
+import { exportarMedicosPDF, exportarInstituicoesPDF } from "@/lib/pdfExport";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
 import ImageUpload from "@/components/ImageUpload";
 // [REMOVIDO] import IndicacoesTab from "@/components/IndicacoesTab";
@@ -373,6 +374,26 @@ export default function Admin() {
                     </Button>
                     <Button
                       variant="outline"
+                      onClick={() => {
+                        if (medicos.length === 0) {
+                          toast.error("Nenhum médico para exportar");
+                          return;
+                        }
+                        exportarMedicosPDF(medicos as any);
+                        toast.success(`PDF de ${medicos.length} médicos gerado com sucesso!`);
+                      }}
+                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                    >
+                      <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M9 13h6"/>
+                        <path d="M9 17h6"/>
+                      </svg>
+                      Exportar PDF
+                    </Button>
+                    <Button
+                      variant="outline"
                       onClick={async () => {
                         try {
                           const result = await criarTokenCadastro.mutateAsync({
@@ -598,6 +619,37 @@ export default function Admin() {
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Exportar Excel
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        if (instituicoes.length === 0) {
+                          toast.error("Nenhum serviço para exportar");
+                          return;
+                        }
+                        // Separar por tipo de serviço
+                        const servicosSaude = instituicoes.filter(i => (i as any).tipoServico === 'servicos_saude');
+                        const outrosServicos = instituicoes.filter(i => (i as any).tipoServico === 'outros_servicos');
+                        
+                        if (servicosSaude.length > 0) {
+                          exportarInstituicoesPDF(servicosSaude as any, 'servicos_saude');
+                        }
+                        if (outrosServicos.length > 0) {
+                          setTimeout(() => {
+                            exportarInstituicoesPDF(outrosServicos as any, 'outros_servicos');
+                          }, 500);
+                        }
+                        toast.success(`PDFs gerados: ${servicosSaude.length} Serviços de Saúde + ${outrosServicos.length} Outros Serviços`);
+                      }}
+                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                    >
+                      <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M9 13h6"/>
+                        <path d="M9 17h6"/>
+                      </svg>
+                      Exportar PDF
                     </Button>
                     <Button
                       variant="outline"
