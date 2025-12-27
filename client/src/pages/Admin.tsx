@@ -343,7 +343,7 @@ export default function Admin() {
             </TabsList>
             {/* Segunda linha */}
             <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1">
-              <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Acessos</TabsTrigger>
+              <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Usuários Internos</TabsTrigger>
               <TabsTrigger value="prospeccao" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Prospecção</TabsTrigger>
               <TabsTrigger value="apikeys" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">API Keys</TabsTrigger>
               <TabsTrigger value="webhooks" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Webhooks</TabsTrigger>
@@ -875,9 +875,9 @@ export default function Admin() {
             <UsuariosManusTab />
           </TabsContent>
 
-          {/* Tab Solicitações de Acesso */}
+          {/* Tab Usuários Autorizados (Dados Internos) */}
           <TabsContent value="acessos">
-            <SolicitacoesAcessoTab />
+            <UsuariosAutorizadosTab />
           </TabsContent>
 
           {/* Tab Prospecção */}

@@ -2769,3 +2769,14 @@ pnpm vitest
 - [x] Cards organizados com informações completas (valores e descontos)
 - [x] Rodapé com numeração de páginas
 - [x] Cálculo automático de porcentagem de desconto
+
+
+## BUG: Gestão de Usuários - Funcionalidades Perdidas
+- [x] Analisar código atual da gestão de usuários no Admin
+- [x] Identificar funcionalidades que foram removidas/perdidas
+- [x] Restaurar funcionalidade de edição de usuários
+- [x] Restaurar outras ações necessárias (resetar senha, excluir)
+- [x] Garantir que não seja necessário excluir para editar
+- [x] Testar todas as funcionalidades restauradas
+- [x] Renomear aba "Acessos" para "Usuários Internos" para maior clareza
+- [x] Vincular componente UsuariosAutorizadosTab à aba correta
