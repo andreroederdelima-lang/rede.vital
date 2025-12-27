@@ -503,6 +503,44 @@ export default function Admin() {
                                 <Button
                                   variant="ghost"
                                   size="icon"
+                                  className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                  onClick={async () => {
+                                    try {
+                                      const textoCompleto = `📝 *DADOS DO MÉDICO CREDENCIADO*\n\n` +
+                                        `👨‍⚕️ *Nome:* ${medico.nome}\n` +
+                                        `🏫 *Especialidade:* ${medico.especialidade}\n` +
+                                        `${medico.numeroRegistroConselho ? `📝 *Registro:* ${medico.numeroRegistroConselho}\n` : ''}` +
+                                        `${medico.subespecialidade ? `🏫 *Subespecialidade:* ${medico.subespecialidade}\n` : ''}` +
+                                        `${medico.areaAtuacao ? `🏫 *Área de Atuação:* ${medico.areaAtuacao}\n` : ''}` +
+                                        `🏙️ *Município:* ${medico.municipio}\n` +
+                                        `${medico.endereco ? `📍 *Endereço:* ${medico.endereco}\n` : ''}` +
+                                        `${medico.telefone ? `📞 *Telefone:* ${medico.telefone}\n` : ''}` +
+                                        `${medico.whatsapp ? `📱 *WhatsApp:* ${medico.whatsapp}\n` : ''}` +
+                                        `${medico.email ? `✉️ *Email:* ${medico.email}\n` : ''}` +
+                                        `\n💰 *PREÇOS E DESCONTOS*\n` +
+                                        `${medico.precoConsulta ? `💵 *Valor Particular:* R$ ${medico.precoConsulta}\n` : ''}` +
+                                        `🎫 *Desconto Assinante Vital:* ${medico.descontoPercentual}%\n` +
+                                        `${medico.precoConsulta ? `💚 *Valor com Desconto:* R$ ${(parseFloat(medico.precoConsulta.replace(',', '.')) * (1 - medico.descontoPercentual / 100)).toFixed(2).replace('.', ',')}\n` : ''}` +
+                                        `\n📅 *ATENDIMENTO*\n` +
+                                        `📍 *Tipo:* ${medico.tipoAtendimento === 'presencial' ? 'Presencial' : medico.tipoAtendimento === 'telemedicina' ? 'Telemedicina' : 'Presencial e Telemedicina'}\n` +
+                                        `${medico.observacoes ? `\n📝 *Observações:*\n${medico.observacoes}\n` : ''}` +
+                                        `\n———————————\n💚 *Vital Serviços Médicos*\n*Sua Saúde Vital*`;
+                                      
+                                      await navigator.clipboard.writeText(textoCompleto);
+                                      toast.success("Texto completo copiado! Pronto para enviar ao parceiro.");
+                                    } catch (error) {
+                                      toast.error("Erro ao copiar texto");
+                                    }
+                                  }}
+                                  title="Copiar texto completo com todas as informações"
+                                >
+                                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                  </svg>
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
                                   className="h-8 w-8"
                                   onClick={() => {
                                     setEditingMedico(medico as MedicoForm);
@@ -693,6 +731,39 @@ export default function Admin() {
                                   title="Copiar link de atualização"
                                 >
                                   <Copy className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                  onClick={async () => {
+                                    try {
+                                      const textoCompleto = `📝 *DADOS DA INSTITUIÇÃO CREDENCIADA*\n\n` +
+                                        `🏪 *Nome:* ${inst.nome}\n` +
+                                        `🏷️ *Categoria:* ${inst.categoria}\n` +
+                                        `🏙️ *Município:* ${inst.municipio}\n` +
+                                        `${inst.endereco ? `📍 *Endereço:* ${inst.endereco}\n` : ''}` +
+                                        `${inst.telefone ? `📞 *Telefone:* ${inst.telefone}\n` : ''}` +
+                                        `${inst.whatsappSecretaria ? `📱 *WhatsApp Secretaria:* ${inst.whatsappSecretaria}\n` : ''}` +
+                                        `${inst.email ? `✉️ *Email:* ${inst.email}\n` : ''}` +
+                                        `\n💰 *PREÇOS E DESCONTOS*\n` +
+                                        `${inst.precoConsulta ? `💵 *Valor Particular:* R$ ${inst.precoConsulta}\n` : ''}` +
+                                        `🎫 *Desconto Assinante Vital:* ${inst.descontoPercentual}%\n` +
+                                        `${inst.precoConsulta ? `💚 *Valor com Desconto:* R$ ${(parseFloat(inst.precoConsulta.replace(',', '.')) * (1 - inst.descontoPercentual / 100)).toFixed(2).replace('.', ',')}\n` : ''}` +
+                                        `${inst.observacoes ? `\n📝 *Observações:*\n${inst.observacoes}\n` : ''}` +
+                                        `\n———————————\n💚 *Vital Serviços Médicos*\n*Sua Saúde Vital*`;
+                                      
+                                      await navigator.clipboard.writeText(textoCompleto);
+                                      toast.success("Texto completo copiado! Pronto para enviar ao parceiro.");
+                                    } catch (error) {
+                                      toast.error("Erro ao copiar texto");
+                                    }
+                                  }}
+                                  title="Copiar texto completo com todas as informações"
+                                >
+                                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                  </svg>
                                 </Button>
                                 <Button
                                   variant="ghost"

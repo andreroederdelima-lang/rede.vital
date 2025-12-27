@@ -2691,3 +2691,11 @@ pnpm vitest
 - [x] Remover fundo branco ou ajustar para transparente
 - [x] Testar em diferentes páginas
 - [ ] Salvar checkpoint
+
+
+## Botão Copiar Texto Completo do Credenciado
+- [x] Criar função para gerar texto formatado com TODAS as informações
+- [x] Adicionar botão na tabela de médicos
+- [x] Adicionar botão na tabela de serviços/instituições
+- [x] Testar cópia e formatação do texto
+- [ ] Salvar checkpoint
