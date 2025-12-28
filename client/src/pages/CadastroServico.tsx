@@ -28,8 +28,6 @@ export default function CadastroServico() {
     telefoneFixo: "",
     whatsappSecretaria: "",
     email: "",
-    valorParticular: "",
-    valorAssinanteVital: "",
     observacoes: "",
     contatoParceria: "",
     whatsappParceria: "",
@@ -92,8 +90,6 @@ export default function CadastroServico() {
         telefoneFixo: instituicaoExistente.telefone || "",
         whatsappSecretaria: instituicaoExistente.whatsappSecretaria || "",
         email: instituicaoExistente.email || "",
-        valorParticular: instituicaoExistente.valorParticular || "",
-        valorAssinanteVital: instituicaoExistente.valorAssinanteVital || "",
         observacoes: instituicaoExistente.observacoes || "",
         contatoParceria: "",
         whatsappParceria: instituicaoExistente.whatsappSecretaria || "",
@@ -190,8 +186,6 @@ export default function CadastroServico() {
     if (!formData.endereco) camposFaltantes.push("Endereço");
     if (!formData.whatsappSecretaria) camposFaltantes.push("WhatsApp Comercial/Agendamento");
     if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
-    if (!formData.valorParticular) camposFaltantes.push("Valor Particular");
-    if (!formData.valorAssinanteVital) camposFaltantes.push("Valor Assinante Vital");
     if (!logoBase64) camposFaltantes.push("Logo do Estabelecimento");
     
     if (camposFaltantes.length > 0) {
@@ -248,9 +242,9 @@ export default function CadastroServico() {
         telefone: formData.telefoneFixo || formData.whatsappSecretaria || "",
         whatsappSecretaria: formData.whatsappSecretaria || "",
         email: formData.email,
-        valorParticular: unmaskMoeda(formData.valorParticular),
-        valorAssinanteVital: unmaskMoeda(formData.valorAssinanteVital),
-        descontoPercentual: calcularDesconto(formData.valorParticular, formData.valorAssinanteVital),
+        valorParticular: "0",
+        valorAssinanteVital: "0",
+        descontoPercentual: 0,
         observacoes: formData.observacoes,
         contatoParceria: formData.contatoParceria,
         whatsappParceria: formData.whatsappParceria,
@@ -323,7 +317,7 @@ export default function CadastroServico() {
     );
   }
   
-  const descontoCalculado = calcularDesconto(formData.valorParticular, formData.valorAssinanteVital);
+  // Desconto calculado por procedimento individual
   
   const categoriasDisponiveis = formData.tipoServico === "servicos_saude" 
     ? CATEGORIAS_SERVICOS_SAUDE 
@@ -455,37 +449,7 @@ export default function CadastroServico() {
                 />
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="valorParticular">Valor Particular *</Label>
-                  <Input
-                    id="valorParticular"
-                    value={formData.valorParticular}
-                    onChange={(e) => setFormData({ ...formData, valorParticular: maskMoeda(e.target.value) })}
-                    placeholder="Ex: R$ 200,00"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="valorAssinanteVital">Valor Assinante Vital *</Label>
-                  <Input
-                    id="valorAssinanteVital"
-                    value={formData.valorAssinanteVital}
-                    onChange={(e) => setFormData({ ...formData, valorAssinanteVital: maskMoeda(e.target.value) })}
-                    placeholder="Ex: R$ 150,00"
-                    required
-                  />
-                </div>
-              </div>
-              
-              {descontoCalculado > 0 && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                  <p className="text-sm text-green-700">
-                    <strong>Desconto calculado:</strong> {descontoCalculado}% para assinantes Vital
-                  </p>
-                </div>
-              )}
+              {/* Valores são definidos por procedimento individual */}
               
               {/* Logo do Estabelecimento */}
               <div>

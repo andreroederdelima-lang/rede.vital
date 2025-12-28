@@ -2912,3 +2912,13 @@ pnpm vitest
 - [x] Testar visualização de procedimentos no Admin - Funcionando perfeitamente
 - [x] Testar edição de procedimentos antes de aprovar - Interface completa com adicionar/remover
 - [x] Testar visualização de imagens nas solicitações - Previews funcionando corretamente
+
+
+## Clarificação de Abas e Remoção de Campos Genéricos
+- [x] Renomear aba "Usuários" para "Usuários Públicos" ou similar
+- [x] Renomear aba "Usuários Internos" para "Acessos Admin" ou similar
+- [x] Adicionar tooltips ou descrições explicando cada aba
+- [x] Remover campos valorParticular e valorAssinanteVital do CadastroServico.tsx (formulário via token)
+- [x] Verificar se campos já foram removidos anteriormente - Estavam presentes, agora removidos
+- [x] Testar formulário de cadastro via link de token - Campos genéricos removidos com sucesso
+- [x] Testar clareza das abas no Admin - Renomeação e tooltips funcionando perfeitamente

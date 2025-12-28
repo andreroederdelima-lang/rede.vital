@@ -335,11 +335,11 @@ export default function Admin() {
               <TabsTrigger value="instituicoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Serviços</TabsTrigger>
               <TabsTrigger value="solicitacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Solicitações</TabsTrigger>
               <TabsTrigger value="atualizacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Atualizações</TabsTrigger>
-              <TabsTrigger value="usuarios" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Usuários</TabsTrigger>
+              <TabsTrigger value="usuarios" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white" title="Usuários cadastrados na plataforma (público)">Usuários Públicos</TabsTrigger>
             </TabsList>
             {/* Segunda linha */}
             <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1">
-              <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Usuários Internos</TabsTrigger>
+              <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white" title="Acessos administrativos e permissões internas">Acessos Admin</TabsTrigger>
               <TabsTrigger value="prospeccao" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Prospecção</TabsTrigger>
               <TabsTrigger value="apikeys" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">API Keys</TabsTrigger>
               <TabsTrigger value="webhooks" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Webhooks</TabsTrigger>
