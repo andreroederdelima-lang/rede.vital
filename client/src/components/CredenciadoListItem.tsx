@@ -282,18 +282,20 @@ export function CredenciadoListItem({
               {procedimentos.map((proc) => (
                 <div key={proc.id} className="flex justify-between items-center text-xs">
                   <span style={{ color: VITAL_COLORS.darkGray }}>{proc.nome}</span>
-                  <div className="flex gap-2">
-                    {proc.valorParticular && (
-                      <span className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
-                        Particular: {proc.valorParticular}
-                      </span>
-                    )}
-                    {proc.valorAssinanteVital && (
-                      <span className="text-xs font-medium" style={{ color: VITAL_COLORS.turquoise }}>
-                        Vital: {proc.valorAssinanteVital}
-                      </span>
-                    )}
-                  </div>
+                  {mostrarPrecoDesconto && (
+                    <div className="flex gap-2">
+                      {proc.valorParticular && (
+                        <span className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+                          Particular: {proc.valorParticular}
+                        </span>
+                      )}
+                      {proc.valorAssinanteVital && (
+                        <span className="text-xs font-medium" style={{ color: VITAL_COLORS.turquoise }}>
+                          Vital: {proc.valorAssinanteVital}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

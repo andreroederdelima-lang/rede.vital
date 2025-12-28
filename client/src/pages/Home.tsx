@@ -20,20 +20,34 @@ import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/c
 import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 
 // Componente para exibir procedimentos de uma instituição
-function ProcedimentosInstituicao({ instituicaoId }: { instituicaoId: number }) {
+function ProcedimentosInstituicao({ instituicaoId, mostrarValores = false }: { instituicaoId: number; mostrarValores?: boolean }) {
   const { data: procedimentos = [], isLoading } = trpc.procedimentos.listar.useQuery({ instituicaoId });
   
   if (isLoading) return null;
   if (procedimentos.length === 0) return null;
   
   return (
-    <div className="mt-3 pt-3 border-t">
-      <h4 className="text-sm font-semibold text-primary mb-2">Procedimentos oferecidos:</h4>
-      <div className="flex flex-wrap gap-2">
+    <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: "#f8f9fa" }}>
+      <h4 className="text-sm font-semibold mb-2" style={{ color: VITAL_COLORS.turquoise }}>Procedimentos / Serviços Disponíveis:</h4>
+      <div className="space-y-1">
         {procedimentos.map((proc) => (
-          <Badge key={proc.id} variant="outline" className="text-xs">
-            {proc.nome}
-          </Badge>
+          <div key={proc.id} className="flex justify-between items-center text-xs">
+            <span style={{ color: VITAL_COLORS.darkGray }}>{proc.nome}</span>
+            {mostrarValores && (
+              <div className="flex gap-2">
+                {proc.valorParticular && (
+                  <span className="text-xs" style={{ color: VITAL_COLORS.mediumGray }}>
+                    Particular: {proc.valorParticular}
+                  </span>
+                )}
+                {proc.valorAssinanteVital && (
+                  <span className="text-xs font-medium" style={{ color: VITAL_COLORS.turquoise }}>
+                    Vital: {proc.valorAssinanteVital}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
         ))}
       </div>
     </div>
@@ -851,7 +865,7 @@ export default function Home() {
                         )}
 
                         {/* Procedimentos oferecidos */}
-                        <ProcedimentosInstituicao instituicaoId={inst.id} />
+                        <ProcedimentosInstituicao instituicaoId={inst.id} mostrarValores={isAuthenticated} />
 
                         {inst.contatoParceria && (
                           <p className="text-xs text-muted-foreground">

@@ -2860,3 +2860,13 @@ pnpm vitest
 - [x] Atualizar CredenciadoListItem.tsx
 - [ ] Atualizar Admin.tsx (aba de gerenciamento)
 - [x] Atualizar todos os textos e labels
+
+
+## Correção de Exibição de Valores de Procedimentos
+- [x] Analisar componente CredenciadoListItem - seção de procedimentos
+- [x] Ocultar valores (valorParticular e valorAssinanteVital) quando mostrarPrecoDesconto=false
+- [x] Garantir que valores apareçam quando mostrarPrecoDesconto=true
+- [x] Modificar componente ProcedimentosInstituicao na Home.tsx para mostrar valores
+- [x] Passar flag mostrarValores baseado em isAuthenticated
+- [x] Testar página pública (/) - procedimentos SEM valores
+- [x] Testar página dados-internos - procedimentos COM valores
