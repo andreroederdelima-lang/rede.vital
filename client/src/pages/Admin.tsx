@@ -97,19 +97,19 @@ export default function Admin() {
       setEditingMedico(null);
       toast.success("Médico adicionado com sucesso!");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao adicionar médico: " + error.message);
     },
   });
 
   const criarTokenAtualizacao = trpc.tokens.criar.useMutation({
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao gerar token: " + error.message);
     },
   });
 
   const criarTokenCadastro = trpc.tokens.criarCadastro.useMutation({
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao gerar token de cadastro: " + error.message);
     },
   });
@@ -121,7 +121,7 @@ export default function Admin() {
       setEditingMedico(null);
       toast.success("Médico atualizado com sucesso!");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao atualizar médico: " + error.message);
     },
   });
@@ -131,7 +131,7 @@ export default function Admin() {
       utils.medicos.listar.invalidate();
       toast.success("Médico removido com sucesso!");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao remover médico: " + error.message);
     },
   });
@@ -143,7 +143,7 @@ export default function Admin() {
       setEditingInstituicao(null);
       toast.success("Clínica adicionada com sucesso!");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao adicionar clínica: " + error.message);
     },
   });
@@ -155,7 +155,7 @@ export default function Admin() {
       setEditingInstituicao(null);
       toast.success("Clínica atualizada com sucesso!");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao atualizar clínica: " + error.message);
     },
   });
@@ -165,7 +165,7 @@ export default function Admin() {
       utils.instituicoes.listar.invalidate();
       toast.success("Clínica removida com sucesso!");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao remover clínica: " + error.message);
     },
   });
@@ -1609,6 +1609,155 @@ function InstituicaoFormDialog({
   );
 }
 
+// Componente para exibir e editar procedimentos de uma solicitação
+function ProcedimentosSolicitacaoSection({ solicitacaoId }: { solicitacaoId: number }) {
+  const utils = trpc.useUtils();
+  const [editando, setEditando] = useState(false);
+  const [novoProcedimento, setNovoProcedimento] = useState({
+    nome: '',
+    valorParticular: '',
+    valorAssinante: '',
+  });
+
+  const { data: procedimentos, isLoading } = trpc.procedimentosSolicitacao.listar.useQuery({ solicitacaoId });
+
+  const criarMutation = trpc.procedimentosSolicitacao.criar.useMutation({
+    onSuccess: () => {
+      toast.success('Procedimento adicionado');
+      utils.procedimentosSolicitacao.listar.invalidate();
+      setNovoProcedimento({ nome: '', valorParticular: '', valorAssinante: '' });
+    },
+    onError: (error: any) => {
+      toast.error('Erro ao adicionar procedimento', { description: error.message });
+    },
+  });
+
+  const atualizarMutation = trpc.procedimentosSolicitacao.atualizar.useMutation({
+    onSuccess: () => {
+      toast.success('Procedimento atualizado');
+      utils.procedimentosSolicitacao.listar.invalidate();
+    },
+    onError: (error: any) => {
+      toast.error('Erro ao atualizar procedimento', { description: error.message });
+    },
+  });
+
+  const deletarMutation = trpc.procedimentosSolicitacao.excluir.useMutation({
+    onSuccess: () => {
+      toast.success('Procedimento removido');
+      utils.procedimentosSolicitacao.listar.invalidate();
+    },
+    onError: (error: any) => {
+      toast.error('Erro ao remover procedimento', { description: error.message });
+    },
+  });
+
+  const handleAdicionar = () => {
+    if (!novoProcedimento.nome.trim()) {
+      toast.error('Nome do procedimento é obrigatório');
+      return;
+    }
+    criarMutation.mutate({
+      solicitacaoId,
+      ...novoProcedimento,
+    });
+  };
+
+  const handleAtualizar = (id: number, dados: { nome: string; valorParticular: string; valorAssinante: string }) => {
+    atualizarMutation.mutate({ id, ...dados });
+  };
+
+  const handleDeletar = (id: number) => {
+    if (confirm('Deseja remover este procedimento?')) {
+      deletarMutation.mutate(id);
+    }
+  };
+
+  return (
+    <div className="border-t pt-4">
+      <div className="flex items-center justify-between mb-3">
+        <Label className="text-base font-semibold">Procedimentos / Serviços Cadastrados</Label>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setEditando(!editando)}
+        >
+          {editando ? 'Concluir Edição' : 'Editar Procedimentos'}
+        </Button>
+      </div>
+
+      {isLoading ? (
+        <div className="text-center py-4 text-muted-foreground">Carregando procedimentos...</div>
+      ) : !procedimentos || procedimentos.length === 0 ? (
+        <div className="text-center py-4 text-muted-foreground bg-muted rounded-lg">
+          Nenhum procedimento cadastrado nesta solicitação
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {procedimentos.map((proc: any) => (
+            <div key={proc.id} className="flex items-center gap-3 p-3 bg-muted rounded-lg">
+              <div className="flex-1">
+                <div className="font-medium">{proc.nome}</div>
+                <div className="text-sm text-muted-foreground">
+                  Particular: R$ {proc.valorParticular || '0,00'} | Vital: R$ {proc.valorAssinante || '0,00'}
+                </div>
+              </div>
+              {editando && (
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => handleDeletar(proc.id)}
+                  disabled={deletarMutation.isPending}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {editando && (
+        <div className="mt-4 p-4 border rounded-lg bg-background">
+          <Label className="text-sm font-medium mb-3 block">Adicionar Novo Procedimento</Label>
+          <div className="grid grid-cols-3 gap-3">
+            <div>
+              <Input
+                placeholder="Nome do procedimento"
+                value={novoProcedimento.nome}
+                onChange={(e) => setNovoProcedimento({ ...novoProcedimento, nome: e.target.value })}
+              />
+            </div>
+            <div>
+              <Input
+                placeholder="Valor Particular (R$)"
+                value={novoProcedimento.valorParticular}
+                onChange={(e) => setNovoProcedimento({ ...novoProcedimento, valorParticular: e.target.value })}
+              />
+            </div>
+            <div>
+              <Input
+                placeholder="Valor Assinante (R$)"
+                value={novoProcedimento.valorAssinante}
+                onChange={(e) => setNovoProcedimento({ ...novoProcedimento, valorAssinante: e.target.value })}
+              />
+            </div>
+          </div>
+          <Button
+            size="sm"
+            className="mt-3"
+            onClick={handleAdicionar}
+            disabled={criarMutation.isPending}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Adicionar Procedimento
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SolicitacoesTab() {
   const utils = trpc.useUtils();
   const [detalhesDialogOpen, setDetalhesDialogOpen] = useState(false);
@@ -1625,7 +1774,7 @@ function SolicitacoesTab() {
       setDetalhesDialogOpen(false);
       setSolicitacaoSelecionada(null);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao aprovar parceiro", { description: error.message });
     },
   });
@@ -1638,7 +1787,7 @@ function SolicitacoesTab() {
       setSolicitacaoSelecionada(null);
       setMotivoRejeicao("");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao rejeitar solicitação", { description: error.message });
     },
   });
@@ -1799,6 +1948,9 @@ function SolicitacoesTab() {
                 )}
               </div>
 
+              {/* Procedimentos / Serviços */}
+              <ProcedimentosSolicitacaoSection solicitacaoId={solicitacaoSelecionada.id} />
+
               <div className="border-t pt-4">
                 <Label htmlFor="motivoRejeicao">Motivo da Rejeição (opcional)</Label>
                 <Textarea
@@ -1846,7 +1998,7 @@ function UsuariosManusTab() {
       toast.success("Nível de acesso atualizado com sucesso!");
       utils.usuariosManus.listar.invalidate();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao atualizar nível de acesso", {
         description: error.message
       });
@@ -1964,7 +2116,7 @@ function UsuariosAutorizadosTab() {
       setDialogOpen(false);
       setEditingUsuario(null);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao adicionar usuário", {
         description: error.message
       });
@@ -1978,7 +2130,7 @@ function UsuariosAutorizadosTab() {
       setDialogOpen(false);
       setEditingUsuario(null);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao atualizar usuário", {
         description: error.message
       });
@@ -1990,7 +2142,7 @@ function UsuariosAutorizadosTab() {
       toast.success("Usuário removido com sucesso!");
       utils.usuariosAutorizados.listar.invalidate();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao remover usuário", {
         description: error.message
       });
@@ -2005,7 +2157,7 @@ function UsuariosAutorizadosTab() {
       // Copiar automaticamente para clipboard
       navigator.clipboard.writeText(data.novaSenha);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao resetar senha", {
         description: error.message
       });
@@ -2264,7 +2416,7 @@ function AtualizacoesPendentesTab() {
       setDetalhesDialogOpen(false);
       setAtualizacaoSelecionada(null);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao aprovar atualização", { description: error.message });
     },
   });
@@ -2277,7 +2429,7 @@ function AtualizacoesPendentesTab() {
       setAtualizacaoSelecionada(null);
       setMotivoRejeicao("");
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao rejeitar atualização", { description: error.message });
     },
   });
@@ -2504,7 +2656,7 @@ function SolicitacoesAcessoTab() {
       utils.solicitacoesAcesso.listar.invalidate();
       utils.usuariosAutorizados.listar.invalidate();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao aprovar solicitação", { description: error.message });
     },
   });
@@ -2514,7 +2666,7 @@ function SolicitacoesAcessoTab() {
       toast.success("Solicitação rejeitada");
       utils.solicitacoesAcesso.listar.invalidate();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error("Erro ao rejeitar solicitação", { description: error.message });
     },
   });

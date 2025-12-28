@@ -2901,3 +2901,14 @@ pnpm vitest
 - [x] Modificar mutation parceria.aprovar para buscar procedimentos
 - [x] Enviar email após aprovação com lista de procedimentos
 - [x] Testar envio de email de aprovação - Todos os testes passaram (3/3)
+
+
+## Melhorias no Painel Admin - Procedimentos e Imagens
+- [x] Adicionar seção de visualização de procedimentos nas solicitações pendentes
+- [x] Criar endpoint tRPC para buscar procedimentos por solicitação - Já existia
+- [x] Implementar interface de edição de procedimentos (adicionar/remover/editar)
+- [x] Criar endpoints tRPC para CRUD de procedimentos de solicitações - Já existiam
+- [x] Corrigir exibição de imagens (logo/foto) nas solicitações - Já funcionando corretamente
+- [x] Testar visualização de procedimentos no Admin - Funcionando perfeitamente
+- [x] Testar edição de procedimentos antes de aprovar - Interface completa com adicionar/remover
+- [x] Testar visualização de imagens nas solicitações - Previews funcionando corretamente
