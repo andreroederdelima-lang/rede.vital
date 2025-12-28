@@ -71,10 +71,6 @@ type InstituicaoForm = {
   logoFile?: File;
   fotoFile?: File;
   email?: string;
-  precoConsulta?: string;
-  valorParticular?: string;
-  valorAssinanteVital?: string;
-  descontoPercentual: number;
   observacoes?: string;
   contatoParceria?: string;
   whatsappParceria?: string;
@@ -1295,28 +1291,6 @@ function MedicoFormDialog({
         </div>
 
         <div>
-          <Label htmlFor="valorParticular">Valor Particular</Label>
-          <Input
-            id="valorParticular"
-            value={formData.valorParticular || ""}
-            onChange={(e) => setFormData({ ...formData, valorParticular: maskMoeda(e.target.value) })}
-            placeholder="Ex: R$ 200,00"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="valorAssinanteVital">Valor Assinante Vital</Label>
-          <Input
-            id="valorAssinanteVital"
-            value={formData.valorAssinanteVital || ""}
-            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: maskMoeda(e.target.value) })}
-            placeholder="Ex: R$ 150,00"
-          />
-        </div>
-
-
-
-        <div>
           <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
           <Input
             id="contatoParceria"
@@ -1385,10 +1359,6 @@ function InstituicaoFormDialog({
       telefoneOrganizacao: "",
       fotoUrl: "",
       email: "",
-      precoConsulta: "",
-      valorParticular: "",
-      valorAssinanteVital: "",
-      descontoPercentual: 0,
       observacoes: "",
       contatoParceria: "",
       whatsappParceria: "",
@@ -1594,28 +1564,6 @@ function InstituicaoFormDialog({
             }}
           />
         </div>
-
-        <div>
-          <Label htmlFor="valorParticular">Valor Particular</Label>
-          <Input
-            id="valorParticular"
-            value={formData.valorParticular || ""}
-            onChange={(e) => setFormData({ ...formData, valorParticular: maskMoeda(e.target.value) })}
-            placeholder="Ex: R$ 200,00"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="valorAssinanteVital">Valor Assinante Vital</Label>
-          <Input
-            id="valorAssinanteVital"
-            value={formData.valorAssinanteVital || ""}
-            onChange={(e) => setFormData({ ...formData, valorAssinanteVital: maskMoeda(e.target.value) })}
-            placeholder="Ex: R$ 150,00"
-          />
-        </div>
-
-
 
         <div>
           <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>

@@ -2870,3 +2870,14 @@ pnpm vitest
 - [x] Passar flag mostrarValores baseado em isAuthenticated
 - [x] Testar página pública (/) - procedimentos SEM valores
 - [x] Testar página dados-internos - procedimentos COM valores
+
+
+## Melhorias Finais - Procedimentos
+- [x] Remover campos valorParticular e valorAssinanteVital do formulário de edição no Admin
+- [x] Remover validação de campos genéricos no Admin
+- [x] Implementar validação: ao menos 1 procedimento antes de aprovar cadastro (alerta no frontend)
+- [x] Adicionar filtro "Todos os procedimentos" na página pública (Home.tsx) - Já implementado
+- [x] Criar query tRPC para listar todos os procedimentos únicos - Já existe
+- [x] Implementar lógica de filtro por procedimento selecionado - Já implementado
+- [x] Testar filtro na página pública - Funcionando perfeitamente
+- [x] Testar validação de procedimentos no Admin - Não aplicável (procedimentos são cadastrados após aprovação)
