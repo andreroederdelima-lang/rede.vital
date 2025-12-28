@@ -2893,3 +2893,11 @@ pnpm vitest
 - [x] Testar cadastro de procedimentos no formulário
 - [x] Testar aprovação e transferência de procedimentos
 - [x] Validar que instituição aprovada recebe procedimentos cadastrados - Todos os testes passaram
+
+
+## Email de Notificação de Aprovação com Procedimentos
+- [x] Criar função enviarEmailAprovacao no _core/email.ts
+- [x] Incluir template HTML com tabela de procedimentos e valores
+- [x] Modificar mutation parceria.aprovar para buscar procedimentos
+- [x] Enviar email após aprovação com lista de procedimentos
+- [x] Testar envio de email de aprovação - Todos os testes passaram (3/3)

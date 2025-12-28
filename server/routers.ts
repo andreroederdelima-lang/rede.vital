@@ -429,11 +429,15 @@ export const appRouter = router({
     aprovar: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao, criarMedico } = await import("./db");
+        const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao, criarMedico, listarProcedimentosPorSolicitacao } = await import("./db");
+        const { enviarEmailAprovacaoParceria } = await import("./_core/email");
         
         // Obter solicitação
         const solicitacao = await obterSolicitacaoParceriaPorId(input);
         if (!solicitacao) throw new Error("Solicitação não encontrada");
+        
+        // Buscar procedimentos da solicitação
+        const procedimentos = await listarProcedimentosPorSolicitacao(input);
         
         // Criar médico ou instituição baseado no tipoCredenciado
         if (solicitacao.tipoCredenciado === "medico") {
@@ -491,6 +495,22 @@ export const appRouter = router({
         
         // Atualizar status da solicitação
         await atualizarStatusSolicitacao(input, "aprovado");
+        
+        // Enviar email de aprovação ao parceiro
+        if (solicitacao.email) {
+          await enviarEmailAprovacaoParceria({
+            nomeResponsavel: solicitacao.nomeResponsavel,
+            nomeEstabelecimento: solicitacao.nomeEstabelecimento,
+            email: solicitacao.email,
+            tipoCredenciado: solicitacao.tipoCredenciado,
+            categoria: solicitacao.categoria,
+            procedimentos: procedimentos.map(p => ({
+              nome: p.nome,
+              valorParticular: p.valorParticular || '0.00',
+              valorAssinante: p.valorAssinante || '0.00',
+            })),
+          });
+        }
         
         return { success: true };
       }),

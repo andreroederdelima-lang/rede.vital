@@ -463,3 +463,133 @@ export async function enviarEmailSenhaResetada(dados: {
     html,
   });
 }
+
+
+/**
+ * Envia e-mail de notificação de aprovação de parceria com lista de procedimentos
+ */
+export async function enviarEmailAprovacaoParceria(dados: {
+  nomeResponsavel: string;
+  nomeEstabelecimento: string;
+  email?: string;
+  tipoCredenciado: "medico" | "instituicao";
+  categoria: string;
+  procedimentos: Array<{
+    nome: string;
+    valorParticular: string;
+    valorAssinante: string;
+  }>;
+}) {
+  if (!dados.email) {
+    console.log('[Email] Email não fornecido, pulando envio de aprovação');
+    return false;
+  }
+
+  const tabelaProcedimentos = dados.procedimentos.length > 0 ? `
+    <div class="field">
+      <div class="field-label">Procedimentos / Serviços Aprovados:</div>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <thead>
+          <tr style="background-color: #2d7a7a; color: white;">
+            <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Procedimento / Serviço</th>
+            <th style="padding: 10px; text-align: right; border: 1px solid #ddd;">Valor Particular</th>
+            <th style="padding: 10px; text-align: right; border: 1px solid #ddd;">Valor Assinante Vital</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${dados.procedimentos.map(proc => `
+            <tr>
+              <td style="padding: 10px; border: 1px solid #ddd;">${proc.nome}</td>
+              <td style="padding: 10px; text-align: right; border: 1px solid #ddd;">R$ ${proc.valorParticular}</td>
+              <td style="padding: 10px; text-align: right; border: 1px solid #ddd; background-color: #e8f5e9; font-weight: bold;">R$ ${proc.valorAssinante}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  ` : '<p><em>Nenhum procedimento específico cadastrado.</em></p>';
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 700px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #2d7a7a; color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+        .success-badge { background-color: #4caf50; color: white; padding: 10px 20px; border-radius: 20px; display: inline-block; margin: 20px 0; font-weight: bold; }
+        .field { margin: 20px 0; }
+        .field-label { font-weight: bold; color: #2d7a7a; font-size: 16px; margin-bottom: 10px; }
+        .field-value { margin-top: 5px; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+        .highlight-box { background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 20px; margin: 20px 0; border-radius: 4px; }
+        table { width: 100%; }
+        th, td { padding: 12px; text-align: left; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🎉 Parabéns! Sua Parceria foi Aprovada</h1>
+          <p>Sua Saúde Vital</p>
+        </div>
+        
+        <div class="content">
+          <div class="success-badge">✓ APROVADO</div>
+          
+          <p>Olá <strong>${dados.nomeResponsavel}</strong>,</p>
+          
+          <p>É com grande satisfação que informamos que sua solicitação de parceria foi <strong>aprovada</strong>!</p>
+          
+          <div class="highlight-box">
+            <p style="margin: 0;"><strong>🏥 ${dados.nomeEstabelecimento}</strong> agora faz parte da rede credenciada Sua Saúde Vital!</p>
+          </div>
+          
+          <div class="field">
+            <div class="field-label">Tipo de Credenciamento:</div>
+            <div class="field-value">${dados.tipoCredenciado === 'medico' ? 'Médico' : 'Instituição'}</div>
+          </div>
+          
+          <div class="field">
+            <div class="field-label">Categoria:</div>
+            <div class="field-value">${dados.categoria}</div>
+          </div>
+          
+          ${tabelaProcedimentos}
+          
+          <div class="highlight-box" style="background-color: #fff3cd; border-left-color: #ffc107; margin-top: 30px;">
+            <h3 style="margin-top: 0; color: #856404;">📋 Próximos Passos:</h3>
+            <ol style="margin: 10px 0; padding-left: 20px;">
+              <li>Seu estabelecimento já está visível no site para os assinantes Vital</li>
+              <li>Certifique-se de que sua equipe está ciente dos valores acordados</li>
+              <li>Em caso de dúvidas ou necessidade de alterações, entre em contato conosco</li>
+            </ol>
+          </div>
+          
+          <p style="margin-top: 30px;">
+            <strong>Bem-vindo(a) à família Vital! 💚</strong>
+          </p>
+          
+          <p style="font-size: 14px; color: #666;">
+            Estamos à disposição para qualquer esclarecimento.<br>
+            WhatsApp: (47) 93385-3726<br>
+            Email: comercial@suasaudevital.com.br
+          </p>
+        </div>
+        
+        <div class="footer">
+          <p>© ${new Date().getFullYear()} Sua Saúde Vital - Todos os direitos reservados</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: dados.email,
+    subject: `🎉 Parceria Aprovada - ${dados.nomeEstabelecimento} | Sua Saúde Vital`,
+    html,
+  });
+}
