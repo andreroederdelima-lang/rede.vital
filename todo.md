@@ -2881,3 +2881,15 @@ pnpm vitest
 - [x] Implementar lógica de filtro por procedimento selecionado - Já implementado
 - [x] Testar filtro na página pública - Funcionando perfeitamente
 - [x] Testar validação de procedimentos no Admin - Não aplicável (procedimentos são cadastrados após aprovação)
+
+
+## Procedimentos em Solicitações de Parceria
+- [x] Criar tabela procedimentosSolicitacao no schema
+- [x] Executar migração do banco de dados (pnpm db:push)
+- [x] Criar funções no db.ts para gerenciar procedimentos de solicitações
+- [x] Adicionar componente ProcedimentosManager no formulário CadastroServico.tsx - Já existia, apenas conectado ao backend
+- [x] Criar endpoints tRPC para CRUD de procedimentos de solicitações
+- [x] Implementar lógica de transferência de procedimentos ao aprovar solicitação
+- [x] Testar cadastro de procedimentos no formulário
+- [x] Testar aprovação e transferência de procedimentos
+- [x] Validar que instituição aprovada recebe procedimentos cadastrados - Todos os testes passaram

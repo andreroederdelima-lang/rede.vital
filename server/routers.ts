@@ -379,19 +379,39 @@ export const appRouter = router({
         contatoParceria: z.string().optional(),
         whatsappParceria: z.string().optional(),
         observacoes: z.string().optional(),
+        procedimentos: z.array(z.object({
+          nome: z.string(),
+          valorParticular: z.string(),
+          valorAssinante: z.string(),
+        })).optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarSolicitacaoParceria } = await import("./db");
+        const { criarSolicitacaoParceria, criarProcedimentoSolicitacao } = await import("./db");
         const { enviarEmailNovaParceria } = await import("./_core/email");
         
+        // Extrair procedimentos do input
+        const { procedimentos, ...solicitacaoData } = input;
+        
         // Criar solicitação no banco
-        await criarSolicitacaoParceria({
-          ...input,
+        const solicitacaoId = await criarSolicitacaoParceria({
+          ...solicitacaoData,
           status: "pendente",
         } as any);
         
+        // Salvar procedimentos se houver
+        if (procedimentos && procedimentos.length > 0) {
+          for (const proc of procedimentos) {
+            await criarProcedimentoSolicitacao({
+              solicitacaoId,
+              nome: proc.nome,
+              valorParticular: proc.valorParticular,
+              valorAssinante: proc.valorAssinante,
+            });
+          }
+        }
+        
         // Enviar e-mail de notificação
-        await enviarEmailNovaParceria(input);
+        await enviarEmailNovaParceria(solicitacaoData);
         
         return { success: true };
       }),
@@ -443,7 +463,7 @@ export const appRouter = router({
           });
         } else {
           // Criar instituição na rede credenciada
-          await criarInstituicao({
+          const instituicaoId = await criarInstituicao({
             nome: solicitacao.nomeEstabelecimento,
             tipoServico: solicitacao.tipoServico || "servicos_saude",
             categoria: solicitacao.categoria as any,
@@ -463,6 +483,10 @@ export const appRouter = router({
             fotoUrl: solicitacao.fotoUrl,
             ativo: 1,
           });
+          
+          // Transferir procedimentos da solicitação para a instituição
+          const { transferirProcedimentosSolicitacaoParaInstituicao } = await import("./db");
+          await transferirProcedimentosSolicitacaoParaInstituicao(input, instituicaoId);
         }
         
         // Atualizar status da solicitação
@@ -1392,6 +1416,53 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
           }
         }
         
+        return { success: true };
+      }),
+  }),
+
+  // ========== PROCEDIMENTOS DE SOLICITAÇÕES ==========
+  procedimentosSolicitacao: router({
+    listar: publicProcedure
+      .input(z.object({
+        solicitacaoId: z.number(),
+      }))
+      .query(async ({ input }) => {
+        const { listarProcedimentosPorSolicitacao } = await import("./db");
+        return await listarProcedimentosPorSolicitacao(input.solicitacaoId);
+      }),
+
+    criar: publicProcedure
+      .input(z.object({
+        solicitacaoId: z.number(),
+        nome: z.string().min(1, "Nome do procedimento é obrigatório"),
+        valorParticular: z.string().optional(),
+        valorAssinante: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarProcedimentoSolicitacao } = await import("./db");
+        const id = await criarProcedimentoSolicitacao(input);
+        return { id, success: true };
+      }),
+
+    atualizar: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        nome: z.string().optional(),
+        valorParticular: z.string().optional(),
+        valorAssinante: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarProcedimentoSolicitacao } = await import("./db");
+        const { id, ...data } = input;
+        await atualizarProcedimentoSolicitacao(id, data);
+        return { success: true };
+      }),
+
+    excluir: publicProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { excluirProcedimentoSolicitacao } = await import("./db");
+        await excluirProcedimentoSolicitacao(input);
         return { success: true };
       }),
   }),

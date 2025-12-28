@@ -330,6 +330,13 @@
       "when": 1766954718560,
       "tag": "0046_blue_lord_hawal",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "5",
+      "when": 1766958409913,
+      "tag": "0047_careful_penance",
+      "breakpoints": true
     }
   ]
 }

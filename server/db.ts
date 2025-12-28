@@ -1,6 +1,6 @@
 import { eq, sql, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao, sugestoesParceiros, InsertSugestaoParceiro, SugestaoParceiro, procedimentosInstituicao, InsertProcedimentoInstituicao, ProcedimentoInstituicao } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao, sugestoesParceiros, InsertSugestaoParceiro, SugestaoParceiro, procedimentosInstituicao, InsertProcedimentoInstituicao, ProcedimentoInstituicao, procedimentosSolicitacao, InsertProcedimentoSolicitacao, ProcedimentoSolicitacao } from "../drizzle/schema";
 // @ts-ignore - TypeScript cache bug: exports exist but not recognized
 // [REMOVIDO] import { indicadores, indicacoes, comissoes, copys, avaliacoes } from "../drizzle/schema";
 import { copys, avaliacoes } from "../drizzle/schema";
@@ -348,7 +348,7 @@ export async function criarSolicitacaoParceria(data: InsertSolicitacaoParceria) 
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const result = await db.insert(solicitacoesParceria).values(data);
-  return result;
+  return Number(result[0].insertId);
 }
 
 export async function listarSolicitacoesParceria(status?: "pendente" | "aprovado" | "rejeitado") {
@@ -2181,4 +2181,78 @@ export async function excluirTodosProcedimentosInstituicao(instituicaoId: number
     .where(eq(procedimentosInstituicao.instituicaoId, instituicaoId));
   
   return { success: true };
+}
+
+
+// ==================== PROCEDIMENTOS DE SOLICITAÇÕES ====================
+
+export async function criarProcedimentoSolicitacao(procedimento: InsertProcedimentoSolicitacao) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const result = await db.insert(procedimentosSolicitacao).values(procedimento);
+  return Number(result[0].insertId);
+}
+
+export async function listarProcedimentosPorSolicitacao(solicitacaoId: number): Promise<ProcedimentoSolicitacao[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select()
+    .from(procedimentosSolicitacao)
+    .where(eq(procedimentosSolicitacao.solicitacaoId, solicitacaoId));
+}
+
+export async function atualizarProcedimentoSolicitacao(id: number, dados: Partial<InsertProcedimentoSolicitacao>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(procedimentosSolicitacao)
+    .set(dados)
+    .where(eq(procedimentosSolicitacao.id, id));
+  
+  return { success: true };
+}
+
+export async function excluirProcedimentoSolicitacao(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(procedimentosSolicitacao)
+    .where(eq(procedimentosSolicitacao.id, id));
+  
+  return { success: true };
+}
+
+export async function excluirTodosProcedimentosSolicitacao(solicitacaoId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(procedimentosSolicitacao)
+    .where(eq(procedimentosSolicitacao.solicitacaoId, solicitacaoId));
+  
+  return { success: true };
+}
+
+/**
+ * Transfere procedimentos de uma solicitação para uma instituição aprovada
+ */
+export async function transferirProcedimentosSolicitacaoParaInstituicao(solicitacaoId: number, instituicaoId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Buscar procedimentos da solicitação
+  const procedimentos = await listarProcedimentosPorSolicitacao(solicitacaoId);
+  
+  // Criar procedimentos na instituição
+  for (const proc of procedimentos) {
+    await criarProcedimentoInstituicao({
+      instituicaoId,
+      nome: proc.nome,
+      valorParticular: proc.valorParticular,
+      valorAssinante: proc.valorAssinante,
+    });
+  }
+  
+  return { success: true, count: procedimentos.length };
 }

@@ -117,6 +117,22 @@ export type ProcedimentoInstituicao = typeof procedimentosInstituicao.$inferSele
 export type InsertProcedimentoInstituicao = typeof procedimentosInstituicao.$inferInsert;
 
 /**
+ * Tabela de procedimentos/serviços vinculados a solicitações de parceria (antes da aprovação)
+ */
+export const procedimentosSolicitacao = mysqlTable("procedimentosSolicitacao", {
+  id: int("id").autoincrement().primaryKey(),
+  solicitacaoId: int("solicitacaoId").notNull(), // ID da solicitação de parceria
+  nome: varchar("nome", { length: 255 }).notNull(), // Nome do procedimento/serviço
+  valorParticular: decimal("valorParticular", { precision: 10, scale: 2 }), // Valor para não-assinantes
+  valorAssinante: decimal("valorAssinante", { precision: 10, scale: 2 }), // Valor para assinantes Vital
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ProcedimentoSolicitacao = typeof procedimentosSolicitacao.$inferSelect;
+export type InsertProcedimentoSolicitacao = typeof procedimentosSolicitacao.$inferInsert;
+
+/**
  * Tabela de solicitações de parceria (aguardando aprovação)
  */
 export const solicitacoesParceria = mysqlTable("solicitacoesParceria", {

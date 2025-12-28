@@ -256,6 +256,11 @@ export default function CadastroServico() {
         whatsappParceria: formData.whatsappParceria,
         logoUrl: logoUrl,
         fotoUrl: fotoUrl,
+        procedimentos: procedimentos.map(p => ({
+          nome: p.nome,
+          valorParticular: unmaskMoeda(p.valorParticular),
+          valorAssinante: unmaskMoeda(p.valorAssinanteVital),
+        })),
       });
     } catch (error) {
       toast.error("Erro ao processar cadastro", {
