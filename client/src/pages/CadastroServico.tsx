@@ -523,7 +523,7 @@ export default function CadastroServico() {
               </div>
               
               {/* Procedimentos Oferecidos */}
-              {tokenData?.token?.tipo === "atualizacao" && (
+              {
                 <div className="border-t pt-4 mt-4">
                   <h3 className="font-semibold text-lg mb-3">Procedimentos Oferecidos</h3>
                   <p className="text-sm text-muted-foreground mb-4">
@@ -653,7 +653,7 @@ export default function CadastroServico() {
                     </Button>
                   </div>
                 </div>
-              )}
+              }
               
               {/* Responsável pelo Cadastro */}
               <div className="border-t pt-4 mt-4">

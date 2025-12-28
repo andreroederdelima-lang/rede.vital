@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { VITAL_COLORS, MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 import { Upload, X } from "lucide-react";
+import ProcedimentosManager, { Procedimento } from "@/components/ProcedimentosManager";
 
 interface FormularioCredenciadoProps {
   tipo: "medico" | "instituicao";
@@ -44,6 +45,7 @@ export function FormularioCredenciado({
 
   const [logoPreview, setLogoPreview] = useState<string | null>(dadosIniciais?.logoUrl || null);
   const [fotoPreview, setFotoPreview] = useState<string | null>(dadosIniciais?.fotoUrl || null);
+  const [procedimentos, setProcedimentos] = useState<Procedimento[]>([]);
 
   const handleChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -72,7 +74,7 @@ export function FormularioCredenciado({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit({ ...formData, procedimentos });
   };
 
   return (
@@ -360,6 +362,16 @@ export function FormularioCredenciado({
               style={{ borderColor: VITAL_COLORS.turquoise }}
             />
           </div>
+
+          {/* Procedimentos/Serviços (apenas para instituições) */}
+          {tipo === "instituicao" && (
+            <div className="col-span-2">
+              <ProcedimentosManager
+                procedimentos={procedimentos}
+                onChange={setProcedimentos}
+              />
+            </div>
+          )}
 
           {/* Observações */}
           <div>

@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { decimal, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -99,6 +99,22 @@ export const instituicoes = mysqlTable("instituicoes", {
 
 export type Instituicao = typeof instituicoes.$inferSelect;
 export type InsertInstituicao = typeof instituicoes.$inferInsert;
+
+/**
+ * Tabela de procedimentos/serviços oferecidos por instituições
+ */
+export const procedimentosInstituicao = mysqlTable("procedimentosInstituicao", {
+  id: int("id").autoincrement().primaryKey(),
+  instituicaoId: int("instituicaoId").notNull(),
+  nome: varchar("nome", { length: 255 }).notNull(), // Nome do procedimento/serviço
+  valorParticular: decimal("valorParticular", { precision: 10, scale: 2 }), // Valor para não-assinantes
+  valorAssinante: decimal("valorAssinante", { precision: 10, scale: 2 }), // Valor para assinantes Vital
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ProcedimentoInstituicao = typeof procedimentosInstituicao.$inferSelect;
+export type InsertProcedimentoInstituicao = typeof procedimentosInstituicao.$inferInsert;
 
 /**
  * Tabela de solicitações de parceria (aguardando aprovação)

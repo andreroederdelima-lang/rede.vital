@@ -303,6 +303,46 @@ export const appRouter = router({
         const { uploadImage } = await import("./uploadImage");
         return uploadImage(input);
       }),
+
+    // Procedimentos da instituição
+    listarProcedimentos: publicProcedure
+      .input(z.number())
+      .query(async ({ input }) => {
+        const { listarProcedimentosPorInstituicao } = await import("./db");
+        return listarProcedimentosPorInstituicao(input);
+      }),
+
+    criarProcedimento: protectedProcedure
+      .input(z.object({
+        instituicaoId: z.number(),
+        nome: z.string(),
+        valorParticular: z.string().optional(),
+        valorAssinante: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { criarProcedimentoInstituicao } = await import("./db");
+        return criarProcedimentoInstituicao(input);
+      }),
+
+    atualizarProcedimento: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        nome: z.string().optional(),
+        valorParticular: z.string().optional(),
+        valorAssinante: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarProcedimentoInstituicao } = await import("./db");
+        const { id, ...dados } = input;
+        return atualizarProcedimentoInstituicao(id, dados);
+      }),
+
+    excluirProcedimento: protectedProcedure
+      .input(z.number())
+      .mutation(async ({ input }) => {
+        const { excluirProcedimentoInstituicao } = await import("./db");
+        return excluirProcedimentoInstituicao(input);
+      }),
   }),
 
   municipios: router({

@@ -1,6 +1,6 @@
 import { eq, sql, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao, sugestoesParceiros, InsertSugestaoParceiro, SugestaoParceiro } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao, sugestoesParceiros, InsertSugestaoParceiro, SugestaoParceiro, procedimentosInstituicao, InsertProcedimentoInstituicao, ProcedimentoInstituicao } from "../drizzle/schema";
 // @ts-ignore - TypeScript cache bug: exports exist but not recognized
 // [REMOVIDO] import { indicadores, indicacoes, comissoes, copys, avaliacoes } from "../drizzle/schema";
 import { copys, avaliacoes } from "../drizzle/schema";
@@ -2130,4 +2130,55 @@ export async function contarSugestoesPorStatus() {
     em_contato: emContato?.count || 0,
     total: total?.count || 0
   };
+}
+
+
+// ==================== PROCEDIMENTOS DE INSTITUIÇÕES ====================
+
+export async function criarProcedimentoInstituicao(procedimento: InsertProcedimentoInstituicao) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const [result] = await db.insert(procedimentosInstituicao).values(procedimento);
+  return result.insertId;
+}
+
+export async function listarProcedimentosPorInstituicao(instituicaoId: number): Promise<ProcedimentoInstituicao[]> {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select()
+    .from(procedimentosInstituicao)
+    .where(eq(procedimentosInstituicao.instituicaoId, instituicaoId));
+}
+
+export async function atualizarProcedimentoInstituicao(id: number, dados: Partial<InsertProcedimentoInstituicao>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(procedimentosInstituicao)
+    .set({ ...dados, updatedAt: new Date() })
+    .where(eq(procedimentosInstituicao.id, id));
+  
+  return { success: true };
+}
+
+export async function excluirProcedimentoInstituicao(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(procedimentosInstituicao)
+    .where(eq(procedimentosInstituicao.id, id));
+  
+  return { success: true };
+}
+
+export async function excluirTodosProcedimentosInstituicao(instituicaoId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.delete(procedimentosInstituicao)
+    .where(eq(procedimentosInstituicao.instituicaoId, instituicaoId));
+  
+  return { success: true };
 }

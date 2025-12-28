@@ -2818,3 +2818,17 @@ pnpm vitest
 - [x] Corrigir mensagem WhatsApp removendo emojis quebrados (🩺, 👋, 🔗, 🏪)
 - [x] Atualizar texto da mensagem para versão limpa e profissional
 - [x] Mensagem final: "Segue o link para realizar seu cadastro na plataforma de Credenciados Vital: [link] Sua Saúde Vital - sempre ao seu lado."
+
+
+## Campo de Procedimentos/Serviços com Valores para Instituições
+- [x] Criar tabela procedimentosInstituicao no schema (id, instituicaoId, nome, valorParticular, valorAssinante)
+- [x] Aplicar migração no banco (pnpm db:push)
+- [x] Criar funções no db.ts para CRUD de procedimentos
+- [x] Criar endpoints tRPC (listarProcedimentos, criarProcedimento, atualizarProcedimento, excluirProcedimento)
+- [x] Criar componente reutilizável ProcedimentosManager.tsx
+- [x] Atualizar FormularioCredenciado.tsx para incluir procedimentos (apenas instituições)
+- [x] CadastroServico.tsx já tinha implementação completa de procedimentos
+- [x] Remover restrição de procedimentos apenas para atualização (agora funciona em novos cadastros)
+- [x] CredenciadoListItem.tsx já exibe procedimentos corretamente com valores
+- [x] Cálculo automático de porcentagem de desconto por procedimento
+- [x] Interface dinâmica para adicionar/remover/editar procedimentos
