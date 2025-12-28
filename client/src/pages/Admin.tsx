@@ -401,7 +401,7 @@ export default function Admin() {
                           });
                           const baseUrl = window.location.origin;
                           const linkCadastro = `${baseUrl}/cadastro-medico/${result.token}`;
-                          const mensagem = `🩺 *Cadastro no Guia do Assinante Vital*\n\nOlá! 👋\n\n🔗 Acesse o link abaixo para completar seu cadastro na plataforma de Credenciados Vital:\n${linkCadastro}\n\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                          const mensagem = `Segue o link para realizar seu cadastro na plataforma de Credenciados Vital:\n${linkCadastro}\n\nSua Saúde Vital - sempre ao seu lado.`;
                           const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
                           window.open(whatsappUrl, "_blank");
                           toast.success("Link de cadastro gerado com sucesso!");
@@ -413,6 +413,26 @@ export default function Admin() {
                     >
                       <Plus className="h-4 w-4 mr-2" />
                       Enviar Link de Cadastro
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        try {
+                          const result = await criarTokenCadastro.mutateAsync({
+                            tipoCredenciado: "medico",
+                          });
+                          const baseUrl = window.location.origin;
+                          const linkCadastro = `${baseUrl}/cadastro-medico/${result.token}`;
+                          navigator.clipboard.writeText(linkCadastro);
+                          toast.success("Link de cadastro copiado!");
+                        } catch (error) {
+                          console.error("Erro ao gerar token:", error);
+                          toast.error("Erro ao gerar link de cadastro");
+                        }
+                      }}
+                    >
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copiar Link de Cadastro
                     </Button>
                     <Dialog open={medicoDialogOpen} onOpenChange={setMedicoDialogOpen}>
                       <DialogTrigger asChild>
@@ -660,7 +680,7 @@ export default function Admin() {
                           });
                           const baseUrl = window.location.origin;
                           const linkCadastro = `${baseUrl}/cadastro-servico/${result.token}`;
-                          const mensagem = `🏪 *Cadastro no Guia do Assinante Vital*\n\nOlá! 👋\n\nConvido você para fazer parte da nossa *Rede de Serviços Parceiros* do Vale do Itajaí!\n\n🔗 *Acesse o link abaixo para completar seu cadastro:*\n${linkCadastro}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                          const mensagem = `Segue o link para realizar seu cadastro na plataforma de Credenciados Vital:\n${linkCadastro}\n\nSua Saúde Vital - sempre ao seu lado.`;
                           const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
                           window.open(whatsappUrl, "_blank");
                           toast.success("Link de cadastro gerado com sucesso!");
@@ -672,6 +692,26 @@ export default function Admin() {
                     >
                       <Plus className="h-4 w-4 mr-2" />
                       Enviar Link de Cadastro
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        try {
+                          const result = await criarTokenCadastro.mutateAsync({
+                            tipoCredenciado: "instituicao",
+                          });
+                          const baseUrl = window.location.origin;
+                          const linkCadastro = `${baseUrl}/cadastro-servico/${result.token}`;
+                          navigator.clipboard.writeText(linkCadastro);
+                          toast.success("Link de cadastro copiado!");
+                        } catch (error) {
+                          console.error("Erro ao gerar token:", error);
+                          toast.error("Erro ao gerar link de cadastro");
+                        }
+                      }}
+                    >
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copiar Link de Cadastro
                     </Button>
                     <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
                       <DialogTrigger asChild>

@@ -2810,3 +2810,11 @@ pnpm vitest
 - [x] Integrar componente no DashboardProspeccao
 - [x] Notificação por email já existente e funcionando
 - [x] Sistema completo de badges coloridos por status
+
+
+## Botões de Copiar Link de Cadastro e Correção de Mensagem WhatsApp
+- [x] Adicionar botão "Copiar Link de Cadastro de Médico" no Admin
+- [x] Adicionar botão "Copiar Link de Cadastro de Serviço" no Admin
+- [x] Corrigir mensagem WhatsApp removendo emojis quebrados (🩺, 👋, 🔗, 🏪)
+- [x] Atualizar texto da mensagem para versão limpa e profissional
+- [x] Mensagem final: "Segue o link para realizar seu cadastro na plataforma de Credenciados Vital: [link] Sua Saúde Vital - sempre ao seu lado."
