@@ -52,7 +52,7 @@ export default function ProcedimentosManager({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <Label className="text-base font-semibold">Procedimentos/Serviços Oferecidos</Label>
+        <Label className="text-base font-semibold">Procedimentos / Serviços Oferecidos</Label>
         {!readonly && (
           <Button
             type="button"
@@ -61,14 +61,14 @@ export default function ProcedimentosManager({
             onClick={adicionarProcedimento}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Adicionar Procedimento
+            Adicionar Procedimento / Serviço
           </Button>
         )}
       </div>
 
       {procedimentos.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-4 border border-dashed rounded-md">
-          Nenhum procedimento cadastrado. Clique em "Adicionar Procedimento" para começar.
+          Nenhum procedimento cadastrado. Clique em "Adicionar Procedimento / Serviço" para começar.
         </p>
       )}
 
@@ -80,7 +80,7 @@ export default function ProcedimentosManager({
             <div key={index} className="border rounded-lg p-4 space-y-3 bg-muted/30">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-muted-foreground">
-                  Procedimento #{index + 1}
+                  Procedimento / Serviço #{index + 1}
                 </span>
                 {!readonly && (
                   <Button
@@ -97,7 +97,7 @@ export default function ProcedimentosManager({
 
               <div className="grid gap-3">
                 <div>
-                  <Label htmlFor={`proc-nome-${index}`}>Nome do Procedimento/Serviço *</Label>
+                  <Label htmlFor={`proc-nome-${index}`}>Nome do Procedimento / Serviço *</Label>
                   <Input
                     id={`proc-nome-${index}`}
                     value={proc.nome}

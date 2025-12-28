@@ -522,10 +522,9 @@ export default function CadastroServico() {
                 />
               </div>
               
-              {/* Procedimentos Oferecidos */}
-              {
-                <div className="border-t pt-4 mt-4">
-                  <h3 className="font-semibold text-lg mb-3">Procedimentos Oferecidos</h3>
+              {/* Procedimentos / Serviços Oferecidos */}
+              <div className="border-t pt-4 mt-4">
+                  <h3 className="font-semibold text-lg mb-3">Procedimentos / Serviços Oferecidos</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Gerencie os procedimentos e serviços oferecidos pelo seu estabelecimento.
                   </p>
@@ -653,7 +652,6 @@ export default function CadastroServico() {
                     </Button>
                   </div>
                 </div>
-              }
               
               {/* Responsável pelo Cadastro */}
               <div className="border-t pt-4 mt-4">

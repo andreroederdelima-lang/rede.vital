@@ -2832,3 +2832,31 @@ pnpm vitest
 - [x] CredenciadoListItem.tsx já exibe procedimentos corretamente com valores
 - [x] Cálculo automático de porcentagem de desconto por procedimento
 - [x] Interface dinâmica para adicionar/remover/editar procedimentos
+
+## Remover Campos Genéricos de Valor para Instituições
+- [ ] Remover campos valorParticular e valorAssinanteVital do formulário CadastroServico.tsx
+- [ ] Remover campos valorParticular e valorAssinanteVital do formulário Admin (InstituicaoFormDialog)
+- [ ] Remover validação desses campos nos formulários de instituições
+- [ ] Manter campos apenas para médicos (que não têm procedimentos)
+- [ ] Atualizar exibição nos cards para não mostrar valores genéricos de instituições
+
+## Renomear Procedimentos para Procedimentos / Serviços
+- [ ] Atualizar componente ProcedimentosManager.tsx
+- [ ] Atualizar CadastroServico.tsx
+- [ ] Atualizar CredenciadoListItem.tsx
+- [ ] Atualizar Admin.tsx (aba de gerenciamento)
+- [ ] Atualizar todos os textos e labels
+
+## Remover Campos Genéricos de Valor para Instituições
+- [x] Remover campos valorParticular e valorAssinanteVital do formulário CadastroServico.tsx
+- [ ] Remover campos valorParticular e valorAssinanteVital do formulário Admin (InstituicaoFormDialog)
+- [ ] Remover validação desses campos nos formulários de instituições
+- [x] Manter campos apenas para médicos (que não têm procedimentos)
+- [ ] Atualizar exibição nos cards para não mostrar valores genéricos de instituições
+
+## Renomear Procedimentos para Procedimentos / Serviços
+- [x] Atualizar componente ProcedimentosManager.tsx
+- [x] Atualizar CadastroServico.tsx
+- [x] Atualizar CredenciadoListItem.tsx
+- [ ] Atualizar Admin.tsx (aba de gerenciamento)
+- [x] Atualizar todos os textos e labels

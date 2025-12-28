@@ -276,7 +276,7 @@ export function CredenciadoListItem({
         {tipo === "instituicao" && procedimentos && procedimentos.length > 0 && (
           <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: "#f8f9fa" }}>
             <h4 className="text-sm font-semibold mb-2" style={{ color: VITAL_COLORS.turquoise }}>
-              Procedimentos Disponíveis:
+              Procedimentos / Serviços Disponíveis:
             </h4>
             <div className="space-y-1">
               {procedimentos.map((proc) => (
