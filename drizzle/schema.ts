@@ -467,3 +467,35 @@ export const webhookLogs = mysqlTable("webhookLogs", {
 
 export type WebhookLog = typeof webhookLogs.$inferSelect;
 export type InsertWebhookLog = typeof webhookLogs.$inferInsert;
+
+/**
+ * Tabela de sugestões de parceiros
+ * Armazena indicações de novos parceiros feitas por pacientes ou equipe
+ */
+export const sugestoesParceiros = mysqlTable("sugestoesParceiros", {
+  id: int("id").autoincrement().primaryKey(),
+  nomeParceiro: varchar("nomeParceiro", { length: 255 }).notNull(),
+  especialidade: varchar("especialidade", { length: 255 }).notNull(), // Categoria ou especialidade
+  municipio: varchar("municipio", { length: 100 }).notNull(),
+  telefone: varchar("telefone", { length: 100 }), // Telefone de contato se fornecido
+  email: varchar("email", { length: 320 }), // Email se fornecido
+  observacoes: text("observacoes"), // Observações ou motivo da indicação
+  status: mysqlEnum("status", [
+    "pendente",
+    "em_contato",
+    "link_enviado",
+    "aguardando_cadastro",
+    "cadastrado",
+    "nao_interessado",
+    "retomar_depois"
+  ]).default("pendente").notNull(),
+  notas: text("notas"), // Notas internas sobre contatos e interações
+  ultimoContato: timestamp("ultimoContato"), // Data do último contato realizado
+  responsavel: varchar("responsavel", { length: 255 }), // Quem está cuidando dessa indicação
+  indicadoPor: varchar("indicadoPor", { length: 255 }), // Nome de quem indicou (se disponível)
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SugestaoParceiro = typeof sugestoesParceiros.$inferSelect;
+export type InsertSugestaoParceiro = typeof sugestoesParceiros.$inferInsert;

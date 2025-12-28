@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { CIDADES_FOCO } from "../../../shared/cidades";
 import { AlertCircle, CheckCircle2, AlertTriangle } from "lucide-react";
+import GerenciamentoIndicacoes from "./GerenciamentoIndicacoes";
 
 export default function DashboardProspeccao() {
   const { data: stats, isLoading } = trpc.prospeccao.estatisticasCobertura.useQuery();
@@ -199,6 +200,11 @@ export default function DashboardProspeccao() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Gerenciamento de Indicações */}
+      <div className="mt-8">
+        <GerenciamentoIndicacoes />
+      </div>
     </div>
   );
 }

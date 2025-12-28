@@ -2791,3 +2791,22 @@ pnpm vitest
 - [x] Design profissional com cores da Vital (turquesa)
 - [x] Incluir credenciais completas e link de acesso
 - [x] Avisos de segurança e instruções claras
+
+
+## Painel de Gerenciamento de Indicações
+- [x] Criar tabela sugestoesParceiros no schema com todos os campos necessários
+- [x] Adicionar enum de status (pendente, em_contato, link_enviado, aguardando_cadastro, cadastrado, nao_interessado, retomar_depois)
+- [x] Aplicar migração no banco (pnpm db:push)
+- [x] Criar funções no db.ts (criar, listar, atualizar status, adicionar nota, contar por status)
+- [x] Atualizar router de sugestão para salvar no banco ao receber indicação
+- [x] Criar endpoints tRPC (listar, atualizarStatus, adicionarNota, contarPorStatus)
+- [x] Criar componente GerenciamentoIndicacoes.tsx completo
+- [x] Implementar tabela com todas as indicações
+- [x] Adicionar filtros por status e busca por nome/especialidade/município
+- [x] Implementar dialog para alterar status
+- [x] Implementar dialog para adicionar notas com timestamp automático
+- [x] Adicionar botão para copiar link de cadastro
+- [x] Adicionar contadores (total, pendente, em contato)
+- [x] Integrar componente no DashboardProspeccao
+- [x] Notificação por email já existente e funcionando
+- [x] Sistema completo de badges coloridos por status

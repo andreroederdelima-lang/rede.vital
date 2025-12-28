@@ -1,6 +1,6 @@
 import { eq, sql, desc, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao } from "../drizzle/schema";
+import { InsertUser, users, solicitacoesParceria, InsertSolicitacaoParceria, SolicitacaoParceria, usuariosAutorizados, InsertUsuarioAutorizado, UsuarioAutorizado, solicitacoesAtualizacao, InsertSolicitacaoAtualizacao, SolicitacaoAtualizacao, medicos, instituicoes, solicitacoesAcesso, InsertSolicitacaoAcesso, tokensRecuperacao, sugestoesParceiros, InsertSugestaoParceiro, SugestaoParceiro } from "../drizzle/schema";
 // @ts-ignore - TypeScript cache bug: exports exist but not recognized
 // [REMOVIDO] import { indicadores, indicacoes, comissoes, copys, avaliacoes } from "../drizzle/schema";
 import { copys, avaliacoes } from "../drizzle/schema";
@@ -2026,4 +2026,108 @@ export async function atualizarRoleUsuario(userId: number, novaRole: "admin" | "
     .where(eq(users.id, userId));
   
   return { success: true };
+}
+
+
+// ========== GESTÃO DE SUGESTÕES DE PARCEIROS ==========
+export async function criarSugestaoParceiro(dados: InsertSugestaoParceiro) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const [result] = await db.insert(sugestoesParceiros).values(dados);
+  return result;
+}
+
+export async function listarSugestoesParceiros() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select().from(sugestoesParceiros).orderBy(desc(sugestoesParceiros.createdAt));
+}
+
+export async function obterSugestaoParceiroPorId(id: number) {
+  const db = await getDb();
+  if (!db) return null;
+  
+  const [sugestao] = await db.select().from(sugestoesParceiros).where(eq(sugestoesParceiros.id, id)).limit(1);
+  return sugestao || null;
+}
+
+export async function atualizarStatusSugestao(
+  id: number, 
+  status: "pendente" | "em_contato" | "link_enviado" | "aguardando_cadastro" | "cadastrado" | "nao_interessado" | "retomar_depois"
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(sugestoesParceiros)
+    .set({ 
+      status, 
+      updatedAt: new Date(),
+      ultimoContato: new Date()
+    })
+    .where(eq(sugestoesParceiros.id, id));
+  
+  return { success: true };
+}
+
+export async function adicionarNotaSugestao(id: number, nota: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Buscar sugestão atual para pegar notas existentes
+  const sugestao = await obterSugestaoParceiroPorId(id);
+  if (!sugestao) throw new Error("Sugestão não encontrada");
+  
+  // Adicionar nova nota com timestamp
+  const timestamp = new Date().toLocaleString('pt-BR');
+  const notaComTimestamp = `[${timestamp}] ${nota}`;
+  const notasAtualizadas = sugestao.notas 
+    ? `${sugestao.notas}\n\n${notaComTimestamp}`
+    : notaComTimestamp;
+  
+  await db.update(sugestoesParceiros)
+    .set({ 
+      notas: notasAtualizadas,
+      updatedAt: new Date()
+    })
+    .where(eq(sugestoesParceiros.id, id));
+  
+  return { success: true };
+}
+
+export async function atualizarResponsavelSugestao(id: number, responsavel: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  await db.update(sugestoesParceiros)
+    .set({ 
+      responsavel,
+      updatedAt: new Date()
+    })
+    .where(eq(sugestoesParceiros.id, id));
+  
+  return { success: true };
+}
+
+export async function contarSugestoesPorStatus() {
+  const db = await getDb();
+  if (!db) return { pendente: 0, em_contato: 0, total: 0 };
+  
+  const [pendentes] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(sugestoesParceiros)
+    .where(eq(sugestoesParceiros.status, "pendente"));
+  
+  const [emContato] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(sugestoesParceiros)
+    .where(eq(sugestoesParceiros.status, "em_contato"));
+  
+  const [total] = await db.select({ count: sql<number>`COUNT(*)` })
+    .from(sugestoesParceiros);
+  
+  return {
+    pendente: pendentes?.count || 0,
+    em_contato: emContato?.count || 0,
+    total: total?.count || 0
+  };
 }

@@ -451,13 +451,62 @@ export const appRouter = router({
         municipio: z.string().min(1, "Município é obrigatório"),
       }))
       .mutation(async ({ input }) => {
+        const { criarSugestaoParceiro } = await import("./db");
         const { enviarEmailSugestaoParceiro } = await import("./_core/email");
         
-        // Enviar e-mail de sugestão
+        // Salvar sugestão no banco de dados
+        await criarSugestaoParceiro({
+          nomeParceiro: input.nomeParceiro,
+          especialidade: input.especialidade,
+          municipio: input.municipio,
+          status: "pendente",
+        });
+        
+        // Enviar e-mail de notificação
         await enviarEmailSugestaoParceiro(input);
         
         return { success: true };
       }),
+    
+    listar: protectedProcedure.query(async () => {
+      const { listarSugestoesParceiros } = await import("./db");
+      return listarSugestoesParceiros();
+    }),
+    
+    atualizarStatus: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.enum(["pendente", "em_contato", "link_enviado", "aguardando_cadastro", "cadastrado", "nao_interessado", "retomar_depois"]),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarStatusSugestao } = await import("./db");
+        return atualizarStatusSugestao(input.id, input.status);
+      }),
+    
+    adicionarNota: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        nota: z.string().min(1),
+      }))
+      .mutation(async ({ input }) => {
+        const { adicionarNotaSugestao } = await import("./db");
+        return adicionarNotaSugestao(input.id, input.nota);
+      }),
+    
+    atualizarResponsavel: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        responsavel: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { atualizarResponsavelSugestao } = await import("./db");
+        return atualizarResponsavelSugestao(input.id, input.responsavel);
+      }),
+    
+    contarPorStatus: protectedProcedure.query(async () => {
+      const { contarSugestoesPorStatus } = await import("./db");
+      return contarSugestoesPorStatus();
+    }),
   }),
 
   usuariosAutorizados: router({
