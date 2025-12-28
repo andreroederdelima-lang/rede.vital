@@ -40,6 +40,7 @@ export default function CadastroMedico() {
   
   const [enviado, setEnviado] = useState(false);
   const [aceitouTermos, setAceitouTermos] = useState(false);
+  const [usarImagemPadrao, setUsarImagemPadrao] = useState(false);
   const [fotoBase64, setFotoBase64] = useState<string | null>(null);
   const [logoBase64, setLogoBase64] = useState<string | null>(null);
   
@@ -119,7 +120,7 @@ export default function CadastroMedico() {
     if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
     if (!formData.valorParticular) camposFaltantes.push("Valor Particular");
     if (!formData.valorAssinanteVital) camposFaltantes.push("Valor Assinante Vital");
-    if (!fotoBase64) camposFaltantes.push("Foto do Médico");
+    if (!fotoBase64 && !usarImagemPadrao) camposFaltantes.push("Foto do Médico ou marque 'Usar imagem padrão'");
     
     if (camposFaltantes.length > 0) {
       toast.error("Campos obrigatórios não preenchidos", {
@@ -424,18 +425,38 @@ export default function CadastroMedico() {
                 <p className="text-sm text-muted-foreground mb-2">
                   Envie uma foto profissional para exibição no guia de credenciados.
                 </p>
-                <ImageUpload
-                  value={formData.fotoUrl}
-                  onChange={(file, previewUrl) => {
-                    setFormData({ ...formData, fotoUrl: previewUrl || "" });
-                    if (previewUrl) {
-                      setFotoBase64(previewUrl);
-                    } else {
-                      setFotoBase64(null);
-                    }
-                  }}
-                  label="Foto"
-                />
+                <div className="flex items-center gap-2 mb-3">
+                  <input
+                    type="checkbox"
+                    id="usarImagemPadrao"
+                    checked={usarImagemPadrao}
+                    onChange={(e) => {
+                      setUsarImagemPadrao(e.target.checked);
+                      if (e.target.checked) {
+                        setFotoBase64(null);
+                        setFormData({ ...formData, fotoUrl: "" });
+                      }
+                    }}
+                    className="h-4 w-4 rounded border-gray-300"
+                  />
+                  <label htmlFor="usarImagemPadrao" className="text-sm text-muted-foreground cursor-pointer">
+                    Usar imagem padrão (vou inserir imagem em breve)
+                  </label>
+                </div>
+                {!usarImagemPadrao && (
+                  <ImageUpload
+                    value={formData.fotoUrl}
+                    onChange={(file, previewUrl) => {
+                      setFormData({ ...formData, fotoUrl: previewUrl || "" });
+                      if (previewUrl) {
+                        setFotoBase64(previewUrl);
+                      } else {
+                        setFotoBase64(null);
+                      }
+                    }}
+                    label="Foto"
+                  />
+                )}
               </div>
               
               {/* Logo do Consultório/Clínica */}

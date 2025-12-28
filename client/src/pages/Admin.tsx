@@ -55,26 +55,7 @@ type MedicoForm = {
   email?: string;
 };
 
-type InstituicaoForm = {
-  id?: number;
-  nome: string;
-  tipoServico: "servicos_saude" | "outros_servicos";
-  categoria: string; // Categoria flexível baseada em CATEGORIAS_SERVICOS_SAUDE ou CATEGORIAS_OUTROS_SERVICOS
-  subcategoria?: string;
-  municipio: string;
-  endereco: string;
-  telefone?: string;
-  whatsappSecretaria?: string;
-  telefoneOrganizacao?: string;
-  logoUrl?: string;
-  fotoUrl?: string;
-  logoFile?: File;
-  fotoFile?: File;
-  email?: string;
-  observacoes?: string;
-  contatoParceria?: string;
-  whatsappParceria?: string;
-};
+
 
 export default function Admin() {
   const { user, loading, logout } = useAuth();
@@ -83,9 +64,7 @@ export default function Admin() {
   // Nota: Admin usa Manus OAuth e verifica user.role (não usuáriosAutorizados)
 
   const [medicoDialogOpen, setMedicoDialogOpen] = useState(false);
-  const [instituicaoDialogOpen, setInstituicaoDialogOpen] = useState(false);
   const [editingMedico, setEditingMedico] = useState<MedicoForm | null>(null);
-  const [editingInstituicao, setEditingInstituicao] = useState<InstituicaoForm | null>(null);
 
   const { data: medicos = [] } = trpc.medicos.listar.useQuery({});
   const { data: instituicoes = [] } = trpc.instituicoes.listar.useQuery({});
@@ -139,9 +118,7 @@ export default function Admin() {
   const criarInstituicao = trpc.instituicoes.criar.useMutation({
     onSuccess: () => {
       utils.instituicoes.listar.invalidate();
-      setInstituicaoDialogOpen(false);
-      setEditingInstituicao(null);
-      toast.success("Clínica adicionada com sucesso!");
+      toast.success("Serviço adicionado com sucesso!");
     },
     onError: (error: any) => {
       toast.error("Erro ao adicionar clínica: " + error.message);
@@ -151,9 +128,7 @@ export default function Admin() {
   const atualizarInstituicao = trpc.instituicoes.atualizar.useMutation({
     onSuccess: () => {
       utils.instituicoes.listar.invalidate();
-      setInstituicaoDialogOpen(false);
-      setEditingInstituicao(null);
-      toast.success("Clínica atualizada com sucesso!");
+      toast.success("Serviço atualizado com sucesso!");
     },
     onError: (error: any) => {
       toast.error("Erro ao atualizar clínica: " + error.message);
@@ -196,31 +171,7 @@ export default function Admin() {
     }
   };
 
-  const handleSalvarInstituicao = (data: InstituicaoForm) => {
-    // Validar campos obrigatórios
-    const errors = validateInstituicaoForm(data);
-    if (errors.length > 0) {
-      toast.error("Preencha todos os campos obrigatórios: " + errors.map(e => e.message).join(", "));
-      return;
-    }
-    
-    // Remover campos File que não devem ser enviados
-    const { logoFile, fotoFile, ...rest } = data;
-    
-    // Converter null para string vazia em campos de texto
-    const dadosLimpos = Object.fromEntries(
-      Object.entries(rest).map(([key, value]) => [
-        key,
-        value === null || value === undefined ? "" : value
-      ])
-    );
-    
-    if (data.id) {
-      atualizarInstituicao.mutate({ id: data.id, data: dadosLimpos as any });
-    } else {
-      criarInstituicao.mutate(dadosLimpos as any);
-    }
-  };
+
 
   if (loading) {
     return (
@@ -709,29 +660,7 @@ export default function Admin() {
                       <Copy className="h-4 w-4 mr-2" />
                       Copiar Link de Cadastro
                     </Button>
-                    <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
-                      <DialogTrigger asChild>
-                        <Button onClick={() => setEditingInstituicao(null)}>
-                          <Plus className="h-4 w-4 mr-2" />
-                          Adicionar Clínica
-                        </Button>
-                      </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>
-                          {editingInstituicao?.id ? "Editar Clínica" : "Adicionar Clínica"}
-                        </DialogTitle>
-                      </DialogHeader>
-                      <InstituicaoFormDialog
-                        instituicao={editingInstituicao}
-                        onSave={handleSalvarInstituicao}
-                        onCancel={() => {
-                          setInstituicaoDialogOpen(false);
-                          setEditingInstituicao(null);
-                        }}
-                      />
-                    </DialogContent>
-                  </Dialog>
+
                   </div>
                 </div>
               </CardHeader>
@@ -860,14 +789,23 @@ export default function Admin() {
                                   variant="ghost"
                                   size="icon"
                                   className="h-8 w-8"
-                                  onClick={() => {
-                                    setEditingInstituicao({
-                                      ...inst,
-                                      tipoServico: (inst as any).tipoServico || "servicos_saude"
-                                    } as InstituicaoForm);
-                                    setInstituicaoDialogOpen(true);
+                                  onClick={async () => {
+                                    try {
+                                      const result = await criarTokenAtualizacao.mutateAsync({
+                                        tipoCredenciado: "instituicao",
+                                        credenciadoId: inst.id,
+                                        telefone: inst.telefone || inst.whatsappSecretaria || undefined,
+                                      });
+                                      const baseUrl = window.location.origin;
+                                      const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
+                                      window.open(linkAtualizacao, "_blank");
+                                      toast.success("Abrindo formulário de edição...");
+                                    } catch (error) {
+                                      console.error("Erro ao gerar token:", error);
+                                      toast.error("Erro ao abrir formulário");
+                                    }
                                   }}
-                                  title="Editar clínica"
+                                  title="Editar serviço"
                                 >
                                   <Pencil className="h-4 w-4" />
                                 </Button>
@@ -1334,280 +1272,7 @@ function MedicoFormDialog({
   );
 }
 
-function InstituicaoFormDialog({
-  instituicao,
-  onSave,
-  onCancel,
-}: {
-  instituicao: InstituicaoForm | null;
-  onSave: (data: InstituicaoForm) => void;
-  onCancel: () => void;
-}) {
-  const [uploading, setUploading] = useState(false);
-  const uploadImagem = trpc.upload.imagem.useMutation();
 
-  const [formData, setFormData] = useState<InstituicaoForm>(
-    instituicao || {
-      nome: "",
-      tipoServico: "servicos_saude",
-      categoria: "Clínica de Multiespecialidades",
-      subcategoria: "",
-      municipio: "",
-      endereco: "",
-      telefone: "",
-      whatsappSecretaria: "",
-      telefoneOrganizacao: "",
-      fotoUrl: "",
-      email: "",
-      observacoes: "",
-      contatoParceria: "",
-      whatsappParceria: "",
-    }
-  );
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setUploading(true);
-
-    try {
-      const updatedData = { ...formData };
-
-      // Upload logo se houver arquivo selecionado
-      if (formData.logoFile) {
-        const reader = new FileReader();
-        const base64Data = await new Promise<string>((resolve, reject) => {
-          reader.onload = () => {
-            const result = reader.result as string;
-            resolve(result.split(',')[1]);
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(formData.logoFile!);
-        });
-
-        const { url } = await uploadImagem.mutateAsync({
-          base64: base64Data,
-          filename: formData.logoFile.name,
-          contentType: formData.logoFile.type,
-        });
-        updatedData.logoUrl = url;
-      }
-
-      // Upload foto se houver arquivo selecionado
-      if (formData.fotoFile) {
-        const reader = new FileReader();
-        const base64Data = await new Promise<string>((resolve, reject) => {
-          reader.onload = () => {
-            const result = reader.result as string;
-            resolve(result.split(',')[1]);
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(formData.fotoFile!);
-        });
-
-        const { url } = await uploadImagem.mutateAsync({
-          base64: base64Data,
-          filename: formData.fotoFile.name,
-          contentType: formData.fotoFile.type,
-        });
-        updatedData.fotoUrl = url;
-      }
-
-      onSave(updatedData);
-    } catch (error) {
-      toast.error("Erro ao fazer upload das imagens: " + (error as Error).message);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-2">
-          <Label htmlFor="nome">Nome da Clínica *</Label>
-          <Input
-            id="nome"
-            value={formData.nome}
-            onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-            required
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="tipoServico">Tipo de Serviço *</Label>
-          <Select
-            value={formData.tipoServico}
-            onValueChange={(v: any) => setFormData({ ...formData, tipoServico: v })}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="servicos_saude">Serviços de Saúde</SelectItem>
-              <SelectItem value="outros_servicos">Outros Serviços</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="categoria">Categoria *</Label>
-          <Select
-            value={formData.categoria}
-            onValueChange={(v: any) => setFormData({ ...formData, categoria: v })}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Selecione a categoria" />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
-              {(formData.tipoServico === "servicos_saude" 
-                ? CATEGORIAS_SERVICOS_SAUDE 
-                : CATEGORIAS_OUTROS_SERVICOS
-              ).map((cat) => (
-                <SelectItem key={cat.value} value={cat.value}>
-                  {cat.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <p className="text-xs text-muted-foreground mt-1">
-            {formData.tipoServico === "servicos_saude" 
-              ? "Selecione o tipo específico de serviço de saúde" 
-              : "Selecione a categoria do estabelecimento"}
-          </p>
-        </div>
-
-        <div>
-          <Label htmlFor="subcategoria">Subcategoria</Label>
-          <Input
-            id="subcategoria"
-            value={formData.subcategoria || ""}
-            onChange={(e) => setFormData({ ...formData, subcategoria: e.target.value })}
-            placeholder="Ex: Fisioterapia Ortopédica"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="municipio">Município *</Label>
-          <Input
-            id="municipio"
-            value={formData.municipio}
-            onChange={(e) => setFormData({ ...formData, municipio: e.target.value })}
-            required
-          />
-        </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="endereco">Endereço *</Label>
-          <Input
-            id="endereco"
-            value={formData.endereco}
-            onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
-            required
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="telefone">Telefone Fixo</Label>
-          <Input
-            id="telefone"
-            value={formData.telefone || ""}
-            onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
-            placeholder="(47) 3333-4444"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="whatsappSecretaria">WhatsApp Comercial/Agendamento *</Label>
-          <Input
-            id="whatsappSecretaria"
-            value={formData.whatsappSecretaria || ""}
-            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
-            placeholder="(47) 99999-8888"
-            required
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="email">E-mail</Label>
-          <Input
-            id="email"
-            type="email"
-            value={formData.email || ""}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          />
-        </div>
-
-        <div>
-          <ImageUpload
-            label="Logo do Estabelecimento"
-            value={formData.logoUrl}
-            onChange={(file, preview) => {
-              setFormData({ 
-                ...formData, 
-                logoFile: file || undefined,
-                logoUrl: preview || formData.logoUrl
-              });
-            }}
-          />
-        </div>
-
-        <div>
-          <ImageUpload
-            label="Foto do Estabelecimento"
-            value={formData.fotoUrl}
-            onChange={(file, preview) => {
-              setFormData({ 
-                ...formData, 
-                fotoFile: file || undefined,
-                fotoUrl: preview || formData.fotoUrl
-              });
-            }}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
-          <Input
-            id="contatoParceria"
-            placeholder="Nome do responsável"
-            value={formData.contatoParceria || ""}
-            onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pelo Cadastro *</Label>
-          <Input
-            id="whatsappParceria"
-            placeholder="(47) 99999-6666"
-            value={formData.whatsappParceria || ""}
-            onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
-            required
-          />
-        </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="observacoes">Observações</Label>
-          <Textarea
-            id="observacoes"
-            value={formData.observacoes || ""}
-            onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
-            rows={3}
-          />
-        </div>
-      </div>
-
-      <DialogFooter>
-        <Button type="button" variant="outline" onClick={onCancel} disabled={uploading}>
-          Cancelar
-        </Button>
-        <Button type="submit" disabled={uploading}>
-          {uploading ? "Salvando..." : "Salvar"}
-        </Button>
-      </DialogFooter>
-    </form>
-  );
-}
 
 // Componente para exibir e editar procedimentos de uma solicitação
 function ProcedimentosSolicitacaoSection({ solicitacaoId }: { solicitacaoId: number }) {

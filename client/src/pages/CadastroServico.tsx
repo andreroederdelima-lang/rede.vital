@@ -37,6 +37,7 @@ export default function CadastroServico() {
   
   const [enviado, setEnviado] = useState(false);
   const [aceitouTermos, setAceitouTermos] = useState(false);
+  const [usarImagemPadrao, setUsarImagemPadrao] = useState(false);
   const [logoBase64, setLogoBase64] = useState<string | null>(null);
   const [fotoBase64, setFotoBase64] = useState<string | null>(null);
   
@@ -186,7 +187,7 @@ export default function CadastroServico() {
     if (!formData.endereco) camposFaltantes.push("Endereço");
     if (!formData.whatsappSecretaria) camposFaltantes.push("WhatsApp Comercial/Agendamento");
     if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
-    if (!logoBase64) camposFaltantes.push("Logo do Estabelecimento");
+    if (!logoBase64 && !usarImagemPadrao) camposFaltantes.push("Logo do Estabelecimento ou marque 'Usar imagem padrão'");
     
     if (camposFaltantes.length > 0) {
       toast.error("Campos obrigatórios não preenchidos", {
@@ -457,18 +458,38 @@ export default function CadastroServico() {
                 <p className="text-sm text-muted-foreground mb-2">
                   Envie o logo para exibição no guia de credenciados.
                 </p>
-                <ImageUpload
-                  value={formData.logoUrl}
-                  onChange={(file, previewUrl) => {
-                    setFormData({ ...formData, logoUrl: previewUrl || "" });
-                    if (previewUrl) {
-                      setLogoBase64(previewUrl);
-                    } else {
-                      setLogoBase64(null);
-                    }
-                  }}
-                  label="Logo"
-                />
+                <div className="flex items-center gap-2 mb-3">
+                  <input
+                    type="checkbox"
+                    id="usarImagemPadraoServico"
+                    checked={usarImagemPadrao}
+                    onChange={(e) => {
+                      setUsarImagemPadrao(e.target.checked);
+                      if (e.target.checked) {
+                        setLogoBase64(null);
+                        setFormData({ ...formData, logoUrl: "" });
+                      }
+                    }}
+                    className="h-4 w-4 rounded border-gray-300"
+                  />
+                  <label htmlFor="usarImagemPadraoServico" className="text-sm text-muted-foreground cursor-pointer">
+                    Usar imagem padrão (vou inserir imagem em breve)
+                  </label>
+                </div>
+                {!usarImagemPadrao && (
+                  <ImageUpload
+                    value={formData.logoUrl}
+                    onChange={(file, previewUrl) => {
+                      setFormData({ ...formData, logoUrl: previewUrl || "" });
+                      if (previewUrl) {
+                        setLogoBase64(previewUrl);
+                      } else {
+                        setLogoBase64(null);
+                      }
+                    }}
+                    label="Logo"
+                  />
+                )}
               </div>
               
               {/* Foto do Estabelecimento */}

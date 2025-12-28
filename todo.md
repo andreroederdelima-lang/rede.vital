@@ -2922,3 +2922,19 @@ pnpm vitest
 - [x] Verificar se campos já foram removidos anteriormente - Estavam presentes, agora removidos
 - [x] Testar formulário de cadastro via link de token - Campos genéricos removidos com sucesso
 - [x] Testar clareza das abas no Admin - Renomeação e tooltips funcionando perfeitamente
+
+## URGENTE - Correções Solicitadas pelo Usuário (28/12/2025)
+
+- [x] Renomear botão "Adicionar Clínica" para "Adicionar Serviço" no Admin
+- [x] Fazer botão "Adicionar Serviço" usar o mesmo formulário do link de cadastro (CadastroServico.tsx)
+- [x] Adicionar botões de ação na aba Serviços (Editar, Excluir, WhatsApp, Copiar Link) igual aba Médicos - JÁ EXISTIAM
+- [x] Investigar problema de fotos/logos não carregando - SISTEMA FUNCIONANDO CORRETAMENTE
+- [x] Testar carregamento de imagens - CONFIRMADO: fotos reais aparecem quando cadastradas
+
+## Checkbox "Usar Imagem Padrão" nos Formulários (28/12/2025)
+
+- [x] Adicionar checkbox "Usar imagem padrão (vou inserir imagem em breve)" no formulário de cadastro de médicos
+- [x] Adicionar checkbox "Usar imagem padrão (vou inserir imagem em breve)" no formulário de cadastro de serviços
+- [x] Quando marcado, não obrigar upload de foto/logo
+- [x] Sistema deve usar avatar padrão automaticamente - JÁ FUNCIONAVA
+- [ ] Testar fluxo completo de cadastro com checkbox marcado
