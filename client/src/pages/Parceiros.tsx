@@ -63,6 +63,8 @@ export default function Parceiros() {
   const [fotoFile, setFotoFile] = useState<File | null>(null);
   const [fotoPreview, setFotoPreview] = useState<string>("");
   const [aceitouTermos, setAceitouTermos] = useState(false);
+  const [usarImagemPadraoLogo, setUsarImagemPadraoLogo] = useState(false);
+  const [usarImagemPadraoFoto, setUsarImagemPadraoFoto] = useState(false);
   
   // Novos campos padronizados
   const [numeroRegistroConselho, setNumeroRegistroConselho] = useState("");
@@ -570,16 +572,40 @@ export default function Parceiros() {
                   <p className="text-sm text-muted-foreground mb-2">
                     Logo da clínica, empresa ou estabelecimento
                   </p>
-                  <Input
-                    id="logo"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoChange}
-                  />
-                  {logoPreview && (
-                    <div className="mt-4">
-                      <img src={logoPreview} alt="Preview Logo" className="max-w-xs rounded-lg border" />
+                  <div className="bg-teal-50 border-2 border-teal-300 rounded-lg p-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        id="usarImagemPadraoLogoParceiros"
+                        checked={usarImagemPadraoLogo}
+                        onChange={(e) => {
+                          setUsarImagemPadraoLogo(e.target.checked);
+                          if (e.target.checked) {
+                            setLogoFile(null);
+                            setLogoPreview("");
+                          }
+                        }}
+                        className="h-5 w-5 rounded border-teal-500 text-teal-600 focus:ring-teal-500"
+                      />
+                      <label htmlFor="usarImagemPadraoLogoParceiros" className="text-sm font-medium text-teal-900 cursor-pointer">
+                        ✓ Usar logo padrão temporariamente (vou enviar imagem em breve)
+                      </label>
                     </div>
+                  </div>
+                  {!usarImagemPadraoLogo && (
+                    <>
+                      <Input
+                        id="logo"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoChange}
+                      />
+                      {logoPreview && (
+                        <div className="mt-4">
+                          <img src={logoPreview} alt="Preview Logo" className="max-w-xs rounded-lg border" />
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
 
@@ -588,16 +614,40 @@ export default function Parceiros() {
                   <p className="text-sm text-muted-foreground mb-2">
                     {tipoCredenciado === "medico" ? "Foto profissional do médico" : "Foto da fachada ou interior do estabelecimento"}
                   </p>
-                  <Input
-                    id="foto"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFotoChange}
-                  />
-                  {fotoPreview && (
-                    <div className="mt-4">
-                      <img src={fotoPreview} alt="Preview Foto" className="max-w-xs rounded-lg border" />
+                  <div className="bg-teal-50 border-2 border-teal-300 rounded-lg p-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        id="usarImagemPadraoFotoParceiros"
+                        checked={usarImagemPadraoFoto}
+                        onChange={(e) => {
+                          setUsarImagemPadraoFoto(e.target.checked);
+                          if (e.target.checked) {
+                            setFotoFile(null);
+                            setFotoPreview("");
+                          }
+                        }}
+                        className="h-5 w-5 rounded border-teal-500 text-teal-600 focus:ring-teal-500"
+                      />
+                      <label htmlFor="usarImagemPadraoFotoParceiros" className="text-sm font-medium text-teal-900 cursor-pointer">
+                        ✓ Usar foto padrão temporariamente (vou enviar imagem em breve)
+                      </label>
                     </div>
+                  </div>
+                  {!usarImagemPadraoFoto && (
+                    <>
+                      <Input
+                        id="foto"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFotoChange}
+                      />
+                      {fotoPreview && (
+                        <div className="mt-4">
+                          <img src={fotoPreview} alt="Preview Foto" className="max-w-xs rounded-lg border" />
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
 

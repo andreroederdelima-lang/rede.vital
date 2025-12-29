@@ -459,23 +459,25 @@ export default function CadastroServico() {
                 <p className="text-sm text-muted-foreground mb-2">
                   Envie o logo para exibição no guia de credenciados.
                 </p>
-                <div className="flex items-center gap-2 mb-2">
-                  <input
-                    type="checkbox"
-                    id="usarImagemPadraoLogoServico"
-                    checked={usarImagemPadraoLogo}
-                    onChange={(e) => {
-                      setUsarImagemPadraoLogo(e.target.checked);
-                      if (e.target.checked) {
-                        setLogoBase64(null);
-                        setFormData({ ...formData, logoUrl: "" });
-                      }
-                    }}
-                    className="h-4 w-4 rounded border-gray-300"
-                  />
-                  <label htmlFor="usarImagemPadraoLogoServico" className="text-sm text-muted-foreground cursor-pointer">
-                    Usar logo padrão (vou inserir em breve)
-                  </label>
+                <div className="bg-teal-50 border-2 border-teal-300 rounded-lg p-3 mb-3">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="usarImagemPadraoLogoServico"
+                      checked={usarImagemPadraoLogo}
+                      onChange={(e) => {
+                        setUsarImagemPadraoLogo(e.target.checked);
+                        if (e.target.checked) {
+                          setLogoBase64(null);
+                          setFormData({ ...formData, logoUrl: "" });
+                        }
+                      }}
+                      className="h-5 w-5 rounded border-teal-500 text-teal-600 focus:ring-teal-500"
+                    />
+                    <label htmlFor="usarImagemPadraoLogoServico" className="text-sm font-medium text-teal-900 cursor-pointer">
+                      ✓ Usar logo padrão temporariamente (vou enviar imagem em breve)
+                    </label>
+                  </div>
                 </div>
                 {!usarImagemPadraoLogo && (
                   <ImageUpload
@@ -499,23 +501,25 @@ export default function CadastroServico() {
                 <p className="text-sm text-muted-foreground mb-2">
                   Envie uma foto da fachada ou interior do estabelecimento.
                 </p>
-                <div className="flex items-center gap-2 mb-2">
-                  <input
-                    type="checkbox"
-                    id="usarImagemPadraoFotoServico"
-                    checked={usarImagemPadraoFoto}
-                    onChange={(e) => {
-                      setUsarImagemPadraoFoto(e.target.checked);
-                      if (e.target.checked) {
-                        setFotoBase64(null);
-                        setFormData({ ...formData, fotoUrl: "" });
-                      }
-                    }}
-                    className="h-4 w-4 rounded border-gray-300"
-                  />
-                  <label htmlFor="usarImagemPadraoFotoServico" className="text-sm text-muted-foreground cursor-pointer">
-                    Usar foto padrão (vou inserir em breve)
-                  </label>
+                <div className="bg-teal-50 border-2 border-teal-300 rounded-lg p-3 mb-3">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="usarImagemPadraoFotoServico"
+                      checked={usarImagemPadraoFoto}
+                      onChange={(e) => {
+                        setUsarImagemPadraoFoto(e.target.checked);
+                        if (e.target.checked) {
+                          setFotoBase64(null);
+                          setFormData({ ...formData, fotoUrl: "" });
+                        }
+                      }}
+                      className="h-5 w-5 rounded border-teal-500 text-teal-600 focus:ring-teal-500"
+                    />
+                    <label htmlFor="usarImagemPadraoFotoServico" className="text-sm font-medium text-teal-900 cursor-pointer">
+                      ✓ Usar foto padrão temporariamente (vou enviar imagem em breve)
+                    </label>
+                  </div>
                 </div>
                 {!usarImagemPadraoFoto && (
                   <ImageUpload
