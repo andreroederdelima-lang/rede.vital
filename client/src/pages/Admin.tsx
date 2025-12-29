@@ -90,6 +90,13 @@ export default function Admin() {
 
   const { data: medicos = [] } = trpc.medicos.listar.useQuery({});
   const { data: instituicoes = [] } = trpc.instituicoes.listar.useQuery({});
+  
+  // Queries para contadores de pendências
+  const { data: solicitacoesPendentes = [] } = trpc.parceria.listar.useQuery({ status: "pendente" });
+  const { data: atualizacoesPendentes = [] } = trpc.atualizacao.listar.useQuery({ status: "pendente" });
+  
+  // Calcular total de pendências
+  const totalPendencias = solicitacoesPendentes.length + atualizacoesPendentes.length;
 
   const criarMedico = trpc.medicos.criar.useMutation({
     onSuccess: () => {
@@ -334,8 +341,22 @@ export default function Admin() {
             <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1">
               <TabsTrigger value="medicos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Médicos</TabsTrigger>
               <TabsTrigger value="instituicoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Serviços</TabsTrigger>
-              <TabsTrigger value="solicitacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Solicitações</TabsTrigger>
-              <TabsTrigger value="atualizacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Atualizações</TabsTrigger>
+              <TabsTrigger value="solicitacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white relative">
+                Solicitações
+                {solicitacoesPendentes.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center animate-pulse">
+                    {solicitacoesPendentes.length}
+                  </span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="atualizacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white relative">
+                Atualizações
+                {atualizacoesPendentes.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center animate-pulse">
+                    {atualizacoesPendentes.length}
+                  </span>
+                )}
+              </TabsTrigger>
               <TabsTrigger value="usuarios" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white" title="Usuários cadastrados na plataforma (público)">Usuários Públicos</TabsTrigger>
             </TabsList>
             {/* Segunda linha */}
@@ -1619,11 +1640,16 @@ function SolicitacoesTab() {
 
   return (
     <>
-      <Card>
-        <CardHeader>
+      <Card className={solicitacoes && solicitacoes.length > 0 ? "border-2 border-red-500 shadow-lg" : ""}>
+        <CardHeader className={solicitacoes && solicitacoes.length > 0 ? "bg-red-50" : ""}>
           <CardTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
             Solicitações Pendentes de Parceria
+            {solicitacoes && solicitacoes.length > 0 && (
+              <span className="ml-2 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full animate-pulse">
+                {solicitacoes.length} {solicitacoes.length === 1 ? 'pendente' : 'pendentes'}
+              </span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -2260,11 +2286,16 @@ function AtualizacoesPendentesTab() {
 
   return (
     <>
-      <Card>
-        <CardHeader>
+      <Card className={atualizacoes && atualizacoes.length > 0 ? "border-2 border-red-500 shadow-lg" : ""}>
+        <CardHeader className={atualizacoes && atualizacoes.length > 0 ? "bg-red-50" : ""}>
           <CardTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
             Atualizações Pendentes de Credenciados
+            {atualizacoes && atualizacoes.length > 0 && (
+              <span className="ml-2 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full animate-pulse">
+                {atualizacoes.length} {atualizacoes.length === 1 ? 'pendente' : 'pendentes'}
+              </span>
+            )}
           </CardTitle>
           <p className="text-sm text-muted-foreground mt-1">
             Solicitações de atualização enviadas pelos próprios parceiros

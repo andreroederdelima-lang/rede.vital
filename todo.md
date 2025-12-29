@@ -2949,3 +2949,12 @@ pnpm vitest
 - [x] Garantir que ambos formulários internos sejam idênticos aos formulários públicos
 - [x] Testar criação de médico pelo Admin com preços
 - [x] Testar criação de serviço pelo Admin com procedimentos
+
+## Sistema de Notificações Admin (28/12/2025)
+
+- [x] Adicionar contador de solicitações pendentes (novos cadastros)
+- [x] Adicionar contador de atualizações pendentes
+- [x] Implementar badge visual com número total de pendências
+- [x] Adicionar badge na aba "Atualizações Pendentes"
+- [x] Destacar visualmente quando houver pendências
+- [x] Testar notificações em tempo real
