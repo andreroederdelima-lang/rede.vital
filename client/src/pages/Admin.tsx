@@ -298,8 +298,39 @@ export default function Admin() {
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
       {/* Header */}
       <header className="bg-primary text-primary-foreground shadow-lg">
-        <div className="container py-6">
-          <div className="flex items-center justify-between">
+        <div className="container py-4 md:py-6">
+          {/* Mobile Layout */}
+          <div className="flex flex-col gap-4 md:hidden">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img src={APP_LOGO} alt="Vital Logo" className="h-10 w-auto" />
+                <div>
+                  <h1 className="text-lg font-bold">Painel Admin</h1>
+                  <p className="text-primary-foreground/90 text-xs">Gerenciamento</p>
+                </div>
+              </div>
+              <Button variant="secondary" size="sm" onClick={() => logout()}>
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="flex gap-2">
+              <Link href="/dados-internos" className="flex-1">
+                <Button variant="secondary" size="sm" className="w-full">
+                  <Home className="h-4 w-4 mr-1" />
+                  <span className="text-xs">Dados</span>
+                </Button>
+              </Link>
+              <Link href="/galeria-parceiros" className="flex-1">
+                <Button variant="secondary" size="sm" className="w-full">
+                  <Eye className="h-4 w-4 mr-1" />
+                  <span className="text-xs">Galeria</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
+          
+          {/* Desktop Layout */}
+          <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center gap-4">
               <img src={APP_LOGO} alt="Vital Logo" className="h-16 w-auto" />
               <div>

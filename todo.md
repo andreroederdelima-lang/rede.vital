@@ -3009,3 +3009,11 @@ pnpm vitest
 - [x] Localizar botão "Seja Parceiro" no código
 - [x] Atualizar link para https://www.suasaudevital.com.br/seja-parceiro-cadastro
 - [x] Testar redirecionamento
+
+## CORREÇÃO URGENTE - Headers Cortados no Mobile (22/12/2025)
+- [x] Analisar header do Admin (logo, título, botões cortados)
+- [x] Corrigir layout do header Admin para mobile
+- [x] Analisar header da página Dados Internos
+- [x] Corrigir layout do header Dados Internos para mobile
+- [x] Garantir que logo, títulos e botões fiquem visíveis e alinhados
+- [x] Testar em viewport mobile real
