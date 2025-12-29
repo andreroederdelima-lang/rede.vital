@@ -3073,3 +3073,10 @@ pnpm vitest
 - [x] Aplicar mesmas mudanças no formulário público CadastroMedico
 - [x] Aplicar mesmas mudanças no formulário público CadastroServico
 - [x] Testar criação e edição com checkboxes independentes
+
+## Corrigir exibição de imagens padrão (28/12/2025)
+- [x] Investigar componente CredenciadoListItem (área interna e pública)
+- [x] Verificar lógica de fallback para imagens vazias
+- [x] Garantir que URLs vazias ou null usem imagens padrão corretas
+- [x] Testar exibição na área interna (Dados Internos)
+- [x] Testar exibição na área pública (consulta)

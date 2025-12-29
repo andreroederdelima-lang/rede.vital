@@ -78,9 +78,9 @@ export function CredenciadoListItem({
   };
 
   // Nova lógica: FOTO como imagem principal (não logo)
-  // Tratar strings vazias como null
-  const fotoValida = fotoUrl && fotoUrl.trim() !== "" ? fotoUrl : null;
-  const logoValida = logoUrl && logoUrl.trim() !== "" ? logoUrl : null;
+  // Tratar strings vazias, null e undefined como inválidos
+  const fotoValida = fotoUrl && typeof fotoUrl === 'string' && fotoUrl.trim() !== "" ? fotoUrl : null;
+  const logoValida = logoUrl && typeof logoUrl === 'string' && logoUrl.trim() !== "" ? logoUrl : null;
   
   const imagemPrincipal = fotoValida || getPlaceholderImage();
   const logoParceiro = logoValida || "/logo-parceria-default.png";
