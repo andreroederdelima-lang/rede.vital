@@ -3004,3 +3004,8 @@ pnpm vitest
 - [x] Substituir navigator.clipboard.writeText por função robusta
 - [x] Testar em mobile e tablet
 - [x] Garantir feedback visual adequado
+
+## Atualização de Link - Botão Seja Parceiro (22/12/2025)
+- [x] Localizar botão "Seja Parceiro" no código
+- [x] Atualizar link para https://www.suasaudevital.com.br/seja-parceiro-cadastro
+- [x] Testar redirecionamento

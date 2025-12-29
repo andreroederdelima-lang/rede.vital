@@ -19,9 +19,10 @@ export function MainNav() {
       external: true,
     },
     {
-      href: "/parceiros",
+      href: "https://www.suasaudevital.com.br/seja-parceiro-cadastro",
       label: "Seja Parceiro",
       public: true,
+      external: true,
     },
     {
       href: "/sugerir-parceiro",
