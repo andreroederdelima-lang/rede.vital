@@ -21,6 +21,7 @@ import ImageUpload from "@/components/ImageUpload";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
+import { MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 import { validateMedicoForm, validateInstituicaoForm } from "@/lib/validation";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { GerenciarProcedimentos } from "@/components/GerenciarProcedimentos";
@@ -55,6 +56,25 @@ type MedicoForm = {
   email?: string;
 };
 
+type InstituicaoForm = {
+  id?: number;
+  nome: string;
+  tipoServico: "servicos_saude" | "outros_servicos";
+  categoria: string;
+  municipio: string;
+  endereco: string;
+  telefone?: string;
+  whatsappSecretaria?: string;
+  email?: string;
+  logoUrl?: string;
+  fotoUrl?: string;
+  logoFile?: File;
+  fotoFile?: File;
+  observacoes?: string;
+  contatoParceria?: string;
+  whatsappParceria?: string;
+};
+
 
 
 export default function Admin() {
@@ -65,6 +85,8 @@ export default function Admin() {
 
   const [medicoDialogOpen, setMedicoDialogOpen] = useState(false);
   const [editingMedico, setEditingMedico] = useState<MedicoForm | null>(null);
+  const [instituicaoDialogOpen, setInstituicaoDialogOpen] = useState(false);
+  const [editingInstituicao, setEditingInstituicao] = useState<InstituicaoForm | null>(null);
 
   const { data: medicos = [] } = trpc.medicos.listar.useQuery({});
   const { data: instituicoes = [] } = trpc.instituicoes.listar.useQuery({});
@@ -169,6 +191,34 @@ export default function Admin() {
     } else {
       criarMedico.mutate(dadosLimpos as any);
     }
+  };
+
+  const handleSalvarInstituicao = (data: InstituicaoForm) => {
+    // Validar campos obrigatórios
+    const errors = validateInstituicaoForm(data);
+    if (errors.length > 0) {
+      toast.error("Preencha todos os campos obrigatórios: " + errors.map(e => e.message).join(", "));
+      return;
+    }
+    
+    // Remover campos File que não devem ser enviados
+    const { logoFile, fotoFile, ...rest } = data;
+    
+    // Converter null para string vazia em campos de texto
+    const dadosLimpos = Object.fromEntries(
+      Object.entries(rest).map(([key, value]) => [
+        key,
+        value === null || value === undefined ? "" : value
+      ])
+    );
+    
+    if (data.id) {
+      atualizarInstituicao.mutate({ id: data.id, data: dadosLimpos as any });
+    } else {
+      criarInstituicao.mutate(dadosLimpos as any);
+    }
+    setInstituicaoDialogOpen(false);
+    setEditingInstituicao(null);
   };
 
 
@@ -660,6 +710,29 @@ export default function Admin() {
                       <Copy className="h-4 w-4 mr-2" />
                       Copiar Link de Cadastro
                     </Button>
+                    <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button onClick={() => setEditingInstituicao(null)}>
+                          <Plus className="h-4 w-4 mr-2" />
+                          Adicionar Serviço
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle>
+                            {editingInstituicao?.id ? "Editar Serviço" : "Adicionar Serviço"}
+                          </DialogTitle>
+                        </DialogHeader>
+                        <InstituicaoFormDialog
+                          instituicao={editingInstituicao}
+                          onSave={handleSalvarInstituicao}
+                          onCancel={() => {
+                            setInstituicaoDialogOpen(false);
+                            setEditingInstituicao(null);
+                          }}
+                        />
+                      </DialogContent>
+                    </Dialog>
 
                   </div>
                 </div>
@@ -1007,6 +1080,7 @@ function MedicoFormDialog({
   onCancel: () => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [usarImagemPadrao, setUsarImagemPadrao] = useState(false);
   const uploadImagem = trpc.upload.imagem.useMutation();
 
   const [formData, setFormData] = useState<MedicoForm>(
@@ -1200,33 +1274,64 @@ function MedicoFormDialog({
           />
         </div>
 
-        <div>
-          <ImageUpload
-            label="Logo do Estabelecimento"
-            value={formData.logoUrl}
-            onChange={(file, preview) => {
-              setFormData({ 
-                ...formData, 
-                logoFile: file || undefined,
-                logoUrl: preview || formData.logoUrl
-              });
-            }}
-          />
+        {/* Checkbox Usar Imagem Padrão */}
+        <div className="col-span-2">
+          <div className="flex items-center gap-2 mb-3">
+            <input
+              type="checkbox"
+              id="usarImagemPadraoAdmin"
+              checked={usarImagemPadrao}
+              onChange={(e) => {
+                setUsarImagemPadrao(e.target.checked);
+                if (e.target.checked) {
+                  setFormData({ 
+                    ...formData, 
+                    fotoUrl: "",
+                    logoUrl: "",
+                    fotoFile: undefined,
+                    logoFile: undefined
+                  });
+                }
+              }}
+              className="h-4 w-4 rounded border-gray-300"
+            />
+            <label htmlFor="usarImagemPadraoAdmin" className="text-sm text-muted-foreground cursor-pointer">
+              Usar imagem padrão (vou inserir imagem em breve)
+            </label>
+          </div>
         </div>
 
-        <div>
-          <ImageUpload
-            label="Foto do Médico"
-            value={formData.fotoUrl}
-            onChange={(file, preview) => {
-              setFormData({ 
-                ...formData, 
-                fotoFile: file || undefined,
-                fotoUrl: preview || formData.fotoUrl
-              });
-            }}
-          />
-        </div>
+        {!usarImagemPadrao && (
+          <>
+            <div>
+              <ImageUpload
+                label="Logo do Estabelecimento"
+                value={formData.logoUrl}
+                onChange={(file, preview) => {
+                  setFormData({ 
+                    ...formData, 
+                    logoFile: file || undefined,
+                    logoUrl: preview || formData.logoUrl
+                  });
+                }}
+              />
+            </div>
+
+            <div>
+              <ImageUpload
+                label="Foto do Médico"
+                value={formData.fotoUrl}
+                onChange={(file, preview) => {
+                  setFormData({ 
+                    ...formData, 
+                    fotoFile: file || undefined,
+                    fotoUrl: preview || formData.fotoUrl
+                  });
+                }}
+              />
+            </div>
+          </>
+        )}
 
         <div>
           <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
@@ -1248,6 +1353,46 @@ function MedicoFormDialog({
             required
           />
         </div>
+
+        {/* Campos de Preço */}
+        <div>
+          <Label htmlFor="valorParticular">Valor Particular *</Label>
+          <Input
+            id="valorParticular"
+            value={formData.valorParticular || ""}
+            onChange={(e) => {
+              const masked = maskMoeda(e.target.value);
+              setFormData({ ...formData, valorParticular: masked });
+            }}
+            placeholder="R$ 0,00"
+            required
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="valorAssinanteVital">Valor Assinante Vital *</Label>
+          <Input
+            id="valorAssinanteVital"
+            value={formData.valorAssinanteVital || ""}
+            onChange={(e) => {
+              const masked = maskMoeda(e.target.value);
+              setFormData({ ...formData, valorAssinanteVital: masked });
+            }}
+            placeholder="R$ 0,00"
+            required
+          />
+        </div>
+
+        {/* Mostrar desconto calculado */}
+        {formData.valorParticular && formData.valorAssinanteVital && (
+          <div className="col-span-2">
+            <div className="bg-teal-50 border border-teal-200 rounded-md p-3">
+              <p className="text-sm text-teal-800">
+                <strong>Desconto calculado:</strong> {calcularDesconto(formData.valorParticular, formData.valorAssinanteVital)}% para assinantes Vital
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className="col-span-2">
           <Label htmlFor="observacoes">Observações</Label>
@@ -2593,5 +2738,307 @@ function ConfiguracoesTab() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+// Componente de formulário de Instituição/Serviço para o Admin
+function InstituicaoFormDialog({
+  instituicao,
+  onSave,
+  onCancel,
+}: {
+  instituicao: InstituicaoForm | null;
+  onSave: (data: InstituicaoForm) => void;
+  onCancel: () => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [usarImagemPadrao, setUsarImagemPadrao] = useState(false);
+  const uploadImagem = trpc.upload.imagem.useMutation();
+
+  const [formData, setFormData] = useState<InstituicaoForm>(
+    instituicao || {
+      nome: "",
+      tipoServico: "servicos_saude",
+      categoria: "",
+      municipio: "",
+      endereco: "",
+      telefone: "",
+      whatsappSecretaria: "",
+      email: "",
+      logoUrl: "",
+      fotoUrl: "",
+      observacoes: "",
+      contatoParceria: "",
+      whatsappParceria: "",
+    }
+  );
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUploading(true);
+
+    try {
+      const updatedData = { ...formData };
+
+      // Upload logo se houver arquivo selecionado
+      if (formData.logoFile) {
+        const reader = new FileReader();
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.logoFile!);
+        });
+
+        const { url } = await uploadImagem.mutateAsync({
+          base64: base64Data,
+          filename: formData.logoFile.name,
+          contentType: formData.logoFile.type,
+        });
+        updatedData.logoUrl = url;
+      }
+
+      // Upload foto se houver arquivo selecionado
+      if (formData.fotoFile) {
+        const reader = new FileReader();
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(formData.fotoFile!);
+        });
+
+        const { url } = await uploadImagem.mutateAsync({
+          base64: base64Data,
+          filename: formData.fotoFile.name,
+          contentType: formData.fotoFile.type,
+        });
+        updatedData.fotoUrl = url;
+      }
+
+      onSave(updatedData);
+    } catch (error) {
+      toast.error("Erro ao fazer upload das imagens: " + (error as Error).message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const categorias = formData.tipoServico === "servicos_saude" 
+    ? CATEGORIAS_SERVICOS_SAUDE 
+    : CATEGORIAS_OUTROS_SERVICOS;
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="col-span-2">
+          <Label htmlFor="nome">Nome do Estabelecimento *</Label>
+          <Input
+            id="nome"
+            value={formData.nome}
+            onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+            required
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="tipoServico">Tipo de Serviço *</Label>
+          <Select
+            value={formData.tipoServico}
+            onValueChange={(v: any) => setFormData({ ...formData, tipoServico: v, categoria: "" })}
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="servicos_saude">Serviços de Saúde</SelectItem>
+              <SelectItem value="outros_servicos">Outros Serviços</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <Label htmlFor="categoria">Categoria *</Label>
+          <Select
+            value={formData.categoria}
+            onValueChange={(v) => setFormData({ ...formData, categoria: v })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Selecione a categoria" />
+            </SelectTrigger>
+            <SelectContent>
+              {categorias.map((cat) => (
+                <SelectItem key={String(cat)} value={String(cat)}>
+                  {String(cat)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <Label htmlFor="municipio">Município *</Label>
+          <Select
+            value={formData.municipio}
+            onValueChange={(v) => setFormData({ ...formData, municipio: v })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Selecione o município" />
+            </SelectTrigger>
+            <SelectContent>
+              {MUNICIPIOS_VALE_ITAJAI.map((mun) => (
+                <SelectItem key={String(mun)} value={String(mun)}>
+                  {String(mun)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="col-span-2">
+          <Label htmlFor="endereco">Endereço *</Label>
+          <Input
+            id="endereco"
+            value={formData.endereco}
+            onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
+            required
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="telefone">Telefone Fixo</Label>
+          <Input
+            id="telefone"
+            value={formData.telefone || ""}
+            onChange={(e) => setFormData({ ...formData, telefone: maskTelefone(e.target.value) })}
+            placeholder="(47) 3333-4444"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="whatsappSecretaria">WhatsApp Comercial/Agendamento *</Label>
+          <Input
+            id="whatsappSecretaria"
+            value={formData.whatsappSecretaria || ""}
+            onChange={(e) => setFormData({ ...formData, whatsappSecretaria: maskTelefone(e.target.value) })}
+            placeholder="(47) 99999-8888"
+            required
+          />
+        </div>
+
+        <div className="col-span-2">
+          <Label htmlFor="email">E-mail</Label>
+          <Input
+            id="email"
+            type="email"
+            value={formData.email || ""}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            placeholder="contato@estabelecimento.com.br"
+          />
+        </div>
+
+        {/* Checkbox Usar Imagem Padrão */}
+        <div className="col-span-2">
+          <div className="flex items-center gap-2 mb-3">
+            <input
+              type="checkbox"
+              id="usarImagemPadraoInstituicao"
+              checked={usarImagemPadrao}
+              onChange={(e) => {
+                setUsarImagemPadrao(e.target.checked);
+                if (e.target.checked) {
+                  setFormData({ 
+                    ...formData, 
+                    fotoUrl: "",
+                    logoUrl: "",
+                    fotoFile: undefined,
+                    logoFile: undefined
+                  });
+                }
+              }}
+              className="h-4 w-4 rounded border-gray-300"
+            />
+            <label htmlFor="usarImagemPadraoInstituicao" className="text-sm text-muted-foreground cursor-pointer">
+              Usar imagem padrão (vou inserir imagem em breve)
+            </label>
+          </div>
+        </div>
+
+        {!usarImagemPadrao && (
+          <>
+            <div>
+              <ImageUpload
+                label="Logo do Estabelecimento"
+                value={formData.logoUrl}
+                onChange={(file, preview) => {
+                  setFormData({ 
+                    ...formData, 
+                    logoFile: file || undefined,
+                    logoUrl: preview || formData.logoUrl
+                  });
+                }}
+              />
+            </div>
+
+            <div>
+              <ImageUpload
+                label="Foto do Estabelecimento"
+                value={formData.fotoUrl}
+                onChange={(file, preview) => {
+                  setFormData({ 
+                    ...formData, 
+                    fotoFile: file || undefined,
+                    fotoUrl: preview || formData.fotoUrl
+                  });
+                }}
+              />
+            </div>
+          </>
+        )}
+
+        <div>
+          <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
+          <Input
+            id="contatoParceria"
+            placeholder="Nome do responsável"
+            value={formData.contatoParceria || ""}
+            onChange={(e) => setFormData({ ...formData, contatoParceria: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="whatsappParceria">WhatsApp do Responsável pelo Cadastro *</Label>
+          <Input
+            id="whatsappParceria"
+            value={formData.whatsappParceria || ""}
+            onChange={(e) => setFormData({ ...formData, whatsappParceria: maskTelefone(e.target.value) })}
+            placeholder="(47) 99999-6666"
+            required
+          />
+        </div>
+
+        <div className="col-span-2">
+          <Label htmlFor="observacoes">Observações</Label>
+          <Textarea
+            id="observacoes"
+            value={formData.observacoes || ""}
+            onChange={(e) => setFormData({ ...formData, observacoes: e.target.value })}
+            rows={3}
+          />
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button type="button" variant="outline" onClick={onCancel} disabled={uploading}>
+          Cancelar
+        </Button>
+        <Button type="submit" disabled={uploading}>
+          {uploading ? "Salvando..." : "Salvar"}
+        </Button>
+      </DialogFooter>
+    </form>
   );
 }

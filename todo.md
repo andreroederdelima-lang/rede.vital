@@ -2937,4 +2937,15 @@ pnpm vitest
 - [x] Adicionar checkbox "Usar imagem padrão (vou inserir imagem em breve)" no formulário de cadastro de serviços
 - [x] Quando marcado, não obrigar upload de foto/logo
 - [x] Sistema deve usar avatar padrão automaticamente - JÁ FUNCIONAVA
-- [ ] Testar fluxo completo de cadastro com checkbox marcado
+- [x] Testar fluxo completo de cadastro com checkbox marcado
+
+## Padronização Completa de Formulários e Botões Admin (28/12/2025)
+
+- [x] Atualizar formulário interno de Médicos no Admin para incluir campos de preço (valorParticular, valorAssinanteVital)
+- [x] Adicionar checkbox "Usar imagem padrão" no formulário interno de Médicos
+- [x] Recriar formulário interno de Serviços no Admin (igual ao formulário do link)
+- [x] Adicionar botão "Adicionar Serviço" na aba Serviços
+- [x] Padronizar botões de gestão: Exportar Excel, Exportar PDF, Enviar Link, Copiar Link, Adicionar - JÁ ESTAVAM PADRONIZADOS
+- [x] Garantir que ambos formulários internos sejam idênticos aos formulários públicos
+- [x] Testar criação de médico pelo Admin com preços
+- [x] Testar criação de serviço pelo Admin com procedimentos
