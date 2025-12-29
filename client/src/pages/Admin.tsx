@@ -338,8 +338,8 @@ export default function Admin() {
         <Tabs defaultValue="medicos">
           <div className="max-w-6xl mx-auto mb-6 space-y-2">
             {/* Primeira linha */}
-            <div className="overflow-x-auto">
-              <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1 min-w-[640px] md:min-w-0">
+            <div className="overflow-x-auto scrollbar-hide">
+              <TabsList className="inline-flex w-auto gap-2 bg-transparent p-1 md:grid md:w-full md:grid-cols-5">
               <TabsTrigger value="medicos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Médicos</TabsTrigger>
               <TabsTrigger value="instituicoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Serviços</TabsTrigger>
               <TabsTrigger value="solicitacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white relative">
@@ -362,8 +362,8 @@ export default function Admin() {
               </TabsList>
             </div>
             {/* Segunda linha */}
-            <div className="overflow-x-auto">
-              <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1 min-w-[640px] md:min-w-0">
+            <div className="overflow-x-auto scrollbar-hide">
+              <TabsList className="inline-flex w-auto gap-2 bg-transparent p-1 md:grid md:w-full md:grid-cols-5">
               <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white" title="Acessos administrativos e permissões internas">Acessos Admin</TabsTrigger>
               <TabsTrigger value="prospeccao" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Prospecção</TabsTrigger>
               <TabsTrigger value="apikeys" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">API Keys</TabsTrigger>
@@ -382,6 +382,7 @@ export default function Admin() {
                   <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={() => {
                         if (medicos.length === 0) {
                           toast.error("Nenhum médico para exportar");
@@ -390,13 +391,14 @@ export default function Admin() {
                         exportToExcel(medicos, MEDICO_COLUMNS, `medicos_credenciados_${new Date().toISOString().split('T')[0]}`);
                         toast.success(`${medicos.length} médicos exportados com sucesso!`);
                       }}
-                      className="text-xs md:text-sm"
+                      title="Exportar Excel"
                     >
-                      <Download className="h-4 w-4 mr-1 md:mr-2" />
-                      <span className="hidden sm:inline">Exportar </span>Excel
+                      <Download className="h-4 w-4" />
+                      <span className="hidden md:inline ml-2">Excel</span>
                     </Button>
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={() => {
                         if (medicos.length === 0) {
                           toast.error("Nenhum médico para exportar");
@@ -405,18 +407,20 @@ export default function Admin() {
                         exportarMedicosPDF(medicos as any);
                         toast.success(`PDF de ${medicos.length} médicos gerado com sucesso!`);
                       }}
-                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 text-xs md:text-sm"
+                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                      title="Exportar PDF"
                     >
-                      <svg className="h-4 w-4 mr-1 md:mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
                         <path d="M14 2v6h6"/>
                         <path d="M9 13h6"/>
                         <path d="M9 17h6"/>
                       </svg>
-                      <span className="hidden sm:inline">Exportar </span>PDF
+                      <span className="hidden md:inline ml-2">PDF</span>
                     </Button>
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={async () => {
                         try {
                           const result = await criarTokenCadastro.mutateAsync({
@@ -433,12 +437,14 @@ export default function Admin() {
                           toast.error("Erro ao gerar link de cadastro");
                         }
                       }}
+                      title="Enviar Link de Cadastro"
                     >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Enviar Link de Cadastro
+                      <Plus className="h-4 w-4" />
+                      <span className="hidden lg:inline ml-2">Enviar Link</span>
                     </Button>
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={async () => {
                         try {
                           const result = await criarTokenCadastro.mutateAsync({
@@ -453,15 +459,16 @@ export default function Admin() {
                           toast.error("Erro ao gerar link de cadastro");
                         }
                       }}
+                      title="Copiar Link de Cadastro"
                     >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copiar Link de Cadastro
+                      <Copy className="h-4 w-4" />
+                      <span className="hidden lg:inline ml-2">Copiar Link</span>
                     </Button>
                     <Dialog open={medicoDialogOpen} onOpenChange={setMedicoDialogOpen}>
                       <DialogTrigger asChild>
-                        <Button onClick={() => setEditingMedico(null)}>
-                          <Plus className="h-4 w-4 mr-2" />
-                          Adicionar Médico
+                        <Button size="sm" onClick={() => setEditingMedico(null)} title="Adicionar Médico">
+                          <Plus className="h-4 w-4" />
+                          <span className="hidden lg:inline ml-2">Adicionar</span>
                         </Button>
                       </DialogTrigger>
                     <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -651,6 +658,7 @@ export default function Admin() {
                   <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={() => {
                         if (instituicoes.length === 0) {
                           toast.error("Nenhum serviço para exportar");
@@ -659,13 +667,14 @@ export default function Admin() {
                         exportToExcel(instituicoes, INSTITUICAO_COLUMNS, `servicos_parceiros_${new Date().toISOString().split('T')[0]}`);
                         toast.success(`${instituicoes.length} serviços exportados com sucesso!`);
                       }}
-                      className="text-xs md:text-sm"
+                      title="Exportar Excel"
                     >
-                      <Download className="h-4 w-4 mr-1 md:mr-2" />
-                      <span className="hidden sm:inline">Exportar </span>Excel
+                      <Download className="h-4 w-4" />
+                      <span className="hidden md:inline ml-2">Excel</span>
                     </Button>
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={() => {
                         if (instituicoes.length === 0) {
                           toast.error("Nenhum serviço para exportar");
@@ -685,18 +694,20 @@ export default function Admin() {
                         }
                         toast.success(`PDFs gerados: ${servicosSaude.length} Serviços de Saúde + ${outrosServicos.length} Outros Serviços`);
                       }}
-                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 text-xs md:text-sm"
+                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                      title="Exportar PDF"
                     >
-                      <svg className="h-4 w-4 mr-1 md:mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
                         <path d="M14 2v6h6"/>
                         <path d="M9 13h6"/>
                         <path d="M9 17h6"/>
                       </svg>
-                      <span className="hidden sm:inline">Exportar </span>PDF
+                      <span className="hidden md:inline ml-2">PDF</span>
                     </Button>
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={async () => {
                         try {
                           const result = await criarTokenCadastro.mutateAsync({
@@ -713,12 +724,14 @@ export default function Admin() {
                           toast.error("Erro ao gerar link de cadastro");
                         }
                       }}
+                      title="Enviar Link de Cadastro"
                     >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Enviar Link de Cadastro
+                      <Plus className="h-4 w-4" />
+                      <span className="hidden lg:inline ml-2">Enviar Link</span>
                     </Button>
                     <Button
                       variant="outline"
+                      size="sm"
                       onClick={async () => {
                         try {
                           const result = await criarTokenCadastro.mutateAsync({
@@ -733,15 +746,16 @@ export default function Admin() {
                           toast.error("Erro ao gerar link de cadastro");
                         }
                       }}
+                      title="Copiar Link de Cadastro"
                     >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copiar Link de Cadastro
+                      <Copy className="h-4 w-4" />
+                      <span className="hidden lg:inline ml-2">Copiar Link</span>
                     </Button>
                     <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
                       <DialogTrigger asChild>
-                        <Button onClick={() => setEditingInstituicao(null)}>
-                          <Plus className="h-4 w-4 mr-2" />
-                          Adicionar Serviço
+                        <Button size="sm" onClick={() => setEditingInstituicao(null)} title="Adicionar Serviço">
+                          <Plus className="h-4 w-4" />
+                          <span className="hidden lg:inline ml-2">Adicionar</span>
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">

@@ -2989,4 +2989,12 @@ pnpm vitest
 - [x] Ajustar layout do CardHeader para não quebrar no mobile
 - [x] Empilhar título e botões verticalmente no mobile
 - [x] Garantir que todos os botões fiquem visíveis
-- [ ] Testar layout final no mobile
+- [x] Testar layout final no mobile
+
+## CORREÇÃO URGENTE - Mobile Admin Cortado (22/12/2025)
+- [x] Investigar overflow horizontal nas abas
+- [x] Implementar abas com scroll ou dropdown mobile
+- [x] Reduzir tamanho dos botões no mobile
+- [x] Usar ícones apenas (sem texto) nos botões mobile
+- [x] Testar em viewport mobile real
+- [x] Garantir que nada precise de scroll horizontal
