@@ -502,13 +502,28 @@ export default function Admin() {
                       <Copy className="h-4 w-4" />
                       <span className="hidden lg:inline ml-2">Copiar Link</span>
                     </Button>
+                    <Button
+                      size="sm"
+                      onClick={async () => {
+                        try {
+                          const result = await criarTokenCadastro.mutateAsync({
+                            tipoCredenciado: "medico",
+                          });
+                          const baseUrl = window.location.origin;
+                          const linkCadastro = `${baseUrl}/cadastro-medico/${result.token}`;
+                          window.open(linkCadastro, "_blank");
+                          toast.success("Abrindo formulário de cadastro...");
+                        } catch (error) {
+                          console.error("Erro ao gerar token:", error);
+                          toast.error("Erro ao gerar link de cadastro");
+                        }
+                      }}
+                      title="Adicionar Médico"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span className="hidden lg:inline ml-2">Adicionar</span>
+                    </Button>
                     <Dialog open={medicoDialogOpen} onOpenChange={setMedicoDialogOpen}>
-                      <DialogTrigger asChild>
-                        <Button size="sm" onClick={() => setEditingMedico(null)} title="Adicionar Médico">
-                          <Plus className="h-4 w-4" />
-                          <span className="hidden lg:inline ml-2">Adicionar</span>
-                        </Button>
-                      </DialogTrigger>
                     <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                       <DialogHeader>
                         <DialogTitle>
@@ -801,13 +816,28 @@ export default function Admin() {
                       <Copy className="h-4 w-4" />
                       <span className="hidden lg:inline ml-2">Copiar Link</span>
                     </Button>
+                    <Button
+                      size="sm"
+                      onClick={async () => {
+                        try {
+                          const result = await criarTokenCadastro.mutateAsync({
+                            tipoCredenciado: "instituicao",
+                          });
+                          const baseUrl = window.location.origin;
+                          const linkCadastro = `${baseUrl}/cadastro-servico/${result.token}`;
+                          window.open(linkCadastro, "_blank");
+                          toast.success("Abrindo formulário de cadastro...");
+                        } catch (error) {
+                          console.error("Erro ao gerar token:", error);
+                          toast.error("Erro ao gerar link de cadastro");
+                        }
+                      }}
+                      title="Adicionar Serviço"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span className="hidden lg:inline ml-2">Adicionar</span>
+                    </Button>
                     <Dialog open={instituicaoDialogOpen} onOpenChange={setInstituicaoDialogOpen}>
-                      <DialogTrigger asChild>
-                        <Button size="sm" onClick={() => setEditingInstituicao(null)} title="Adicionar Serviço">
-                          <Plus className="h-4 w-4" />
-                          <span className="hidden lg:inline ml-2">Adicionar</span>
-                        </Button>
-                      </DialogTrigger>
                       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                         <DialogHeader>
                           <DialogTitle>
