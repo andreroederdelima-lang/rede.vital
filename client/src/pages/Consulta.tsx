@@ -369,6 +369,7 @@ export default function Consulta() {
                     <CredenciadoListItem
                       key={inst.id}
                       tipo="instituicao"
+                      tipoServico={inst.tipoServico}
                       nome={inst.nome}
                       especialidadeOuCategoria={inst.categoria}
                       municipio={inst.municipio}

@@ -1,0 +1,15 @@
+{
+  "query": "SELECT token, tipoCredenciado, credenciadoId FROM tokens WHERE tipo = 'atualizacao' AND usado = 0 AND expiresAt > NOW() LIMIT 1",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT token, tipoCredenciado, credenciadoId FROM tokens WHERE tipo = 'atualizacao' AND usado = 0 AND expiresAt > NOW() LIMIT 1",
+  "rows": [
+    {
+      "token": "810be136cb89a4402b2c496aeb43cf6580695b09a468cef4a3c540bd71648506",
+      "tipoCredenciado": "medico",
+      "credenciadoId": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "token\ttipoCredenciado\tcredenciadoId\n810be136cb89a4402b2c496aeb43cf6580695b09a468cef4a3c540bd71648506\tmedico\t1\n",
+  "stderr": "",
+  "execution_time_ms": 691
+}

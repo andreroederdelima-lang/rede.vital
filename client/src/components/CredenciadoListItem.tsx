@@ -7,6 +7,7 @@ import { VITAL_COLORS } from "@shared/colors";
 
 interface CredenciadoListItemProps {
   tipo: "medico" | "instituicao";
+  tipoServico?: "servicos_saude" | "outros_servicos"; // Apenas para instituições
   nome: string;
   especialidadeOuCategoria: string;
   areaAtuacao?: string | null; // Área de atuação principal (apenas médicos)
@@ -32,6 +33,7 @@ interface CredenciadoListItemProps {
 
 export function CredenciadoListItem({
   tipo,
+  tipoServico,
   nome,
   especialidadeOuCategoria,
   areaAtuacao,
@@ -62,16 +64,25 @@ export function CredenciadoListItem({
   
   const procedimentos = procedimentosProp || procedimentosData || [];
   
-  // Determinar imagem padrão baseado no tipo e categoria
+  // Determinar imagem padrão baseado no tipo e tipoServico
   const getPlaceholderImage = () => {
     if (tipo === "medico") return "/medico-placeholder.jpg";
     
-    // Para instituições, verificar categoria
-    const categoria = especialidadeOuCategoria.toLowerCase();
-    if (categoria.includes("saúde") || categoria.includes("saude") || 
-        categoria.includes("clínica") || categoria.includes("clinica") ||
-        categoria.includes("hospital") || categoria.includes("laboratório") || categoria.includes("laboratorio")) {
-      return "/servico-saude-placeholder.jpg";
+    // Para instituições, usar tipoServico se disponível
+    if (tipo === "instituicao") {
+      if (tipoServico === "servicos_saude") {
+        return "/servico-saude-placeholder.jpg";
+      } else if (tipoServico === "outros_servicos") {
+        return "/outros-servicos-placeholder.jpg";
+      }
+      
+      // Fallback: verificar categoria (para compatibilidade com dados antigos)
+      const categoria = especialidadeOuCategoria.toLowerCase();
+      if (categoria.includes("saúde") || categoria.includes("saude") || 
+          categoria.includes("clínica") || categoria.includes("clinica") ||
+          categoria.includes("hospital") || categoria.includes("laboratório") || categoria.includes("laboratorio")) {
+        return "/servico-saude-placeholder.jpg";
+      }
     }
     
     return "/outros-servicos-placeholder.jpg";
