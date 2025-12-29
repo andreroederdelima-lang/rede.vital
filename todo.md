@@ -2958,3 +2958,27 @@ pnpm vitest
 - [x] Adicionar badge na aba "Atualizações Pendentes"
 - [x] Destacar visualmente quando houver pendências
 - [x] Testar notificações em tempo real
+
+## Documentação - Guia de Uso da Plataforma (28/12/2025)
+
+- [x] Criar guia completo explicando todas as áreas da plataforma
+- [x] Documentar área do assinante (busca de credenciados)
+- [x] Documentar acesso interno (vendedor e médico CENSIT)
+- [x] Documentar área Admin (gestão completa)
+- [x] Explicar diferença entre Serviços de Saúde e Outros Serviços
+- [x] Incluir exemplos práticos e screenshots
+
+## BUG URGENTE - Link de Cadastro Médico (28/12/2025)
+
+- [ ] Investigar por que link de cadastro médico está gerando URL errada
+- [ ] Corrigir geração de link (deve ser /cadastro-medico/TOKEN)
+- [ ] Verificar se link de cadastro de serviço também tem o problema
+- [ ] Testar ambos os links após correção
+
+## Responsividade Mobile - Admin (28/12/2025)
+
+- [x] Corrigir abas que saem da tela no mobile
+- [x] Tornar abas roláveis horizontalmente ou empilhadas
+- [x] Corrigir botões "Exportar Excel" e "Exportar PDF" cortados
+- [x] Reduzir tamanho dos botões ou empilhar verticalmente no mobile
+- [ ] Testar em diferentes tamanhos de tela mobile

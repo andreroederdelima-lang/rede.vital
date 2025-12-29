@@ -338,7 +338,8 @@ export default function Admin() {
         <Tabs defaultValue="medicos">
           <div className="max-w-6xl mx-auto mb-6 space-y-2">
             {/* Primeira linha */}
-            <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1">
+            <div className="overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1 min-w-[640px] md:min-w-0">
               <TabsTrigger value="medicos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Médicos</TabsTrigger>
               <TabsTrigger value="instituicoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Serviços</TabsTrigger>
               <TabsTrigger value="solicitacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white relative">
@@ -358,15 +359,18 @@ export default function Admin() {
                 )}
               </TabsTrigger>
               <TabsTrigger value="usuarios" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white" title="Usuários cadastrados na plataforma (público)">Usuários Públicos</TabsTrigger>
-            </TabsList>
+              </TabsList>
+            </div>
             {/* Segunda linha */}
-            <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1">
+            <div className="overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-5 gap-2 bg-transparent p-1 min-w-[640px] md:min-w-0">
               <TabsTrigger value="acessos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white" title="Acessos administrativos e permissões internas">Acessos Admin</TabsTrigger>
               <TabsTrigger value="prospeccao" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Prospecção</TabsTrigger>
               <TabsTrigger value="apikeys" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">API Keys</TabsTrigger>
               <TabsTrigger value="webhooks" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Webhooks</TabsTrigger>
               <TabsTrigger value="configuracoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Configurações</TabsTrigger>
-            </TabsList>
+              </TabsList>
+            </div>
           </div>
 
           {/* Tab Médicos */}
@@ -375,7 +379,7 @@ export default function Admin() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Médicos Credenciados</CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
                       onClick={() => {
@@ -386,9 +390,10 @@ export default function Admin() {
                         exportToExcel(medicos, MEDICO_COLUMNS, `medicos_credenciados_${new Date().toISOString().split('T')[0]}`);
                         toast.success(`${medicos.length} médicos exportados com sucesso!`);
                       }}
+                      className="text-xs md:text-sm"
                     >
-                      <Download className="h-4 w-4 mr-2" />
-                      Exportar Excel
+                      <Download className="h-4 w-4 mr-1 md:mr-2" />
+                      <span className="hidden sm:inline">Exportar </span>Excel
                     </Button>
                     <Button
                       variant="outline"
@@ -400,15 +405,15 @@ export default function Admin() {
                         exportarMedicosPDF(medicos as any);
                         toast.success(`PDF de ${medicos.length} médicos gerado com sucesso!`);
                       }}
-                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 text-xs md:text-sm"
                     >
-                      <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="h-4 w-4 mr-1 md:mr-2" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
                         <path d="M14 2v6h6"/>
                         <path d="M9 13h6"/>
                         <path d="M9 17h6"/>
                       </svg>
-                      Exportar PDF
+                      <span className="hidden sm:inline">Exportar </span>PDF
                     </Button>
                     <Button
                       variant="outline"
@@ -643,7 +648,7 @@ export default function Admin() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>Serviços Parceiros</CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
                       onClick={() => {
@@ -654,9 +659,10 @@ export default function Admin() {
                         exportToExcel(instituicoes, INSTITUICAO_COLUMNS, `servicos_parceiros_${new Date().toISOString().split('T')[0]}`);
                         toast.success(`${instituicoes.length} serviços exportados com sucesso!`);
                       }}
+                      className="text-xs md:text-sm"
                     >
-                      <Download className="h-4 w-4 mr-2" />
-                      Exportar Excel
+                      <Download className="h-4 w-4 mr-1 md:mr-2" />
+                      <span className="hidden sm:inline">Exportar </span>Excel
                     </Button>
                     <Button
                       variant="outline"
@@ -679,15 +685,15 @@ export default function Admin() {
                         }
                         toast.success(`PDFs gerados: ${servicosSaude.length} Serviços de Saúde + ${outrosServicos.length} Outros Serviços`);
                       }}
-                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                      className="bg-red-50 hover:bg-red-100 text-red-700 border-red-200 text-xs md:text-sm"
                     >
-                      <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="h-4 w-4 mr-1 md:mr-2" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
                         <path d="M14 2v6h6"/>
                         <path d="M9 13h6"/>
                         <path d="M9 17h6"/>
                       </svg>
-                      Exportar PDF
+                      <span className="hidden sm:inline">Exportar </span>PDF
                     </Button>
                     <Button
                       variant="outline"
