@@ -2998,3 +2998,9 @@ pnpm vitest
 - [x] Usar ícones apenas (sem texto) nos botões mobile
 - [x] Testar em viewport mobile real
 - [x] Garantir que nada precise de scroll horizontal
+
+## CORREÇÃO URGENTE - Copiar Link não funciona no Mobile/Tablet (22/12/2025)
+- [x] Criar função auxiliar copyToClipboard com fallback para mobile
+- [x] Substituir navigator.clipboard.writeText por função robusta
+- [x] Testar em mobile e tablet
+- [x] Garantir feedback visual adequado

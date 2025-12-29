@@ -24,6 +24,7 @@ import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/c
 import { MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 import { validateMedicoForm, validateInstituicaoForm } from "@/lib/validation";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
+import { copyToClipboard } from "@/lib/clipboard";
 import { GerenciarProcedimentos } from "@/components/GerenciarProcedimentos";
 import ApiKeysTab from "@/components/ApiKeysTab";
 import WebhooksTab from "@/components/WebhooksTab";
@@ -452,8 +453,12 @@ export default function Admin() {
                           });
                           const baseUrl = window.location.origin;
                           const linkCadastro = `${baseUrl}/cadastro-medico/${result.token}`;
-                          navigator.clipboard.writeText(linkCadastro);
-                          toast.success("Link de cadastro copiado!");
+                          const copied = await copyToClipboard(linkCadastro);
+                          if (copied) {
+                            toast.success("Link de cadastro copiado!");
+                          } else {
+                            toast.error("Erro ao copiar link");
+                          }
                         } catch (error) {
                           console.error("Erro ao gerar token:", error);
                           toast.error("Erro ao gerar link de cadastro");
@@ -564,8 +569,12 @@ export default function Admin() {
                                       });
                                       const baseUrl = window.location.origin;
                                       const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
-                                      await navigator.clipboard.writeText(linkAtualizacao);
-                                      toast.success("Link copiado!");
+                                      const copied = await copyToClipboard(linkAtualizacao);
+                                      if (copied) {
+                                        toast.success("Link copiado!");
+                                      } else {
+                                        toast.error("Erro ao copiar link");
+                                      }
                                     } catch (error) {
                                       toast.error("Erro ao gerar link");
                                     }
@@ -600,8 +609,12 @@ export default function Admin() {
                                         `${medico.observacoes ? `\n📝 *Observações:*\n${medico.observacoes}\n` : ''}` +
                                         `\n———————————\n💚 *Vital Serviços Médicos*\n*Sua Saúde Vital*`;
                                       
-                                      await navigator.clipboard.writeText(textoCompleto);
-                                      toast.success("Texto completo copiado! Pronto para enviar ao parceiro.");
+                                      const copied = await copyToClipboard(textoCompleto);
+                                      if (copied) {
+                                        toast.success("Texto completo copiado! Pronto para enviar ao parceiro.");
+                                      } else {
+                                        toast.error("Erro ao copiar texto");
+                                      }
                                     } catch (error) {
                                       toast.error("Erro ao copiar texto");
                                     }
@@ -739,8 +752,12 @@ export default function Admin() {
                           });
                           const baseUrl = window.location.origin;
                           const linkCadastro = `${baseUrl}/cadastro-servico/${result.token}`;
-                          navigator.clipboard.writeText(linkCadastro);
-                          toast.success("Link de cadastro copiado!");
+                          const copied = await copyToClipboard(linkCadastro);
+                          if (copied) {
+                            toast.success("Link de cadastro copiado!");
+                          } else {
+                            toast.error("Erro ao copiar link");
+                          }
                         } catch (error) {
                           console.error("Erro ao gerar token:", error);
                           toast.error("Erro ao gerar link de cadastro");
@@ -856,8 +873,12 @@ export default function Admin() {
                                       });
                                       const baseUrl = window.location.origin;
                                       const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
-                                      await navigator.clipboard.writeText(linkAtualizacao);
-                                      toast.success("Link copiado!");
+                                      const copied = await copyToClipboard(linkAtualizacao);
+                                      if (copied) {
+                                        toast.success("Link copiado!");
+                                      } else {
+                                        toast.error("Erro ao copiar link");
+                                      }
                                     } catch (error) {
                                       toast.error("Erro ao gerar link");
                                     }
@@ -887,8 +908,12 @@ export default function Admin() {
                                         `${inst.observacoes ? `\n📝 *Observações:*\n${inst.observacoes}\n` : ''}` +
                                         `\n———————————\n💚 *Vital Serviços Médicos*\n*Sua Saúde Vital*`;
                                       
-                                      await navigator.clipboard.writeText(textoCompleto);
-                                      toast.success("Texto completo copiado! Pronto para enviar ao parceiro.");
+                                      const copied = await copyToClipboard(textoCompleto);
+                                      if (copied) {
+                                        toast.success("Texto completo copiado! Pronto para enviar ao parceiro.");
+                                      } else {
+                                        toast.error("Erro ao copiar texto");
+                                      }
                                     } catch (error) {
                                       toast.error("Erro ao copiar texto");
                                     }
@@ -2006,12 +2031,12 @@ function UsuariosAutorizadosTab() {
   });
 
   const resetarSenhaMutation = trpc.usuariosAutorizados.resetarSenha.useMutation({
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       toast.success("Senha resetada com sucesso!", {
         description: `Nova senha: ${data.novaSenha}`
       });
       // Copiar automaticamente para clipboard
-      navigator.clipboard.writeText(data.novaSenha);
+      await copyToClipboard(data.novaSenha);
     },
     onError: (error: any) => {
       toast.error("Erro ao resetar senha", {
@@ -2640,9 +2665,13 @@ function SolicitacoesAcessoTab() {
               Esta senha não será exibida novamente.
             </p>
             <Button
-              onClick={() => {
-                navigator.clipboard.writeText(`Email: ${emailSenha}\nSenha: ${senhaGerada}`);
-                toast.success("Credenciais copiadas!");
+              onClick={async () => {
+                const copied = await copyToClipboard(`Email: ${emailSenha}\nSenha: ${senhaGerada}`);
+                if (copied) {
+                  toast.success("Credenciais copiadas!");
+                } else {
+                  toast.error("Erro ao copiar credenciais");
+                }
               }}
               className="w-full"
             >
