@@ -47,3 +47,13 @@
 - [x] Substituir imagem placeholder antiga pela nova imagem personalizada da Vital
 - [x] Limpar fotoUrl de todas as instituições de serviços de saúde para forçar uso do placeholder
 - [x] Testar com instituição real de serviços de saúde
+
+## Atualização de Fotos Padrão para Médicos e Limpeza de Fotos Antigas (29/12/2025)
+
+- [x] Criar/substituir foto padrão de médicos pela imagem personalizada da Vital
+- [x] Limpar fotoUrl de todos os médicos com fotos antigas/genéricas
+- [x] Limpar fotoUrl de todas as instituições com fotos antigas/genéricas
+- [x] Verificar que checkboxes "Usar foto padrão" funcionam corretamente
+- [x] Testar exibição de fotos padrão em médicos
+- [x] Testar exibição de fotos padrão em serviços de saúde
+- [x] Testar exibição de fotos padrão em outros serviços

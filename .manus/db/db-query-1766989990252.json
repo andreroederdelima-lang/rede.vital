@@ -1,0 +1,22 @@
+{
+  "query": "SELECT \n  'medicos' as tabela, \n  COUNT(*) as total,\n  SUM(CASE WHEN fotoUrl IS NULL THEN 1 ELSE 0 END) as sem_foto,\n  SUM(CASE WHEN fotoUrl IS NOT NULL THEN 1 ELSE 0 END) as com_foto\nFROM medicos\nUNION ALL\nSELECT \n  'instituicoes' as tabela,\n  COUNT(*) as total,\n  SUM(CASE WHEN fotoUrl IS NULL THEN 1 ELSE 0 END) as sem_foto,\n  SUM(CASE WHEN fotoUrl IS NOT NULL THEN 1 ELSE 0 END) as com_foto\nFROM instituicoes",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT \n  'medicos' as tabela, \n  COUNT(*) as total,\n  SUM(CASE WHEN fotoUrl IS NULL THEN 1 ELSE 0 END) as sem_foto,\n  SUM(CASE WHEN fotoUrl IS NOT NULL THEN 1 ELSE 0 END) as com_foto\nFROM medicos\nUNION ALL\nSELECT \n  'instituicoes' as tabela,\n  COUNT(*) as total,\n  SUM(CASE WHEN fotoUrl IS NULL THEN 1 ELSE 0 END) as sem_foto,\n  SUM(CASE WHEN fotoUrl IS NOT NULL THEN 1 ELSE 0 END) as com_foto\nFROM instituicoes",
+  "rows": [
+    {
+      "tabela": "instituicoes",
+      "total": "22",
+      "sem_foto": "18",
+      "com_foto": "4"
+    },
+    {
+      "tabela": "medicos",
+      "total": "54",
+      "sem_foto": "54",
+      "com_foto": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "tabela\ttotal\tsem_foto\tcom_foto\ninstituicoes\t22\t18\t4\nmedicos\t54\t54\t0\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}

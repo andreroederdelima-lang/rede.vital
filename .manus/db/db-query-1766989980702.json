@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, nome, especialidade, fotoUrl FROM medicos LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, especialidade, fotoUrl FROM medicos LIMIT 10",
+  "rows": [
+    {
+      "id": "1",
+      "nome": "Dr. Roberto Schulz",
+      "especialidade": "Radiologia",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "2",
+      "nome": "Dr. Júlio Fran",
+      "especialidade": "Ortopedia/Traumatologia",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "3",
+      "nome": "Dr. Guilherme Quintanilha",
+      "especialidade": "Ortopedia/Traumatologia",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "4",
+      "nome": "Dr. Murillo Boldrini",
+      "especialidade": "Ortopedia/Traumatologia",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "5",
+      "nome": "Dr. Alberto Kazuo Miyamoto",
+      "especialidade": "Ortopedia/Traumatologia",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "6",
+      "nome": "Dra. Denise Uliani",
+      "especialidade": "Cirurgia Geral",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "7",
+      "nome": "Dr. Fábio Arantes",
+      "especialidade": "Cirurgia Geral",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "8",
+      "nome": "Dra. Amandia Mônica Marchetti",
+      "especialidade": "Cirurgia Plástica",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "9",
+      "nome": "Dr. Felix Dong-Ik Lee",
+      "especialidade": "Cirurgia Plástica",
+      "fotoUrl": "NULL"
+    },
+    {
+      "id": "10",
+      "nome": "Dr. André Laurindo Cabral",
+      "especialidade": "Cirurgia Vascular",
+      "fotoUrl": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tespecialidade\tfotoUrl\n1\tDr. Roberto Schulz\tRadiologia\tNULL\n2\tDr. Júlio Fran\tOrtopedia/Traumatologia\tNULL\n3\tDr. Guilherme Quintanilha\tOrtopedia/Traumatologia\tNULL\n4\tDr. Murillo Boldrini\tOrtopedia/Traumatologia\tNULL\n5\tDr. Alberto Kazuo Miyamoto\tOrtopedia/Traumatologia\tNULL\n6\tDra. Denise Uliani\tCirurgia Geral\tNULL\n7\tDr. Fábio Arantes\tCirurgia Geral\tNULL\n8\tDra. Amandia Mônica Marchetti\tCirurgia Plástica\tNULL\n9\tDr. Felix Dong-Ik Lee\tCirurgia Plástica\tNULL\n10\tDr. André Laurindo Cabral\tCirurgia Vascular\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 57
+}
