@@ -377,7 +377,7 @@ export default function Admin() {
           <TabsContent value="medicos">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <CardTitle>Médicos Credenciados</CardTitle>
                   <div className="flex flex-wrap gap-2">
                     <Button
@@ -646,7 +646,7 @@ export default function Admin() {
           <TabsContent value="instituicoes">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <CardTitle>Serviços Parceiros</CardTitle>
                   <div className="flex flex-wrap gap-2">
                     <Button
@@ -1007,7 +1007,7 @@ function DashboardCrescimento() {
   const crescimentoPositivo = stats.crescimentoPercentual >= 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 px-4 md:px-0">
       {/* Total de Credenciados */}
       <Card className="border-l-4 border-l-[#1e9d9f]">
         <CardContent className="p-6">

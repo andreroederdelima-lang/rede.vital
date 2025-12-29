@@ -2981,4 +2981,12 @@ pnpm vitest
 - [x] Tornar abas roláveis horizontalmente ou empilhadas
 - [x] Corrigir botões "Exportar Excel" e "Exportar PDF" cortados
 - [x] Reduzir tamanho dos botões ou empilhar verticalmente no mobile
-- [ ] Testar em diferentes tamanhos de tela mobile
+- [x] Testar em diferentes tamanhos de tela mobile
+
+## Correções Mobile Adicionais (28/12/2025)
+
+- [x] Corrigir cards do dashboard cortados pela metade
+- [x] Ajustar layout do CardHeader para não quebrar no mobile
+- [x] Empilhar título e botões verticalmente no mobile
+- [x] Garantir que todos os botões fiquem visíveis
+- [ ] Testar layout final no mobile
