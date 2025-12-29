@@ -1184,7 +1184,8 @@ function MedicoFormDialog({
   onCancel: () => void;
 }) {
   const [uploading, setUploading] = useState(false);
-  const [usarImagemPadrao, setUsarImagemPadrao] = useState(false);
+  const [usarImagemPadraoLogo, setUsarImagemPadraoLogo] = useState(false);
+  const [usarImagemPadraoFoto, setUsarImagemPadraoFoto] = useState(false);
   const uploadImagem = trpc.upload.imagem.useMutation();
 
   const [formData, setFormData] = useState<MedicoForm>(
@@ -1378,64 +1379,81 @@ function MedicoFormDialog({
           />
         </div>
 
-        {/* Checkbox Usar Imagem Padrão */}
-        <div className="col-span-2">
-          <div className="flex items-center gap-2 mb-3">
+        {/* Logo do Estabelecimento */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
             <input
               type="checkbox"
-              id="usarImagemPadraoAdmin"
-              checked={usarImagemPadrao}
+              id="usarImagemPadraoLogoMedico"
+              checked={usarImagemPadraoLogo}
               onChange={(e) => {
-                setUsarImagemPadrao(e.target.checked);
+                setUsarImagemPadraoLogo(e.target.checked);
                 if (e.target.checked) {
                   setFormData({ 
                     ...formData, 
-                    fotoUrl: "",
                     logoUrl: "",
-                    fotoFile: undefined,
                     logoFile: undefined
                   });
                 }
               }}
               className="h-4 w-4 rounded border-gray-300"
             />
-            <label htmlFor="usarImagemPadraoAdmin" className="text-sm text-muted-foreground cursor-pointer">
-              Usar imagem padrão (vou inserir imagem em breve)
+            <label htmlFor="usarImagemPadraoLogoMedico" className="text-sm text-muted-foreground cursor-pointer">
+              Usar logo padrão (vou inserir em breve)
             </label>
           </div>
+          {!usarImagemPadraoLogo && (
+            <ImageUpload
+              label="Logo do Estabelecimento"
+              value={formData.logoUrl}
+              onChange={(file, preview) => {
+                setFormData({ 
+                  ...formData, 
+                  logoFile: file || undefined,
+                  logoUrl: preview || formData.logoUrl
+                });
+              }}
+            />
+          )}
         </div>
 
-        {!usarImagemPadrao && (
-          <>
-            <div>
-              <ImageUpload
-                label="Logo do Estabelecimento"
-                value={formData.logoUrl}
-                onChange={(file, preview) => {
+        {/* Foto do Médico */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <input
+              type="checkbox"
+              id="usarImagemPadraoFotoMedico"
+              checked={usarImagemPadraoFoto}
+              onChange={(e) => {
+                setUsarImagemPadraoFoto(e.target.checked);
+                if (e.target.checked) {
                   setFormData({ 
                     ...formData, 
-                    logoFile: file || undefined,
-                    logoUrl: preview || formData.logoUrl
+                    fotoUrl: "",
+                    fotoFile: undefined
                   });
-                }}
-              />
-            </div>
-
-            <div>
-              <ImageUpload
-                label="Foto do Médico"
-                value={formData.fotoUrl}
-                onChange={(file, preview) => {
-                  setFormData({ 
-                    ...formData, 
-                    fotoFile: file || undefined,
-                    fotoUrl: preview || formData.fotoUrl
-                  });
-                }}
-              />
-            </div>
-          </>
-        )}
+                }
+              }}
+              className="h-4 w-4 rounded border-gray-300"
+            />
+            <label htmlFor="usarImagemPadraoFotoMedico" className="text-sm text-muted-foreground cursor-pointer">
+              Usar foto padrão (vou inserir em breve)
+            </label>
+          </div>
+          {!usarImagemPadraoFoto && (
+            <ImageUpload
+              label="Foto do Médico"
+              value={formData.fotoUrl}
+              onChange={(file, preview) => {
+                setFormData({ 
+                  ...formData, 
+                  fotoFile: file || undefined,
+                  fotoUrl: preview || formData.fotoUrl
+                });
+              }}
+            />
+          )}
+        </div>
 
         <div>
           <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
@@ -2869,7 +2887,8 @@ function InstituicaoFormDialog({
   onCancel: () => void;
 }) {
   const [uploading, setUploading] = useState(false);
-  const [usarImagemPadrao, setUsarImagemPadrao] = useState(false);
+  const [usarImagemPadraoLogo, setUsarImagemPadraoLogo] = useState(false);
+  const [usarImagemPadraoFoto, setUsarImagemPadraoFoto] = useState(false);
   const uploadImagem = trpc.upload.imagem.useMutation();
 
   const [formData, setFormData] = useState<InstituicaoForm>(
@@ -3058,36 +3077,32 @@ function InstituicaoFormDialog({
           />
         </div>
 
-        {/* Checkbox Usar Imagem Padrão */}
-        <div className="col-span-2">
-          <div className="flex items-center gap-2 mb-3">
-            <input
-              type="checkbox"
-              id="usarImagemPadraoInstituicao"
-              checked={usarImagemPadrao}
-              onChange={(e) => {
-                setUsarImagemPadrao(e.target.checked);
-                if (e.target.checked) {
-                  setFormData({ 
-                    ...formData, 
-                    fotoUrl: "",
-                    logoUrl: "",
-                    fotoFile: undefined,
-                    logoFile: undefined
-                  });
-                }
-              }}
-              className="h-4 w-4 rounded border-gray-300"
-            />
-            <label htmlFor="usarImagemPadraoInstituicao" className="text-sm text-muted-foreground cursor-pointer">
-              Usar imagem padrão (vou inserir imagem em breve)
-            </label>
-          </div>
-        </div>
-
-        {!usarImagemPadrao && (
-          <>
-            <div>
+        {/* Logo e Foto do Estabelecimento */}
+        <div className="col-span-2 grid grid-cols-2 gap-4">
+          {/* Logo do Estabelecimento */}
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <input
+                type="checkbox"
+                id="usarImagemPadraoLogoInstituicao"
+                checked={usarImagemPadraoLogo}
+                onChange={(e) => {
+                  setUsarImagemPadraoLogo(e.target.checked);
+                  if (e.target.checked) {
+                    setFormData({ 
+                      ...formData, 
+                      logoUrl: "",
+                      logoFile: undefined
+                    });
+                  }
+                }}
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <label htmlFor="usarImagemPadraoLogoInstituicao" className="text-sm text-muted-foreground cursor-pointer">
+                Usar logo padrão
+              </label>
+            </div>
+            {!usarImagemPadraoLogo && (
               <ImageUpload
                 label="Logo do Estabelecimento"
                 value={formData.logoUrl}
@@ -3099,9 +3114,33 @@ function InstituicaoFormDialog({
                   });
                 }}
               />
-            </div>
+            )}
+          </div>
 
-            <div>
+          {/* Foto do Estabelecimento */}
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <input
+                type="checkbox"
+                id="usarImagemPadraoFotoInstituicao"
+                checked={usarImagemPadraoFoto}
+                onChange={(e) => {
+                  setUsarImagemPadraoFoto(e.target.checked);
+                  if (e.target.checked) {
+                    setFormData({ 
+                      ...formData, 
+                      fotoUrl: "",
+                      fotoFile: undefined
+                    });
+                  }
+                }}
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <label htmlFor="usarImagemPadraoFotoInstituicao" className="text-sm text-muted-foreground cursor-pointer">
+                Usar foto padrão
+              </label>
+            </div>
+            {!usarImagemPadraoFoto && (
               <ImageUpload
                 label="Foto do Estabelecimento"
                 value={formData.fotoUrl}
@@ -3113,9 +3152,9 @@ function InstituicaoFormDialog({
                   });
                 }}
               />
-            </div>
-          </>
-        )}
+            )}
+          </div>
+        </div>
 
         <div>
           <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>

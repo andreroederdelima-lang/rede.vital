@@ -3057,3 +3057,19 @@ pnpm vitest
 - [x] Adicionar aba "Avaliações" no TabsList
 - [x] Adicionar TabsContent com componente AdminAvaliacoes
 - [x] Testar acesso às avaliações
+
+## Checkbox imagem padrão para logo do médico (28/12/2025)
+- [ ] Adicionar estado usarImagemPadraoLogo no formulário de médico
+- [ ] Adicionar checkbox "Usar imagem padrão" para logo do médico
+- [ ] Ocultar campo de upload de logo quando checkbox marcado
+- [ ] Aplicar mesma lógica nos formulários públicos (CadastroMedico)
+- [ ] Testar criação e edição de médico com logo padrão
+
+## Checkboxes separados para logo e foto (28/12/2025)
+- [x] Adicionar estados usarImagemPadraoLogo e usarImagemPadraoFoto no formulário Admin de médicos
+- [x] Criar dois checkboxes independentes (logo e foto) no formulário Admin de médicos
+- [x] Adicionar estados usarImagemPadraoLogo e usarImagemPadraoFoto no formulário Admin de instituições
+- [x] Criar dois checkboxes independentes (logo e foto) no formulário Admin de instituições
+- [x] Aplicar mesmas mudanças no formulário público CadastroMedico
+- [x] Aplicar mesmas mudanças no formulário público CadastroServico
+- [x] Testar criação e edição com checkboxes independentes
