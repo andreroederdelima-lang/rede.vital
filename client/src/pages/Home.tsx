@@ -65,6 +65,9 @@ export default function Home() {
   const [procedimento, setProcedimento] = useState<string>("");
   const [descontoMinimo, setDescontoMinimo] = useState<number | undefined>();
   const [tipoCredenciado, setTipoCredenciado] = useState<"medicos" | "servicos_saude" | "outros_servicos">("medicos");
+  const [paginaMedicos, setPaginaMedicos] = useState(1);
+  const [paginaInstituicoes, setPaginaInstituicoes] = useState(1);
+  const ITENS_POR_PAGINA = 10;
   const [encaminhamentoDialog, setEncaminhamentoDialog] = useState(false);
   const [medicoSelecionado, setMedicoSelecionado] = useState<any>(null);
   const [instituicaoSelecionada, setInstituicaoSelecionada] = useState<any>(null);
@@ -74,14 +77,18 @@ export default function Home() {
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarNovaSenha, setConfirmarNovaSenha] = useState("");
 
-  const { data: medicos = [], isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
+  const { data: resultadoMedicos, isLoading: loadingMedicos } = trpc.medicos.listar.useQuery({
     busca: busca || undefined,
     especialidade: especialidade || undefined,
     municipio: municipio || undefined,
     descontoMinimo,
   }, { enabled: tipoCredenciado === "medicos" });
+  
+  const medicos = resultadoMedicos || [];
+  const totalPaginasMedicos = Math.ceil(medicos.length / ITENS_POR_PAGINA);
+  const medicosPaginados = medicos.slice((paginaMedicos - 1) * ITENS_POR_PAGINA, paginaMedicos * ITENS_POR_PAGINA);
 
-  const { data: instituicoes = [], isLoading: loadingInstituicoes } = trpc.instituicoes.listar.useQuery({
+  const { data: resultadoInstituicoes, isLoading: loadingInstituicoes } = trpc.instituicoes.listar.useQuery({
     busca: busca || undefined,
     categoria: categoria || undefined,
     municipio: municipio || undefined,
@@ -89,6 +96,10 @@ export default function Home() {
     tipoServico: tipoCredenciado === "servicos_saude" || tipoCredenciado === "outros_servicos" ? tipoCredenciado : undefined,
     procedimento: procedimento || undefined,
   }, { enabled: tipoCredenciado === "servicos_saude" || tipoCredenciado === "outros_servicos" });
+  
+  const instituicoes = resultadoInstituicoes || [];
+  const totalPaginasInstituicoes = Math.ceil(instituicoes.length / ITENS_POR_PAGINA);
+  const instituicoesPaginadas = instituicoes.slice((paginaInstituicoes - 1) * ITENS_POR_PAGINA, paginaInstituicoes * ITENS_POR_PAGINA);
 
   const { data: especialidades = [] } = trpc.medicos.listarEspecialidades.useQuery();
   const { data: municipios = [] } = trpc.municipios.listar.useQuery();
@@ -146,7 +157,18 @@ export default function Home() {
     setCategoria("");
     setProcedimento("");
     setDescontoMinimo(undefined);
+    setPaginaMedicos(1);
+    setPaginaInstituicoes(1);
   };
+  
+  // Resetar página ao mudar filtros
+  React.useEffect(() => {
+    setPaginaMedicos(1);
+  }, [busca, especialidade, municipio, descontoMinimo]);
+  
+  React.useEffect(() => {
+    setPaginaInstituicoes(1);
+  }, [busca, categoria, municipio, descontoMinimo, procedimento]);
 
   const filtrosAtivos = useMemo(() => {
     return !!(busca || especialidade || municipio || categoria || procedimento || descontoMinimo);
@@ -720,7 +742,8 @@ export default function Home() {
                 </CardContent>
               </Card>
             ) : (
-              medicos.map((medico) => (
+              <>
+                {medicosPaginados.map((medico) => (
                 <Card key={medico.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
@@ -877,7 +900,33 @@ export default function Home() {
                     </div>
                   </CardContent>
                 </Card>
-              ))
+                ))}
+                
+                {/* Paginação Médicos */}
+                {totalPaginasMedicos > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-6">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaginaMedicos(p => Math.max(1, p - 1))}
+                      disabled={paginaMedicos === 1}
+                    >
+                      Anterior
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      Página {paginaMedicos} de {totalPaginasMedicos} ({medicos.length} resultados)
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaginaMedicos(p => Math.min(totalPaginasMedicos, p + 1))}
+                      disabled={paginaMedicos === totalPaginasMedicos}
+                    >
+                      Próxima
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         ) : (
@@ -893,7 +942,8 @@ export default function Home() {
                 </CardContent>
               </Card>
             ) : (
-              instituicoes.map((inst) => (
+              <>
+                {instituicoesPaginadas.map((inst) => (
                 <Card key={inst.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
@@ -1031,7 +1081,33 @@ export default function Home() {
                     </div>
                   </CardContent>
                 </Card>
-              ))
+                ))}
+                
+                {/* Paginação Instituições */}
+                {totalPaginasInstituicoes > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-6">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaginaInstituicoes(p => Math.max(1, p - 1))}
+                      disabled={paginaInstituicoes === 1}
+                    >
+                      Anterior
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      Página {paginaInstituicoes} de {totalPaginasInstituicoes} ({instituicoes.length} resultados)
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaginaInstituicoes(p => Math.min(totalPaginasInstituicoes, p + 1))}
+                      disabled={paginaInstituicoes === totalPaginasInstituicoes}
+                    >
+                      Próxima
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}

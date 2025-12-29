@@ -3017,3 +3017,22 @@ pnpm vitest
 - [x] Corrigir layout do header Dados Internos para mobile
 - [x] Garantir que logo, títulos e botões fiquem visíveis e alinhados
 - [x] Testar em viewport mobile real
+
+## Melhorias Solicitadas (22/12/2025)
+### Sistema de Avaliações
+- [x] Verificar se existe sistema de avaliações no código
+- [x] Garantir que avaliações sejam visíveis apenas para admin
+- [x] Ocultar avaliações da visualização pública
+
+### Paginação
+- [x] Implementar paginação de 10 resultados por página (médicos)
+- [x] Implementar paginação de 10 resultados por página (serviços de saúde)
+- [x] Implementar paginação de 10 resultados por página (outros serviços)
+
+### Checkbox Imagem Padrão
+- [x] Adicionar checkbox "usar imagem padrão" no formulário de médico (logo)
+- [x] Adicionar checkbox "usar imagem padrão" no formulário de médico (foto)
+- [x] Adicionar checkbox "usar imagem padrão" no formulário de estabelecimento (logo)
+- [x] Adicionar checkbox "usar imagem padrão" no formulário de estabelecimento (foto)
+- [x] Tornar upload de imagem opcional quando checkbox marcado
+- [x] Atualizar validação de formulários
