@@ -76,11 +76,15 @@ export function CredenciadoListItem({
         return "/outros-servicos-placeholder.jpg";
       }
       
-      // Fallback: verificar categoria (para compatibilidade com dados antigos)
+      // Fallback robusto: verificar categoria (para compatibilidade com dados antigos)
       const categoria = especialidadeOuCategoria.toLowerCase();
-      if (categoria.includes("saúde") || categoria.includes("saude") || 
-          categoria.includes("clínica") || categoria.includes("clinica") ||
-          categoria.includes("hospital") || categoria.includes("laboratório") || categoria.includes("laboratorio")) {
+      const categoriasServicosSaude = [
+        "fisio", "psico", "clínica", "clinica", "hospital", "laboratório", "laboratorio",
+        "farmácia", "farmacia", "odonto", "nutrição", "nutricao", "fono", "exame",
+        "saúde", "saude", "home care", "multiespecialidades", "médica", "medica"
+      ];
+      
+      if (categoriasServicosSaude.some(termo => categoria.includes(termo))) {
         return "/servico-saude-placeholder.jpg";
       }
     }

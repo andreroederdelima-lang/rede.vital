@@ -1,0 +1,18 @@
+{
+  "query": "SELECT COUNT(*) as total, tipoServico FROM instituicoes GROUP BY tipoServico",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT COUNT(*) as total, tipoServico FROM instituicoes GROUP BY tipoServico",
+  "rows": [
+    {
+      "total": "4",
+      "tipoServico": "outros_servicos"
+    },
+    {
+      "total": "18",
+      "tipoServico": "servicos_saude"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\ttipoServico\n4\toutros_servicos\n18\tservicos_saude\n",
+  "stderr": "",
+  "execution_time_ms": 91
+}

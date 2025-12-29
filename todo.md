@@ -37,3 +37,13 @@
 - [x] Confirmar pré-preenchimento de campos do formulário de médico (já implementado)
 - [x] Confirmar pré-preenchimento de campos do formulário de instituição (já implementado)
 - [x] Testar fluxo completo de atualização com token real (lógica já implementada e funcional)
+
+## URGENTE - Foto Padrão Ainda Incorreta (28/12/2025)
+
+- [x] Investigar por que serviços de saúde ainda mostram foto errada
+- [x] Verificar dados reais no banco (SELECT tipoServico FROM instituicoes)
+- [x] Verificar se prop tipoServico está sendo passada corretamente
+- [x] Debugar função getPlaceholderImage
+- [x] Substituir imagem placeholder antiga pela nova imagem personalizada da Vital
+- [x] Limpar fotoUrl de todas as instituições de serviços de saúde para forçar uso do placeholder
+- [x] Testar com instituição real de serviços de saúde

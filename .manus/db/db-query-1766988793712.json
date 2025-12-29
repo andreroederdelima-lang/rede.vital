@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE instituicoes \nSET tipoServico = 'servicos_saude' \nWHERE (categoria LIKE '%Fisio%' OR categoria LIKE '%Psico%' OR categoria LIKE '%Clínica%' OR categoria LIKE '%Laboratório%' OR categoria LIKE '%Farmácia%' OR categoria LIKE '%Hospital%' OR categoria LIKE '%Odonto%' OR categoria LIKE '%Nutrição%' OR categoria LIKE '%Fono%' OR categoria LIKE '%Exame%')\nAND (tipoServico IS NULL OR tipoServico = '')",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute UPDATE instituicoes \nSET tipoServico = 'servicos_saude' \nWHERE (categoria LIKE '%Fisio%' OR categoria LIKE '%Psico%' OR categoria LIKE '%Clínica%' OR categoria LIKE '%Laboratório%' OR categoria LIKE '%Farmácia%' OR categoria LIKE '%Hospital%' OR categoria LIKE '%Odonto%' OR categoria LIKE '%Nutrição%' OR categoria LIKE '%Fono%' OR categoria LIKE '%Exame%')\nAND (tipoServico IS NULL OR tipoServico = '')",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 50
+}

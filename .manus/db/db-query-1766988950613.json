@@ -1,0 +1,70 @@
+{
+  "query": "SELECT nome, categoria, tipoServico, fotoUrl FROM instituicoes WHERE nome LIKE '%Clínica%' OR nome LIKE '%Hospital%' OR nome LIKE '%ITHAKA%' OR nome LIKE '%Matrix%' OR nome LIKE '%Oxygene%' LIMIT 10",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT nome, categoria, tipoServico, fotoUrl FROM instituicoes WHERE nome LIKE '%Clínica%' OR nome LIKE '%Hospital%' OR nome LIKE '%ITHAKA%' OR nome LIKE '%Matrix%' OR nome LIKE '%Oxygene%' LIMIT 10",
+  "rows": [
+    {
+      "nome": "Hospital Censit / Centro Clínico Censit",
+      "categoria": "hospital",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "ITHAKA – Centro Médico de Reabilitação",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Matrix Medicina Diagnóstica – Unidade Timbó",
+      "categoria": "laboratorio",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Oxygene Medicina Hiperbárica",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Clínica Zatro (Coderniz Saúde e Vida LTDA)",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Clínica Ortopédica Serpa (Unidade Timbó)",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Clinica Vitalita ",
+      "categoria": "Odontologia",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Clínica Teste Procedimentos",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Clínica Teste 2",
+      "categoria": "laboratorio",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    },
+    {
+      "nome": "Clínica Teste 3",
+      "categoria": "clinica",
+      "tipoServico": "servicos_saude",
+      "fotoUrl": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "nome\tcategoria\ttipoServico\tfotoUrl\nHospital Censit / Centro Clínico Censit\thospital\tservicos_saude\tNULL\nITHAKA – Centro Médico de Reabilitação\tclinica\tservicos_saude\tNULL\nMatrix Medicina Diagnóstica – Unidade Timbó\tlaboratorio\tservicos_saude\tNULL\nOxygene Medicina Hiperbárica\tclinica\tservicos_saude\tNULL\nClínica Zatro (Coderniz Saúde e Vida LTDA)\tclinica\tservicos_saude\tNULL\nClínica Ortopédica Serpa (Unidade Timbó)\tclinica\tservicos_saude\tNULL\nClinica Vitalita \tOdontologia\tservicos_saude\tNULL\nClínica Teste Procedimentos\tclinica\tservicos_saude\tNULL\nClínica Teste 2\tlaboratorio\tservicos_saude\tNULL\nClínica Teste 3\tclinica\tservicos_saude\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}
