@@ -57,3 +57,17 @@
 - [x] Testar exibição de fotos padrão em médicos
 - [x] Testar exibição de fotos padrão em serviços de saúde
 - [x] Testar exibição de fotos padrão em outros serviços
+
+
+## Campo Desconto Geral para Óticas, Farmácias e Produtos Variados (29/12/2025)
+
+- [x] Adicionar campo `descontoGeral` (int, nullable) na tabela instituicoes do schema
+- [x] Executar migration para adicionar coluna no banco de dados
+- [x] Adicionar campo Desconto Geral no formulário CadastroServico.tsx
+- [x] Tornar procedimentos opcionais quando desconto geral estiver preenchido
+- [x] Atualizar validação no backend para aceitar desconto geral OU procedimentos
+- [x] Atualizar exibição no guia público (Consulta.tsx) para mostrar desconto geral
+- [ ] Atualizar exibição no painel de assinante para mostrar desconto geral
+- [ ] Atualizar exibição no Admin para mostrar desconto geral
+- [ ] Testar cadastro de ótica com desconto geral (sem procedimentos)
+- [ ] Testar cadastro de clínica com procedimentos (sem desconto geral)

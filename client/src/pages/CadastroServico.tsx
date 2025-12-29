@@ -33,6 +33,7 @@ export default function CadastroServico() {
     whatsappParceria: "",
     logoUrl: "",
     fotoUrl: "",
+    descontoGeral: "", // Desconto percentual geral para produtos variados
   });
   
   const [enviado, setEnviado] = useState(false);
@@ -97,6 +98,7 @@ export default function CadastroServico() {
         whatsappParceria: instituicaoExistente.whatsappSecretaria || "",
         logoUrl: instituicaoExistente.logoUrl || "",
         fotoUrl: instituicaoExistente.fotoUrl || "",
+        descontoGeral: instituicaoExistente.descontoGeral ? String(instituicaoExistente.descontoGeral) : "",
       });
       setAceitouTermos(true); // Auto-aceitar termos para atualização
     }
@@ -247,6 +249,7 @@ export default function CadastroServico() {
         valorParticular: "0",
         valorAssinanteVital: "0",
         descontoPercentual: 0,
+        descontoGeral: formData.descontoGeral ? parseInt(formData.descontoGeral) : undefined,
         observacoes: formData.observacoes,
         contatoParceria: formData.contatoParceria,
         whatsappParceria: formData.whatsappParceria,
@@ -451,7 +454,30 @@ export default function CadastroServico() {
                 />
               </div>
               
-              {/* Valores são definidos por procedimento individual */}
+              {/* Desconto Geral (opcional) */}
+              <div className="border-t pt-4 mt-4">
+                <Label htmlFor="descontoGeral">Desconto Geral (opcional)</Label>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Para estabelecimentos com produtos variados (óticas, farmácias), informe o percentual de desconto geral aplicado aos assinantes Vital.
+                  <br />
+                  <strong>Exemplo:</strong> Se oferece 10% de desconto em todos os produtos, digite "10".
+                  <br />
+                  <em>Se preencher este campo, não é necessário cadastrar procedimentos individuais.</em>
+                </p>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="descontoGeral"
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={formData.descontoGeral}
+                    onChange={(e) => setFormData({ ...formData, descontoGeral: e.target.value })}
+                    placeholder="Ex: 10"
+                    className="max-w-[200px]"
+                  />
+                  <span className="text-sm font-medium">%</span>
+                </div>
+              </div>
               
               {/* Logo do Estabelecimento */}
               <div>

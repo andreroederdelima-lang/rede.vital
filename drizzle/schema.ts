@@ -88,6 +88,7 @@ export const instituicoes = mysqlTable("instituicoes", {
   valorParticular: varchar("valorParticular", { length: 50 }),
   valorAssinanteVital: varchar("valorAssinanteVital", { length: 50 }),
   descontoPercentual: int("descontoPercentual").notNull().default(0),
+  descontoGeral: int("descontoGeral"), // Desconto percentual geral para estabelecimentos com produtos variados (óticas, farmácias)
   observacoes: text("observacoes"),
   contatoParceria: varchar("contatoParceria", { length: 255 }), // Nome do responsável pela parceria
   whatsappParceria: varchar("whatsappParceria", { length: 100 }), // WhatsApp do responsável pela parceria

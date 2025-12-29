@@ -22,6 +22,7 @@ interface CredenciadoListItemProps {
   valorParticular?: string | null;
   valorAssinanteVital?: string | null;
   descontoPercentual?: number;
+  descontoGeral?: number | null; // Desconto geral para produtos variados (óticas, farmácias)
   mostrarPrecoDesconto?: boolean; // true para Dados Internos, false para público
   onCompartilhar?: () => void;
   onEnviarLink?: () => void;
@@ -48,6 +49,7 @@ export function CredenciadoListItem({
   valorParticular,
   valorAssinanteVital,
   descontoPercentual,
+  descontoGeral,
   mostrarPrecoDesconto = false,
   onCompartilhar,
   onEnviarLink,
@@ -287,7 +289,22 @@ export function CredenciadoListItem({
           )}
         </div>
 
-        {/* Linha 4: Procedimentos (apenas para instituições) */}
+        {/* Linha 4: Desconto Geral (para produtos variados) */}
+        {tipo === "instituicao" && descontoGeral && descontoGeral > 0 && (
+          <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: "#f0f9ff" }}>
+            <div className="flex items-center gap-2">
+              <Percent size={18} style={{ color: VITAL_COLORS.turquoise }} />
+              <span className="text-sm font-semibold" style={{ color: VITAL_COLORS.turquoise }}>
+                {descontoGeral}% de desconto para assinantes Vital
+              </span>
+            </div>
+            <p className="text-xs mt-1" style={{ color: VITAL_COLORS.mediumGray }}>
+              Desconto aplicado em todos os produtos/serviços
+            </p>
+          </div>
+        )}
+
+        {/* Linha 5: Procedimentos (apenas para instituições) */}
         {tipo === "instituicao" && procedimentos && procedimentos.length > 0 && (
           <div className="mt-3 p-3 rounded-lg" style={{ backgroundColor: "#f8f9fa" }}>
             <h4 className="text-sm font-semibold mb-2" style={{ color: VITAL_COLORS.turquoise }}>

@@ -374,6 +374,7 @@ export const appRouter = router({
         valorParticular: z.string().optional(),
         valorAssinanteVital: z.string().optional(),
         descontoPercentual: z.number().min(0).max(100),
+        descontoGeral: z.number().min(0).max(100).optional(), // Desconto geral para produtos variados
         logoUrl: z.string().optional(),
         fotoUrl: z.string().optional(),
         contatoParceria: z.string().optional(),

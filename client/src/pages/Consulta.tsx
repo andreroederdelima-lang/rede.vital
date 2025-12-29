@@ -378,6 +378,7 @@ export default function Consulta() {
                       whatsapp={inst.whatsappSecretaria}
                       logoUrl={inst.logoUrl}
                       fotoUrl={inst.fotoUrl}
+                      descontoGeral={inst.descontoGeral}
                       mostrarPrecoDesconto={false}
                       credenciadoId={inst.id}
                       onCompartilhar={() => compartilharCredenciado(inst.nome, inst.endereco, inst.telefone)}
