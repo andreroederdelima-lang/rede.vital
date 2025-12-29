@@ -3036,3 +3036,18 @@ pnpm vitest
 - [x] Adicionar checkbox "usar imagem padrão" no formulário de estabelecimento (foto)
 - [x] Tornar upload de imagem opcional quando checkbox marcado
 - [x] Atualizar validação de formulários
+
+## Melhorias Solicitadas (28/12/2025)
+### Edição de Procedimentos
+- [x] Implementar listagem completa de procedimentos existentes
+- [x] Adicionar botão de editar procedimento
+- [x] Adicionar botão de excluir procedimento
+- [x] Criar diálogo de edição de procedimento
+- [x] Criar diálogo de confirmação de exclusão
+
+### Imagens Padrão Personalizadas
+- [x] Copiar imagem 1 (médicos) para public/
+- [x] Copiar imagem 2 (serviços de saúde) para public/
+- [x] Copiar imagem 3 (outros serviços) para public/
+- [x] Atualizar referências no código para usar novas imagens
+- [ ] Remover imagens antigas

@@ -64,17 +64,17 @@ export function CredenciadoListItem({
   
   // Determinar imagem padrão baseado no tipo e categoria
   const getPlaceholderImage = () => {
-    if (tipo === "medico") return "/medico-placeholder.png";
+    if (tipo === "medico") return "/medico-placeholder.jpg";
     
     // Para instituições, verificar categoria
     const categoria = especialidadeOuCategoria.toLowerCase();
     if (categoria.includes("saúde") || categoria.includes("saude") || 
         categoria.includes("clínica") || categoria.includes("clinica") ||
         categoria.includes("hospital") || categoria.includes("laboratório") || categoria.includes("laboratorio")) {
-      return "/servico-saude-placeholder.png";
+      return "/servico-saude-placeholder.jpg";
     }
     
-    return "/outros-servicos-placeholder.png";
+    return "/outros-servicos-placeholder.jpg";
   };
 
   // Nova lógica: FOTO como imagem principal (não logo)
