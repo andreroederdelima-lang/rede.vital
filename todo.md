@@ -3051,3 +3051,9 @@ pnpm vitest
 - [x] Copiar imagem 3 (outros serviços) para public/
 - [x] Atualizar referências no código para usar novas imagens
 - [ ] Remover imagens antigas
+
+## URGENTE - Avaliações não acessíveis (28/12/2025)
+- [x] Importar componente AdminAvaliacoes no Admin.tsx
+- [x] Adicionar aba "Avaliações" no TabsList
+- [x] Adicionar TabsContent com componente AdminAvaliacoes
+- [x] Testar acesso às avaliações

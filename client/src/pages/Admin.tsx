@@ -28,6 +28,7 @@ import { copyToClipboard } from "@/lib/clipboard";
 import { GerenciarProcedimentos } from "@/components/GerenciarProcedimentos";
 import ApiKeysTab from "@/components/ApiKeysTab";
 import WebhooksTab from "@/components/WebhooksTab";
+import AdminAvaliacoes from "@/pages/AdminAvaliacoes";
 
 type MedicoForm = {
   id?: number;
@@ -371,7 +372,7 @@ export default function Admin() {
           <div className="max-w-6xl mx-auto mb-6 space-y-2">
             {/* Primeira linha */}
             <div className="overflow-x-auto scrollbar-hide">
-              <TabsList className="inline-flex w-auto gap-2 bg-transparent p-1 md:grid md:w-full md:grid-cols-5">
+              <TabsList className="inline-flex w-auto gap-2 bg-transparent p-1 md:grid md:w-full md:grid-cols-6">
               <TabsTrigger value="medicos" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Médicos</TabsTrigger>
               <TabsTrigger value="instituicoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Serviços</TabsTrigger>
               <TabsTrigger value="solicitacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white relative">
@@ -391,6 +392,7 @@ export default function Admin() {
                 )}
               </TabsTrigger>
               <TabsTrigger value="usuarios" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white" title="Usuários cadastrados na plataforma (público)">Usuários Públicos</TabsTrigger>
+              <TabsTrigger value="avaliacoes" className="border-2 border-[#1e9d9f] data-[state=active]:bg-[#1e9d9f] data-[state=active]:text-white">Avaliações</TabsTrigger>
               </TabsList>
             </div>
             {/* Segunda linha */}
@@ -1017,6 +1019,11 @@ export default function Admin() {
           {/* Tab Usuários Manus (OAuth) */}
           <TabsContent value="usuarios">
             <UsuariosManusTab />
+          </TabsContent>
+
+          {/* Tab Avaliações */}
+          <TabsContent value="avaliacoes">
+            <AdminAvaliacoes />
           </TabsContent>
 
           {/* Tab Usuários Autorizados (Dados Internos) */}
