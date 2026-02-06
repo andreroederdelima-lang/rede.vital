@@ -188,7 +188,12 @@ export default function CadastroServico() {
     if (!formData.categoria) camposFaltantes.push("Categoria");
     if (!formData.municipio) camposFaltantes.push("Município");
     if (!formData.endereco) camposFaltantes.push("Endereço");
-    if (!formData.whatsappSecretaria) camposFaltantes.push("WhatsApp Comercial/Agendamento");
+    
+    // Validar que pelo menos um meio de contato foi fornecido
+    if (!formData.telefoneFixo && !formData.whatsappSecretaria) {
+      camposFaltantes.push("Pelo menos um meio de contato (Telefone Fixo OU WhatsApp)");
+    }
+    
     if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
     if (!logoBase64 && !usarImagemPadraoLogo) camposFaltantes.push("Logo do Estabelecimento ou marque 'Usar imagem padrão'");
     

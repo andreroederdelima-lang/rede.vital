@@ -68,14 +68,14 @@ export function CredenciadoListItem({
   
   // Determinar imagem padrão baseado no tipo e tipoServico
   const getPlaceholderImage = () => {
-    if (tipo === "medico") return "/medico-placeholder.jpg";
+    if (tipo === "medico") return "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/lXCFckfTyatzkNKJ.jpg";
     
     // Para instituições, usar tipoServico se disponível
     if (tipo === "instituicao") {
       if (tipoServico === "servicos_saude") {
-        return "/servico-saude-placeholder.jpg";
+        return "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/LoAJubXNcYWkjSVq.jpg";
       } else if (tipoServico === "outros_servicos") {
-        return "/outros-servicos-placeholder.jpg";
+        return "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/TxLobAvDTLVzQOTS.jpg";
       }
       
       // Fallback robusto: verificar categoria (para compatibilidade com dados antigos)
@@ -87,11 +87,11 @@ export function CredenciadoListItem({
       ];
       
       if (categoriasServicosSaude.some(termo => categoria.includes(termo))) {
-        return "/servico-saude-placeholder.jpg";
+        return "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/LoAJubXNcYWkjSVq.jpg";
       }
     }
     
-    return "/outros-servicos-placeholder.jpg";
+    return "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/TxLobAvDTLVzQOTS.jpg";
   };
 
   // Nova lógica: FOTO como imagem principal (não logo)
@@ -100,7 +100,7 @@ export function CredenciadoListItem({
   const logoValida = logoUrl && typeof logoUrl === 'string' && logoUrl.trim() !== "" ? logoUrl : null;
   
   const imagemPrincipal = fotoValida || getPlaceholderImage();
-  const logoParceiro = logoValida || "/logo-parceria-default.png";
+  const logoParceiro = logoValida || "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/jIHRjGGFJKvMqDXo.png";
   const logoVital = "/logo-vital-vertical.jpeg";
 
   const telefoneExibir = whatsapp || telefone;

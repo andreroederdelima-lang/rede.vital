@@ -749,7 +749,7 @@ export default function Home() {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                       <div className="flex-shrink-0">
                         <img 
-                          src={(medico as any).fotoUrl || "/medico-placeholder.jpg"} 
+                          src={(medico as any).fotoUrl || "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/lXCFckfTyatzkNKJ.jpg"} 
                           alt={medico.nome}
                           className="w-24 h-24 rounded-lg object-cover"
                         />
@@ -949,7 +949,7 @@ export default function Home() {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                       <div className="flex-shrink-0">
                         <img 
-                          src={(inst as any).fotoUrl || (tipoCredenciado === "servicos_saude" ? "/servico-saude-placeholder.jpg" : "/outros-servicos-placeholder.jpg")} 
+                          src={(inst as any).fotoUrl || (tipoCredenciado === "servicos_saude" ? "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/LoAJubXNcYWkjSVq.jpg" : "https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/TxLobAvDTLVzQOTS.jpg")} 
                           alt={inst.nome}
                           className="w-24 h-24 rounded-lg object-cover"
                         />

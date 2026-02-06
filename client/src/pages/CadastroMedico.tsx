@@ -117,7 +117,12 @@ export default function CadastroMedico() {
     if (!formData.especialidade) camposFaltantes.push("Especialidade");
     if (!formData.municipio) camposFaltantes.push("Município");
     if (!formData.endereco) camposFaltantes.push("Endereço");
-    if (!formData.whatsappSecretaria) camposFaltantes.push("WhatsApp Secretária/Agendamento");
+    
+    // Validar que pelo menos um meio de contato foi fornecido
+    if (!formData.telefoneFixo && !formData.whatsappSecretaria) {
+      camposFaltantes.push("Pelo menos um meio de contato (Telefone Fixo OU WhatsApp)");
+    }
+    
     if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
     if (!formData.valorParticular) camposFaltantes.push("Valor Particular");
     if (!formData.valorAssinanteVital) camposFaltantes.push("Valor Assinante Vital");

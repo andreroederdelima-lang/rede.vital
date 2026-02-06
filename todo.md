@@ -71,3 +71,20 @@
 - [ ] Atualizar exibição no Admin para mostrar desconto geral
 - [ ] Testar cadastro de ótica com desconto geral (sem procedimentos)
 - [ ] Testar cadastro de clínica com procedimentos (sem desconto geral)
+
+
+## Melhorias de Auditoria - Prioridade Alta (06/02/2026)
+
+- [x] Testar responsividade mobile em diferentes tamanhos de tela
+- [x] Corrigir problemas de layout mobile identificados
+- [x] Criar página de Política de Privacidade (LGPD)
+- [x] Criar página de Termos de Uso
+- [x] Adicionar links para Política e Termos no rodapé
+- [x] Implementar validação: pelo menos um meio de contato obrigatório (telefone OU WhatsApp)
+- [ ] Implementar upload de fotos para médicos no formulário de cadastro
+- [ ] Implementar upload de fotos para instituições no formulário de cadastro
+- [ ] Testar sistema de avaliações completo
+- [ ] Testar portal de assinante
+- [ ] Testar portal admin
+- [ ] Otimizar imagens com lazy loading
+- [ ] Adicionar estados de loading mais visíveis

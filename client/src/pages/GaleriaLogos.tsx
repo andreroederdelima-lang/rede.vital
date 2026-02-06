@@ -96,7 +96,7 @@ export default function GaleriaLogos() {
               <div className="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
                 {('logoUrl' in credenciado && credenciado.logoUrl) ? (
                   <img 
-                    src={('logoUrl' in credenciado && credenciado.logoUrl ? credenciado.logoUrl : '/logo-placeholder.png') as string} 
+                    src={('logoUrl' in credenciado && credenciado.logoUrl ? credenciado.logoUrl : 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/LmDSptFIDWPHHUCm.png') as string} 
                     alt={credenciado.nome}
                     className="w-full h-full object-contain p-2"
                   />
@@ -128,7 +128,7 @@ export default function GaleriaLogos() {
                     <p className="text-xs text-muted-foreground mb-1">Foto:</p>
                     <div className="aspect-video bg-gray-100 rounded overflow-hidden">
                       <img 
-                        src={('fotoUrl' in credenciado && credenciado.fotoUrl ? credenciado.fotoUrl : '/logo-placeholder.png') as string} 
+                        src={('fotoUrl' in credenciado && credenciado.fotoUrl ? credenciado.fotoUrl : 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663205270242/LmDSptFIDWPHHUCm.png') as string} 
                         alt="Foto"
                         className="w-full h-full object-cover"
                       />

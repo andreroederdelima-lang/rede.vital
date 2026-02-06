@@ -1,0 +1,50 @@
+{
+  "query": "SELECT id, nome, especialidade, municipio, endereco, telefone FROM medicos WHERE nome LIKE '%dfs%' OR nome LIKE '%sdasd%' OR especialidade LIKE '%fdsf%' OR especialidade LIKE '%asdasd%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user TocTSbjr2e5vBbe.81a251891814 --database QrgB7CmSLRUFiNpMh46Kpu --execute SELECT id, nome, especialidade, municipio, endereco, telefone FROM medicos WHERE nome LIKE '%dfs%' OR nome LIKE '%sdasd%' OR especialidade LIKE '%fdsf%' OR especialidade LIKE '%asdasd%';",
+  "rows": [
+    {
+      "id": "210001",
+      "nome": "testetsa",
+      "especialidade": "asdasdasd",
+      "municipio": "timbo",
+      "endereco": "reasdasdas",
+      "telefone": ""
+    },
+    {
+      "id": "270001",
+      "nome": "Dra. sadasdasdsa",
+      "especialidade": "dddsadasd",
+      "municipio": "\\X\\ZD",
+      "endereco": "CAZDCAsdf",
+      "telefone": "(44) 34234-2342"
+    },
+    {
+      "id": "330001",
+      "nome": "Dr. sdasdasdasd",
+      "especialidade": "asdasdas",
+      "municipio": "Ascurra",
+      "endereco": "sdasdasdasdasdasd",
+      "telefone": "(14) 14114-1111"
+    },
+    {
+      "id": "360001",
+      "nome": "Dr. dfssdfsdf",
+      "especialidade": "fdsfsfsdf",
+      "municipio": "Indaial",
+      "endereco": "asdasdas",
+      "telefone": "(52) 42442-4555"
+    },
+    {
+      "id": "360002",
+      "nome": "Dr. sdasdasdasd",
+      "especialidade": "asdasdasd",
+      "municipio": "Ascurra",
+      "endereco": "dsadasd",
+      "telefone": "(45) 45635-6544"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnome\tespecialidade\tmunicipio\tendereco\ttelefone\n210001\ttestetsa\tasdasdasd\ttimbo\treasdasdas\t\n270001\tDra. sadasdasdsa\tdddsadasd\t\\X\\ZD\tCAZDCAsdf\t(44) 34234-2342\n330001\tDr. sdasdasdasd\tasdasdas\tAscurra\tsdasdasdasdasdasd\t(14) 14114-1111\n360001\tDr. dfssdfsdf\tfdsfsfsdf\tIndaial\tasdasdas\t(52) 42442-4555\n360002\tDr. sdasdasdasd\tasdasdasd\tAscurra\tdsadasd\t(45) 45635-6544\n",
+  "stderr": "",
+  "execution_time_ms": 481
+}
