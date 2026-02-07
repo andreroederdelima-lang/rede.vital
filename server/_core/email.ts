@@ -51,7 +51,7 @@ export async function enviarEmailNovaParceria(dados: {
   areaAtuacao?: string;
   endereco: string;
   cidade: string;
-  telefone: string;
+  telefone?: string;
   whatsappSecretaria?: string;
   email?: string;
   precoConsulta?: string;

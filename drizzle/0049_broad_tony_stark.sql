@@ -1,0 +1,1 @@
+ALTER TABLE `solicitacoesParceria` MODIFY COLUMN `telefone` varchar(100);

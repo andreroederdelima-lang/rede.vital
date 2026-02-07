@@ -17,7 +17,6 @@ import RecuperarSenhaDadosInternos from "./pages/RecuperarSenhaDadosInternos";
 // import CadastroIndicador from "./pages/CadastroIndicador";
 // etc...
 import GaleriaLogos from "./pages/GaleriaLogos";
-import TermosDeUso from "./pages/TermosDeUso";
 import PoliticaPrivacidade from "./pages/PoliticaPrivacidade";
 import TermosUso from "./pages/TermosUso";
 // [REMOVIDO] import MateriaisDivulgacao from "./pages/MateriaisDivulgacao";
@@ -58,9 +57,8 @@ function Router() {
       <Route path={"/admin/avaliacoes"} component={AdminAvaliacoes} />
       <Route path={"/sugerir-parceiro"} component={SugerirParceiro} />
       <Route path={"/galeria-parceiros"} component={GaleriaParceiros} />
-      <Route path={"/termos-de-uso"} component={TermosDeUso} />
-      <Route path={"/politica-privacidade"} component={PoliticaPrivacidade} />
       <Route path={"/termos-uso"} component={TermosUso} />
+      <Route path={"/politica-privacidade"} component={PoliticaPrivacidade} />
       {/* [REMOVIDO] <Route path={"/materiais-divulgacao"} component={MateriaisDivulgacao} /> */}
        {/* [DESATIVADO] <Route path={"admin/materiais"} component={AdminMateriais} /> */}
       <Route path={"admin/notificacoes"} component={AdminNotificacoes} />

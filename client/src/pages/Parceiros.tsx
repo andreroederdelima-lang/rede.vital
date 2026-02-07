@@ -713,7 +713,7 @@ export default function Parceiros() {
                     <label htmlFor="termos" className="text-sm cursor-pointer flex-1">
                       Li e aceito os{" "}
                       <a 
-                        href="/termos-de-uso" 
+                        href="/termos-uso" 
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-semibold underline"

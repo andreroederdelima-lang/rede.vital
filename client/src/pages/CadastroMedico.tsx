@@ -184,8 +184,11 @@ export default function CadastroMedico() {
         logoUrl: logoUrl,
       });
     } catch (error) {
+      console.error("Erro detalhado ao processar cadastro:", error);
+      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
       toast.error("Erro ao processar cadastro", {
-        description: "Tente novamente.",
+        description: errorMessage,
+        duration: 10000,
       });
     }
   };
@@ -568,7 +571,7 @@ export default function CadastroMedico() {
                     <span className="font-semibold text-teal-700">Li e aceito os Termos de Credenciamento e Uso dos Sistemas Vital.</span>
                     {" "}
                     <a 
-                      href="/termos-de-uso" 
+                      href="/termos-uso" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-teal-600 underline hover:text-teal-800"

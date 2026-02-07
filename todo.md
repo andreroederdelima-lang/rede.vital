@@ -71,8 +71,6 @@
 - [ ] Atualizar exibição no Admin para mostrar desconto geral
 - [ ] Testar cadastro de ótica com desconto geral (sem procedimentos)
 - [ ] Testar cadastro de clínica com procedimentos (sem desconto geral)
-
-
 ## Melhorias de Auditoria - Prioridade Alta (06/02/2026)
 
 - [x] Testar responsividade mobile em diferentes tamanhos de tela
@@ -81,10 +79,60 @@
 - [x] Criar página de Termos de Uso
 - [x] Adicionar links para Política e Termos no rodapé
 - [x] Implementar validação: pelo menos um meio de contato obrigatório (telefone OU WhatsApp)
-- [ ] Implementar upload de fotos para médicos no formulário de cadastro
-- [ ] Implementar upload de fotos para instituições no formulário de cadastro
-- [ ] Testar sistema de avaliações completo
+- [x] Migrar imagens grandes para CDN (S3)
+- [x] Corrigir schema do backend para aceitar telefone e WhatsApp opcionais
+- [x] Gerar relatório completo de auditoria
+- [x] Corrigir erro TypeScript no schema da tabela solicitacoesParceria
+- [x] Corrigir erro TypeScript na função enviarEmailNovaParceria
+- [ ] CRÍTICO: Testar envio completo do formulário de cadastro end-to-end
+- [ ] Implementar upload de fotos nos formulários de cadastro
+- [ ] Adicionar sistema de busca avançada (filtros por preço, distância)
+- [ ] Criar dashboard de estatísticas para adminções completo
 - [ ] Testar portal de assinante
 - [ ] Testar portal admin
 - [ ] Otimizar imagens com lazy loading
 - [ ] Adicionar estados de loading mais visíveis
+
+
+## Auditoria Completa do Sistema (06/02/2026)
+
+### Fluxo de Cadastro de Parceiros
+- [ ] Gerar link de cadastro de médico e testar formulário completo
+- [ ] Verificar validações de campos obrigatórios
+- [ ] Testar upload de fotos (logo e foto)
+- [ ] Testar checkbox "usar imagem padrão"
+- [ ] Confirmar salvamento no banco de dados
+- [ ] Gerar link de cadastro de instituição e testar formulário completo
+- [ ] Testar campo de desconto geral para óticas/farmácias
+- [ ] Testar cadastro de procedimentos/serviços
+- [ ] Verificar mensagens de sucesso e erro
+
+### Experiência do Cliente (Página Pública)
+- [ ] Verificar qualidade e visibilidade das fotos dos credenciados
+- [ ] Testar todos os botões (WhatsApp, Como Chegar, Compartilhar)
+- [ ] Testar filtros por especialidade e categoria
+- [ ] Testar busca por município
+- [ ] Verificar exibição de informações de contato
+- [ ] Testar visualização de procedimentos e valores
+- [ ] Verificar exibição de desconto geral
+
+### Responsividade Mobile
+- [ ] Testar página inicial em modo mobile
+- [ ] Testar formulário de cadastro de médico em mobile
+- [ ] Testar formulário de cadastro de instituição em mobile
+- [ ] Testar página de consulta pública em mobile
+- [ ] Verificar tamanho e clicabilidade dos botões
+- [ ] Verificar dimensionamento das imagens
+- [ ] Testar navegação e menu mobile
+
+
+## CRÍTICO - Correção de Formulário de Cadastro (07/02/2026)
+
+- [ ] Investigar e corrigir problema: formulário de médico não envia dados
+- [ ] Verificar validação Zod no backend (campos obrigatórios)
+- [ ] Ajustar payload do frontend para corresponder ao schema do backend
+- [ ] Adicionar loading spinner durante envio do formulário
+- [ ] Testar envio completo de cadastro de médico
+- [ ] Testar envio completo de cadastro de instituição
+- [ ] Verificar se email de notificação está sendo enviado
+- [ ] Testar fluxo de aprovação no painel admin

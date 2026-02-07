@@ -149,7 +149,7 @@ export const solicitacoesParceria = mysqlTable("solicitacoesParceria", {
   tipoAtendimento: mysqlEnum("tipoAtendimento", ["presencial", "telemedicina", "ambos"]).default("presencial").notNull(),
   endereco: text("endereco").notNull(),
   cidade: varchar("cidade", { length: 100 }).notNull(),
-  telefone: varchar("telefone", { length: 100 }).notNull(),
+  telefone: varchar("telefone", { length: 100 }),
   whatsappSecretaria: varchar("whatsappSecretaria", { length: 100 }),
   email: varchar("email", { length: 255 }),
   precoConsulta: varchar("precoConsulta", { length: 50 }),

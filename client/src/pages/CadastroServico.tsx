@@ -755,7 +755,7 @@ export default function CadastroServico() {
                     <span className="font-semibold text-teal-700">Li e aceito os Termos de Credenciamento e Uso dos Sistemas Vital.</span>
                     {" "}
                     <a 
-                      href="/termos-de-uso" 
+                      href="/termos-uso" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-teal-600 underline hover:text-teal-800"
