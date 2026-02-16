@@ -136,3 +136,15 @@
 - [ ] Testar envio completo de cadastro de instituição
 - [ ] Verificar se email de notificação está sendo enviado
 - [ ] Testar fluxo de aprovação no painel admin
+
+
+## Integração GitHub e Sincronização (07/02/2026)
+
+- [ ] Verificar se repositório andreroederdelima-lang/rede.vital existe
+- [ ] Configurar Git no projeto local
+- [ ] Fazer commit inicial de todos os arquivos
+- [ ] Fazer push para repositório remoto
+- [ ] Configurar sincronização bidirecional automática
+- [ ] Testar sincronização (mudanças locais → GitHub)
+- [ ] Testar sincronização (mudanças GitHub → local)
+- [ ] Documentar processo de sincronização
