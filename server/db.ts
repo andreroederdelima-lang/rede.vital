@@ -106,7 +106,7 @@ export async function getUserByOpenId(openId: string) {
 }
 
 import { Medico, Instituicao, InsertMedico, InsertInstituicao, procedimentos, InsertProcedimento } from "../drizzle/schema";
-import { like, or, gte } from "drizzle-orm";
+import { like, or, gte, lt } from "drizzle-orm";
 
 // ========== MÉDICOS ==========
 
@@ -147,13 +147,6 @@ export async function listarMedicos(filtros?: {
 }
 
 export async function obterMedicoPorId(id: number) {
-  const db = await getDb();
-  if (!db) return undefined;
-  const result = await db.select().from(medicos).where(eq(medicos.id, id)).limit(1);
-  return result.length > 0 ? result[0] : undefined;
-}
-
-export async function buscarMedicoPorId(id: number) {
   const db = await getDb();
   if (!db) return undefined;
   const result = await db.select().from(medicos).where(eq(medicos.id, id)).limit(1);
@@ -435,19 +428,6 @@ export async function obterUsuarioAutorizadoPorId(id: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-export async function resetarSenhaUsuario(id: number, novaSenha: string) {
-  const db = await getDb();
-  if (!db) throw new Error("Database not available");
-  
-  // Hash da nova senha
-  const bcrypt = await import("bcryptjs");
-  const senhaHash = await bcrypt.hash(novaSenha, 10);
-  
-  await db.update(usuariosAutorizados)
-    .set({ senhaHash })
-    .where(eq(usuariosAutorizados.id, id));
-}
-
 export async function alterarSenhaUsuario(id: number, novaSenha: string) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -468,9 +448,9 @@ export async function gerarTokenAtualizacao(tipo: "medico" | "instituicao", id: 
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
-  // Gerar token único
-  const token = `${tipo}_${id}_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-  
+  // Gerar token criptograficamente seguro
+  const token = randomBytes(32).toString("hex");
+
   if (tipo === "medico") {
     await db.update(medicos).set({ tokenAtualizacao: token }).where(eq(medicos.id, id));
   } else {
@@ -738,170 +718,7 @@ export async function obterCategoriasUnicas() {
 }
 
 
-// ===== Funções para Sistema de Indicações =====
 
-// Indicadores (Promotores/Vendedores)
-// [REMOVIDO] Função criarIndicador removida
-// export async function criarIndicador(data: InsertIndicador) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   const [result] = await db.insert(indicadores).values(data);
-//   return result;
-// }
-
-// [REMOVIDO] Função listarIndicadores removida
-// export async function listarIndicadores(tipo?: "promotor" | "vendedor") {
-//   const db = await getDb();
-//   if (!db) return [];
-//   
-//   let query = db.select().from(indicadores);
-//   
-//   if (tipo) {
-//     query = query.where(eq(indicadores.tipo, tipo)) as any;
-//   }
-//   
-//   return await query.orderBy(desc(indicadores.createdAt));
-// }
-
-// [REMOVIDO] Função buscarIndicadorPorUserId removida
-// export async function buscarIndicadorPorUserId(userId: number) {
-//   const db = await getDb();
-//   if (!db) return null;
-//   
-//   const result = await db.select().from(indicadores).where(eq(indicadores.userId, userId)).limit(1);
-//   return result[0] || null;
-// }
-
-// [REMOVIDO] Função criarIndicacao removida
-// export async function criarIndicacao(data: InsertIndicacao) { ... }
-
-// [REMOVIDO] Função listarIndicacoes removida
-// export async function listarIndicacoes(indicadorId?: number, status?: string) {
-//   const db = await getDb();
-//   if (!db) return [];
-//   
-//   let query = db.select().from(indicacoes);
-//   
-//   if (indicadorId) {
-//     query = query.where(eq(indicacoes.indicadorId, indicadorId)) as any;
-//   }
-//   
-//   if (status) {
-//     query = query.where(eq(indicacoes.status, status as any)) as any;
-//   }
-//   
-//   return await query.orderBy(desc(indicacoes.createdAt));
-// }
-
-// [REMOVIDO] Função atualizarIndicacao removida
-// export async function atualizarIndicacao(id: number, data: Partial<InsertIndicacao>) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   await db.update(indicacoes).set(data).where(eq(indicacoes.id, id));
-// }
-
-// Comissões
-// [REMOVIDO] Função criarComissao removida
-// export async function criarComissao(data: InsertComissao) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   const [result] = await db.insert(comissoes).values(data);
-//   return result;
-// }
-
-// [REMOVIDO] Função listarComissoes removida
-// export async function listarComissoes(indicadorId?: number) {
-//   const db = await getDb();
-//   if (!db) return [];
-//   
-//   let query = db.select().from(comissoes);
-//   
-//   if (indicadorId) {
-//     query = query.where(eq(comissoes.indicadorId, indicadorId)) as any;
-//   }
-//   
-//   return await query.orderBy(desc(comissoes.createdAt));
-// }
-
-
-// Queries avançadas para Admin
-
-// [REMOVIDO] Função listarTodasIndicacoesComFiltros removida
-// export async function listarTodasIndicacoesComFiltros(...) { ... }
-
-// [REMOVIDO] Função obterEstatisticasIndicacoes removida
-// export async function obterEstatisticasIndicacoes() {
-//   const db = await getDb();
-//   if (!db) return {
-//     total: 0,
-//     pendentes: 0,
-//     contatadas: 0,
-//     fechadas: 0,
-//     perdidas: 0,
-//     taxaConversao: 0,
-//   };
-//   
-//   const stats = await db
-//     .select({
-//       status: indicacoes.status,
-//       quantidade: sql<number>`COUNT(*)`.as('quantidade'),
-//     })
-//     .from(indicacoes)
-//     .groupBy(indicacoes.status);
-//   
-//   const total = stats.reduce((acc, s) => acc + Number(s.quantidade), 0);
-//   const pendentes = stats.find(s => s.status === "pendente")?.quantidade || 0;
-//   const contatadas = stats.find(s => s.status === "contatado")?.quantidade || 0;
-//   const fechadas = stats.find(s => s.status === "fechado")?.quantidade || 0;
-//   const perdidas = stats.find(s => s.status === "perdido")?.quantidade || 0;
-//   
-//   const taxaConversao = total > 0 ? (Number(fechadas) / total) * 100 : 0;
-//   
-//   return {
-//     total,
-//     pendentes: Number(pendentes),
-//     contatadas: Number(contatadas),
-//     fechadas: Number(fechadas),
-//     perdidas: Number(perdidas),
-//     taxaConversao: Math.round(taxaConversao * 10) / 10,
-//   };
-// }
-
-// [REMOVIDO] Função atualizarIndicador removida
-// export async function atualizarIndicador(id: number, data: Partial<InsertIndicador>) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   await db.update(indicadores).set(data).where(eq(indicadores.id, id));
-// }
-
-// [REMOVIDO] Função obterIndicadorPorId removida
-// export async function obterIndicadorPorId(id: number) {
-//   const db = await getDb();
-//   if (!db) return null;
-//   
-//   const result = await db.select().from(indicadores).where(eq(indicadores.id, id)).limit(1);
-//   return result[0] || null;
-// }
-
-// [REMOVIDO] Função listarComissoesPorIndicacao removida
-// export async function listarComissoesPorIndicacao(indicacaoId: number) {
-//   const db = await getDb();
-//   if (!db) return [];
-//   
-//   return await db.select().from(comissoes).where(eq(comissoes.indicacaoId, indicacaoId)).orderBy(desc(comissoes.createdAt));
-// }
-
-// [REMOVIDO] Função atualizarComissao removida
-// export async function atualizarComissao(id: number, data: Partial<InsertComissao>) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   await db.update(comissoes).set(data).where(eq(comissoes.id, id));
-// }
 
 
 // ==================== CONFIGURAÇÕES ====================
@@ -984,16 +801,12 @@ export async function solicitarRecuperacaoSenha(email: string) {
     usado: 0,
   });
   
-  // TODO: Enviar email com link de recuperação
-  // Por enquanto, retornar o token para teste
-  console.log(`[Recuperação] Token gerado para ${email}: ${token}`);
-  console.log(`[Recuperação] Link: ${process.env.VITE_FRONTEND_URL || 'http://localhost:3000'}/recuperar-senha?token=${token}`);
-  
+  // TODO: Implementar envio de email com link de recuperação
+  // O link deve ser: /recuperar-senha?token=<token>
+
   return {
     success: true,
-    message: "Link de recuperação enviado para o email",
-    // Em produção, remover esta linha:
-    token, // Apenas para teste
+    message: "Se o email existir, um link de recuperação será enviado",
   };
 }
 
@@ -1057,65 +870,6 @@ export async function redefinirSenhaComToken(token: string, novaSenha: string) {
 
 
 // ===== Materiais de Divulgação =====
-
-// [REMOVIDO] Função listarMateriaisDivulgacao removida
-// export async function listarMateriaisDivulgacao() {
-//   const db = await getDb();
-//   if (!db) return [];
-//   
-//   // @ts-ignore
-//   const { materiaisDivulgacao } = await import("../drizzle/schema");
-//   
-//   const materiais = await db.select()
-//     .from(materiaisDivulgacao)
-//     .where(eq(materiaisDivulgacao.ativo, 1))
-//     .orderBy(materiaisDivulgacao.ordem, materiaisDivulgacao.createdAt);
-//   
-//   return materiais;
-// }
-
-// [REMOVIDO] Função criarMaterialDivulgacao removida
-// export async function criarMaterialDivulgacao(data: any) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   // @ts-ignore
-//   const { materiaisDivulgacao } = await import("../drizzle/schema");
-//   
-//   await db.insert(materiaisDivulgacao).values(data);
-//   
-//   return { success: true };
-// }
-
-// [REMOVIDO] Função atualizarMaterialDivulgacao removida
-// export async function atualizarMaterialDivulgacao(id: number, data: any) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   // @ts-ignore
-//   const { materiaisDivulgacao } = await import("../drizzle/schema");
-//   
-//   await db.update(materiaisDivulgacao)
-//     .set(data)
-//     .where(eq(materiaisDivulgacao.id, id));
-//   
-//   return { success: true };
-// }
-
-// [REMOVIDO] Função deletarMaterialDivulgacao removida
-// export async function deletarMaterialDivulgacao(id: number) {
-//   const db = await getDb();
-//   if (!db) throw new Error("Database not available");
-//   
-//   // @ts-ignore
-//   const { materiaisDivulgacao } = await import("../drizzle/schema");
-//   
-//   await db.update(materiaisDivulgacao)
-//     .set({ ativo: 0 })
-//     .where(eq(materiaisDivulgacao.id, id));
-//   
-//   return { success: true };
-// }
 
 // ===== Templates WhatsApp =====
 
@@ -1184,20 +938,18 @@ export async function listarCredenciadosDesatualizados() {
   // Data de 6 meses atrás
   const seisMesesAtras = new Date();
   seisMesesAtras.setMonth(seisMesesAtras.getMonth() - 6);
-  
-  // Buscar todos os médicos e instituições
-  const todosMedicos = await db.select().from(medicos);
-  const todasInstituicoes = await db.select().from(instituicoes);
-  
-  // Filtrar desatualizados (updatedAt > 6 meses)
-  const medicosDesatualizados = todosMedicos.filter(m => {
-    return new Date(m.updatedAt) < seisMesesAtras;
-  });
-  
-  const instituicoesDesatualizadas = todasInstituicoes.filter(i => {
-    return new Date(i.updatedAt) < seisMesesAtras;
-  });
-  
+
+  // Filtro direto no banco — evita carregar todos os registros em memória
+  const medicosDesatualizados = await db
+    .select()
+    .from(medicos)
+    .where(and(eq(medicos.ativo, 1), lt(medicos.updatedAt, seisMesesAtras)));
+
+  const instituicoesDesatualizadas = await db
+    .select()
+    .from(instituicoes)
+    .where(and(eq(instituicoes.ativo, 1), lt(instituicoes.updatedAt, seisMesesAtras)));
+
   return {
     medicos: medicosDesatualizados,
     instituicoes: instituicoesDesatualizadas,
@@ -1265,43 +1017,6 @@ export async function enviarNotificacoesSemestrais() {
     },
   };
 }
-
-// ==================== COMISSÕES DE ASSINATURAS ====================
-
-// [REMOVIDO] Função listarComissoesAssinaturas removida
-// export async function listarComissoesAssinaturas() {
-//   const db = await getDb();
-//   if (!db) {
-//     console.warn("[Database] Cannot list comissões assinaturas: database not available");
-//     return [];
-//   }
-// 
-//   const { comissoesAssinaturas } = await import("../drizzle/schema");
-//   const result = await db.select().from(comissoesAssinaturas).where(eq(comissoesAssinaturas.ativo, 1));
-//   return result;
-// }
-
-// [REMOVIDO] Função buscarComissaoPorTipo removida
-// export async function buscarComissaoPorTipo(tipoAssinatura: string) {
-//   const db = await getDb();
-//   if (!db) {
-//     console.warn("[Database] Cannot get comissão: database not available");
-//     return null;
-//   }
-// 
-//   const { comissoesAssinaturas } = await import("../drizzle/schema");
-//   const result = await db
-//     .select()
-//     .from(comissoesAssinaturas)
-//     .where(eq(comissoesAssinaturas.tipoAssinatura, tipoAssinatura))
-//     .limit(1);
-// 
-//   return result.length > 0 ? result[0] : null;
-// }
-
-// [REMOVIDO] Função atualizarComissaoAssinatura removida
-// export async function atualizarComissaoAssinatura(...) { ... }
-
 
 // ==================== COPYS ====================
 
@@ -1528,6 +1243,24 @@ export async function excluirProcedimento(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(procedimentos).set({ ativo: 0 }).where(eq(procedimentos.id, id));
+}
+
+/**
+ * Verifica se um procedimento pertence à instituição informada.
+ * Usado para prevenir IDOR em operações via token.
+ */
+export async function verificarPropriedadeProcedimento(
+  procedimentoId: number,
+  instituicaoId: number
+): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  const result = await db
+    .select({ id: procedimentos.id })
+    .from(procedimentos)
+    .where(and(eq(procedimentos.id, procedimentoId), eq(procedimentos.instituicaoId, instituicaoId)))
+    .limit(1);
+  return result.length > 0;
 }
 
 
