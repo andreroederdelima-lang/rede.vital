@@ -18,6 +18,7 @@ type Avaliacao = typeof avaliacoes.$inferSelect;
 type InsertAvaliacao = typeof avaliacoes.$inferInsert;
 import { ENV } from './_core/env';
 import { randomBytes } from 'crypto';
+import bcrypt from 'bcryptjs';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -115,6 +116,8 @@ export async function listarMedicos(filtros?: {
   especialidade?: string;
   municipio?: string;
   descontoMinimo?: number;
+  page?: number;
+  limit?: number;
 }) {
   const db = await getDb();
   if (!db) return [];
@@ -143,7 +146,10 @@ export async function listarMedicos(filtros?: {
     condicoes.push(gte(medicos.descontoPercentual, filtros.descontoMinimo));
   }
 
-  return db.select().from(medicos).where(and(...condicoes));
+  const page = Math.max(1, filtros?.page ?? 1);
+  const limit = Math.min(200, Math.max(1, filtros?.limit ?? 50));
+
+  return db.select().from(medicos).where(and(...condicoes)).limit(limit).offset((page - 1) * limit);
 }
 
 export async function obterMedicoPorId(id: number) {
@@ -222,9 +228,14 @@ export async function listarInstituicoes(filtros?: {
   descontoMinimo?: number;
   tipoServico?: "servicos_saude" | "outros_servicos";
   procedimento?: string;
+  page?: number;
+  limit?: number;
 }) {
   const db = await getDb();
   if (!db) return [];
+
+  const page = Math.max(1, filtros?.page ?? 1);
+  const limit = Math.min(200, Math.max(1, filtros?.limit ?? 50));
 
   // Se houver filtro de procedimento, precisamos fazer JOIN com a tabela procedimentos
   if (filtros?.procedimento) {
@@ -261,8 +272,10 @@ export async function listarInstituicoes(filtros?: {
       .selectDistinct()
       .from(instituicoes)
       .innerJoin(procedimentos, eq(procedimentos.instituicaoId, instituicoes.id))
-      .where(and(...condicoes));
-    
+      .where(and(...condicoes))
+      .limit(limit)
+      .offset((page - 1) * limit);
+
     return result.map(r => r.instituicoes);
   }
 
@@ -296,7 +309,7 @@ export async function listarInstituicoes(filtros?: {
     condicoes.push(gte(instituicoes.descontoPercentual, filtros.descontoMinimo));
   }
 
-  return db.select().from(instituicoes).where(and(...condicoes));
+  return db.select().from(instituicoes).where(and(...condicoes)).limit(limit).offset((page - 1) * limit);
 }
 
 export async function obterInstituicaoPorId(id: number) {
@@ -328,11 +341,13 @@ export async function excluirInstituicao(id: number) {
 export async function listarMunicipios() {
   const db = await getDb();
   if (!db) return [];
-  const medicosMunicipios = await db.selectDistinct({ municipio: medicos.municipio }).from(medicos).where(eq(medicos.ativo, 1));
-  const instituicoesMunicipios = await db.selectDistinct({ municipio: instituicoes.municipio }).from(instituicoes).where(eq(instituicoes.ativo, 1));
-  const todos = [...medicosMunicipios.map(m => m.municipio), ...instituicoesMunicipios.map(i => i.municipio)];
-  const unicos = Array.from(new Set(todos));
-  return unicos.sort();
+  const result = await db.execute(sql`
+    SELECT municipio FROM medicos WHERE ativo = 1 AND municipio IS NOT NULL
+    UNION
+    SELECT municipio FROM instituicoes WHERE ativo = 1 AND municipio IS NOT NULL
+    ORDER BY municipio
+  `);
+  return (result[0] as any[]).map((r: any) => r.municipio as string).filter(Boolean);
 }
 
 // ========== Solicitações de Parceria ==========
@@ -396,7 +411,6 @@ export async function criarUsuarioAutorizado(data: { email: string; nome: string
   if (!db) throw new Error("Database not available");
   
   // Hash da senha usando bcrypt
-  const bcrypt = await import("bcryptjs");
   const senhaHash = await bcrypt.hash(data.senha, 10);
   
   const result = await db.insert(usuariosAutorizados).values({
@@ -433,7 +447,6 @@ export async function alterarSenhaUsuario(id: number, novaSenha: string) {
   if (!db) throw new Error("Database not available");
   
   // Hash da nova senha
-  const bcrypt = await import("bcryptjs");
   const senhaHash = await bcrypt.hash(novaSenha, 10);
   
   await db.update(usuariosAutorizados)
@@ -847,10 +860,6 @@ export async function redefinirSenhaComToken(token: string, novaSenha: string) {
   if (!validacao.valid) {
     throw new Error(validacao.message);
   }
-  
-  // @ts-ignore
-  const { usuariosAutorizados, tokensRecuperacao } = await import("../drizzle/schema");
-  const bcrypt = await import("bcrypt");
   
   // Hash da nova senha
   const senhaHash = await bcrypt.hash(novaSenha, 10);

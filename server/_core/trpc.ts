@@ -43,3 +43,47 @@ export const adminProcedure = t.procedure.use(
     });
   }),
 );
+
+/**
+ * Rate limiting para mutations públicas (ex: solicitar parceria, avaliações, sugestões).
+ * Limita a 10 requisições por IP a cada 10 minutos para prevenir spam/flood.
+ */
+const publicRateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const PUBLIC_RATE_LIMIT = 10;
+const PUBLIC_RATE_WINDOW_MS = 10 * 60 * 1000; // 10 minutos
+
+const rateLimitPublic = t.middleware(async opts => {
+  const { ctx, next } = opts;
+  const ip = (ctx.req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim()
+    || ctx.req.socket?.remoteAddress
+    || 'unknown';
+
+  const now = Date.now();
+  const entry = publicRateLimitStore.get(ip);
+
+  if (entry && now < entry.resetAt) {
+    if (entry.count >= PUBLIC_RATE_LIMIT) {
+      throw new TRPCError({
+        code: "TOO_MANY_REQUESTS",
+        message: `Muitas requisições. Aguarde alguns minutos antes de tentar novamente.`,
+      });
+    }
+    entry.count++;
+  } else {
+    publicRateLimitStore.set(ip, { count: 1, resetAt: now + PUBLIC_RATE_WINDOW_MS });
+  }
+
+  // Limpeza periódica de entradas expiradas (evita crescimento ilimitado do Map)
+  if (publicRateLimitStore.size > 5000) {
+    for (const [key, val] of publicRateLimitStore) {
+      if (now >= val.resetAt) publicRateLimitStore.delete(key);
+    }
+  }
+
+  return next();
+});
+
+/**
+ * Procedure pública com rate limiting — use em mutations abertas ao público.
+ */
+export const publicRateLimitedProcedure = t.procedure.use(rateLimitPublic);

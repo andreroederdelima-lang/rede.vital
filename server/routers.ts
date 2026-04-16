@@ -1,8 +1,16 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, adminProcedure, publicRateLimitedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import * as db from "./db";
+import * as email from "./_core/email";
+import * as notification from "./_core/notification";
+import * as uploadImageMod from "./uploadImage";
+import * as storage from "./storage";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { randomBytes } from "crypto";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -21,7 +29,7 @@ export const appRouter = router({
     solicitarRecuperacao: publicProcedure
       .input(z.object({ email: z.string().email() }))
       .mutation(async ({ input }) => {
-        const { solicitarRecuperacaoSenha } = await import("./db");
+        const { solicitarRecuperacaoSenha } = db;
         return await solicitarRecuperacaoSenha(input.email);
       }),
 
@@ -29,7 +37,7 @@ export const appRouter = router({
     validarToken: publicProcedure
       .input(z.object({ token: z.string() }))
       .query(async ({ input }) => {
-        const { validarTokenRecuperacao } = await import("./db");
+        const { validarTokenRecuperacao } = db;
         return await validarTokenRecuperacao(input.token);
       }),
 
@@ -40,7 +48,7 @@ export const appRouter = router({
         novaSenha: z.string().min(6),
       }))
       .mutation(async ({ input }) => {
-        const { redefinirSenhaComToken } = await import("./db");
+        const { redefinirSenhaComToken } = db;
         return await redefinirSenhaComToken(input.token, input.novaSenha);
       }),
   }),
@@ -52,21 +60,23 @@ export const appRouter = router({
         especialidade: z.string().optional(),
         municipio: z.string().optional(),
         descontoMinimo: z.number().optional(),
+        page: z.number().int().min(1).optional().default(1),
+        limit: z.number().int().min(1).max(200).optional().default(50),
       }).optional())
       .query(async ({ input }) => {
-        const { listarMedicos } = await import("./db");
+        const { listarMedicos } = db;
         return listarMedicos(input);
       }),
     
     listarEspecialidades: publicProcedure.query(async () => {
-      const { listarEspecialidades } = await import("./db");
+      const { listarEspecialidades } = db;
       return listarEspecialidades();
     }),
 
     obter: publicProcedure
       .input(z.number())
       .query(async ({ input }) => {
-        const { obterMedicoPorId } = await import("./db");
+        const { obterMedicoPorId } = db;
         return obterMedicoPorId(input);
       }),
 
@@ -96,7 +106,7 @@ export const appRouter = router({
         ativo: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarMedico, dispararWebhook, obterMedicoPorId } = await import("./db");
+        const { criarMedico, dispararWebhook, obterMedicoPorId } = db;
         const medicoId = await criarMedico(input);
         
         // Buscar médico recém-criado
@@ -145,7 +155,7 @@ export const appRouter = router({
         }),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarMedico, dispararWebhook, obterMedicoPorId } = await import("./db");
+        const { atualizarMedico, dispararWebhook, obterMedicoPorId } = db;
         await atualizarMedico(input.id, input.data);
         
         // Buscar médico atualizado
@@ -168,7 +178,7 @@ export const appRouter = router({
     excluir: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { excluirMedico } = await import("./db");
+        const { excluirMedico } = db;
         return excluirMedico(input);
       }),
 
@@ -179,7 +189,7 @@ export const appRouter = router({
         mimeType: z.string(),
       }))
       .mutation(async ({ input }) => {
-        const { uploadImage } = await import("./uploadImage");
+        const { uploadImage } = uploadImageMod;
         return uploadImage(input);
       }),
   }),
@@ -193,16 +203,18 @@ export const appRouter = router({
         descontoMinimo: z.number().optional(),
         tipoServico: z.enum(["servicos_saude", "outros_servicos"]).optional(),
         procedimento: z.string().optional(),
+        page: z.number().int().min(1).optional().default(1),
+        limit: z.number().int().min(1).max(200).optional().default(50),
       }).optional())
       .query(async ({ input }) => {
-        const { listarInstituicoes } = await import("./db");
+        const { listarInstituicoes } = db;
         return listarInstituicoes(input);
       }),
 
     obter: publicProcedure
       .input(z.number())
       .query(async ({ input }) => {
-        const { obterInstituicaoPorId } = await import("./db");
+        const { obterInstituicaoPorId } = db;
         return obterInstituicaoPorId(input);
       }),
 
@@ -220,7 +232,7 @@ export const appRouter = router({
         contatoParceria: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarInstituicao, dispararWebhook, obterInstituicaoPorId } = await import("./db");
+        const { criarInstituicao, dispararWebhook, obterInstituicaoPorId } = db;
         const instituicaoId = await criarInstituicao(input);
         
         // Buscar instituição recém-criada
@@ -266,7 +278,7 @@ export const appRouter = router({
           fotoUrl: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarInstituicao, dispararWebhook, obterInstituicaoPorId } = await import("./db");
+        const { atualizarInstituicao, dispararWebhook, obterInstituicaoPorId } = db;
         await atualizarInstituicao(input.id, input.data);
         
         // Buscar instituição atualizada
@@ -289,7 +301,7 @@ export const appRouter = router({
     excluir: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { excluirInstituicao } = await import("./db");
+        const { excluirInstituicao } = db;
         return excluirInstituicao(input);
       }),
 
@@ -300,7 +312,7 @@ export const appRouter = router({
         mimeType: z.string(),
       }))
       .mutation(async ({ input }) => {
-        const { uploadImage } = await import("./uploadImage");
+        const { uploadImage } = uploadImageMod;
         return uploadImage(input);
       }),
 
@@ -308,7 +320,7 @@ export const appRouter = router({
     listarProcedimentos: publicProcedure
       .input(z.number())
       .query(async ({ input }) => {
-        const { listarProcedimentosPorInstituicao } = await import("./db");
+        const { listarProcedimentosPorInstituicao } = db;
         return listarProcedimentosPorInstituicao(input);
       }),
 
@@ -320,7 +332,7 @@ export const appRouter = router({
         valorAssinante: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarProcedimentoInstituicao } = await import("./db");
+        const { criarProcedimentoInstituicao } = db;
         return criarProcedimentoInstituicao(input);
       }),
 
@@ -332,7 +344,7 @@ export const appRouter = router({
         valorAssinante: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarProcedimentoInstituicao } = await import("./db");
+        const { atualizarProcedimentoInstituicao } = db;
         const { id, ...dados } = input;
         return atualizarProcedimentoInstituicao(id, dados);
       }),
@@ -340,21 +352,21 @@ export const appRouter = router({
     excluirProcedimento: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { excluirProcedimentoInstituicao } = await import("./db");
+        const { excluirProcedimentoInstituicao } = db;
         return excluirProcedimentoInstituicao(input);
       }),
   }),
 
   municipios: router({
     listar: publicProcedure.query(async () => {
-      const { listarMunicipios } = await import("./db");
+      const { listarMunicipios } = db;
       return listarMunicipios();
     }),
   }),
 
   parceria: router({
-    // Endpoint público para criar solicitação de parceria
-    solicitar: publicProcedure
+    // Endpoint público para criar solicitação de parceria (rate limited)
+    solicitar: publicRateLimitedProcedure
       .input(z.object({
         tipoCredenciado: z.enum(["medico", "instituicao"]).default("instituicao"),
         nomeResponsavel: z.string().min(1, "Nome do responsável é obrigatório"),
@@ -387,8 +399,8 @@ export const appRouter = router({
         })).optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarSolicitacaoParceria, criarProcedimentoSolicitacao } = await import("./db");
-        const { enviarEmailNovaParceria } = await import("./_core/email");
+        const { criarSolicitacaoParceria, criarProcedimentoSolicitacao } = db;
+        const { enviarEmailNovaParceria } = email;
         
         // Extrair procedimentos do input
         const { procedimentos, ...solicitacaoData } = input;
@@ -423,15 +435,15 @@ export const appRouter = router({
         status: z.enum(["pendente", "aprovado", "rejeitado"]).optional(),
       }).optional())
       .query(async ({ input }) => {
-        const { listarSolicitacoesParceria } = await import("./db");
+        const { listarSolicitacoesParceria } = db;
         return listarSolicitacoesParceria(input?.status);
       }),
 
     aprovar: adminProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao, criarMedico, listarProcedimentosPorSolicitacao } = await import("./db");
-        const { enviarEmailAprovacaoParceria } = await import("./_core/email");
+        const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao, criarMedico, listarProcedimentosPorSolicitacao } = db;
+        const { enviarEmailAprovacaoParceria } = email;
         
         // Obter solicitação
         const solicitacao = await obterSolicitacaoParceriaPorId(input);
@@ -490,7 +502,7 @@ export const appRouter = router({
           });
           
           // Transferir procedimentos da solicitação para a instituição
-          const { transferirProcedimentosSolicitacaoParaInstituicao } = await import("./db");
+          const { transferirProcedimentosSolicitacaoParaInstituicao } = db;
           await transferirProcedimentosSolicitacaoParaInstituicao(input, instituicaoId);
         }
         
@@ -522,22 +534,22 @@ export const appRouter = router({
         motivo: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarStatusSolicitacao } = await import("./db");
+        const { atualizarStatusSolicitacao } = db;
         await atualizarStatusSolicitacao(input.id, "rejeitado", input.motivo);
         return { success: true };
       }),
   }),
 
   sugestao: router({
-    enviarSugestaoParceiro: publicProcedure
+    enviarSugestaoParceiro: publicRateLimitedProcedure
       .input(z.object({
         nomeParceiro: z.string().min(1, "Nome do parceiro é obrigatório"),
         especialidade: z.string().min(1, "Especialidade é obrigatória"),
         municipio: z.string().min(1, "Município é obrigatório"),
       }))
       .mutation(async ({ input }) => {
-        const { criarSugestaoParceiro } = await import("./db");
-        const { enviarEmailSugestaoParceiro } = await import("./_core/email");
+        const { criarSugestaoParceiro } = db;
+        const { enviarEmailSugestaoParceiro } = email;
         
         // Salvar sugestão no banco de dados
         await criarSugestaoParceiro({
@@ -554,7 +566,7 @@ export const appRouter = router({
       }),
     
     listar: adminProcedure.query(async () => {
-      const { listarSugestoesParceiros } = await import("./db");
+      const { listarSugestoesParceiros } = db;
       return listarSugestoesParceiros();
     }),
 
@@ -564,7 +576,7 @@ export const appRouter = router({
         status: z.enum(["pendente", "em_contato", "link_enviado", "aguardando_cadastro", "cadastrado", "nao_interessado", "retomar_depois"]),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarStatusSugestao } = await import("./db");
+        const { atualizarStatusSugestao } = db;
         return atualizarStatusSugestao(input.id, input.status);
       }),
 
@@ -574,7 +586,7 @@ export const appRouter = router({
         nota: z.string().min(1),
       }))
       .mutation(async ({ input }) => {
-        const { adicionarNotaSugestao } = await import("./db");
+        const { adicionarNotaSugestao } = db;
         return adicionarNotaSugestao(input.id, input.nota);
       }),
 
@@ -584,26 +596,26 @@ export const appRouter = router({
         responsavel: z.string(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarResponsavelSugestao } = await import("./db");
+        const { atualizarResponsavelSugestao } = db;
         return atualizarResponsavelSugestao(input.id, input.responsavel);
       }),
 
     contarPorStatus: adminProcedure.query(async () => {
-      const { contarSugestoesPorStatus } = await import("./db");
+      const { contarSugestoesPorStatus } = db;
       return contarSugestoesPorStatus();
     }),
   }),
 
   usuariosAutorizados: router({
     listar: protectedProcedure.query(async () => {
-      const { listarUsuariosAutorizados } = await import("./db");
+      const { listarUsuariosAutorizados } = db;
       return listarUsuariosAutorizados();
     }),
 
     verificarAcesso: publicProcedure
       .input(z.string().email())
       .query(async ({ input }) => {
-        const { obterUsuarioAutorizadoPorEmail } = await import("./db");
+        const { obterUsuarioAutorizadoPorEmail } = db;
         const usuario = await obterUsuarioAutorizadoPorEmail(input);
         // Retorna apenas autorizado/não autorizado — sem dados do usuário
         // para evitar enumeração de contas por email
@@ -616,14 +628,13 @@ export const appRouter = router({
         senha: z.string(),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { obterUsuarioAutorizadoPorEmail } = await import("./db");
+        const { obterUsuarioAutorizadoPorEmail } = db;
         const usuario = await obterUsuarioAutorizadoPorEmail(input.email);
         
         if (!usuario || !usuario.ativo) {
           throw new Error("Credenciais inválidas");
         }
         
-        const bcrypt = await import("bcryptjs");
         const senhaValida = await bcrypt.compare(input.senha, usuario.senhaHash);
         
         if (!senhaValida) {
@@ -631,7 +642,6 @@ export const appRouter = router({
         }
         
         // Criar sessão para usuário interno (diferente do admin)
-        const jwt = await import("jsonwebtoken");
         const token = jwt.sign(
           { 
             userId: usuario.id, 
@@ -644,7 +654,6 @@ export const appRouter = router({
         );
         
         // Definir cookie de sessão
-        const { getSessionCookieOptions } = await import("./_core/cookies");
         const cookieOptions = getSessionCookieOptions(ctx.req);
         ctx.res.cookie("dados_internos_session", token, cookieOptions);
         
@@ -660,7 +669,6 @@ export const appRouter = router({
 
     logout: publicProcedure
       .mutation(async ({ ctx }) => {
-        const { getSessionCookieOptions } = await import("./_core/cookies");
         const cookieOptions = getSessionCookieOptions(ctx.req);
         ctx.res.clearCookie("dados_internos_session", { ...cookieOptions, maxAge: -1 });
         return { success: true };
@@ -674,11 +682,11 @@ export const appRouter = router({
         nivelAcesso: z.enum(["admin", "visualizador"]).default("visualizador"),
       }))
       .mutation(async ({ input }) => {
-        const { criarUsuarioAutorizado } = await import("./db");
+        const { criarUsuarioAutorizado } = db;
         await criarUsuarioAutorizado(input);
         
         // Enviar email de boas-vindas com credenciais
-        const { enviarEmailNovoUsuario } = await import("./_core/email");
+        const { enviarEmailNovoUsuario } = email;
         try {
           await enviarEmailNovoUsuario({
             nome: input.nome,
@@ -702,7 +710,7 @@ export const appRouter = router({
         nivelAcesso: z.enum(["admin", "visualizador"]).optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarUsuarioAutorizado } = await import("./db");
+        const { atualizarUsuarioAutorizado } = db;
         const { id, ...data } = input;
         await atualizarUsuarioAutorizado(id, data);
         return { success: true };
@@ -711,7 +719,7 @@ export const appRouter = router({
     excluir: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { excluirUsuarioAutorizado } = await import("./db");
+        const { excluirUsuarioAutorizado } = db;
         await excluirUsuarioAutorizado(input);
         return { success: true };
       }),
@@ -719,7 +727,7 @@ export const appRouter = router({
     resetarSenha: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { alterarSenhaUsuario, obterUsuarioAutorizadoPorId } = await import("./db");
+        const { alterarSenhaUsuario, obterUsuarioAutorizadoPorId } = db;
 
         // Buscar dados do usuário antes de resetar
         const usuario = await obterUsuarioAutorizadoPorId(input);
@@ -728,12 +736,11 @@ export const appRouter = router({
         }
 
         // Gerar nova senha temporária criptograficamente segura
-        const { randomBytes } = await import("crypto");
         const novaSenha = randomBytes(12).toString("base64url");
         await alterarSenhaUsuario(input, novaSenha);
         
         // Enviar email com nova senha
-        const { enviarEmailSenhaResetada } = await import("./_core/email");
+        const { enviarEmailSenhaResetada } = email;
         try {
           await enviarEmailSenhaResetada({
             nome: usuario.nome,
@@ -761,10 +768,9 @@ export const appRouter = router({
           throw new Error("Não autenticado");
         }
         
-        const jwt = await import("jsonwebtoken");
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
         
-        const { obterUsuarioAutorizadoPorId, alterarSenhaUsuario } = await import("./db");
+        const { obterUsuarioAutorizadoPorId, alterarSenhaUsuario } = db;
         const usuario = await obterUsuarioAutorizadoPorId(decoded.userId);
         
         if (!usuario) {
@@ -772,7 +778,6 @@ export const appRouter = router({
         }
         
         // Verificar senha atual
-        const bcrypt = await import("bcryptjs");
         const senhaValida = await bcrypt.compare(input.senhaAtual, usuario.senhaHash);
         
         if (!senhaValida) {
@@ -792,7 +797,7 @@ export const appRouter = router({
         id: z.number(),
       }))
       .mutation(async ({ input }) => {
-        const { gerarTokenAtualizacao, obterMedicoPorId, obterInstituicaoPorId } = await import("./db");
+        const { gerarTokenAtualizacao, obterMedicoPorId, obterInstituicaoPorId } = db;
         const token = await gerarTokenAtualizacao(input.tipo, input.id);
         
         // Obter nome do credenciado para mensagem WhatsApp
@@ -812,7 +817,7 @@ export const appRouter = router({
     obterPorToken: publicProcedure
       .input(z.string())
       .query(async ({ input }) => {
-        const { obterCredenciadoPorToken } = await import("./db");
+        const { obterCredenciadoPorToken } = db;
         return obterCredenciadoPorToken(input);
       }),
     
@@ -833,7 +838,7 @@ export const appRouter = router({
         observacoes: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { obterCredenciadoPorToken, criarSolicitacaoAtualizacao } = await import("./db");
+        const { obterCredenciadoPorToken, criarSolicitacaoAtualizacao } = db;
         
         const credenciado = await obterCredenciadoPorToken(input.token);
         if (!credenciado) {
@@ -864,14 +869,14 @@ export const appRouter = router({
         status: z.enum(["pendente", "aprovado", "rejeitado"]).optional(),
       }).optional())
       .query(async ({ input }) => {
-        const { listarSolicitacoesAtualizacao } = await import("./db");
+        const { listarSolicitacoesAtualizacao } = db;
         return listarSolicitacoesAtualizacao(input?.status);
       }),
 
     aprovar: adminProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { aprovarSolicitacaoAtualizacao } = await import("./db");
+        const { aprovarSolicitacaoAtualizacao } = db;
         await aprovarSolicitacaoAtualizacao(input);
         return { success: true };
       }),
@@ -882,7 +887,7 @@ export const appRouter = router({
         motivo: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { rejeitarSolicitacaoAtualizacao } = await import("./db");
+        const { rejeitarSolicitacaoAtualizacao } = db;
         await rejeitarSolicitacaoAtualizacao(input.id, input.motivo);
         return { success: true };
       }),
@@ -890,7 +895,7 @@ export const appRouter = router({
 
   // Solicitações de Acesso
   solicitacoesAcesso: router({
-    criar: publicProcedure
+    criar: publicRateLimitedProcedure
       .input(z.object({
         nome: z.string().min(3),
         email: z.string().email(),
@@ -898,24 +903,23 @@ export const appRouter = router({
         justificativa: z.string().min(10),
       }))
       .mutation(async ({ input }) => {
-        const { criarSolicitacaoAcesso } = await import("./db");
+        const { criarSolicitacaoAcesso } = db;
         await criarSolicitacaoAcesso(input);
         return { success: true };
       }),
 
     listar: protectedProcedure
       .query(async () => {
-        const { listarSolicitacoesAcesso } = await import("./db");
+        const { listarSolicitacoesAcesso } = db;
         return listarSolicitacoesAcesso();
       }),
 
     aprovar: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { aprovarSolicitacaoAcesso, criarUsuarioAutorizado } = await import("./db");
+        const { aprovarSolicitacaoAcesso, criarUsuarioAutorizado } = db;
         
         // Gerar senha temporária criptograficamente segura
-        const { randomBytes } = await import("crypto");
         const senhaTemporaria = randomBytes(12).toString("base64url");
         
         // Aprovar solicitação
@@ -939,7 +943,7 @@ export const appRouter = router({
         motivo: z.string(),
       }))
       .mutation(async ({ input }) => {
-        const { rejeitarSolicitacaoAcesso } = await import("./db");
+        const { rejeitarSolicitacaoAcesso } = db;
         await rejeitarSolicitacaoAcesso(input.id, input.motivo);
         return { success: true };
       }),
@@ -947,10 +951,10 @@ export const appRouter = router({
 
   // Recuperação de Senha
   recuperacaoSenha: router({
-    solicitar: publicProcedure
+    solicitar: publicRateLimitedProcedure
       .input(z.string().email())
       .mutation(async ({ input }) => {
-        const { obterUsuarioAutorizadoPorEmail, criarTokenRecuperacao } = await import("./db");
+        const { obterUsuarioAutorizadoPorEmail, criarTokenRecuperacao } = db;
         
         const usuario = await obterUsuarioAutorizadoPorEmail(input);
         if (!usuario) {
@@ -959,8 +963,7 @@ export const appRouter = router({
         }
         
         // Gerar token único
-        const crypto = await import("crypto");
-        const token = crypto.randomBytes(32).toString("hex");
+        const token = randomBytes(32).toString("hex");
         const expiresAt = new Date(Date.now() + 3600000); // 1 hora
         
         await criarTokenRecuperacao(usuario.id, token, expiresAt);
@@ -973,7 +976,7 @@ export const appRouter = router({
     verificarToken: publicProcedure
       .input(z.string())
       .query(async ({ input }) => {
-        const { obterTokenRecuperacao } = await import("./db");
+        const { obterTokenRecuperacao } = db;
         const tokenData = await obterTokenRecuperacao(input);
         
         if (!tokenData || tokenData.usado || new Date() > tokenData.expiresAt) {
@@ -989,7 +992,7 @@ export const appRouter = router({
         novaSenha: z.string().min(6),
       }))
       .mutation(async ({ input }) => {
-        const { obterTokenRecuperacao, marcarTokenComoUsado, alterarSenhaUsuario } = await import("./db");
+        const { obterTokenRecuperacao, marcarTokenComoUsado, alterarSenhaUsuario } = db;
         
         const tokenData = await obterTokenRecuperacao(input.token);
         
@@ -1010,15 +1013,15 @@ export const appRouter = router({
   // Rotas de prospecção e estatísticas
   prospeccao: router({
     estatisticasCobertura: protectedProcedure.query(async () => {
-      const { obterEstatisticasCobertura } = await import("./db");
+      const { obterEstatisticasCobertura } = db;
       return await obterEstatisticasCobertura();
     }),
     especialidadesUnicas: protectedProcedure.query(async () => {
-      const { obterEspecialidadesUnicas } = await import("./db");
+      const { obterEspecialidadesUnicas } = db;
       return await obterEspecialidadesUnicas();
     }),
     categoriasUnicas: protectedProcedure.query(async () => {
-      const { obterCategoriasUnicas } = await import("./db");
+      const { obterCategoriasUnicas } = db;
       return await obterCategoriasUnicas();
     }),
   }),
@@ -1027,7 +1030,7 @@ export const appRouter = router({
   configuracoes: router({
     // Listar todas as configurações
     listar: protectedProcedure.query(async () => {
-      const { listarConfiguracoes } = await import("./db");
+      const { listarConfiguracoes } = db;
       return await listarConfiguracoes();
     }),
 
@@ -1035,7 +1038,7 @@ export const appRouter = router({
     buscarPorChave: publicProcedure
       .input(z.object({ chave: z.string() }))
       .query(async ({ input }) => {
-        const { buscarConfiguracaoPorChave } = await import("./db");
+        const { buscarConfiguracaoPorChave } = db;
         return await buscarConfiguracaoPorChave(input.chave);
       }),
 
@@ -1047,7 +1050,7 @@ export const appRouter = router({
         descricao: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { atualizarConfiguracao } = await import("./db");
+        const { atualizarConfiguracao } = db;
         return await atualizarConfiguracao(
           input.chave,
           input.valor,
@@ -1066,7 +1069,7 @@ export const appRouter = router({
   // Templates WhatsApp
   templatesWhatsapp: router({
     listar: publicProcedure.query(async () => {
-      const { listarTemplatesWhatsapp } = await import("./db");
+      const { listarTemplatesWhatsapp } = db;
       return await listarTemplatesWhatsapp();
     }),
 
@@ -1077,7 +1080,7 @@ export const appRouter = router({
         mensagem: z.string(),
       }))
       .mutation(async ({ input }) => {
-        const { criarTemplateWhatsapp } = await import("./db");
+        const { criarTemplateWhatsapp } = db;
         return await criarTemplateWhatsapp(input);
       }),
 
@@ -1090,14 +1093,14 @@ export const appRouter = router({
       }))
       .mutation(async ({ input }) => {
         const { id, ...data } = input;
-        const { atualizarTemplateWhatsapp } = await import("./db");
+        const { atualizarTemplateWhatsapp } = db;
         return await atualizarTemplateWhatsapp(id, data);
       }),
 
     deletar: protectedProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
-        const { deletarTemplateWhatsapp } = await import("./db");
+        const { deletarTemplateWhatsapp } = db;
         return await deletarTemplateWhatsapp(input.id);
       }),
   }),
@@ -1105,12 +1108,12 @@ export const appRouter = router({
   // Notificações Semestrais
   notificacoes: router({
     listarDesatualizados: protectedProcedure.query(async () => {
-      const { listarCredenciadosDesatualizados } = await import("./db");
+      const { listarCredenciadosDesatualizados } = db;
       return await listarCredenciadosDesatualizados();
     }),
 
     enviarTodas: protectedProcedure.mutation(async () => {
-      const { enviarNotificacoesSemestrais } = await import("./db");
+      const { enviarNotificacoesSemestrais } = db;
       return await enviarNotificacoesSemestrais();
     }),
 
@@ -1120,7 +1123,7 @@ export const appRouter = router({
         id: z.number(),
       }))
       .mutation(async ({ input }) => {
-        const { enviarNotificacaoSemestral } = await import("./db");
+        const { enviarNotificacaoSemestral } = db;
         return await enviarNotificacaoSemestral(input.tipo, input.id);
       }),
   }),
@@ -1128,7 +1131,7 @@ export const appRouter = router({
   // Router de copys (textos editáveis)
   copys: router({
     listar: publicProcedure.query(async () => {
-      const { listarCopys } = await import("./db");
+      const { listarCopys } = db;
       return await listarCopys();
     }),
 
@@ -1140,7 +1143,7 @@ export const appRouter = router({
         ordem: z.number().default(0),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { criarCopy } = await import("./db");
+        const { criarCopy } = db;
         await criarCopy({
           ...input,
           updatedBy: ctx.user.email || ctx.user.name || "admin",
@@ -1157,7 +1160,7 @@ export const appRouter = router({
         ordem: z.number().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { atualizarCopy } = await import("./db");
+        const { atualizarCopy } = db;
         const { id, ...data } = input;
         await atualizarCopy(id, {
           ...data,
@@ -1169,7 +1172,7 @@ export const appRouter = router({
     excluir: adminProcedure
       .input(z.object({ id: z.number() }))
       .mutation(async ({ input }) => {
-        const { excluirCopy } = await import("./db");
+        const { excluirCopy } = db;
         await excluirCopy(input.id);
         return { success: true };
       }),
@@ -1177,7 +1180,7 @@ export const appRouter = router({
 
   // ========== AVALIAÇÕES ==========
   avaliacoes: router({
-    criar: publicProcedure
+    criar: publicRateLimitedProcedure
       .input(z.object({
         tipoCredenciado: z.enum(["medico", "instituicao"]),
         credenciadoId: z.number(),
@@ -1189,8 +1192,8 @@ export const appRouter = router({
         telefoneAvaliador: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarAvaliacao } = await import("./db");
-        const { notifyOwner } = await import("./_core/notification");
+        const { criarAvaliacao } = db;
+        const { notifyOwner } = notification;
         
         await criarAvaliacao(input);
         
@@ -1216,7 +1219,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
 
     listar: adminProcedure
       .query(async () => {
-        const { listarAvaliacoes } = await import("./db");
+        const { listarAvaliacoes } = db;
         return await listarAvaliacoes();
       }),
 
@@ -1226,13 +1229,13 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         credenciadoId: z.number(),
       }))
       .query(async ({ input }) => {
-        const { listarAvaliacoesPorCredenciado } = await import("./db");
+        const { listarAvaliacoesPorCredenciado } = db;
         return await listarAvaliacoesPorCredenciado(input.tipoCredenciado, input.credenciadoId);
       }),
 
     estatisticas: adminProcedure
       .query(async () => {
-        const { estatisticasAvaliacoes } = await import("./db");
+        const { estatisticasAvaliacoes } = db;
         return await estatisticasAvaliacoes();
       }),
   }),
@@ -1248,7 +1251,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         telefone: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { criarToken } = await import("./db");
+        const { criarToken } = db;
         const token = await criarToken({
           tipo: "atualizacao",
           tipoCredenciado: input.tipoCredenciado,
@@ -1268,7 +1271,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         telefone: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { criarToken } = await import("./db");
+        const { criarToken } = db;
         const token = await criarToken({
           tipo: "cadastro",
           tipoCredenciado: input.tipoCredenciado,
@@ -1284,7 +1287,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     verificar: publicProcedure
       .input(z.object({ token: z.string() }))
       .query(async ({ input }) => {
-        const { verificarToken } = await import("./db");
+        const { verificarToken } = db;
         return await verificarToken(input.token);
       }),
 
@@ -1292,7 +1295,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     marcarUsado: publicProcedure
       .input(z.object({ token: z.string() }))
       .mutation(async ({ input }) => {
-        const { marcarTokenUsado } = await import("./db");
+        const { marcarTokenUsado } = db;
         await marcarTokenUsado(input.token);
         return { success: true };
       }),
@@ -1305,13 +1308,13 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         instituicaoId: z.number().optional(),
       }).optional())
       .query(async ({ input }) => {
-        const { listarProcedimentos } = await import("./db");
+        const { listarProcedimentos } = db;
         return await listarProcedimentos(input?.instituicaoId);
       }),
 
     listarNomes: publicProcedure
       .query(async () => {
-        const { listarNomesProcedimentos } = await import("./db");
+        const { listarNomesProcedimentos } = db;
         return await listarNomesProcedimentos();
       }),
 
@@ -1323,7 +1326,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         valorAssinanteVital: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarProcedimento } = await import("./db");
+        const { criarProcedimento } = db;
         const id = await criarProcedimento(input);
         return { id, success: true };
       }),
@@ -1336,7 +1339,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         valorAssinanteVital: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarProcedimento } = await import("./db");
+        const { atualizarProcedimento } = db;
         const { id, ...data } = input;
         await atualizarProcedimento(id, data);
         return { success: true };
@@ -1345,7 +1348,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     excluir: adminProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { excluirProcedimento } = await import("./db");
+        const { excluirProcedimento } = db;
         await excluirProcedimento(input);
         return { success: true };
       }),
@@ -1363,8 +1366,8 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         })),
       }))
       .mutation(async ({ input }) => {
-        const { verificarToken } = await import("./db");
-        const { criarProcedimento, atualizarProcedimento, excluirProcedimento } = await import("./db");
+        const { verificarToken } = db;
+        const { criarProcedimento, atualizarProcedimento, excluirProcedimento } = db;
         
         // Verificar token
         const result = await verificarToken(input.token);
@@ -1378,7 +1381,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         }
         
         // Processar cada procedimento
-        const { verificarPropriedadeProcedimento } = await import("./db");
+        const { verificarPropriedadeProcedimento } = db;
         for (const proc of input.procedimentos) {
           if (proc._action === 'create') {
             await criarProcedimento({
@@ -1415,7 +1418,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         solicitacaoId: z.number(),
       }))
       .query(async ({ input }) => {
-        const { listarProcedimentosPorSolicitacao } = await import("./db");
+        const { listarProcedimentosPorSolicitacao } = db;
         return await listarProcedimentosPorSolicitacao(input.solicitacaoId);
       }),
 
@@ -1427,7 +1430,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         valorAssinante: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { criarProcedimentoSolicitacao } = await import("./db");
+        const { criarProcedimentoSolicitacao } = db;
         const id = await criarProcedimentoSolicitacao(input);
         return { id, success: true };
       }),
@@ -1440,7 +1443,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         valorAssinante: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarProcedimentoSolicitacao } = await import("./db");
+        const { atualizarProcedimentoSolicitacao } = db;
         const { id, ...data } = input;
         await atualizarProcedimentoSolicitacao(id, data);
         return { success: true };
@@ -1449,7 +1452,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     excluir: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { excluirProcedimentoSolicitacao } = await import("./db");
+        const { excluirProcedimentoSolicitacao } = db;
         await excluirProcedimentoSolicitacao(input);
         return { success: true };
       }),
@@ -1461,25 +1464,24 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       .input(z.object({
         base64: z.string(),
         filename: z.string(),
-        contentType: z.string(),
+        contentType: z.enum(["image/jpeg", "image/png", "image/webp", "image/gif"]),
       }))
       .mutation(async ({ input }) => {
-        
-        const { storagePut } = await import("./storage");
-        
+
+        const { storagePut } = storage;
+
         // Remover prefixo data:image/...;base64, se existir
         const base64Data = input.base64.replace(/^data:image\/\w+;base64,/, "");
         const buffer = Buffer.from(base64Data, "base64");
-        
-        // Gerar nome único para o arquivo
-        const timestamp = Date.now();
-        const randomSuffix = Math.random().toString(36).substring(2, 8);
+
+        // Gerar nome único para o arquivo usando crypto (sem Math.random)
+        const randomSuffix = randomBytes(4).toString("hex");
         const extension = input.filename.split(".").pop() || "jpg";
-        const uniqueFilename = `credenciados/${timestamp}-${randomSuffix}.${extension}`;
-        
+        const uniqueFilename = `credenciados/${Date.now()}-${randomSuffix}.${extension}`;
+
         // Upload para S3
         const result = await storagePut(uniqueFilename, buffer, input.contentType);
-        
+
         return { url: result.url };
       }),
   }),
@@ -1490,7 +1492,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
   apiKeys: router({
     // Listar todas as API Keys
     listar: protectedProcedure.query(async () => {
-      const { listarApiKeys } = await import("./db");
+      const { listarApiKeys } = db;
       return listarApiKeys();
     }),
 
@@ -1500,7 +1502,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         nome: z.string().min(1, "Nome é obrigatório"),
       }))
       .mutation(async ({ input, ctx }) => {
-        const { criarApiKey } = await import("./db");
+        const { criarApiKey } = db;
         return criarApiKey(input.nome, ctx.user?.name || 'admin');
       }),
 
@@ -1511,7 +1513,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         ativa: z.boolean(),
       }))
       .mutation(async ({ input }) => {
-        const { toggleApiKey } = await import("./db");
+        const { toggleApiKey } = db;
         await toggleApiKey(input.id, input.ativa);
         return { success: true };
       }),
@@ -1520,7 +1522,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     deletar: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { deletarApiKey } = await import("./db");
+        const { deletarApiKey } = db;
         await deletarApiKey(input);
         return { success: true };
       }),
@@ -1532,7 +1534,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         limit: z.number().optional().default(100),
       }))
       .query(async ({ input }) => {
-        const { listarLogsApiKey } = await import("./db");
+        const { listarLogsApiKey } = db;
         return listarLogsApiKey(input.apiKeyId, input.limit);
       }),
 
@@ -1540,7 +1542,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     estatisticas: protectedProcedure
       .input(z.number())
       .query(async ({ input }) => {
-        const { estatisticasApiKey } = await import("./db");
+        const { estatisticasApiKey } = db;
         return estatisticasApiKey(input);
       }),
   }),
@@ -1555,7 +1557,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         apiKeyId: z.number().optional(),
       }).optional())
       .query(async ({ input }) => {
-        const { listarWebhooks } = await import("./db");
+        const { listarWebhooks } = db;
         return listarWebhooks(input?.apiKeyId);
       }),
 
@@ -1574,7 +1576,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         maxRetries: z.number().min(1).max(10).optional().default(3),
       }))
       .mutation(async ({ input }) => {
-        const { criarWebhook } = await import("./db");
+        const { criarWebhook } = db;
         return criarWebhook({
           apiKeyId: input.apiKeyId,
           nome: input.nome,
@@ -1595,7 +1597,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         maxRetries: z.number().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarWebhook } = await import("./db");
+        const { atualizarWebhook } = db;
         const { id, ...data } = input;
         
         const updateData: any = { ...data };
@@ -1614,7 +1616,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         ativo: z.boolean(),
       }))
       .mutation(async ({ input }) => {
-        const { toggleWebhook } = await import("./db");
+        const { toggleWebhook } = db;
         await toggleWebhook(input.id, input.ativo);
         return { success: true };
       }),
@@ -1623,7 +1625,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     deletar: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { deletarWebhook } = await import("./db");
+        const { deletarWebhook } = db;
         await deletarWebhook(input);
         return { success: true };
       }),
@@ -1632,7 +1634,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     testar: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { buscarWebhookPorId, dispararWebhook } = await import("./db");
+        const { buscarWebhookPorId, dispararWebhook } = db;
         
         const webhook = await buscarWebhookPorId(input);
         if (!webhook) {
@@ -1659,7 +1661,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         limit: z.number().optional().default(100),
       }))
       .query(async ({ input }) => {
-        const { listarLogsWebhook } = await import("./db");
+        const { listarLogsWebhook } = db;
         return listarLogsWebhook(input.webhookId, input.limit);
       }),
 
@@ -1667,7 +1669,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
     estatisticas: protectedProcedure
       .input(z.number())
       .query(async ({ input }) => {
-        const { estatisticasWebhook } = await import("./db");
+        const { estatisticasWebhook } = db;
         return estatisticasWebhook(input);
       }),
   }),
@@ -1675,7 +1677,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
   // ========== ESTATÍSTICAS DE CRESCIMENTO ==========
   estatisticas: router({
     crescimento: protectedProcedure.query(async () => {
-      const { obterEstatisticasCrescimento } = await import("./db");
+      const { obterEstatisticasCrescimento } = db;
       return obterEstatisticasCrescimento();
     }),
   }),
@@ -1683,7 +1685,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
   // ========== GESTÃO DE USUÁRIOS MANUS (tabela users) ==========
   usuariosManus: router({
     listar: adminProcedure.query(async () => {
-      const { listarUsuariosManus } = await import("./db");
+      const { listarUsuariosManus } = db;
       return listarUsuariosManus();
     }),
 
@@ -1693,7 +1695,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         novaRole: z.enum(["admin", "user"]),
       }))
       .mutation(async ({ input }) => {
-        const { atualizarRoleUsuario } = await import("./db");
+        const { atualizarRoleUsuario } = db;
         return atualizarRoleUsuario(input.userId, input.novaRole);
       }),
   }),
