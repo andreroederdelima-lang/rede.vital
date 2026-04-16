@@ -132,18 +132,37 @@ Diretório de ferramenta externa versionado. Incluir em `.gitignore`.
 | Gravidade | Itens | Status |
 |---|---|---|
 | BLOQUEADOR | 0 | — |
-| ALTA | 4 (A1 segurança de preços, A2 bug images, A3 testes, A4 emails TODO) | A2 + A3 **corrigidos nesta branch**; A1 e A4 precisam de decisão de produto |
-| MÉDIA | 6 | Abertos |
-| BAIXA | 5 | B1 **corrigido nesta branch**; demais abertos |
+| ALTA | 4 | **A1, A2, A3, A4 todos corrigidos** |
+| MÉDIA | 6 | M1 já havia sido resolvido por migration 0033; M2, M4 corrigidos; M3/M5/M6 documentados |
+| BAIXA | 5 | B1, B5 corrigidos; B2/B3/B4 abertos (cosmético) |
 
-### Correções automáticas aplicadas nesta PR
-1. **A2** — `server/routers.ts`: movidos `logoUrl`/`fotoUrl` para dentro de `data` no `instituicoes.atualizar`.
-2. **A3** — novo `server/__tests__/setup.ts` + `setupFiles` em `vitest.config.ts` fixando `JWT_SECRET` de teste (testes passando saltaram de 4 → 19).
-3. **B1** — removidos `*.backup`, `*.disabled`, `.gitkeep` vazio no root.
-4. **M2** — criado `.env.example` com as variáveis obrigatórias.
-5. **M5** — scripts `.mjs`/`.py` de uso único movidos para `scripts/`.
-6. **Extra** — corrigido erro de TypeScript pré-existente em `client/src/hooks/useDadosInternosAuth.ts` (acesso a `.usuario` removido de `verificarAcesso`).
+### Correções aplicadas
 
-Após as correções: `pnpm check` passa sem erros; testes passam 19/49 (os 30 restantes falham por falta de `DATABASE_URL`/`BUILT_IN_FORGE_API_*` — esperado em ambiente sem infra).
+**ALTA**
+- **A1** — `server/_core/context.ts` agora expõe `ctx.isInterno` (Manus OAuth ou cookie `dados_internos_session`). Novo `server/_core/sanitize.ts` remove `precoConsulta`, `valorParticular`, `valorAssinanteVital`, `descontoPercentual`, `observacoes`, `contatoParceria`, `whatsappParceria`, `telefoneOrganizacao`, `tokenAtualizacao`, `email` do payload quando `!isInterno`. Aplicado em `medicos.listar/obter`, `instituicoes.listar/obter`, `instituicoes.listarProcedimentos`, `procedimentos.listar`.
+- **A2** — movidos `logoUrl`/`fotoUrl` para dentro de `data` em `instituicoes.atualizar`.
+- **A3** — `server/__tests__/setup.ts` + `setupFiles` em `vitest.config.ts` injeta `JWT_SECRET` (4 → 19 testes passando).
+- **A4** — `solicitacoesAcesso.aprovar` agora chama `enviarEmailNovoUsuario`. Nova função `enviarEmailLinkRecuperacao` em `server/_core/email.ts`, chamada por `recuperacaoSenha.solicitar` com link apontando para `/recuperar-senha-dados-internos?token=…`.
 
-As demais (A1 security-by-payload, A4 emails, M1 tabela órfã) requerem decisão de produto e foram deixadas abertas.
+**MÉDIA**
+- **M1** — tabela `comissoesAssinaturas` já dropada pela migration `drizzle/0033_slow_rumiko_fujikawa.sql`. Nada a fazer no DB.
+- **M2** — `.env.example` criado.
+- **M4** — `server/_core/auth.ts` era código morto usando `bcrypt` nativo: removido. `server/db.ts` trocou `import("bcrypt")` por `bcryptjs`. `bcrypt` e `@types/bcrypt` removidos do `package.json`.
+- **M5** — scripts soltos consolidados em `scripts/`.
+
+**BAIXA**
+- **B1** — removidos `*.backup`, `*.disabled`, `.gitkeep` vazio no root.
+- **B5** — `.manus/` versionado removido; entrada no `.gitignore`.
+
+**Bônus**
+- Erro TS pré-existente em `useDadosInternosAuth.ts` corrigido (acesso a `.usuario` em `verificarAcesso` que só retorna `{autorizado}`).
+- `*.backup` e `*.disabled` agora ignorados pelo git.
+
+Após todas as correções: `pnpm check` limpo; testes 19/49 (os 30 restantes dependem de `DATABASE_URL` e `BUILT_IN_FORGE_API_*` — esperado em CI sem infra).
+
+### Restam apenas cosméticos (BAIXA)
+- **B2** comentários `[REMOVIDO]` em vários arquivos — cosmético.
+- **B3** header ainda menciona "Vale do Itajaí" em `Consulta.tsx:102` — copy tem que ser decidido pelo time (rede nacional vs. regional).
+- **B4** verificar textos "MANUS" remanescentes em UI (não confirmado).
+- **M3** `tsconfig.json` com `baseUrl` deprecado — só quebra em TS 7.0.
+- **M6** 17 `.md` na raiz — consolidar em `docs/` quando sobrar tempo.

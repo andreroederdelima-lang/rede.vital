@@ -105,3 +105,10 @@ temp/
 *.db
 *.sqlite
 *.sqlite3
+
+# Tooling (Manus workspace)
+.manus/
+
+# Backups/disabled files (should not be committed)
+*.backup
+*.disabled
