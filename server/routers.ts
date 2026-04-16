@@ -261,9 +261,9 @@ export const appRouter = router({
           observacoes: z.string().optional(),
           contatoParceria: z.string().optional(),
           whatsappParceria: z.string().optional(),
-        }),
           logoUrl: z.string().optional(),
           fotoUrl: z.string().optional(),
+        }),
       }))
       .mutation(async ({ input }) => {
         const { atualizarInstituicao, dispararWebhook, obterInstituicaoPorId } = await import("./db");
