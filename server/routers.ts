@@ -1,7 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -418,7 +418,7 @@ export const appRouter = router({
       }),
 
     // Endpoints administrativos
-    listar: protectedProcedure
+    listar: adminProcedure
       .input(z.object({
         status: z.enum(["pendente", "aprovado", "rejeitado"]).optional(),
       }).optional())
@@ -427,7 +427,7 @@ export const appRouter = router({
         return listarSolicitacoesParceria(input?.status);
       }),
 
-    aprovar: protectedProcedure
+    aprovar: adminProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
         const { obterSolicitacaoParceriaPorId, atualizarStatusSolicitacao, criarInstituicao, criarMedico, listarProcedimentosPorSolicitacao } = await import("./db");
@@ -516,7 +516,7 @@ export const appRouter = router({
         return { success: true };
       }),
 
-    rejeitar: protectedProcedure
+    rejeitar: adminProcedure
       .input(z.object({
         id: z.number(),
         motivo: z.string().optional(),
@@ -553,12 +553,12 @@ export const appRouter = router({
         return { success: true };
       }),
     
-    listar: protectedProcedure.query(async () => {
+    listar: adminProcedure.query(async () => {
       const { listarSugestoesParceiros } = await import("./db");
       return listarSugestoesParceiros();
     }),
-    
-    atualizarStatus: protectedProcedure
+
+    atualizarStatus: adminProcedure
       .input(z.object({
         id: z.number(),
         status: z.enum(["pendente", "em_contato", "link_enviado", "aguardando_cadastro", "cadastrado", "nao_interessado", "retomar_depois"]),
@@ -567,8 +567,8 @@ export const appRouter = router({
         const { atualizarStatusSugestao } = await import("./db");
         return atualizarStatusSugestao(input.id, input.status);
       }),
-    
-    adicionarNota: protectedProcedure
+
+    adicionarNota: adminProcedure
       .input(z.object({
         id: z.number(),
         nota: z.string().min(1),
@@ -577,8 +577,8 @@ export const appRouter = router({
         const { adicionarNotaSugestao } = await import("./db");
         return adicionarNotaSugestao(input.id, input.nota);
       }),
-    
-    atualizarResponsavel: protectedProcedure
+
+    atualizarResponsavel: adminProcedure
       .input(z.object({
         id: z.number(),
         responsavel: z.string(),
@@ -587,8 +587,8 @@ export const appRouter = router({
         const { atualizarResponsavelSugestao } = await import("./db");
         return atualizarResponsavelSugestao(input.id, input.responsavel);
       }),
-    
-    contarPorStatus: protectedProcedure.query(async () => {
+
+    contarPorStatus: adminProcedure.query(async () => {
       const { contarSugestoesPorStatus } = await import("./db");
       return contarSugestoesPorStatus();
     }),
@@ -605,18 +605,9 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const { obterUsuarioAutorizadoPorEmail } = await import("./db");
         const usuario = await obterUsuarioAutorizadoPorEmail(input);
-        if (!usuario || !usuario.ativo) {
-          return { autorizado: false, usuario: null };
-        }
-        return { 
-          autorizado: true, 
-          usuario: {
-            id: usuario.id,
-            email: usuario.email,
-            nome: usuario.nome,
-            nivelAcesso: (usuario as any).nivelAcesso || "visualizador",
-          }
-        };
+        // Retorna apenas autorizado/não autorizado — sem dados do usuário
+        // para evitar enumeração de contas por email
+        return { autorizado: !!(usuario && usuario.ativo) };
       }),
 
     login: publicProcedure
@@ -728,17 +719,18 @@ export const appRouter = router({
     resetarSenha: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
-        const { resetarSenhaUsuario, obterUsuarioAutorizadoPorId } = await import("./db");
-        
+        const { alterarSenhaUsuario, obterUsuarioAutorizadoPorId } = await import("./db");
+
         // Buscar dados do usuário antes de resetar
         const usuario = await obterUsuarioAutorizadoPorId(input);
         if (!usuario) {
           throw new Error("Usuário não encontrado");
         }
-        
-        // Gerar nova senha temporária
-        const novaSenha = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
-        await resetarSenhaUsuario(input, novaSenha);
+
+        // Gerar nova senha temporária criptograficamente segura
+        const { randomBytes } = await import("crypto");
+        const novaSenha = randomBytes(12).toString("base64url");
+        await alterarSenhaUsuario(input, novaSenha);
         
         // Enviar email com nova senha
         const { enviarEmailSenhaResetada } = await import("./_core/email");
@@ -867,7 +859,7 @@ export const appRouter = router({
         return { success: true };
       }),
     
-    listar: protectedProcedure
+    listar: adminProcedure
       .input(z.object({
         status: z.enum(["pendente", "aprovado", "rejeitado"]).optional(),
       }).optional())
@@ -875,16 +867,16 @@ export const appRouter = router({
         const { listarSolicitacoesAtualizacao } = await import("./db");
         return listarSolicitacoesAtualizacao(input?.status);
       }),
-    
-    aprovar: protectedProcedure
+
+    aprovar: adminProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
         const { aprovarSolicitacaoAtualizacao } = await import("./db");
         await aprovarSolicitacaoAtualizacao(input);
         return { success: true };
       }),
-    
-    rejeitar: protectedProcedure
+
+    rejeitar: adminProcedure
       .input(z.object({
         id: z.number(),
         motivo: z.string().optional(),
@@ -922,8 +914,9 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const { aprovarSolicitacaoAcesso, criarUsuarioAutorizado } = await import("./db");
         
-        // Gerar senha temporária
-        const senhaTemporaria = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+        // Gerar senha temporária criptograficamente segura
+        const { randomBytes } = await import("crypto");
+        const senhaTemporaria = randomBytes(12).toString("base64url");
         
         // Aprovar solicitação
         const solicitacao = await aprovarSolicitacaoAcesso(input, senhaTemporaria);
@@ -1139,7 +1132,7 @@ export const appRouter = router({
       return await listarCopys();
     }),
 
-    criar: protectedProcedure
+    criar: adminProcedure
       .input(z.object({
         titulo: z.string(),
         conteudo: z.string(),
@@ -1147,9 +1140,6 @@ export const appRouter = router({
         ordem: z.number().default(0),
       }))
       .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem criar copys");
-        }
         const { criarCopy } = await import("./db");
         await criarCopy({
           ...input,
@@ -1158,7 +1148,7 @@ export const appRouter = router({
         return { success: true };
       }),
 
-    atualizar: protectedProcedure
+    atualizar: adminProcedure
       .input(z.object({
         id: z.number(),
         titulo: z.string().optional(),
@@ -1167,9 +1157,6 @@ export const appRouter = router({
         ordem: z.number().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem atualizar copys");
-        }
         const { atualizarCopy } = await import("./db");
         const { id, ...data } = input;
         await atualizarCopy(id, {
@@ -1179,12 +1166,9 @@ export const appRouter = router({
         return { success: true };
       }),
 
-    excluir: protectedProcedure
+    excluir: adminProcedure
       .input(z.object({ id: z.number() }))
-      .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem excluir copys");
-        }
+      .mutation(async ({ input }) => {
         const { excluirCopy } = await import("./db");
         await excluirCopy(input.id);
         return { success: true };
@@ -1230,33 +1214,24 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         return { success: true };
       }),
 
-    listar: protectedProcedure
-      .query(async ({ ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem visualizar avaliações");
-        }
+    listar: adminProcedure
+      .query(async () => {
         const { listarAvaliacoes } = await import("./db");
         return await listarAvaliacoes();
       }),
 
-    listarPorCredenciado: protectedProcedure
+    listarPorCredenciado: adminProcedure
       .input(z.object({
         tipoCredenciado: z.enum(["medico", "instituicao"]),
         credenciadoId: z.number(),
       }))
-      .query(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem visualizar avaliações");
-        }
+      .query(async ({ input }) => {
         const { listarAvaliacoesPorCredenciado } = await import("./db");
         return await listarAvaliacoesPorCredenciado(input.tipoCredenciado, input.credenciadoId);
       }),
 
-    estatisticas: protectedProcedure
-      .query(async ({ ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem visualizar estatísticas");
-        }
+    estatisticas: adminProcedure
+      .query(async () => {
         const { estatisticasAvaliacoes } = await import("./db");
         return await estatisticasAvaliacoes();
       }),
@@ -1265,7 +1240,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
   // ========== TOKENS ==========
   tokens: router({    
     // Criar token para atualização de dados
-    criar: protectedProcedure
+    criar: adminProcedure
       .input(z.object({
         tipoCredenciado: z.enum(["medico", "instituicao"]),
         credenciadoId: z.number(),
@@ -1273,9 +1248,6 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         telefone: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem gerar tokens");
-        }
         const { criarToken } = await import("./db");
         const token = await criarToken({
           tipo: "atualizacao",
@@ -1289,16 +1261,13 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       }),
 
     // Criar token para cadastro de novo credenciado
-    criarCadastro: protectedProcedure
+    criarCadastro: adminProcedure
       .input(z.object({
         tipoCredenciado: z.enum(["medico", "instituicao"]),
         email: z.string().email().optional(),
         telefone: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem gerar tokens");
-        }
         const { criarToken } = await import("./db");
         const token = await criarToken({
           tipo: "cadastro",
@@ -1346,45 +1315,36 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         return await listarNomesProcedimentos();
       }),
 
-    criar: protectedProcedure
+    criar: adminProcedure
       .input(z.object({
         instituicaoId: z.number(),
         nome: z.string().min(1, "Nome do procedimento é obrigatório"),
         valorParticular: z.string().optional(),
         valorAssinanteVital: z.string().optional(),
       }))
-      .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem criar procedimentos");
-        }
+      .mutation(async ({ input }) => {
         const { criarProcedimento } = await import("./db");
         const id = await criarProcedimento(input);
         return { id, success: true };
       }),
 
-    atualizar: protectedProcedure
+    atualizar: adminProcedure
       .input(z.object({
         id: z.number(),
         nome: z.string().optional(),
         valorParticular: z.string().optional(),
         valorAssinanteVital: z.string().optional(),
       }))
-      .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem atualizar procedimentos");
-        }
+      .mutation(async ({ input }) => {
         const { atualizarProcedimento } = await import("./db");
         const { id, ...data } = input;
         await atualizarProcedimento(id, data);
         return { success: true };
       }),
 
-    excluir: protectedProcedure
+    excluir: adminProcedure
       .input(z.number())
-      .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem excluir procedimentos");
-        }
+      .mutation(async ({ input }) => {
         const { excluirProcedimento } = await import("./db");
         await excluirProcedimento(input);
         return { success: true };
@@ -1418,6 +1378,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         }
         
         // Processar cada procedimento
+        const { verificarPropriedadeProcedimento } = await import("./db");
         for (const proc of input.procedimentos) {
           if (proc._action === 'create') {
             await criarProcedimento({
@@ -1427,12 +1388,18 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
               valorAssinanteVital: proc.valorAssinanteVital,
             });
           } else if (proc._action === 'update' && proc.id) {
+            // Verifica ownership antes de atualizar (prevenção de IDOR)
+            const pertence = await verificarPropriedadeProcedimento(proc.id, instituicaoId);
+            if (!pertence) throw new Error("Procedimento não pertence a esta instituição");
             await atualizarProcedimento(proc.id, {
               nome: proc.nome,
               valorParticular: proc.valorParticular,
               valorAssinanteVital: proc.valorAssinanteVital,
             });
           } else if (proc._action === 'delete' && proc.id) {
+            // Verifica ownership antes de excluir (prevenção de IDOR)
+            const pertence = await verificarPropriedadeProcedimento(proc.id, instituicaoId);
+            if (!pertence) throw new Error("Procedimento não pertence a esta instituição");
             await excluirProcedimento(proc.id);
           }
         }
@@ -1452,7 +1419,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         return await listarProcedimentosPorSolicitacao(input.solicitacaoId);
       }),
 
-    criar: publicProcedure
+    criar: protectedProcedure
       .input(z.object({
         solicitacaoId: z.number(),
         nome: z.string().min(1, "Nome do procedimento é obrigatório"),
@@ -1465,7 +1432,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         return { id, success: true };
       }),
 
-    atualizar: publicProcedure
+    atualizar: protectedProcedure
       .input(z.object({
         id: z.number(),
         nome: z.string().optional(),
@@ -1479,7 +1446,7 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
         return { success: true };
       }),
 
-    excluir: publicProcedure
+    excluir: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
         const { excluirProcedimentoSolicitacao } = await import("./db");
@@ -1490,16 +1457,13 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
 
   // ========== UPLOAD DE IMAGENS ==========
   upload: router({
-    imagem: protectedProcedure
+    imagem: adminProcedure
       .input(z.object({
         base64: z.string(),
         filename: z.string(),
         contentType: z.string(),
       }))
-      .mutation(async ({ input, ctx }) => {
-        if (ctx.user?.role !== "admin") {
-          throw new Error("Apenas administradores podem fazer upload de imagens");
-        }
+      .mutation(async ({ input }) => {
         
         const { storagePut } = await import("./storage");
         
@@ -1718,12 +1682,12 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
 
   // ========== GESTÃO DE USUÁRIOS MANUS (tabela users) ==========
   usuariosManus: router({
-    listar: protectedProcedure.query(async () => {
+    listar: adminProcedure.query(async () => {
       const { listarUsuariosManus } = await import("./db");
       return listarUsuariosManus();
     }),
-    
-    atualizarRole: protectedProcedure
+
+    atualizarRole: adminProcedure
       .input(z.object({
         userId: z.number(),
         novaRole: z.enum(["admin", "user"]),
