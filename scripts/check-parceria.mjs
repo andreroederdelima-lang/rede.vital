@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/mysql2";
-import { solicitacoesParceria } from "./drizzle/schema.ts";
+import { solicitacoesParceria } from "../drizzle/schema.ts";
 import { desc } from "drizzle-orm";
 
 const db = drizzle(process.env.DATABASE_URL);

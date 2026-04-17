@@ -1,4 +1,4 @@
-import { criarApiKey } from './server/db.js';
+import { criarApiKey } from '../server/db.js';
 
 async function main() {
   try {

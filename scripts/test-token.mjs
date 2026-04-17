@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/mysql2";
-import { tokens } from "./drizzle/schema.ts";
+import { tokens } from "../drizzle/schema.ts";
 
 const db = drizzle(process.env.DATABASE_URL);
 
