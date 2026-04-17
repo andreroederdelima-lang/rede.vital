@@ -850,8 +850,8 @@ export async function redefinirSenhaComToken(token: string, novaSenha: string) {
   
   // @ts-ignore
   const { usuariosAutorizados, tokensRecuperacao } = await import("../drizzle/schema");
-  const bcrypt = await import("bcrypt");
-  
+  const bcrypt = await import("bcryptjs");
+
   // Hash da nova senha
   const senhaHash = await bcrypt.hash(novaSenha, 10);
   

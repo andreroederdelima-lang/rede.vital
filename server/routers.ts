@@ -53,11 +53,13 @@ export const appRouter = router({
         municipio: z.string().optional(),
         descontoMinimo: z.number().optional(),
       }).optional())
-      .query(async ({ input }) => {
+      .query(async ({ input, ctx }) => {
         const { listarMedicos } = await import("./db");
-        return listarMedicos(input);
+        const { sanitizarMedico } = await import("./_core/sanitize");
+        const resultado = await listarMedicos(input);
+        return resultado.map(m => sanitizarMedico(m, ctx.isInterno));
       }),
-    
+
     listarEspecialidades: publicProcedure.query(async () => {
       const { listarEspecialidades } = await import("./db");
       return listarEspecialidades();
@@ -65,9 +67,11 @@ export const appRouter = router({
 
     obter: publicProcedure
       .input(z.number())
-      .query(async ({ input }) => {
+      .query(async ({ input, ctx }) => {
         const { obterMedicoPorId } = await import("./db");
-        return obterMedicoPorId(input);
+        const { sanitizarMedico } = await import("./_core/sanitize");
+        const medico = await obterMedicoPorId(input);
+        return medico ? sanitizarMedico(medico, ctx.isInterno) : medico;
       }),
 
     criar: protectedProcedure
@@ -194,16 +198,20 @@ export const appRouter = router({
         tipoServico: z.enum(["servicos_saude", "outros_servicos"]).optional(),
         procedimento: z.string().optional(),
       }).optional())
-      .query(async ({ input }) => {
+      .query(async ({ input, ctx }) => {
         const { listarInstituicoes } = await import("./db");
-        return listarInstituicoes(input);
+        const { sanitizarInstituicao } = await import("./_core/sanitize");
+        const resultado = await listarInstituicoes(input);
+        return resultado.map(i => sanitizarInstituicao(i, ctx.isInterno));
       }),
 
     obter: publicProcedure
       .input(z.number())
-      .query(async ({ input }) => {
+      .query(async ({ input, ctx }) => {
         const { obterInstituicaoPorId } = await import("./db");
-        return obterInstituicaoPorId(input);
+        const { sanitizarInstituicao } = await import("./_core/sanitize");
+        const inst = await obterInstituicaoPorId(input);
+        return inst ? sanitizarInstituicao(inst, ctx.isInterno) : inst;
       }),
 
     criar: protectedProcedure
@@ -261,9 +269,9 @@ export const appRouter = router({
           observacoes: z.string().optional(),
           contatoParceria: z.string().optional(),
           whatsappParceria: z.string().optional(),
-        }),
           logoUrl: z.string().optional(),
           fotoUrl: z.string().optional(),
+        }),
       }))
       .mutation(async ({ input }) => {
         const { atualizarInstituicao, dispararWebhook, obterInstituicaoPorId } = await import("./db");
@@ -307,9 +315,11 @@ export const appRouter = router({
     // Procedimentos da instituição
     listarProcedimentos: publicProcedure
       .input(z.number())
-      .query(async ({ input }) => {
+      .query(async ({ input, ctx }) => {
         const { listarProcedimentosPorInstituicao } = await import("./db");
-        return listarProcedimentosPorInstituicao(input);
+        const { sanitizarProcedimento } = await import("./_core/sanitize");
+        const procs = await listarProcedimentosPorInstituicao(input);
+        return procs.map(p => sanitizarProcedimento(p, ctx.isInterno));
       }),
 
     criarProcedimento: protectedProcedure
@@ -913,23 +923,35 @@ export const appRouter = router({
       .input(z.number())
       .mutation(async ({ input }) => {
         const { aprovarSolicitacaoAcesso, criarUsuarioAutorizado } = await import("./db");
-        
+
         // Gerar senha temporária criptograficamente segura
         const { randomBytes } = await import("crypto");
         const senhaTemporaria = randomBytes(12).toString("base64url");
-        
+
         // Aprovar solicitação
         const solicitacao = await aprovarSolicitacaoAcesso(input, senhaTemporaria);
-        
+
         // Criar usuário autorizado
         await criarUsuarioAutorizado({
           email: solicitacao.email,
           nome: solicitacao.nome,
           senha: senhaTemporaria,
         });
-        
-        // TODO: Enviar email com credenciais
-        
+
+        // Enviar email com credenciais
+        try {
+          const { enviarEmailNovoUsuario } = await import("./_core/email");
+          await enviarEmailNovoUsuario({
+            nome: solicitacao.nome,
+            email: solicitacao.email,
+            senha: senhaTemporaria,
+            nivelAcesso: "visualizador",
+          });
+        } catch (error) {
+          console.error('[Email] Erro ao enviar credenciais após aprovação:', error);
+          // Não falhar a aprovação se o email falhar
+        }
+
         return { success: true, senhaTemporaria };
       }),
 
@@ -951,22 +973,33 @@ export const appRouter = router({
       .input(z.string().email())
       .mutation(async ({ input }) => {
         const { obterUsuarioAutorizadoPorEmail, criarTokenRecuperacao } = await import("./db");
-        
+
         const usuario = await obterUsuarioAutorizadoPorEmail(input);
         if (!usuario) {
           // Não revelar se o email existe ou não
           return { success: true };
         }
-        
+
         // Gerar token único
         const crypto = await import("crypto");
         const token = crypto.randomBytes(32).toString("hex");
         const expiresAt = new Date(Date.now() + 3600000); // 1 hora
-        
+
         await criarTokenRecuperacao(usuario.id, token, expiresAt);
-        
-        // TODO: Enviar email com link de recuperação
-        
+
+        // Enviar email com link de recuperação
+        try {
+          const { enviarEmailLinkRecuperacao } = await import("./_core/email");
+          await enviarEmailLinkRecuperacao({
+            nome: usuario.nome,
+            email: usuario.email,
+            token,
+          });
+        } catch (error) {
+          console.error('[Email] Erro ao enviar link de recuperação:', error);
+          // Falhar silenciosamente para não revelar existência do email
+        }
+
         return { success: true };
       }),
 
@@ -1304,9 +1337,11 @@ ${input.telefoneAvaliador ? `Telefone: ${input.telefoneAvaliador}` : ""}
       .input(z.object({
         instituicaoId: z.number().optional(),
       }).optional())
-      .query(async ({ input }) => {
+      .query(async ({ input, ctx }) => {
         const { listarProcedimentos } = await import("./db");
-        return await listarProcedimentos(input?.instituicaoId);
+        const { sanitizarProcedimento } = await import("./_core/sanitize");
+        const procs = await listarProcedimentos(input?.instituicaoId);
+        return procs.map(p => sanitizarProcedimento(p, ctx.isInterno));
       }),
 
     listarNomes: publicProcedure
