@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/mysql2";
-import { medicos } from "./drizzle/schema.ts";
+import { medicos } from "../drizzle/schema.ts";
 import { isNotNull } from "drizzle-orm";
 
 const db = drizzle(process.env.DATABASE_URL);
