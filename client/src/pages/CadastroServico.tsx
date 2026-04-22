@@ -8,12 +8,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, MessageCircle } from "lucide-react";
 import { APP_LOGO } from "@/const";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 import ImageUpload from "@/components/ImageUpload";
+
+const SUPORTE_WHATSAPP = "5547992052016";
+const SUPORTE_LABEL = "(47) 99205-2016";
 
 export default function CadastroServico() {
   const [, params] = useRoute("/cadastro-servico/:token");
@@ -529,9 +532,15 @@ export default function CadastroServico() {
               {/* Foto do Estabelecimento */}
               <div>
                 <Label>Foto do Estabelecimento (opcional)</Label>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Envie uma foto da fachada ou interior do estabelecimento.
-                </p>
+                <div className="text-sm text-muted-foreground mb-2 space-y-1">
+                  <p>Esta foto será exibida aos pacientes no guia de credenciados. Recomendações:</p>
+                  <ul className="list-disc pl-5 text-xs">
+                    <li>Foto da fachada ou do interior do ambiente</li>
+                    <li>Iluminação boa e imagem nítida</li>
+                    <li>Ambiente organizado e profissional</li>
+                    <li>Evitar pessoas no enquadramento (dispensa autorização de imagem)</li>
+                  </ul>
+                </div>
                 <div className="bg-teal-50 border-2 border-teal-300 rounded-lg p-3 mb-3">
                   <div className="flex items-center gap-3">
                     <input
@@ -701,11 +710,14 @@ export default function CadastroServico() {
               
               {/* Responsável pelo Cadastro */}
               <div className="border-t pt-4 mt-4">
-                <h3 className="font-semibold text-lg mb-3">Responsável pelo Cadastro na Rede</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Informações de contato para atualizações futuras do cadastro.
+                <h3 className="font-semibold text-lg mb-1">Responsável pelo Cadastro na Rede</h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Pode ser a secretária, gerente, outro membro da equipe ou o próprio responsável pelo estabelecimento.
                 </p>
-                
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm text-amber-900">
+                  🔒 <strong>Esta informação não aparece no site.</strong> É usada apenas pela equipe Vital para atualizações futuras do cadastro.
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="contatoParceria">Nome do Responsável</Label>
@@ -741,6 +753,24 @@ export default function CadastroServico() {
                 />
               </div>
               
+              {/* Suporte */}
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                <h4 className="font-semibold text-primary mb-2">Precisa de ajuda?</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Se estiver com dificuldade para preencher o cadastro, envie seus dados diretamente
+                  para um membro da equipe Vital — a gente finaliza o cadastro pra você.
+                </p>
+                <a
+                  href={`https://wa.me/${SUPORTE_WHATSAPP}?text=${encodeURIComponent("Olá! Preciso de ajuda com o cadastro de credenciado na Rede Vital.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Falar com a equipe Vital · {SUPORTE_LABEL}
+                </a>
+              </div>
+
               {/* Checkbox de Aceite de Termos */}
               <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 space-y-3">
                 <div className="flex items-start gap-3">
