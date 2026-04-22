@@ -8,20 +8,36 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, MessageCircle } from "lucide-react";
 import { APP_LOGO } from "@/const";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
+import { ESPECIALIDADES_MEDICAS, UFS, TIPOS_CONSELHO } from "@shared/especialidades";
 import ImageUpload from "@/components/ImageUpload";
+
+const SUPORTE_WHATSAPP = "5547992052016";
+const SUPORTE_LABEL = "(47) 99205-2016";
+
+function stripTitulo(nomeCompleto: string): { titulo: "Dr." | "Dra."; nomeSemTitulo: string } {
+  const match = nomeCompleto.match(/^(Dr\.?|Dra\.?)\s+(.*)$/i);
+  if (match) {
+    const titulo = match[1].toLowerCase().startsWith("dra") ? "Dra." : "Dr.";
+    return { titulo, nomeSemTitulo: match[2] };
+  }
+  return { titulo: "Dr.", nomeSemTitulo: nomeCompleto };
+}
 
 export default function CadastroMedico() {
   const [, params] = useRoute("/cadastro-medico/:token");
   const token = params?.token || "";
   
   const [formData, setFormData] = useState({
+    titulo: "Dr." as "Dr." | "Dra.",
     nome: "",
     especialidade: "",
+    tipoConselho: "CRM",
     numeroRegistroConselho: "",
+    ufConselho: "SC",
     areaAtuacao: "",
     municipio: "",
     endereco: "",
@@ -63,10 +79,21 @@ export default function CadastroMedico() {
   // Pré-preencher formulário com dados existentes
   useEffect(() => {
     if (medicoExistente) {
+      const { titulo, nomeSemTitulo } = stripTitulo(medicoExistente.nome || "");
+      const registroRaw = medicoExistente.numeroRegistroConselho || "";
+      // Tenta extrair "CRM/SC 12345" ou "CRM 12345/SC" em partes
+      const registroMatch = registroRaw.match(/^(CRM|CRO|CREFITO|CRN|CRP|CRF|CRFa|COREN|CRBM)[\s\/]*([A-Z]{2})?[\s\/]*(\d+)/i);
+      const tipoConselho = registroMatch?.[1]?.toUpperCase() || "CRM";
+      const ufConselho = registroMatch?.[2]?.toUpperCase() || "SC";
+      const numeroRegistro = registroMatch?.[3] || registroRaw;
+
       setFormData({
-        nome: medicoExistente.nome || "",
+        titulo,
+        nome: nomeSemTitulo,
         especialidade: medicoExistente.especialidade || "",
-        numeroRegistroConselho: medicoExistente.numeroRegistroConselho || "",
+        tipoConselho,
+        numeroRegistroConselho: numeroRegistro,
+        ufConselho,
         areaAtuacao: medicoExistente.areaAtuacao || "",
         municipio: medicoExistente.municipio || "",
         endereco: medicoExistente.endereco || "",
@@ -159,12 +186,17 @@ export default function CadastroMedico() {
         logoUrl = uploadResult.url;
       }
       
+      const nomeCompleto = `${formData.titulo} ${formData.nome}`.trim();
+      const registroCompleto = formData.numeroRegistroConselho
+        ? `${formData.tipoConselho}/${formData.ufConselho} ${formData.numeroRegistroConselho}`
+        : "";
+
       enviarMutation.mutate({
         tipoCredenciado: "medico",
-        nomeResponsavel: formData.contatoParceria || formData.nome,
-        nomeEstabelecimento: formData.nome,
+        nomeResponsavel: formData.contatoParceria || nomeCompleto,
+        nomeEstabelecimento: nomeCompleto,
         especialidade: formData.especialidade,
-        numeroRegistroConselho: formData.numeroRegistroConselho,
+        numeroRegistroConselho: registroCompleto,
         areaAtuacao: formData.areaAtuacao,
         categoria: formData.especialidade,
         cidade: formData.municipio,
@@ -275,36 +307,93 @@ export default function CadastroMedico() {
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div>
                 <Label htmlFor="nome">Nome Completo *</Label>
-                <Input
-                  id="nome"
-                  value={formData.nome}
-                  onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                  placeholder="Dr(a). Nome Completo"
-                  required
-                />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="especialidade">Especialidade *</Label>
+                <div className="flex gap-2">
+                  <Select
+                    value={formData.titulo}
+                    onValueChange={(value: "Dr." | "Dra.") => setFormData({ ...formData, titulo: value })}
+                  >
+                    <SelectTrigger className="w-[90px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Dr.">Dr.</SelectItem>
+                      <SelectItem value="Dra.">Dra.</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <Input
-                    id="especialidade"
-                    value={formData.especialidade}
-                    onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
-                    placeholder="Ex: Cardiologia"
+                    id="nome"
+                    value={formData.nome}
+                    onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+                    placeholder="Nome e sobrenome"
                     required
+                    className="flex-1"
                   />
                 </div>
-                
-                <div>
-                  <Label htmlFor="numeroRegistroConselho">Registro Conselho (CRM/CRO/etc)</Label>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Selecione Dr. ou Dra. e digite apenas o nome. O prefixo é adicionado automaticamente.
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="especialidade">Especialidade *</Label>
+                <Select
+                  value={formData.especialidade}
+                  onValueChange={(value) => setFormData({ ...formData, especialidade: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione sua especialidade" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {ESPECIALIDADES_MEDICAS.map((esp) => (
+                      <SelectItem key={esp} value={esp}>{esp}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Esta é a lista que os pacientes usam para te encontrar.
+                </p>
+              </div>
+
+              <div>
+                <Label>Registro no Conselho</Label>
+                <div className="grid grid-cols-[1fr_80px_2fr] gap-2">
+                  <Select
+                    value={formData.tipoConselho}
+                    onValueChange={(value) => setFormData({ ...formData, tipoConselho: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Conselho" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TIPOS_CONSELHO.map((t) => (
+                        <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    value={formData.ufConselho}
+                    onValueChange={(value) => setFormData({ ...formData, ufConselho: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="UF" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {UFS.map((uf) => (
+                        <SelectItem key={uf.value} value={uf.value}>{uf.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <Input
                     id="numeroRegistroConselho"
                     value={formData.numeroRegistroConselho}
-                    onChange={(e) => setFormData({ ...formData, numeroRegistroConselho: e.target.value })}
-                    placeholder="Ex: CRM 12345"
+                    onChange={(e) => setFormData({ ...formData, numeroRegistroConselho: e.target.value.replace(/\D/g, "") })}
+                    placeholder="Número"
+                    inputMode="numeric"
                   />
                 </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Ex: CRM/SC 12345. Selecione o conselho, o estado e digite apenas os números do registro.
+                </p>
               </div>
               
               <div>
@@ -473,9 +562,15 @@ export default function CadastroMedico() {
               {/* Foto do Médico */}
               <div>
                 <Label>Foto do Médico *</Label>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Envie uma foto profissional para exibição no guia de credenciados.
-                </p>
+                <div className="text-sm text-muted-foreground mb-2 space-y-1">
+                  <p>Esta foto será exibida aos pacientes no guia de credenciados. Recomendações:</p>
+                  <ul className="list-disc pl-5 text-xs">
+                    <li>Foto do rosto, em plano aproximado</li>
+                    <li>Aparência profissional (jaleco ou roupa de trabalho)</li>
+                    <li>Iluminação boa e fundo neutro</li>
+                    <li>Expressão acolhedora — é a primeira impressão do paciente</li>
+                  </ul>
+                </div>
                 <div className="bg-teal-50 border-2 border-teal-300 rounded-lg p-3 mb-3">
                   <div className="flex items-center gap-3">
                     <input
@@ -514,11 +609,14 @@ export default function CadastroMedico() {
               
               {/* Responsável pelo Cadastro */}
               <div className="border-t pt-4 mt-4">
-                <h3 className="font-semibold text-lg mb-3">Responsável pelo Cadastro na Rede</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Informações de contato para atualizações futuras do cadastro.
+                <h3 className="font-semibold text-lg mb-1">Responsável pelo Cadastro na Rede</h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Pode ser a secretária, assistente, outro membro da equipe ou o próprio profissional.
                 </p>
-                
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm text-amber-900">
+                  🔒 <strong>Esta informação não aparece no site.</strong> É usada apenas pela equipe Vital para atualizações futuras do cadastro.
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="contatoParceria">Nome do Responsável</Label>
@@ -529,7 +627,7 @@ export default function CadastroMedico() {
                       placeholder="Nome do responsável"
                     />
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="whatsappParceria">WhatsApp do Responsável *</Label>
                     <Input
@@ -557,6 +655,24 @@ export default function CadastroMedico() {
                 </p>
               </div>
               
+              {/* Suporte */}
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                <h4 className="font-semibold text-primary mb-2">Precisa de ajuda?</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Se estiver com dificuldade para preencher o cadastro, envie seus dados diretamente
+                  para um membro da equipe Vital — a gente finaliza o cadastro pra você.
+                </p>
+                <a
+                  href={`https://wa.me/${SUPORTE_WHATSAPP}?text=${encodeURIComponent("Olá! Preciso de ajuda com o cadastro de credenciado na Rede Vital.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Falar com a equipe Vital · {SUPORTE_LABEL}
+                </a>
+              </div>
+
               {/* Checkbox de Aceite de Termos */}
               <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 space-y-3">
                 <div className="flex items-start gap-3">
