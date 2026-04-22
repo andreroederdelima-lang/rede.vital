@@ -34,7 +34,7 @@ export default function CadastroMedico() {
   const token = params?.token || "";
   
   const [formData, setFormData] = useState({
-    titulo: "" as Titulo,
+    titulo: "Dr." as Titulo,
     nome: "",
     especialidade: "",
     tipoConselho: "CRM",
@@ -114,7 +114,19 @@ export default function CadastroMedico() {
       setAceitouTermos(true); // Auto-aceitar termos para atualização
     }
   }, [medicoExistente]);
-  
+
+  // Sincroniza título com conselho: só médicos (CRM) usam Dr./Dra.
+  // Demais profissionais (CREFITO, CRN, CRP, COREN, etc.) não têm prefixo.
+  useEffect(() => {
+    if (formData.tipoConselho === "CRM") {
+      if (formData.titulo === "") {
+        setFormData((prev) => ({ ...prev, titulo: "Dr." }));
+      }
+    } else if (formData.titulo !== "") {
+      setFormData((prev) => ({ ...prev, titulo: "" }));
+    }
+  }, [formData.tipoConselho]);
+
   const enviarMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
       setEnviado(true);
@@ -312,19 +324,20 @@ export default function CadastroMedico() {
               <div>
                 <Label htmlFor="nome">Nome Completo *</Label>
                 <div className="flex gap-2">
-                  <Select
-                    value={formData.titulo || "_none"}
-                    onValueChange={(value) => setFormData({ ...formData, titulo: value === "_none" ? "" : value as Titulo })}
-                  >
-                    <SelectTrigger className="w-[140px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="_none">Sem título</SelectItem>
-                      <SelectItem value="Dr.">Dr.</SelectItem>
-                      <SelectItem value="Dra.">Dra.</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {formData.tipoConselho === "CRM" && (
+                    <Select
+                      value={formData.titulo || "Dr."}
+                      onValueChange={(value) => setFormData({ ...formData, titulo: value as Titulo })}
+                    >
+                      <SelectTrigger className="w-[90px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Dr.">Dr.</SelectItem>
+                        <SelectItem value="Dra.">Dra.</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                   <Input
                     id="nome"
                     value={formData.nome}
@@ -335,7 +348,9 @@ export default function CadastroMedico() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Dr./Dra. só para médicos(as) e dentistas. Outros profissionais (fisio, nutri, psico, enfermagem, etc.) selecionem <strong>Sem título</strong>.
+                  {formData.tipoConselho === "CRM"
+                    ? "Selecione Dr. ou Dra. O prefixo é adicionado automaticamente no envio."
+                    : "Digite seu nome completo. Prefixo Dr./Dra. é aplicado apenas a médicos (CRM)."}
                 </p>
               </div>
 
