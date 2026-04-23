@@ -1,44 +1,62 @@
-# Dependências
-node_modules/
-.pnp
-.pnp.js
 
-# Produção
-dist/
-build/
-.next/
-out/
-
-# Env
-.env
-.env.local
-.env.*.local
-
-# Logs
-*.log
-npm-debug.log*
-logs/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-
-# Testes
-coverage/
-.nyc_output/
-
-# Temporários
-*.tmp
-*.temp
-.cache/
-
+!.env.example
+!package-lock.json
+!package.json
+!tsconfig.json
+# === AWS ===
+# === BACKUPS ===
+# === BUILD ===
+# === CREDENCIAIS (NUNCA COMMITAR) ===
+# === LOGS (podem ter tokens) ===
+# === TOKENS ===
 # Dados sensíveis
-backups/
-dumps/
+# Dependências
+# Env
+# IDEs
+# Logs
+# OS
+# Produção
+# Temporários
+# Testes
+*.backup
+*.key
+*.log
+*.p12
+*.pem
+*.pfx
 *.sql
 *.sqlite
+*.swp
+*.temp
+*.tmp
+*password*
+*secret*
+*token*
+.DS_Store
+.aws/
+.cache/
+.env
+.env.*
+.env.*.local
+.env.backup*
+.env.bak*
+.env.local
+.idea/
+.next/
+.nyc_output/
+.pnp
+.pnp.js
+.vscode/
+Thumbs.db
+aws-credentials
+backups/
+build/
+coverage/
+credentials.json
+dist/
+dumps/
+logs/
+node_modules/
+npm-debug.log*
+out/
+service-account*.json
