@@ -18,13 +18,15 @@ import ImageUpload from "@/components/ImageUpload";
 const SUPORTE_WHATSAPP = "5547992052016";
 const SUPORTE_LABEL = "(47) 99205-2016";
 
-function stripTitulo(nomeCompleto: string): { titulo: "Dr." | "Dra."; nomeSemTitulo: string } {
+type Titulo = "Dr." | "Dra." | "";
+
+function stripTitulo(nomeCompleto: string): { titulo: Titulo; nomeSemTitulo: string } {
   const match = nomeCompleto.match(/^(Dr\.?|Dra\.?)\s+(.*)$/i);
   if (match) {
-    const titulo = match[1].toLowerCase().startsWith("dra") ? "Dra." : "Dr.";
+    const titulo: Titulo = match[1].toLowerCase().startsWith("dra") ? "Dra." : "Dr.";
     return { titulo, nomeSemTitulo: match[2] };
   }
-  return { titulo: "Dr.", nomeSemTitulo: nomeCompleto };
+  return { titulo: "", nomeSemTitulo: nomeCompleto };
 }
 
 export default function CadastroMedico() {
@@ -32,7 +34,7 @@ export default function CadastroMedico() {
   const token = params?.token || "";
   
   const [formData, setFormData] = useState({
-    titulo: "Dr." as "Dr." | "Dra.",
+    titulo: "Dr." as Titulo,
     nome: "",
     especialidade: "",
     tipoConselho: "CRM",
@@ -112,7 +114,19 @@ export default function CadastroMedico() {
       setAceitouTermos(true); // Auto-aceitar termos para atualização
     }
   }, [medicoExistente]);
-  
+
+  // Sincroniza título com conselho: só médicos (CRM) usam Dr./Dra.
+  // Demais profissionais (CREFITO, CRN, CRP, COREN, etc.) não têm prefixo.
+  useEffect(() => {
+    if (formData.tipoConselho === "CRM") {
+      if (formData.titulo === "") {
+        setFormData((prev) => ({ ...prev, titulo: "Dr." }));
+      }
+    } else if (formData.titulo !== "") {
+      setFormData((prev) => ({ ...prev, titulo: "" }));
+    }
+  }, [formData.tipoConselho]);
+
   const enviarMutation = trpc.parceria.solicitar.useMutation({
     onSuccess: () => {
       setEnviado(true);
@@ -186,7 +200,9 @@ export default function CadastroMedico() {
         logoUrl = uploadResult.url;
       }
       
-      const nomeCompleto = `${formData.titulo} ${formData.nome}`.trim();
+      const nomeCompleto = formData.titulo
+        ? `${formData.titulo} ${formData.nome}`.trim()
+        : formData.nome.trim();
       const registroCompleto = formData.numeroRegistroConselho
         ? `${formData.tipoConselho}/${formData.ufConselho} ${formData.numeroRegistroConselho}`
         : "";
@@ -308,18 +324,20 @@ export default function CadastroMedico() {
               <div>
                 <Label htmlFor="nome">Nome Completo *</Label>
                 <div className="flex gap-2">
-                  <Select
-                    value={formData.titulo}
-                    onValueChange={(value: "Dr." | "Dra.") => setFormData({ ...formData, titulo: value })}
-                  >
-                    <SelectTrigger className="w-[90px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Dr.">Dr.</SelectItem>
-                      <SelectItem value="Dra.">Dra.</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {formData.tipoConselho === "CRM" && (
+                    <Select
+                      value={formData.titulo || "Dr."}
+                      onValueChange={(value) => setFormData({ ...formData, titulo: value as Titulo })}
+                    >
+                      <SelectTrigger className="w-[90px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Dr.">Dr.</SelectItem>
+                        <SelectItem value="Dra.">Dra.</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                   <Input
                     id="nome"
                     value={formData.nome}
@@ -330,7 +348,9 @@ export default function CadastroMedico() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Selecione Dr. ou Dra. e digite apenas o nome. O prefixo é adicionado automaticamente.
+                  {formData.tipoConselho === "CRM"
+                    ? "Selecione Dr. ou Dra. O prefixo é adicionado automaticamente no envio."
+                    : "Digite seu nome completo. Prefixo Dr./Dra. é aplicado apenas a médicos (CRM)."}
                 </p>
               </div>
 
