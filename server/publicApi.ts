@@ -17,7 +17,7 @@ const perMinuteLimiter = rateLimit({
   legacyHeaders: false, // Desabilita headers `X-RateLimit-*`
   keyGenerator: (req: Request) => {
     // Usar API Key como identificador
-    return req.headers['x-api-key'] as string || req.ip || 'unknown';
+    return req.headers['x-api-key'] as string || 'unknown';
   },
   handler: (req: Request, res: Response) => {
     res.status(429).json({
@@ -25,6 +25,7 @@ const perMinuteLimiter = rateLimit({
       error: 'Limite de requisições excedido. Máximo de 100 requisições por minuto.'
     });
   },
+  validate: { ip: false },
 });
 
 /**
@@ -36,7 +37,7 @@ const perHourLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req: Request) => {
-    return req.headers['x-api-key'] as string || req.ip || 'unknown';
+    return req.headers['x-api-key'] as string || 'unknown';
   },
   handler: (req: Request, res: Response) => {
     res.status(429).json({
@@ -44,6 +45,7 @@ const perHourLimiter = rateLimit({
       error: 'Limite de requisições excedido. Máximo de 1000 requisições por hora.'
     });
   },
+  validate: { ip: false },
 });
 
 /**
