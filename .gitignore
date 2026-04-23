@@ -60,3 +60,11 @@ node_modules/
 npm-debug.log*
 out/
 service-account*.json
+
+# === PROTEÇÃO CONTRA VAZAMENTO ===
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials.json
