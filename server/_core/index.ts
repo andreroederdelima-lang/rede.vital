@@ -1,4 +1,5 @@
 import "dotenv/config";
+import cors from "cors";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
@@ -32,6 +33,30 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  // CORS_ORIGINS: comma-separated list, supports wildcards with *
+  // e.g. "https://app.vercel.app,https://app-*.vercel.app"
+  const corsPatterns = (process.env.CORS_ORIGINS ?? "")
+    .split(",")
+    .map(o => o.trim())
+    .filter(Boolean)
+    .map(o => o.includes("*") ? new RegExp("^" + o.replace(/\./g, "\\.").replace(/\*/g, "[^.]+") + "$") : o);
+
+  app.use(
+    cors({
+      origin: corsPatterns.length === 0
+        ? false
+        : (origin, cb) => {
+            if (!origin) return cb(null, true); // server-to-server
+            const allowed = corsPatterns.some(p =>
+              p instanceof RegExp ? p.test(origin) : p === origin
+            );
+            cb(allowed ? null : new Error("Not allowed by CORS"), allowed);
+          },
+      credentials: true,
+    })
+  );
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
