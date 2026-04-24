@@ -10,6 +10,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import uploadRouter from "../upload";
 import publicApiRouter from "../publicApi";
+import adminSeedRouter from "../adminSeed";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -66,6 +67,8 @@ async function startServer() {
   app.use("/api", uploadRouter);
   // Public API REST endpoints
   app.use("/api/public", publicApiRouter);
+  // Admin seed (migração Manus→Railway — remover após migração)
+  app.use("/api/admin/seed", adminSeedRouter);
   // tRPC API
   app.use(
     "/api/trpc",
