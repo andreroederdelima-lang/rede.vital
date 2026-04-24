@@ -74,3 +74,6 @@ main().catch((err) => {
   console.error("[migrate] fatal:", err);
   process.exit(1);
 });
+
+// Esperar a promise principal terminar
+// (process.exit não é necessário — node sai naturalmente quando loop vazio)
