@@ -1,8 +1,9 @@
 /**
- * Helper para envio de e-mails
- * Usa a API de notificação do Manus para enviar e-mails
+ * Helper para envio de e-mails via SMTP (nodemailer).
+ * Configurado por SMTP_HOST / SMTP_PORT / SMTP_USER / SMTP_PASS / SMTP_FROM.
  */
 
+import nodemailer, { type Transporter } from 'nodemailer';
 import { ENV } from './env';
 
 interface EmailOptions {
@@ -11,27 +12,40 @@ interface EmailOptions {
   html: string;
 }
 
+let _transporter: Transporter | null = null;
+
+function getTransporter(): Transporter | null {
+  if (_transporter) return _transporter;
+
+  if (!ENV.smtpHost || !ENV.smtpUser || !ENV.smtpPass) {
+    console.warn(
+      '[Email] SMTP não configurado — e-mails não serão enviados. ' +
+      'Defina SMTP_HOST, SMTP_USER, SMTP_PASS para ativar.'
+    );
+    return null;
+  }
+
+  _transporter = nodemailer.createTransport({
+    host: ENV.smtpHost,
+    port: ENV.smtpPort,
+    secure: ENV.smtpSecure,
+    auth: { user: ENV.smtpUser, pass: ENV.smtpPass },
+  });
+
+  return _transporter;
+}
+
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
+  const transporter = getTransporter();
+  if (!transporter) return false;
+
   try {
-    // Usar API de notificação do Manus para enviar e-mail
-    const response = await fetch(`${ENV.forgeApiUrl}/notification/email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ENV.forgeApiKey}`,
-      },
-      body: JSON.stringify({
-        to: options.to,
-        subject: options.subject,
-        html: options.html,
-      }),
+    await transporter.sendMail({
+      from: ENV.smtpFrom || ENV.smtpUser,
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
     });
-
-    if (!response.ok) {
-      console.error('[Email] Failed to send email:', await response.text());
-      return false;
-    }
-
     return true;
   } catch (error) {
     console.error('[Email] Error sending email:', error);
