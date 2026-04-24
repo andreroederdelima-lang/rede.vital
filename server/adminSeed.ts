@@ -28,6 +28,37 @@ function checkToken(req: Request, res: Response): boolean {
   return true;
 }
 
+/**
+ * Drop todas as tabelas do schema atual. Usado para resetar banco em
+ * estado inconsistente (ex: migrations parcialmente aplicadas).
+ * REMOVER junto com o resto do adminSeed após a migração.
+ */
+router.post("/reset-db", async (req: Request, res: Response) => {
+  if (!checkToken(req, res)) return;
+
+  const db = await getDb();
+  if (!db) {
+    res.status(503).json({ error: "Database indisponível" });
+    return;
+  }
+
+  try {
+    const { sql } = await import("drizzle-orm");
+    // Desligar FK checks para poder dropar em qualquer ordem
+    await db.execute(sql`SET FOREIGN_KEY_CHECKS = 0`);
+    const rows: any = await db.execute(sql`SHOW TABLES`);
+    const tableNames = (rows[0] as any[]).map((r: any) => Object.values(r)[0] as string);
+    for (const t of tableNames) {
+      await db.execute(sql.raw(`DROP TABLE IF EXISTS \`${t}\``));
+    }
+    await db.execute(sql`SET FOREIGN_KEY_CHECKS = 1`);
+    res.json({ success: true, dropped: tableNames });
+  } catch (err: any) {
+    console.error("[adminSeed] reset falhou:", err);
+    res.status(500).json({ error: err.message || "Erro ao resetar" });
+  }
+});
+
 router.post("/bulk-import", async (req: Request, res: Response) => {
   if (!checkToken(req, res)) return;
 
