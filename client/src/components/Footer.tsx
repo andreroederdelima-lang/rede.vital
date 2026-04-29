@@ -8,16 +8,12 @@ export default function Footer() {
       <div className="container">
         <div className="text-center space-y-4">
           <div className="flex justify-center gap-6 text-sm">
-            <Link href="/politica-privacidade">
-              <a className="hover:underline transition-all">
-                Política de Privacidade
-              </a>
+            <Link href="/politica-privacidade" className="hover:underline transition-all">
+              Política de Privacidade
             </Link>
             <span className="text-white/50">|</span>
-            <Link href="/termos-uso">
-              <a className="hover:underline transition-all">
-                Termos de Uso
-              </a>
+            <Link href="/termos-uso" className="hover:underline transition-all">
+              Termos de Uso
             </Link>
           </div>
           <div className="space-y-2">
