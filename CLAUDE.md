@@ -11,7 +11,10 @@ avaliacoes, webhooks e API REST publica com API keys.
 - **Frontend:** React 19 + Vite 7 + Tailwind CSS 4 + Radix UI + wouter (routing) + TanStack Query
 - **Backend:** Express + tRPC 11 + Drizzle ORM + MySQL (mysql2)
 - **Auth:** JWT (jose/jsonwebtoken) + cookie-based sessions + Manus OAuth
-- **Storage:** Manus Forge API (upload proxy) -- NAO usa S3 diretamente em runtime
+- **Storage:** Dual-mode auto-detect em `server/storage.ts`:
+  - Se `AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY + AWS_REGION + S3_BUCKET` setados → usa S3 direto (`@aws-sdk/client-s3`). Compatível com R2/MinIO via `S3_ENDPOINT`.
+  - Senão, fallback para Manus Forge API (`BUILT_IN_FORGE_API_URL + BUILT_IN_FORGE_API_KEY`).
+  - Em prod Manus hoje: roda em modo Forge (sem AWS_*).
 - **Build:** Vite (client) + esbuild (server) -> `dist/`
 - **Testes:** Vitest
 - **DB Migrations:** Drizzle Kit (`drizzle-kit generate && drizzle-kit migrate`)
@@ -46,7 +49,7 @@ server/
   publicApi.ts     # API REST publica (/api/public) com API key auth
   db.ts            # Queries e logica de banco (funcoes exportadas)
   upload.ts        # Upload de imagens
-  storage.ts       # Storage proxy via Forge API
+  storage.ts       # Storage dual-mode (S3 direto OU Forge fallback, auto-detect)
   __tests__/       # Testes do server
 
 shared/            # Tipos e constantes compartilhadas (client + server)
@@ -116,3 +119,17 @@ Ver `.env.example` para todas as variaveis necessarias.
 - pnpm como package manager (com patch em wouter@3.7.1)
 - 20 migrations Drizzle ja aplicadas
 - Sistema de indicacoes foi removido (codigo comentado permanece)
+
+## Fluxo de trabalho dev/stage/prod
+
+| Estágio | Onde | Branch | Como |
+|---------|------|--------|------|
+| **Dev** | VPS `/root/rede.vital` (porta 3009) | `claude/<feature>` | Claude Code edita; `npm run dev` |
+| **Stage** | GitHub PR | PR `claude/<feature>` → `main` | `gh pr create`; revisa diff |
+| **Prod** | Manus (`credenciados.suasaudevital.com.br`) | `main` | Merge do PR; deploy Manus (manual ou auto, conforme painel) |
+
+**Regras:**
+- Nunca editar `main` direto. Sempre branch `claude/*` + PR.
+- `.env` local ≠ envs do Manus. Manus tem painel próprio de variáveis.
+- Storage roda em modo Forge no Manus (sem AWS_*) e em modo S3 onde AWS_* estiver setado.
+- PRs Railway-specific (#10-#14, mergeados em 2026-04-24) preservados em main; o dual-mode storage neutraliza o impacto em Manus.
