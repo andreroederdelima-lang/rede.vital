@@ -9,7 +9,11 @@
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "audit": "npm audit --audit-level=high",
+    "ci": "npm run format:check && npm run check && npm run test && npm run build",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {
