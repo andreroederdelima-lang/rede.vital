@@ -42,3 +42,4 @@ jobs:
       node-version: '22'
       package-manager: 'auto'
       # target-url: 'https://staging.<projeto>.com'  # opcional, configure por repo
+
