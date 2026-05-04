@@ -125,7 +125,7 @@ Ver `.env.example` para todas as variaveis necessarias.
 | Estágio | Onde | Branch | Como |
 |---------|------|--------|------|
 | **Dev** | VPS `/root/rede.vital` (porta 3009) | `claude/<feature>` | Claude Code edita; `npm run dev` |
-| **Stage** | GitHub PR | PR `claude/<feature>` → `main` | `gh pr create`; revisa diff |
+| **Stage** | GitHub PR + CI | PR `claude/<feature>` → `main` | `gh pr create`; **CI roda automaticamente** |
 | **Prod** | Manus (`credenciados.suasaudevital.com.br`) | `main` | Merge do PR; deploy Manus (manual ou auto, conforme painel) |
 
 **Regras:**
@@ -133,3 +133,36 @@ Ver `.env.example` para todas as variaveis necessarias.
 - `.env` local ≠ envs do Manus. Manus tem painel próprio de variáveis.
 - Storage roda em modo Forge no Manus (sem AWS_*) e em modo S3 onde AWS_* estiver setado.
 - PRs Railway-specific (#10-#14, mergeados em 2026-04-24) preservados em main; o dual-mode storage neutraliza o impacto em Manus.
+
+## CI / Auditorias antes do deploy
+
+Workflows em `.github/workflows/`:
+
+### `ci.yml` (em todo PR + push em main)
+| Job | Gate | O que faz |
+|-----|------|-----------|
+| `format` | ⚠️ informational | `prettier --check` (não bloqueia — 180 arquivos pendentes de formatação) |
+| `typecheck` | 🛑 BLOQUEIA | `tsc --noEmit` |
+| `test` | ⚠️ informational | `vitest run` (30/49 falham — dívida técnica pré-existente, ver TODO) |
+| `build` | 🛑 BLOQUEIA | `vite build && esbuild` |
+
+### `security.yml` (em todo PR + push em main + cron semanal)
+| Job | Gate | O que faz |
+|-----|------|-----------|
+| `npm-audit` | 🛑 BLOQUEIA | `pnpm audit --audit-level=high` |
+| `gitleaks` | 🛑 BLOQUEIA | Scan de secrets vazados no histórico |
+| `dependency-review` | 🛑 BLOQUEIA (PR) | Diff de deps no PR — bloqueia high severity |
+| `codeql` | 🛑 BLOQUEIA | Análise estática SAST (security-and-quality queries) |
+
+### Dívida técnica conhecida (não bloqueia merge hoje)
+- **Testes**: 30/49 falham por mocks de storage faltando após PR #10 e ausência de seed automático de DB. Tornar `test` job em gate duro depois de:
+  1. Adicionar `vi.mock('./storage')` nos testes que usam `storagePut`
+  2. Setar env `BUILT_IN_FORGE_API_URL` + `BUILT_IN_FORGE_API_KEY` em `vitest.config.ts` setup
+  3. Seed mínimo de DB ou usar test-containers
+- **Formatação**: 180 arquivos não passam `prettier --check`. Rodar `pnpm format` num PR isolado e tornar gate duro depois.
+
+### Comandos locais (rodar antes de pushar)
+```bash
+pnpm run ci          # roda format:check + check + test + build em sequência
+pnpm run audit       # pnpm audit nivel high
+```
