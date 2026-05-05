@@ -1,7 +1,8 @@
 name: Diagnostic Test
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [claude/fix-ci-registry]
 
 jobs:
   hello:
