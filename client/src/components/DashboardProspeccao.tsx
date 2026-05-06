@@ -1,12 +1,48 @@
 import { trpc } from "@/lib/trpc";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { CIDADES_FOCO } from "../../../shared/cidades";
-import { AlertCircle, CheckCircle2, AlertTriangle } from "lucide-react";
+import { AlertCircle, CheckCircle2, AlertTriangle, Download, FileImage } from "lucide-react";
 import GerenciamentoIndicacoes from "./GerenciamentoIndicacoes";
+import { useRef, useState } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 export default function DashboardProspeccao() {
   const { data: stats, isLoading } = trpc.prospeccao.estatisticasCobertura.useQuery();
+  const dashboardRef = useRef<HTMLDivElement>(null);
+  const [exporting, setExporting] = useState<'jpg' | 'pdf' | null>(null);
+
+  const handleExportJPG = async () => {
+    if (!dashboardRef.current) return;
+    setExporting('jpg');
+    try {
+      const canvas = await html2canvas(dashboardRef.current, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      const link = document.createElement('a');
+      link.download = `prospeccao_${new Date().toISOString().split('T')[0]}.jpg`;
+      link.href = canvas.toDataURL('image/jpeg', 0.95);
+      link.click();
+    } finally {
+      setExporting(null);
+    }
+  };
+
+  const handleExportPDF = async () => {
+    if (!dashboardRef.current) return;
+    setExporting('pdf');
+    try {
+      const canvas = await html2canvas(dashboardRef.current, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`prospeccao_${new Date().toISOString().split('T')[0]}.pdf`);
+    } finally {
+      setExporting(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -72,26 +108,48 @@ export default function DashboardProspeccao() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6" ref={dashboardRef}>
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-2xl font-bold text-[#1e9d9f]">Dashboard de Prospecção</h2>
           <p className="text-muted-foreground">
             Meta: 2+ credenciados por tipo em cada cidade
           </p>
         </div>
-        <div className="flex gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <span className="text-sm">0 credenciados</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <span className="text-sm">1 credenciado</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            <span className="text-sm">2+ credenciados</span>
+        <div className="flex items-center gap-3 flex-wrap">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportJPG}
+            disabled={exporting !== null}
+            className="flex items-center gap-2"
+          >
+            <FileImage className="h-4 w-4" />
+            {exporting === 'jpg' ? 'Exportando...' : 'Exportar JPG'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportPDF}
+            disabled={exporting !== null}
+            className="flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            {exporting === 'pdf' ? 'Exportando...' : 'Exportar PDF'}
+          </Button>
+          <div className="flex gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              <span className="text-sm">0 credenciados</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <span className="text-sm">1 credenciado</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <span className="text-sm">2+ credenciados</span>
+            </div>
           </div>
         </div>
       </div>
