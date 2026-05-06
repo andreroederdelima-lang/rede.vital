@@ -6,14 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+type AspectRatioOption = "free" | "1:1" | "4:3" | "16:9" | "3:4" | "9:16";
+
 interface ImageCropModalProps {
   open: boolean;
   imageSrc: string;
   onCropComplete: (croppedImageBlob: Blob, croppedImageUrl: string) => void;
   onCancel: () => void;
+  defaultAspectRatio?: AspectRatioOption;
 }
-
-type AspectRatioOption = "free" | "1:1" | "4:3" | "16:9" | "3:4" | "9:16";
 
 const ASPECT_RATIOS: Record<AspectRatioOption, number | undefined> = {
   free: undefined,
@@ -24,21 +25,25 @@ const ASPECT_RATIOS: Record<AspectRatioOption, number | undefined> = {
   "9:16": 9 / 16,
 };
 
+function initialCropFor(option: AspectRatioOption): Crop {
+  const ratio = ASPECT_RATIOS[option];
+  if (!ratio) {
+    return { unit: "%", width: 90, height: 90, x: 5, y: 5 };
+  }
+  const height = ratio > 1 ? 90 / ratio : 90 * ratio;
+  return { unit: "%", width: 90, height, x: 5, y: (100 - height) / 2 };
+}
+
 export default function ImageCropModal({
   open,
   imageSrc,
   onCropComplete,
   onCancel,
+  defaultAspectRatio = "free",
 }: ImageCropModalProps) {
-  const [crop, setCrop] = useState<Crop>({
-    unit: "%",
-    width: 90,
-    height: 90,
-    x: 5,
-    y: 5,
-  });
+  const [aspectRatio, setAspectRatio] = useState<AspectRatioOption>(defaultAspectRatio);
+  const [crop, setCrop] = useState<Crop>(initialCropFor(defaultAspectRatio));
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
-  const [aspectRatio, setAspectRatio] = useState<AspectRatioOption>("free");
   const imgRef = useRef<HTMLImageElement>(null);
 
   const handleAspectRatioChange = (value: AspectRatioOption) => {
