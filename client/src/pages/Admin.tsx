@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { APP_LOGO, getLoginUrl } from "@/const";
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2, Download } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, EyeOff, AlertTriangle, Users, Copy, Key, Loader2, Download } from "lucide-react";
 import { exportToExcel, MEDICO_COLUMNS, INSTITUICAO_COLUMNS } from "@/lib/exportExcel";
 import { exportarMedicosPDF, exportarInstituicoesPDF } from "@/lib/pdfExport";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
@@ -75,6 +75,7 @@ type InstituicaoForm = {
   observacoes?: string;
   contatoParceria?: string;
   whatsappParceria?: string;
+  descontoGeral?: number;
 };
 
 
@@ -92,6 +93,12 @@ export default function Admin() {
 
   const { data: medicos = [] } = trpc.medicos.listar.useQuery({});
   const { data: instituicoes = [] } = trpc.instituicoes.listar.useQuery({});
+
+  // Templates de mensagem WhatsApp (carregados do banco, com fallback para o padrão)
+  const { data: cfgTemplateMedico } = trpc.configuracoes.buscarPorChave.useQuery({ chave: 'template_whatsapp_medico' });
+  const { data: cfgTemplateInstituicao } = trpc.configuracoes.buscarPorChave.useQuery({ chave: 'template_whatsapp_instituicao' });
+  const templateWhatsappMedico = cfgTemplateMedico?.valor || DEFAULT_TEMPLATE_MEDICO;
+  const templateWhatsappInstituicao = cfgTemplateInstituicao?.valor || DEFAULT_TEMPLATE_INSTITUICAO;
   
   // Queries para contadores de pendências
   const { data: solicitacoesPendentes = [] } = trpc.parceria.listar.useQuery({ status: "pendente" });
@@ -146,6 +153,16 @@ export default function Admin() {
     },
   });
 
+  const toggleAtivoMedico = trpc.medicos.toggleAtivo.useMutation({
+    onSuccess: () => { utils.medicos.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
+  });
+
+  const togglePendenciaMedico = trpc.medicos.togglePendencia.useMutation({
+    onSuccess: () => { utils.medicos.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
+  });
+
   const criarInstituicao = trpc.instituicoes.criar.useMutation({
     onSuccess: () => {
       utils.instituicoes.listar.invalidate();
@@ -174,6 +191,16 @@ export default function Admin() {
     onError: (error: any) => {
       toast.error("Erro ao remover clínica: " + error.message);
     },
+  });
+
+  const toggleAtivoInstituicao = trpc.instituicoes.toggleAtivo.useMutation({
+    onSuccess: () => { utils.instituicoes.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
+  });
+
+  const togglePendenciaInstituicao = trpc.instituicoes.togglePendencia.useMutation({
+    onSuccess: () => { utils.instituicoes.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
   });
 
   const handleSalvarMedico = (data: MedicoForm) => {
@@ -590,7 +617,9 @@ export default function Admin() {
 
                                       const baseUrl = window.location.origin;
                                       const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
-                                      const mensagem = `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, Dr(a). ${medico.nome}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n${linkAtualizacao}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                                      const mensagem = templateWhatsappMedico
+                                        .replace(/\{NOME\}/g, medico.nome || '')
+                                        .replace(/\{LINK\}/g, linkAtualizacao);
                                       const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
                                       window.open(whatsappUrl, "_blank");
                                       toast.success("Link de atualização gerado com sucesso!");
@@ -684,6 +713,42 @@ export default function Admin() {
                                   title="Editar médico"
                                 >
                                   <Pencil className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={`h-8 w-8 ${
+                                    (medico as any).ativo === 0
+                                      ? 'text-gray-400 hover:text-green-600 hover:bg-green-50'
+                                      : 'text-green-600 hover:text-gray-400 hover:bg-gray-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novoAtivo = (medico as any).ativo === 0;
+                                    toggleAtivoMedico.mutate({ id: medico.id, ativo: novoAtivo });
+                                    toast.success(novoAtivo ? 'Médico publicado no guia!' : 'Médico removido do guia.');
+                                  }}
+                                  title={(medico as any).ativo === 0 ? 'Publicar no guia' : 'Remover do guia'}
+                                >
+                                  {(medico as any).ativo === 0
+                                    ? <EyeOff className="h-4 w-4" />
+                                    : <Eye className="h-4 w-4" />}
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={`h-8 w-8 ${
+                                    (medico as any).pendenciaVerificacao === 1
+                                      ? 'text-amber-500 hover:text-amber-600 hover:bg-amber-50'
+                                      : 'text-gray-300 hover:text-amber-500 hover:bg-amber-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novaPendencia = (medico as any).pendenciaVerificacao !== 1;
+                                    togglePendenciaMedico.mutate({ id: medico.id, pendencia: novaPendencia });
+                                    toast.success(novaPendencia ? 'Marcado: Verificar com Consultar Vital' : 'Pendência removida.');
+                                  }}
+                                  title={(medico as any).pendenciaVerificacao === 1 ? 'Remover marcação de pendência' : 'Marcar: Verificar com Consultar Vital'}
+                                >
+                                  <AlertTriangle className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
@@ -909,7 +974,9 @@ export default function Admin() {
 
                                       const baseUrl = window.location.origin;
                                       const linkAtualizacao = `${baseUrl}/atualizar-dados/${result.token}`;
-                                      const mensagem = `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, ${inst.nome}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n${linkAtualizacao}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`;
+                                      const mensagem = templateWhatsappInstituicao
+                                        .replace(/\{NOME\}/g, inst.nome || '')
+                                        .replace(/\{LINK\}/g, linkAtualizacao);
                                       const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
                                       window.open(whatsappUrl, "_blank");
                                       toast.success("Link de atualização gerado com sucesso!");
@@ -1010,6 +1077,42 @@ export default function Admin() {
                                   title="Editar serviço"
                                 >
                                   <Pencil className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={`h-8 w-8 ${
+                                    (inst as any).ativo === 0
+                                      ? 'text-gray-400 hover:text-green-600 hover:bg-green-50'
+                                      : 'text-green-600 hover:text-gray-400 hover:bg-gray-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novoAtivo = (inst as any).ativo === 0;
+                                    toggleAtivoInstituicao.mutate({ id: inst.id, ativo: novoAtivo });
+                                    toast.success(novoAtivo ? 'Parceiro publicado no guia!' : 'Parceiro removido do guia.');
+                                  }}
+                                  title={(inst as any).ativo === 0 ? 'Publicar no guia' : 'Remover do guia'}
+                                >
+                                  {(inst as any).ativo === 0
+                                    ? <EyeOff className="h-4 w-4" />
+                                    : <Eye className="h-4 w-4" />}
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={`h-8 w-8 ${
+                                    (inst as any).pendenciaVerificacao === 1
+                                      ? 'text-amber-500 hover:text-amber-600 hover:bg-amber-50'
+                                      : 'text-gray-300 hover:text-amber-500 hover:bg-amber-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novaPendencia = (inst as any).pendenciaVerificacao !== 1;
+                                    togglePendenciaInstituicao.mutate({ id: inst.id, pendencia: novaPendencia });
+                                    toast.success(novaPendencia ? 'Marcado: Verificar com Consultar Vital' : 'Pendência removida.');
+                                  }}
+                                  title={(inst as any).pendenciaVerificacao === 1 ? 'Remover marcação de pendência' : 'Marcar: Verificar com Consultar Vital'}
+                                >
+                                  <AlertTriangle className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
@@ -2772,13 +2875,81 @@ function SolicitacoesAcessoTab() {
 }
 
 
+const DEFAULT_TEMPLATE_MEDICO = `Olá, Dr(a). {NOME}! 👋
+
+A *Rede Vital* está em fase final de lançamento! 🎉
+Estamos preparando nossa plataforma para começar a indicar nossos parceiros credenciados aos assinantes — e você faz parte disso!
+
+Para que sua ficha apareça de forma completa e profissional no *Guia de Credenciados*, precisamos que você atualize seus dados. Leva menos de 5 minutos! ⏱️
+
+🔗 *Acesse aqui para atualizar:*
+{LINK}
+
+📸 *Dica importante: adicione sua foto!*
+Perfis com foto recebem muito mais contatos. A foto humaniza o atendimento e gera mais confiança nos pacientes antes mesmo da primeira consulta. Capriche! 😊
+
+📋 *Preencha também:*
+✅ Especialidade e área de atuação
+✅ Endereço e formas de contato
+✅ Valores de consulta para assinantes Vital
+✅ Tipo de atendimento (presencial / telemedicina)
+
+Quanto mais completo seu perfil, mais fácil fica para os assinantes encontrarem e escolherem você!
+
+Juntos estamos construindo uma rede de saúde mais forte e acessível no Vale do Itajaí. 💚
+
+*Equipe Vital — Sua Saúde Vital, sempre ao seu lado.*`;
+
+const DEFAULT_TEMPLATE_INSTITUICAO = `Olá, {NOME}! 👋
+
+A *Rede Vital* está chegando! 🚀
+Estamos na reta final de lançamento da nossa plataforma e em breve nossos assinantes já poderão encontrar e ser indicados diretamente para vocês.
+
+Para garantir que seu estabelecimento apareça com destaque no *Guia de Credenciados*, pedimos que atualizem os dados pelo link abaixo:
+
+🔗 *Acesse aqui para atualizar:*
+{LINK}
+
+🖼️ *Adicione o logo e uma foto do espaço!*
+Parceiros com imagens recebem muito mais cliques e contatos. Uma boa apresentação visual transmite confiança e profissionalismo logo de cara.
+
+📋 *Não esqueça de preencher:*
+✅ Serviços oferecidos e especialidades
+✅ Endereço completo e WhatsApp de contato
+✅ Desconto ou condição especial para assinantes Vital
+✅ Horário de funcionamento (no campo observações)
+
+Cada informação completa é uma oportunidade a mais de ser encontrado e indicado! 🎯
+
+Obrigado por fazer parte da *Rede Vital*. Juntos somos mais fortes! 💚
+
+*Equipe Vital — Sua Saúde Vital, sempre ao seu lado.*`;
+
 function ConfiguracoesTab() {
-  const [mensagemWhatsApp, setMensagemWhatsApp] = useState(
-    `📏 *Atualização do Guia do Assinante Vital*\n\nOlá, {NOME}! 👋\n\nPara mantermos nosso *Guia de Credenciados* sempre atualizado, solicitamos a atualização dos seus dados cadastrais.\n\n🔗 *Acesse o link abaixo para atualizar:*\n{LINK}\n\n*Vital Serviços Médicos*\n*Sua Saúde Vital - sempre ao seu lado.*`
-  );
+  const [templateMedico, setTemplateMedico] = useState(DEFAULT_TEMPLATE_MEDICO);
+  const [templateInstituicao, setTemplateInstituicao] = useState(DEFAULT_TEMPLATE_INSTITUICAO);
   const [templateEmail, setTemplateEmail] = useState(
     `Olá {NOME},\n\nSolicitamos a atualização dos seus dados cadastrais no Guia de Credenciados Vital.\n\nAcesse: {LINK}\n\nAtenciosamente,\nEquipe Vital`
   );
+
+  const { data: cfgMedico } = trpc.configuracoes.buscarPorChave.useQuery({ chave: 'template_whatsapp_medico' });
+  const { data: cfgInstituicao } = trpc.configuracoes.buscarPorChave.useQuery({ chave: 'template_whatsapp_instituicao' });
+  const { data: cfgEmail } = trpc.configuracoes.buscarPorChave.useQuery({ chave: 'template_email' });
+
+  useEffect(() => { if (cfgMedico?.valor) setTemplateMedico(cfgMedico.valor); }, [cfgMedico]);
+  useEffect(() => { if (cfgInstituicao?.valor) setTemplateInstituicao(cfgInstituicao.valor); }, [cfgInstituicao]);
+  useEffect(() => { if (cfgEmail?.valor) setTemplateEmail(cfgEmail.valor); }, [cfgEmail]);
+
+  const salvarConfig = trpc.configuracoes.atualizar.useMutation();
+
+  const salvarTemplate = async (chave: string, valor: string, label: string) => {
+    try {
+      await salvarConfig.mutateAsync({ chave, valor });
+      toast.success(`${label} salvo com sucesso!`);
+    } catch {
+      toast.error(`Erro ao salvar ${label}`);
+    }
+  };
 
   const exportarBackup = () => {
     toast.promise(
@@ -2817,25 +2988,43 @@ function ConfiguracoesTab() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <Label className="text-base font-semibold mb-2 block">Mensagem WhatsApp</Label>
+            <Label className="text-base font-semibold mb-2 block">Mensagem WhatsApp — Médicos</Label>
             <p className="text-xs text-muted-foreground mb-2">
-              Variáveis: {'{NOME}'}, {'{LINK}'}
+              Variáveis: {'{NOME}'} (nome do médico), {'{LINK}'} (link de atualização)
             </p>
             <textarea
               className="w-full min-h-[200px] p-3 border rounded-lg font-mono text-sm"
-              value={mensagemWhatsApp}
-              onChange={(e) => setMensagemWhatsApp(e.target.value)}
+              value={templateMedico}
+              onChange={(e) => setTemplateMedico(e.target.value)}
             />
-            <Button
-              size="sm"
-              className="mt-2"
-              onClick={() => {
-                localStorage.setItem('vital_template_whatsapp', mensagemWhatsApp);
-                toast.success('Template WhatsApp salvo!');
-              }}
-            >
-              Salvar Template WhatsApp
-            </Button>
+            <div className="mt-2 flex gap-2 flex-wrap">
+              <Button size="sm" onClick={() => salvarTemplate('template_whatsapp_medico', templateMedico, 'Template WhatsApp Médico')} disabled={salvarConfig.isPending}>
+                Salvar Template Médico
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => setTemplateMedico(DEFAULT_TEMPLATE_MEDICO)}>
+                Restaurar Padrão
+              </Button>
+            </div>
+          </div>
+
+          <div>
+            <Label className="text-base font-semibold mb-2 block">Mensagem WhatsApp — Instituições</Label>
+            <p className="text-xs text-muted-foreground mb-2">
+              Variáveis: {'{NOME}'} (nome da instituição), {'{LINK}'} (link de atualização)
+            </p>
+            <textarea
+              className="w-full min-h-[200px] p-3 border rounded-lg font-mono text-sm"
+              value={templateInstituicao}
+              onChange={(e) => setTemplateInstituicao(e.target.value)}
+            />
+            <div className="mt-2 flex gap-2 flex-wrap">
+              <Button size="sm" onClick={() => salvarTemplate('template_whatsapp_instituicao', templateInstituicao, 'Template WhatsApp Instituição')} disabled={salvarConfig.isPending}>
+                Salvar Template Instituição
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => setTemplateInstituicao(DEFAULT_TEMPLATE_INSTITUICAO)}>
+                Restaurar Padrão
+              </Button>
+            </div>
           </div>
 
           <div>
@@ -2848,16 +3037,11 @@ function ConfiguracoesTab() {
               value={templateEmail}
               onChange={(e) => setTemplateEmail(e.target.value)}
             />
-            <Button
-              size="sm"
-              className="mt-2"
-              onClick={() => {
-                localStorage.setItem('vital_template_email', templateEmail);
-                toast.success('Template de email salvo!');
-              }}
-            >
-              Salvar Template Email
-            </Button>
+            <div className="mt-2 flex gap-2">
+              <Button size="sm" onClick={() => salvarTemplate('template_email', templateEmail, 'Template de Email')} disabled={salvarConfig.isPending}>
+                Salvar Template Email
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -3207,6 +3391,19 @@ function InstituicaoFormDialog({
           />
         </div>
 
+        <div>
+          <Label htmlFor="descontoGeral">Desconto Geral para Assinantes Vital (%)</Label>
+          <Input
+            id="descontoGeral"
+            type="number"
+            min="0"
+            max="100"
+            value={formData.descontoGeral ?? ""}
+            onChange={(e) => setFormData({ ...formData, descontoGeral: e.target.value ? Number(e.target.value) : undefined })}
+            placeholder="Ex: 10 (para 10% de desconto em todos os produtos)"
+          />
+          <p className="text-xs text-muted-foreground mt-1">Percentual de desconto válido para qualquer produto/serviço do estabelecimento. Deixe em branco se não houver desconto geral.</p>
+        </div>
         <div className="col-span-2">
           <Label htmlFor="observacoes">Observações</Label>
           <Textarea
@@ -3217,7 +3414,6 @@ function InstituicaoFormDialog({
           />
         </div>
       </div>
-
       <DialogFooter>
         <Button type="button" variant="outline" onClick={onCancel} disabled={uploading}>
           Cancelar

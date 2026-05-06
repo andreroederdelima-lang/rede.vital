@@ -2,7 +2,7 @@ import { APP_TITLE } from "@/const";
 
 const ULTIMA_ATUALIZACAO = "06 de Maio de 2026";
 const EMAIL_CONTATO = "administrativo@suasaudevital.com.br";
-const WHATSAPP_CONTATO = "(47) 93385-3726";
+const WHATSAPP_CONTATO = "(47) 93384-2133";
 
 export default function TermosUso() {
   return (
