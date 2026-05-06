@@ -691,7 +691,7 @@ export default function CadastroMedico() {
                   className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
-                  Falar com a equipe Vital · {SUPORTE_LABEL}
+                  Envie sua dúvida ou dificuldade · {SUPORTE_LABEL}
                 </a>
               </div>
 

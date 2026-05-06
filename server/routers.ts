@@ -379,7 +379,7 @@ export const appRouter = router({
         cidade: z.string().min(1, "Cidade é obrigatória"),
         telefone: z.string().optional(),
         whatsappSecretaria: z.string().optional(),
-        email: z.string().email().optional(),
+        email: z.string().trim().email({ message: "E-mail inválido" }).optional().or(z.literal('')).transform(v => v === '' ? undefined : v),
         precoConsulta: z.string().optional(),
         valorParticular: z.string().optional(),
         valorAssinanteVital: z.string().optional(),
