@@ -150,7 +150,7 @@ export default function PoliticaPrivacidade() {
             </p>
             <div className="mt-4 p-4 bg-teal-50 rounded-lg">
               <p className="text-gray-700"><strong>E-mail:</strong> <a href="mailto:privacidade@suasaudevital.com.br" className="text-teal-600 hover:underline">privacidade@suasaudevital.com.br</a></p>
-              <p className="text-gray-700"><strong>Telefone:</strong> (47) 93385-3726</p>
+              <p className="text-gray-700"><strong>Telefone:</strong> (47) 93384-2133</p>
               <p className="text-gray-700"><strong>Encarregado de Dados (DPO):</strong> A definir</p>
             </div>
           </section>

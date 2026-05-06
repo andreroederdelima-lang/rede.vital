@@ -200,7 +200,7 @@ export default function Consulta() {
                 </DialogContent>
               </Dialog>
               <a 
-                href={`${formatWhatsAppLink("+5547933853726")}?text=${encodeURIComponent("Olá! Gostaria de falar com um especialista sobre os credenciados Vital.")}`}
+                href={`${formatWhatsAppLink("+5547933842133")}?text=${encodeURIComponent("Olá! Gostaria de falar com um especialista sobre os credenciados Vital.")}`}
                 target="_blank" 
                 rel="noopener noreferrer"
               >

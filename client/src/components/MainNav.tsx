@@ -30,7 +30,7 @@ export function MainNav() {
       public: true,
     },
     {
-      href: "https://wa.me/5547933853726?text=Ol%C3%A1,%20gostaria%20de%20falar%20com%20o%20time%20Vital",
+      href: "https://wa.me/5547933842133?text=Ol%C3%A1,%20gostaria%20de%20falar%20com%20o%20time%20Vital",
       label: "Fale Conosco",
       public: true,
       external: true,
@@ -70,7 +70,7 @@ export function MainNav() {
           <div className="hidden md:flex items-center gap-4">
             {/* WhatsApp + Telefone com ícone verde */}
             <a
-              href="https://wa.me/5547933853726"
+              href="https://wa.me/5547933842133"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
@@ -78,7 +78,7 @@ export function MainNav() {
               <div className="bg-[#25D366] rounded-full p-2">
                 <Phone className="h-4 w-4 text-white" />
               </div>
-              <span className="font-medium text-base text-gray-700">(47) 93385-3726</span>
+              <span className="font-medium text-base text-gray-700">(47) 93384-2133</span>
             </a>
 
             {/* Botão Assine Agora */}
@@ -210,7 +210,7 @@ export function MainNav() {
             {/* Telefone e Botão */}
             <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
               <a
-                href="https://wa.me/5547933853726"
+                href="https://wa.me/5547933842133"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:opacity-80 transition-opacity"
@@ -218,7 +218,7 @@ export function MainNav() {
                 <div className="bg-[#25D366] rounded-full p-2">
                   <Phone className="h-4 w-4 text-white" />
                 </div>
-                <span className="font-medium text-base text-gray-700">(47) 93385-3726</span>
+                <span className="font-medium text-base text-gray-700">(47) 93384-2133</span>
               </a>
 
               <a
