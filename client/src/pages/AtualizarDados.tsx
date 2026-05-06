@@ -53,7 +53,7 @@ export default function AtualizarDados() {
               Este link de atualização expirou ou não é válido. Entre em contato com a equipe Vital para solicitar um novo link.
             </p>
             <a
-              href="https://wa.me/5547933853726"
+              href="https://wa.me/5547933842133"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#2D9B9B] text-white rounded-lg hover:bg-[#257a7a] transition-colors"

@@ -164,7 +164,7 @@ export default function TermosUso() {
             </p>
             <div className="mt-4 p-4 bg-teal-50 rounded-lg">
               <p className="text-gray-700"><strong>E-mail:</strong> <a href="mailto:comercial@suasaudevital.com.br" className="text-teal-600 hover:underline">comercial@suasaudevital.com.br</a></p>
-              <p className="text-gray-700"><strong>Telefone:</strong> (47) 93385-3726</p>
+              <p className="text-gray-700"><strong>Telefone:</strong> (47) 93384-2133</p>
             </div>
           </section>
 
