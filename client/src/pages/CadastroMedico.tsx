@@ -505,6 +505,10 @@ export default function CadastroMedico() {
                 />
               </div>
               
+              <div className="bg-teal-50 border-l-4 border-teal-500 rounded p-3 text-sm text-teal-900">
+                🔒 <strong>Os valores que você informar abaixo NÃO aparecem na plataforma pública.</strong> Ficam visíveis apenas para a equipe Vital (vendedores e consultores), que orientam os clientes assinantes no momento do atendimento.
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="valorParticular">Valor Particular *</Label>
@@ -516,7 +520,7 @@ export default function CadastroMedico() {
                     required
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="valorAssinanteVital">Valor Assinante Vital *</Label>
                   <Input
