@@ -522,6 +522,7 @@ export default function CadastroServico() {
                       }
                     }}
                     label="Logo"
+                    aspectRatio="1:1"
                   />
                 )}
               </div>
@@ -564,6 +565,7 @@ export default function CadastroServico() {
                       }
                     }}
                     label="Foto"
+                    aspectRatio="4:3"
                   />
                 )}
               </div>
