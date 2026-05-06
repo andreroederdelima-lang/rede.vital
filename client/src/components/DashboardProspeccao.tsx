@@ -6,6 +6,7 @@ import { CIDADES_FOCO } from "../../../shared/cidades";
 import { AlertCircle, CheckCircle2, AlertTriangle, Download, FileImage } from "lucide-react";
 import GerenciamentoIndicacoes from "./GerenciamentoIndicacoes";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -18,11 +19,29 @@ export default function DashboardProspeccao() {
     if (!dashboardRef.current) return;
     setExporting('jpg');
     try {
-      const canvas = await html2canvas(dashboardRef.current, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      // Rolar para o topo antes de capturar
+      window.scrollTo(0, 0);
+      await new Promise(r => setTimeout(r, 200));
+      const el = dashboardRef.current;
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+        allowTaint: true,
+        logging: false,
+      });
       const link = document.createElement('a');
       link.download = `prospeccao_${new Date().toISOString().split('T')[0]}.jpg`;
       link.href = canvas.toDataURL('image/jpeg', 0.95);
       link.click();
+      toast.success('Imagem exportada com sucesso!');
+    } catch (err) {
+      console.error('Erro ao exportar JPG:', err);
+      toast.error('Erro ao exportar imagem. Tente novamente.');
     } finally {
       setExporting(null);
     }
@@ -32,13 +51,42 @@ export default function DashboardProspeccao() {
     if (!dashboardRef.current) return;
     setExporting('pdf');
     try {
-      const canvas = await html2canvas(dashboardRef.current, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      // Rolar para o topo antes de capturar
+      window.scrollTo(0, 0);
+      await new Promise(r => setTimeout(r, 200));
+      const el = dashboardRef.current;
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+        allowTaint: true,
+        logging: false,
+      });
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
       const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      // Se o conteúdo for maior que uma página, adiciona páginas extras
+      if (pdfHeight <= pdf.internal.pageSize.getHeight()) {
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      } else {
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        let yOffset = 0;
+        while (yOffset < pdfHeight) {
+          if (yOffset > 0) pdf.addPage();
+          pdf.addImage(imgData, 'JPEG', 0, -yOffset, pdfWidth, pdfHeight);
+          yOffset += pageHeight;
+        }
+      }
       pdf.save(`prospeccao_${new Date().toISOString().split('T')[0]}.pdf`);
+      toast.success('PDF exportado com sucesso!');
+    } catch (err) {
+      console.error('Erro ao exportar PDF:', err);
+      toast.error('Erro ao exportar PDF. Tente novamente.');
     } finally {
       setExporting(null);
     }
