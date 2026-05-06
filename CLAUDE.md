@@ -190,3 +190,24 @@ Dado um bug com evidência (log, teste falhando, stack trace): conserte. Não pe
 - Sem emojis exceto se pedido explicitamente.
 - Respostas curtas e concisas.
 - Fim de turno: 1-2 frases. O que mudou e o que vem.
+
+---
+
+## Como atualizar a Manus (deploy de prod)
+
+**Manus é o ambiente de produção real** (`credenciados.suasaudevital.com.br`). GitHub é fonte da verdade. Fluxo unidirecional: GitHub → Manus.
+
+**Fluxo padrão depois de mergear na `main`:**
+1. Cole o "Texto A" do `MANUS_SYNC.md` no chat da Manus.
+2. Aguarde build OK (typecheck + Vite + smoke test 4 rotas).
+3. Aperte **Publish** no painel da Manus.
+
+**Cuidados antes de mergear algo que vai pra Manus:**
+- **Email**: Manus usa Forge (`BUILT_IN_FORGE_API_URL/notification/email`). Não trocar pra SMTP puro sem fallback (igual `server/storage.ts` faz com S3/Forge).
+- **Storage**: já tem dual-mode auto-detect — manter.
+- **Migrations**: só ADD/CREATE. DROP nunca.
+- **Env vars novas**: configurar no painel Manus ANTES, ou usar fallback.
+
+**Em caso de regressão pós-deploy:** Use "Texto C" do `MANUS_SYNC.md` para rollback (cada sync cria backup com tag `backup-pre-sync-DATA`).
+
+Ver `MANUS_SYNC.md` para detalhes completos, textos prontos para colar e histórico de sincronizações.
