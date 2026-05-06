@@ -5,12 +5,16 @@ import { Upload, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import ImageCropModal from "@/components/ImageCropModal";
 
+type AspectRatioOption = "free" | "1:1" | "4:3" | "16:9" | "3:4" | "9:16";
+
 interface ImageUploadProps {
   label: string;
   value?: string; // URL da imagem atual
   onChange: (file: File | null, previewUrl: string | null) => void;
   maxSizeMB?: number;
   disabled?: boolean;
+  aspectRatio?: AspectRatioOption;
+  allowCamera?: boolean;
 }
 
 export default function ImageUpload({
@@ -19,6 +23,8 @@ export default function ImageUpload({
   onChange,
   maxSizeMB = 5,
   disabled = false,
+  aspectRatio = "free",
+  allowCamera = true,
 }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(value || null);
   const [isValidating, setIsValidating] = useState(false);
@@ -146,6 +152,7 @@ export default function ImageUpload({
               ref={fileInputRef}
               type="file"
               accept="image/jpeg,image/jpg,image/png,image/webp"
+              {...(allowCamera ? { capture: "environment" as const } : {})}
               onChange={handleFileSelect}
               disabled={disabled || isValidating}
               className="hidden"
@@ -186,6 +193,7 @@ export default function ImageUpload({
           imageSrc={tempImageSrc}
           onCropComplete={handleCropComplete}
           onCancel={handleCropCancel}
+          defaultAspectRatio={aspectRatio}
         />
       )}
     </div>

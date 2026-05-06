@@ -464,6 +464,69 @@ export async function enviarEmailSenhaResetada(dados: {
   });
 }
 
+/**
+ * Envia e-mail com link de recuperação de senha. O link leva para a tela onde
+ * o usuário define uma nova senha; o token expira em 1h (conforme criado em
+ * recuperacaoSenha.solicitar).
+ */
+export async function enviarEmailLinkRecuperacao(dados: {
+  nome: string;
+  email: string;
+  token: string;
+}) {
+  const urlRecuperacao = `https://credenciados.suasaudevital.com.br/recuperar-senha-dados-internos?token=${dados.token}`;
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #1e9d9f; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px; }
+        .button { display: inline-block; background-color: #1e9d9f; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+        .warning { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🔑 Recuperação de Senha</h1>
+          <p>Sua Saúde Vital</p>
+        </div>
+        <div class="content">
+          <p>Olá <strong>${dados.nome}</strong>,</p>
+          <p>Recebemos uma solicitação para recuperar sua senha. Clique no botão abaixo para criar uma nova:</p>
+          <div style="text-align: center;">
+            <a href="${urlRecuperacao}" class="button">Redefinir senha</a>
+          </div>
+          <p style="margin-top: 24px; font-size: 14px; color: #666;">
+            Se o botão não funcionar, copie e cole este link no navegador:<br>
+            <a href="${urlRecuperacao}" style="color: #1e9d9f; word-break: break-all;">${urlRecuperacao}</a>
+          </p>
+          <div class="warning">
+            <strong>⚠️ Importante:</strong> Este link expira em 1 hora. Se você não solicitou a recuperação, ignore este e-mail.
+          </div>
+        </div>
+        <div class="footer">
+          <p>© 2025 Sua Saúde Vital - Sistema de Gestão de Credenciados</p>
+          <p>Este é um e-mail automático, por favor não responda.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  return await sendEmail({
+    to: dados.email,
+    subject: '🔑 Recuperação de senha - Sua Saúde Vital',
+    html,
+  });
+}
+
 
 /**
  * Envia e-mail de notificação de aprovação de parceria com lista de procedimentos

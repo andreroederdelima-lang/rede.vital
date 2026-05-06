@@ -21,6 +21,7 @@ export function createMockContext(overrides?: Partial<TrpcContext>): TrpcContext
     req: mockReq,
     res: mockRes,
     user: overrides?.user || null,
+    isInterno: overrides?.isInterno ?? !!overrides?.user,
     ...overrides,
   };
 }

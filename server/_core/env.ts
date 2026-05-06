@@ -8,3 +8,14 @@ export const ENV = {
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
 };
+
+// Validação de variáveis obrigatórias na inicialização
+if (!ENV.cookieSecret) {
+  throw new Error(
+    "FATAL: JWT_SECRET não definido. " +
+    "Defina a variável de ambiente JWT_SECRET com uma string aleatória segura."
+  );
+}
+if (!ENV.databaseUrl) {
+  console.warn("[ENV] DATABASE_URL não definido — banco de dados indisponível.");
+}
