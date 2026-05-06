@@ -573,9 +573,12 @@ export default function CadastroServico() {
               {/* Procedimentos / Serviços Oferecidos */}
               <div className="border-t pt-4 mt-4">
                   <h3 className="font-semibold text-lg mb-3">Procedimentos / Serviços Oferecidos</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-muted-foreground mb-3">
                     Gerencie os procedimentos e serviços oferecidos pelo seu estabelecimento.
                   </p>
+                  <div className="bg-teal-50 border-l-4 border-teal-500 rounded p-3 text-sm text-teal-900 mb-4">
+                    🔒 <strong>Os valores que você informar abaixo NÃO aparecem na plataforma pública.</strong> Ficam visíveis apenas para a equipe Vital (vendedores e consultores), que orientam os clientes assinantes no momento do atendimento.
+                  </div>
                   
                   {/* Lista de procedimentos existentes */}
                   {procedimentos.filter(p => p._action !== 'delete').length > 0 && (

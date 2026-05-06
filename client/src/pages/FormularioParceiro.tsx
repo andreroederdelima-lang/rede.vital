@@ -450,6 +450,10 @@ export default function FormularioParceiro() {
                 />
               </div>
 
+              <div className="bg-teal-50 border-l-4 border-teal-500 rounded p-3 text-sm text-teal-900">
+                🔒 <strong>Os valores e descontos que você informar abaixo NÃO aparecem na plataforma pública.</strong> Ficam visíveis apenas para a equipe Vital (vendedores e consultores), que orientam os clientes assinantes no momento do atendimento.
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="preco">Preço da Consulta/Serviço *</Label>
                 <Input
