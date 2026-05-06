@@ -161,7 +161,7 @@ export default function CadastroMedico() {
     
     // Validar que pelo menos um meio de contato foi fornecido
     if (!formData.telefoneFixo && !formData.whatsappSecretaria) {
-      camposFaltantes.push("Pelo menos um meio de contato (Telefone Fixo OU WhatsApp)");
+      camposFaltantes.push("Pelo menos um meio de contato (Telefone Consultório OU WhatsApp)");
     }
     
     if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
@@ -473,7 +473,7 @@ export default function CadastroMedico() {
               {/* Campos de Telefone Simplificados */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
+                  <Label htmlFor="telefoneFixo">Telefone Consultório</Label>
                   <Input
                     id="telefoneFixo"
                     value={formData.telefoneFixo}
@@ -495,7 +495,7 @@ export default function CadastroMedico() {
               </div>
               
               <div>
-                <Label htmlFor="email">E-mail</Label>
+                <Label htmlFor="email">E-mail Consultório</Label>
                 <Input
                   id="email"
                   type="email"
@@ -629,7 +629,7 @@ export default function CadastroMedico() {
               
               {/* Responsável pelo Cadastro */}
               <div className="border-t pt-4 mt-4">
-                <h3 className="font-semibold text-lg mb-1">Responsável pelo Cadastro na Rede</h3>
+                <h3 className="font-semibold text-lg mb-1">Informações do Responsável pelo Cadastro</h3>
                 <p className="text-sm text-muted-foreground mb-2">
                   Pode ser a secretária, assistente, outro membro da equipe ou o próprio profissional.
                 </p>
@@ -639,7 +639,7 @@ export default function CadastroMedico() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="contatoParceria">Nome do Responsável</Label>
+                    <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
                     <Input
                       id="contatoParceria"
                       value={formData.contatoParceria}
@@ -649,7 +649,7 @@ export default function CadastroMedico() {
                   </div>
 
                   <div>
-                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável *</Label>
+                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável pelo Cadastro *</Label>
                     <Input
                       id="whatsappParceria"
                       value={formData.whatsappParceria}
