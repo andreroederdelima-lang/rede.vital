@@ -575,6 +575,7 @@ export default function CadastroMedico() {
                       }
                     }}
                     label="Logo"
+                    aspectRatio="1:1"
                   />
                 )}
               </div>
@@ -623,6 +624,7 @@ export default function CadastroMedico() {
                       }
                     }}
                     label="Foto"
+                    aspectRatio="3:4"
                   />
                 )}
               </div>

@@ -14,6 +14,7 @@ import { Upload, Loader2, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
 import { ESPECIALIDADES_MEDICAS } from "@shared/especialidades";
+import ImageUpload from "@/components/ImageUpload";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export default function FormularioParceiro() {
@@ -63,28 +64,14 @@ export default function FormularioParceiro() {
     }
   });
 
-  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setLogoFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setLogoPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleLogoChange = (file: File | null, previewUrl: string | null) => {
+    setLogoFile(file);
+    setLogoPreview(previewUrl ?? "");
   };
 
-  const handleFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFotoFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFotoPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleFotoChange = (file: File | null, previewUrl: string | null) => {
+    setFotoFile(file);
+    setFotoPreview(previewUrl ?? "");
   };
 
   const limparFormulario = () => {
@@ -489,35 +476,21 @@ export default function FormularioParceiro() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="logo">Logo do Estabelecimento (opcional)</Label>
-                <div className="flex items-center gap-4">
-                  <Input
-                    id="logo"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoChange}
-                    className="flex-1"
-                  />
-                  {logoPreview && (
-                    <img src={logoPreview} alt="Preview" className="h-16 w-16 object-cover rounded" />
-                  )}
-                </div>
+                <ImageUpload
+                  label="Logo do Estabelecimento (opcional)"
+                  value={logoPreview || undefined}
+                  onChange={handleLogoChange}
+                  aspectRatio="1:1"
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="foto">Foto do Estabelecimento/Profissional (opcional)</Label>
-                <div className="flex items-center gap-4">
-                  <Input
-                    id="foto"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFotoChange}
-                    className="flex-1"
-                  />
-                  {fotoPreview && (
-                    <img src={fotoPreview} alt="Preview" className="h-16 w-16 object-cover rounded" />
-                  )}
-                </div>
+                <ImageUpload
+                  label={tipoCredenciado === "medico" ? "Foto do Profissional (opcional)" : "Foto do Estabelecimento (opcional)"}
+                  value={fotoPreview || undefined}
+                  onChange={handleFotoChange}
+                  aspectRatio={tipoCredenciado === "medico" ? "3:4" : "4:3"}
+                />
               </div>
 
               <div className="border-t pt-4 mt-4">
