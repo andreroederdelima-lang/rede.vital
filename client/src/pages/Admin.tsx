@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2, Download } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, EyeOff, AlertTriangle, Users, Copy, Key, Loader2, Download } from "lucide-react";
 import { exportToExcel, MEDICO_COLUMNS, INSTITUICAO_COLUMNS } from "@/lib/exportExcel";
 import { exportarMedicosPDF, exportarInstituicoesPDF } from "@/lib/pdfExport";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
@@ -75,6 +75,7 @@ type InstituicaoForm = {
   observacoes?: string;
   contatoParceria?: string;
   whatsappParceria?: string;
+  descontoGeral?: number;
 };
 
 
@@ -146,6 +147,16 @@ export default function Admin() {
     },
   });
 
+  const toggleAtivoMedico = trpc.medicos.toggleAtivo.useMutation({
+    onSuccess: () => { utils.medicos.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
+  });
+
+  const togglePendenciaMedico = trpc.medicos.togglePendencia.useMutation({
+    onSuccess: () => { utils.medicos.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
+  });
+
   const criarInstituicao = trpc.instituicoes.criar.useMutation({
     onSuccess: () => {
       utils.instituicoes.listar.invalidate();
@@ -174,6 +185,16 @@ export default function Admin() {
     onError: (error: any) => {
       toast.error("Erro ao remover clínica: " + error.message);
     },
+  });
+
+  const toggleAtivoInstituicao = trpc.instituicoes.toggleAtivo.useMutation({
+    onSuccess: () => { utils.instituicoes.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
+  });
+
+  const togglePendenciaInstituicao = trpc.instituicoes.togglePendencia.useMutation({
+    onSuccess: () => { utils.instituicoes.listar.invalidate(); },
+    onError: (error: any) => { toast.error("Erro: " + error.message); },
   });
 
   const handleSalvarMedico = (data: MedicoForm) => {
@@ -688,6 +709,42 @@ export default function Admin() {
                                 <Button
                                   variant="ghost"
                                   size="icon"
+                                  className={`h-8 w-8 ${
+                                    (medico as any).ativo === 0
+                                      ? 'text-gray-400 hover:text-green-600 hover:bg-green-50'
+                                      : 'text-green-600 hover:text-gray-400 hover:bg-gray-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novoAtivo = (medico as any).ativo === 0;
+                                    toggleAtivoMedico.mutate({ id: medico.id, ativo: novoAtivo });
+                                    toast.success(novoAtivo ? 'Médico publicado no guia!' : 'Médico removido do guia.');
+                                  }}
+                                  title={(medico as any).ativo === 0 ? 'Publicar no guia' : 'Remover do guia'}
+                                >
+                                  {(medico as any).ativo === 0
+                                    ? <EyeOff className="h-4 w-4" />
+                                    : <Eye className="h-4 w-4" />}
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={`h-8 w-8 ${
+                                    (medico as any).pendenciaVerificacao === 1
+                                      ? 'text-amber-500 hover:text-amber-600 hover:bg-amber-50'
+                                      : 'text-gray-300 hover:text-amber-500 hover:bg-amber-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novaPendencia = (medico as any).pendenciaVerificacao !== 1;
+                                    togglePendenciaMedico.mutate({ id: medico.id, pendencia: novaPendencia });
+                                    toast.success(novaPendencia ? 'Marcado: Verificar com Consultar Vital' : 'Pendência removida.');
+                                  }}
+                                  title={(medico as any).pendenciaVerificacao === 1 ? 'Remover marcação de pendência' : 'Marcar: Verificar com Consultar Vital'}
+                                >
+                                  <AlertTriangle className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
                                   className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
                                   onClick={() => {
                                     if (confirm("Tem certeza que deseja remover este médico?")) {
@@ -1010,6 +1067,42 @@ export default function Admin() {
                                   title="Editar serviço"
                                 >
                                   <Pencil className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={`h-8 w-8 ${
+                                    (inst as any).ativo === 0
+                                      ? 'text-gray-400 hover:text-green-600 hover:bg-green-50'
+                                      : 'text-green-600 hover:text-gray-400 hover:bg-gray-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novoAtivo = (inst as any).ativo === 0;
+                                    toggleAtivoInstituicao.mutate({ id: inst.id, ativo: novoAtivo });
+                                    toast.success(novoAtivo ? 'Parceiro publicado no guia!' : 'Parceiro removido do guia.');
+                                  }}
+                                  title={(inst as any).ativo === 0 ? 'Publicar no guia' : 'Remover do guia'}
+                                >
+                                  {(inst as any).ativo === 0
+                                    ? <EyeOff className="h-4 w-4" />
+                                    : <Eye className="h-4 w-4" />}
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={`h-8 w-8 ${
+                                    (inst as any).pendenciaVerificacao === 1
+                                      ? 'text-amber-500 hover:text-amber-600 hover:bg-amber-50'
+                                      : 'text-gray-300 hover:text-amber-500 hover:bg-amber-50'
+                                  }`}
+                                  onClick={() => {
+                                    const novaPendencia = (inst as any).pendenciaVerificacao !== 1;
+                                    togglePendenciaInstituicao.mutate({ id: inst.id, pendencia: novaPendencia });
+                                    toast.success(novaPendencia ? 'Marcado: Verificar com Consultar Vital' : 'Pendência removida.');
+                                  }}
+                                  title={(inst as any).pendenciaVerificacao === 1 ? 'Remover marcação de pendência' : 'Marcar: Verificar com Consultar Vital'}
+                                >
+                                  <AlertTriangle className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
@@ -3207,6 +3300,19 @@ function InstituicaoFormDialog({
           />
         </div>
 
+        <div>
+          <Label htmlFor="descontoGeral">Desconto Geral para Assinantes Vital (%)</Label>
+          <Input
+            id="descontoGeral"
+            type="number"
+            min="0"
+            max="100"
+            value={formData.descontoGeral ?? ""}
+            onChange={(e) => setFormData({ ...formData, descontoGeral: e.target.value ? Number(e.target.value) : undefined })}
+            placeholder="Ex: 10 (para 10% de desconto em todos os produtos)"
+          />
+          <p className="text-xs text-muted-foreground mt-1">Percentual de desconto válido para qualquer produto/serviço do estabelecimento. Deixe em branco se não houver desconto geral.</p>
+        </div>
         <div className="col-span-2">
           <Label htmlFor="observacoes">Observações</Label>
           <Textarea
@@ -3217,7 +3323,6 @@ function InstituicaoFormDialog({
           />
         </div>
       </div>
-
       <DialogFooter>
         <Button type="button" variant="outline" onClick={onCancel} disabled={uploading}>
           Cancelar

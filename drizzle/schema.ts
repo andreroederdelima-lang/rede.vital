@@ -60,10 +60,10 @@ export const medicos = mysqlTable("medicos", {
   whatsappParceria: varchar("whatsappParceria", { length: 100 }), // WhatsApp do responsável pela parceria
   tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
   ativo: int("ativo").notNull().default(1),
+  pendenciaVerificacao: int("pendenciaVerificacao").notNull().default(0), // 1 = pendente verificação de valores/descontos
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
-
 export type Medico = typeof medicos.$inferSelect;
 export type InsertMedico = typeof medicos.$inferInsert;
 
@@ -94,6 +94,7 @@ export const instituicoes = mysqlTable("instituicoes", {
   whatsappParceria: varchar("whatsappParceria", { length: 100 }), // WhatsApp do responsável pela parceria
   tokenAtualizacao: varchar("tokenAtualizacao", { length: 64 }).unique(),
   ativo: int("ativo").notNull().default(1),
+  pendenciaVerificacao: int("pendenciaVerificacao").notNull().default(0), // 1 = pendente verificação de valores/descontos
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

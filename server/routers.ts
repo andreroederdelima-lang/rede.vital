@@ -175,7 +175,28 @@ export const appRouter = router({
         const { excluirMedico } = await import("./db");
         return excluirMedico(input);
       }),
-
+    toggleAtivo: protectedProcedure
+      .input(z.object({ id: z.number(), ativo: z.boolean() }))
+      .mutation(async ({ input }) => {
+        const { getDb } = await import("./db");
+        const { medicos } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const db = await getDb();
+        if (!db) throw new Error("DB indisponível");
+        await db.update(medicos).set({ ativo: input.ativo ? 1 : 0 }).where(eq(medicos.id, input.id));
+        return { success: true };
+      }),
+    togglePendencia: protectedProcedure
+      .input(z.object({ id: z.number(), pendencia: z.boolean() }))
+      .mutation(async ({ input }) => {
+        const { getDb } = await import("./db");
+        const { medicos } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const db = await getDb();
+        if (!db) throw new Error("DB indisponível");
+        await db.update(medicos).set({ pendenciaVerificacao: input.pendencia ? 1 : 0 }).where(eq(medicos.id, input.id));
+        return { success: true };
+      }),
     uploadImagem: protectedProcedure
       .input(z.object({
         base64Data: z.string(),
@@ -187,7 +208,6 @@ export const appRouter = router({
         return uploadImage(input);
       }),
   }),
-
   instituicoes: router({
     listar: publicProcedure
       .input(z.object({
@@ -294,13 +314,34 @@ export const appRouter = router({
         return { success: true };
       }),
 
-    excluir: protectedProcedure
+     excluir: protectedProcedure
       .input(z.number())
       .mutation(async ({ input }) => {
         const { excluirInstituicao } = await import("./db");
         return excluirInstituicao(input);
       }),
-
+    toggleAtivo: protectedProcedure
+      .input(z.object({ id: z.number(), ativo: z.boolean() }))
+      .mutation(async ({ input }) => {
+        const { getDb } = await import("./db");
+        const { instituicoes } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const db = await getDb();
+        if (!db) throw new Error("DB indisponível");
+        await db.update(instituicoes).set({ ativo: input.ativo ? 1 : 0 }).where(eq(instituicoes.id, input.id));
+        return { success: true };
+      }),
+    togglePendencia: protectedProcedure
+      .input(z.object({ id: z.number(), pendencia: z.boolean() }))
+      .mutation(async ({ input }) => {
+        const { getDb } = await import("./db");
+        const { instituicoes } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        const db = await getDb();
+        if (!db) throw new Error("DB indisponível");
+        await db.update(instituicoes).set({ pendenciaVerificacao: input.pendencia ? 1 : 0 }).where(eq(instituicoes.id, input.id));
+        return { success: true };
+      }),
     uploadImagem: protectedProcedure
       .input(z.object({
         base64Data: z.string(),
