@@ -191,7 +191,7 @@ export default function CadastroServico() {
     
     // Validar que pelo menos um meio de contato foi fornecido
     if (!formData.telefoneFixo && !formData.whatsappSecretaria) {
-      camposFaltantes.push("Pelo menos um meio de contato (Telefone Fixo OU WhatsApp)");
+      camposFaltantes.push("Pelo menos um meio de contato (Telefone do Estabelecimento OU WhatsApp)");
     }
     
     if (!formData.whatsappParceria) camposFaltantes.push("WhatsApp Responsável Cadastro");
@@ -427,7 +427,7 @@ export default function CadastroServico() {
               {/* Campos de Telefone Simplificados */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="telefoneFixo">Telefone Fixo</Label>
+                  <Label htmlFor="telefoneFixo">Telefone do Estabelecimento</Label>
                   <Input
                     id="telefoneFixo"
                     value={formData.telefoneFixo}
@@ -449,7 +449,7 @@ export default function CadastroServico() {
               </div>
               
               <div>
-                <Label htmlFor="email">E-mail</Label>
+                <Label htmlFor="email">E-mail do Estabelecimento</Label>
                 <Input
                   id="email"
                   type="email"
@@ -701,14 +701,17 @@ export default function CadastroServico() {
               
               {/* Responsável pelo Cadastro */}
               <div className="border-t pt-4 mt-4">
-                <h3 className="font-semibold text-lg mb-3">Responsável pelo Cadastro na Rede</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Informações de contato para atualizações futuras do cadastro.
+                <h3 className="font-semibold text-lg mb-1">Informações do Responsável pelo Cadastro</h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Pode ser a secretária, gerente, outro membro da equipe ou o próprio responsável pelo estabelecimento.
                 </p>
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm text-amber-900">
+                  🔒 <strong>Esta informação não aparece no site.</strong> É usada apenas pela equipe Vital para atualizações futuras do cadastro.
+                </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="contatoParceria">Nome do Responsável</Label>
+                    <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
                     <Input
                       id="contatoParceria"
                       value={formData.contatoParceria}
@@ -718,7 +721,7 @@ export default function CadastroServico() {
                   </div>
                   
                   <div>
-                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável *</Label>
+                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável pelo Cadastro *</Label>
                     <Input
                       id="whatsappParceria"
                       value={formData.whatsappParceria}

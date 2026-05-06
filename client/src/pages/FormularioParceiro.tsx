@@ -13,6 +13,7 @@ import { trpc } from "@/lib/trpc";
 import { Upload, Loader2, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
+import { ESPECIALIDADES_MEDICAS } from "@shared/especialidades";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export default function FormularioParceiro() {
@@ -336,13 +337,23 @@ export default function FormularioParceiro() {
                 <>
                   <div className="space-y-2">
                     <Label htmlFor="especialidade">Especialidade *</Label>
-                    <Input
-                      id="especialidade"
+                    <Select
                       value={especialidade}
-                      onChange={(e) => setEspecialidade(e.target.value)}
-                      placeholder="Ex: Cardiologia, Ortopedia, Clínica Geral..."
+                      onValueChange={setEspecialidade}
                       required={tipoCredenciado === "medico"}
-                    />
+                    >
+                      <SelectTrigger id="especialidade">
+                        <SelectValue placeholder="Selecione sua especialidade" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[300px]">
+                        {ESPECIALIDADES_MEDICAS.map((esp) => (
+                          <SelectItem key={esp} value={esp}>{esp}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                      Esta é a lista que os pacientes usam para te encontrar.
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -509,24 +520,36 @@ export default function FormularioParceiro() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="contatoParceria">Contato para Parceria (opcional)</Label>
-                <Input
-                  id="contatoParceria"
-                  value={contatoParceria}
-                  onChange={(e) => setContatoParceria(e.target.value)}
-                  placeholder="Nome e telefone para contato comercial"
-                />
-              </div>
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-semibold text-lg mb-1">Informações do Responsável pelo Cadastro</h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Pode ser a secretária, gerente, outro membro da equipe ou o próprio responsável pelo estabelecimento.
+                </p>
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm text-amber-900">
+                  🔒 <strong>Esta informação não aparece no site.</strong> É usada apenas pela equipe Vital para atualizações futuras do cadastro.
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="whatsappParceria">WhatsApp para Parceria (opcional)</Label>
-                <Input
-                  id="whatsappParceria"
-                  value={whatsappParceria}
-                  onChange={(e) => setWhatsappParceria(e.target.value)}
-                  placeholder="(47) 99999-9999"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="contatoParceria">Nome do Responsável pelo Cadastro</Label>
+                    <Input
+                      id="contatoParceria"
+                      value={contatoParceria}
+                      onChange={(e) => setContatoParceria(e.target.value)}
+                      placeholder="Nome do responsável"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="whatsappParceria">WhatsApp do Responsável pelo Cadastro</Label>
+                    <Input
+                      id="whatsappParceria"
+                      value={whatsappParceria}
+                      onChange={(e) => setWhatsappParceria(e.target.value)}
+                      placeholder="(47) 99999-9999"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-2">
