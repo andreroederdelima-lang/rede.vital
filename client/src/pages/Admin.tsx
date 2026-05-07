@@ -11,7 +11,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2, Download } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, LogOut, CheckCircle, XCircle, Clock, Eye, Users, Copy, Key, Loader2, Download, MessageCircle, Phone, Mail, MapPin, User, Building2, DollarSign, Stethoscope, Calendar } from "lucide-react";
+import { CredenciadoListItem } from "@/components/CredenciadoListItem";
+import { formatWhatsAppLink } from "@/lib/utils";
 import { exportToExcel, MEDICO_COLUMNS, INSTITUICAO_COLUMNS } from "@/lib/exportExcel";
 import { exportarMedicosPDF, exportarInstituicoesPDF } from "@/lib/pdfExport";
 import DashboardProspeccao from "@/components/DashboardProspeccao";
@@ -21,7 +23,7 @@ import ImageUpload from "@/components/ImageUpload";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { CATEGORIAS_SERVICOS_SAUDE, CATEGORIAS_OUTROS_SERVICOS } from "@shared/categorias";
-import { MUNICIPIOS_VALE_ITAJAI } from "@shared/colors";
+import { MUNICIPIOS_VALE_ITAJAI, VITAL_COLORS } from "@shared/colors";
 import { validateMedicoForm, validateInstituicaoForm } from "@/lib/validation";
 import { maskTelefone, maskMoeda, unmaskMoeda, calcularDesconto } from "@/lib/masks";
 import { copyToClipboard } from "@/lib/clipboard";
@@ -1720,6 +1722,386 @@ function ProcedimentosSolicitacaoSection({ solicitacaoId }: { solicitacaoId: num
   );
 }
 
+type SolicitacaoDetalhesProps = {
+  sol: any;
+  motivoRejeicao: string;
+  onMotivoRejeicaoChange: (v: string) => void;
+  onAprovar: () => void;
+  onRejeitar: () => void;
+  aprovando: boolean;
+  rejeitando: boolean;
+  getCategoriaLabel: (c: string) => string;
+};
+
+function InfoLinha({ icon, label, value }: { icon: React.ReactNode; label: string; value?: string | number | null }) {
+  if (value === null || value === undefined || value === "") return null;
+  return (
+    <div className="flex items-start gap-2">
+      <div className="mt-0.5 flex-shrink-0" style={{ color: VITAL_COLORS.turquoise }}>{icon}</div>
+      <div className="min-w-0">
+        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="text-sm font-medium break-words">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function SolicitacaoDetalhes({
+  sol,
+  motivoRejeicao,
+  onMotivoRejeicaoChange,
+  onAprovar,
+  onRejeitar,
+  aprovando,
+  rejeitando,
+  getCategoriaLabel,
+}: SolicitacaoDetalhesProps) {
+  const isMedico = sol.tipoCredenciado === "medico";
+  const tipoServicoLabel =
+    sol.tipoServico === "servicos_saude"
+      ? "Serviços de Saúde"
+      : sol.tipoServico === "outros_servicos"
+        ? "Outros Serviços"
+        : null;
+  const tipoAtendimentoLabel =
+    sol.tipoAtendimento === "presencial"
+      ? "Presencial"
+      : sol.tipoAtendimento === "telemedicina"
+        ? "Telemedicina"
+        : sol.tipoAtendimento === "ambos"
+          ? "Presencial + Telemedicina"
+          : null;
+
+  // Procedimentos da solicitação para alimentar a prévia do card público
+  const { data: procedimentosSol } = trpc.procedimentosSolicitacao.listar.useQuery(
+    { solicitacaoId: sol.id },
+    { enabled: !!sol.id && !isMedico },
+  );
+  const procedimentosPreview = (procedimentosSol || []).map((p: any) => ({
+    id: p.id,
+    nome: p.nome,
+    valorParticular: p.valorParticular,
+    valorAssinanteVital: p.valorAssinante,
+  }));
+
+  // WhatsApp/telefone preferenciais para o responsável pelo cadastro
+  const whatsappResponsavel = sol.whatsappParceria || sol.whatsappSecretaria || sol.telefone;
+  const telefoneResponsavel = sol.telefone || sol.whatsappSecretaria;
+
+  return (
+    <div className="space-y-5">
+      {/* Cabeçalho com nome, status e data */}
+      <div className="flex flex-wrap items-center gap-3 pb-3 border-b">
+        <h2 className="text-lg font-semibold flex-1 min-w-0">{sol.nomeEstabelecimento}</h2>
+        <span
+          className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full"
+          style={{ backgroundColor: VITAL_COLORS.lightGray, color: VITAL_COLORS.darkGray }}
+        >
+          {isMedico ? <Stethoscope className="h-3 w-3" /> : <Building2 className="h-3 w-3" />}
+          {isMedico ? "Médico" : "Instituição"}
+        </span>
+        {tipoServicoLabel && (
+          <span
+            className="inline-flex items-center text-xs font-medium px-2 py-1 rounded-full"
+            style={{ backgroundColor: "#f0f9ff", color: VITAL_COLORS.turquoise }}
+          >
+            {tipoServicoLabel}
+          </span>
+        )}
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+          <Calendar className="h-3 w-3" />
+          {new Date(sol.createdAt).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </span>
+      </div>
+
+      {/* Bloco prioritário: Responsável pelo Cadastro */}
+      <div
+        className="rounded-lg p-4 border-2"
+        style={{ backgroundColor: "#f0f9ff", borderColor: VITAL_COLORS.turquoise }}
+      >
+        <div className="flex items-center gap-2 mb-3">
+          <User className="h-4 w-4" style={{ color: VITAL_COLORS.turquoise }} />
+          <Label className="text-sm font-semibold" style={{ color: VITAL_COLORS.turquoise }}>
+            Responsável pelo Cadastro
+          </Label>
+        </div>
+        <div className="flex flex-wrap items-start gap-4">
+          <div className="flex-1 min-w-[180px]">
+            <p className="text-base font-semibold" style={{ color: VITAL_COLORS.darkGray }}>
+              {sol.nomeResponsavel || "—"}
+            </p>
+            {sol.contatoParceria && sol.contatoParceria !== sol.nomeResponsavel && (
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Contato adicional: {sol.contatoParceria}
+              </p>
+            )}
+            {sol.email && (
+              <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
+                <Mail className="h-3 w-3" />
+                {sol.email}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {whatsappResponsavel && (
+              <a
+                href={formatWhatsAppLink(whatsappResponsavel)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="sm"
+                  className="h-8"
+                  style={{ backgroundColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.white }}
+                >
+                  <MessageCircle className="h-3 w-3 mr-1" />
+                  WhatsApp
+                  <span className="ml-1 text-xs opacity-90">{whatsappResponsavel}</span>
+                </Button>
+              </a>
+            )}
+            {telefoneResponsavel && (
+              <a href={`tel:${telefoneResponsavel.replace(/\D/g, "")}`}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8"
+                  style={{ borderColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.turquoise }}
+                >
+                  <Phone className="h-3 w-3 mr-1" />
+                  Ligar
+                  <span className="ml-1 text-xs">{telefoneResponsavel}</span>
+                </Button>
+              </a>
+            )}
+            {sol.email && (
+              <a href={`mailto:${sol.email}`}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8"
+                  style={{ borderColor: VITAL_COLORS.turquoise, color: VITAL_COLORS.turquoise }}
+                >
+                  <Mail className="h-3 w-3 mr-1" />
+                  E-mail
+                </Button>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Imagens enviadas */}
+      {(sol.fotoUrl || sol.logoUrl) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {sol.fotoUrl && (
+            <div>
+              <Label className="text-xs text-muted-foreground">
+                {isMedico ? "Foto do Médico" : "Foto do Estabelecimento"}
+              </Label>
+              <div className="mt-1 aspect-square bg-gray-100 rounded-lg border overflow-hidden">
+                <img src={sol.fotoUrl} alt="Foto" className="w-full h-full object-cover" />
+              </div>
+            </div>
+          )}
+          {sol.logoUrl && (
+            <div>
+              <Label className="text-xs text-muted-foreground">Logo</Label>
+              <div className="mt-1 aspect-square bg-gray-100 rounded-lg border flex items-center justify-center overflow-hidden">
+                <img
+                  src={sol.logoUrl}
+                  alt="Logo"
+                  className="max-w-full max-h-full object-contain p-2"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Dados do Estabelecimento */}
+      <div className="rounded-lg border p-4">
+        <h3 className="text-sm font-semibold mb-3" style={{ color: VITAL_COLORS.darkGray }}>
+          Dados do {isMedico ? "Profissional" : "Estabelecimento"}
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <InfoLinha
+            icon={<Building2 className="h-4 w-4" />}
+            label={isMedico ? "Nome / Razão Social" : "Estabelecimento"}
+            value={sol.nomeEstabelecimento}
+          />
+          <InfoLinha
+            icon={<Stethoscope className="h-4 w-4" />}
+            label="Categoria"
+            value={getCategoriaLabel(sol.categoria)}
+          />
+          {sol.especialidade && (
+            <InfoLinha
+              icon={<Stethoscope className="h-4 w-4" />}
+              label="Especialidade"
+              value={sol.especialidade}
+            />
+          )}
+          {sol.areaAtuacao && (
+            <InfoLinha
+              icon={<Stethoscope className="h-4 w-4" />}
+              label="Área de Atuação"
+              value={sol.areaAtuacao}
+            />
+          )}
+          {sol.numeroRegistroConselho && (
+            <InfoLinha
+              icon={<Key className="h-4 w-4" />}
+              label="Registro no Conselho"
+              value={sol.numeroRegistroConselho}
+            />
+          )}
+          {tipoAtendimentoLabel && (
+            <InfoLinha
+              icon={<Eye className="h-4 w-4" />}
+              label="Tipo de Atendimento"
+              value={tipoAtendimentoLabel}
+            />
+          )}
+          <InfoLinha icon={<MapPin className="h-4 w-4" />} label="Cidade" value={sol.cidade} />
+          <InfoLinha
+            icon={<MapPin className="h-4 w-4" />}
+            label="Endereço"
+            value={sol.endereco}
+          />
+          <InfoLinha
+            icon={<Phone className="h-4 w-4" />}
+            label="Telefone"
+            value={sol.telefone}
+          />
+          <InfoLinha
+            icon={<MessageCircle className="h-4 w-4" />}
+            label="WhatsApp Comercial / Secretaria"
+            value={sol.whatsappSecretaria}
+          />
+          <InfoLinha icon={<Mail className="h-4 w-4" />} label="E-mail" value={sol.email} />
+        </div>
+      </div>
+
+      {/* Valores e Desconto */}
+      {(sol.precoConsulta ||
+        sol.valorParticular ||
+        sol.valorAssinanteVital ||
+        sol.descontoPercentual > 0) && (
+        <div className="rounded-lg border p-4">
+          <h3 className="text-sm font-semibold mb-3" style={{ color: VITAL_COLORS.darkGray }}>
+            Valores e Desconto
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <InfoLinha
+              icon={<DollarSign className="h-4 w-4" />}
+              label="Preço Consulta"
+              value={sol.precoConsulta}
+            />
+            <InfoLinha
+              icon={<DollarSign className="h-4 w-4" />}
+              label="Valor Particular"
+              value={sol.valorParticular}
+            />
+            <InfoLinha
+              icon={<DollarSign className="h-4 w-4" />}
+              label="Valor Assinante Vital"
+              value={sol.valorAssinanteVital}
+            />
+            <InfoLinha
+              icon={<DollarSign className="h-4 w-4" />}
+              label="Desconto Oferecido"
+              value={sol.descontoPercentual ? `${sol.descontoPercentual}%` : null}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Procedimentos */}
+      <ProcedimentosSolicitacaoSection solicitacaoId={sol.id} />
+
+      {/* Observações */}
+      {sol.observacoes && (
+        <div className="rounded-lg border p-4">
+          <Label className="text-xs text-muted-foreground">Observações do Solicitante</Label>
+          <p className="text-sm mt-1 whitespace-pre-wrap">{sol.observacoes}</p>
+        </div>
+      )}
+
+      {/* Prévia do Card Público */}
+      <div className="rounded-lg border p-4" style={{ backgroundColor: VITAL_COLORS.lightGray }}>
+        <div className="flex items-center gap-2 mb-3">
+          <Eye className="h-4 w-4" style={{ color: VITAL_COLORS.turquoise }} />
+          <Label className="text-sm font-semibold" style={{ color: VITAL_COLORS.darkGray }}>
+            Prévia — Como aparecerá no site
+          </Label>
+        </div>
+        <CredenciadoListItem
+          tipo={isMedico ? "medico" : "instituicao"}
+          tipoServico={sol.tipoServico || undefined}
+          nome={sol.nomeEstabelecimento}
+          especialidadeOuCategoria={sol.especialidade || getCategoriaLabel(sol.categoria)}
+          areaAtuacao={sol.areaAtuacao}
+          municipio={sol.cidade}
+          endereco={sol.endereco}
+          telefone={sol.telefone}
+          whatsapp={sol.whatsappSecretaria || sol.telefone}
+          whatsappParceria={sol.whatsappParceria}
+          logoUrl={sol.logoUrl}
+          fotoUrl={sol.fotoUrl}
+          precoConsulta={sol.precoConsulta}
+          valorParticular={sol.valorParticular}
+          valorAssinanteVital={sol.valorAssinanteVital}
+          descontoPercentual={sol.descontoPercentual}
+          mostrarPrecoDesconto={true}
+          procedimentos={procedimentosPreview}
+        />
+        <p className="text-xs text-muted-foreground mt-2">
+          Esta é uma simulação do card que será exibido publicamente após a aprovação.
+        </p>
+      </div>
+
+      {/* Motivo da Rejeição */}
+      <div className="border-t pt-4">
+        <Label htmlFor="motivoRejeicao">Motivo da Rejeição (opcional)</Label>
+        <Textarea
+          id="motivoRejeicao"
+          value={motivoRejeicao}
+          onChange={(e) => onMotivoRejeicaoChange(e.target.value)}
+          placeholder="Descreva o motivo caso vá rejeitar..."
+          rows={3}
+          className="mt-2"
+        />
+      </div>
+
+      <DialogFooter className="gap-2">
+        <Button variant="destructive" onClick={onRejeitar} disabled={rejeitando}>
+          {rejeitando ? (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          ) : (
+            <XCircle className="h-4 w-4 mr-2" />
+          )}
+          Rejeitar
+        </Button>
+        <Button variant="default" onClick={onAprovar} disabled={aprovando}>
+          {aprovando ? (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          ) : (
+            <CheckCircle className="h-4 w-4 mr-2" />
+          )}
+          Aprovar e Adicionar à Rede
+        </Button>
+      </DialogFooter>
+    </div>
+  );
+}
+
 function SolicitacoesTab() {
   const utils = trpc.useUtils();
   const [detalhesDialogOpen, setDetalhesDialogOpen] = useState(false);
@@ -1806,14 +2188,21 @@ function SolicitacoesTab() {
                 </TableHeader>
                 <TableBody>
                   {solicitacoes.map((sol: any) => (
-                    <TableRow key={sol.id}>
+                    <TableRow
+                      key={sol.id}
+                      className="cursor-pointer hover:bg-muted/50"
+                      onClick={() => {
+                        setSolicitacaoSelecionada(sol);
+                        setDetalhesDialogOpen(true);
+                      }}
+                    >
                       <TableCell className="font-medium">{sol.nomeEstabelecimento}</TableCell>
                       <TableCell>{sol.nomeResponsavel}</TableCell>
                       <TableCell>{getCategoriaLabel(sol.categoria)}</TableCell>
                       <TableCell>{sol.cidade}</TableCell>
                       <TableCell>{sol.descontoPercentual}%</TableCell>
                       <TableCell>{new Date(sol.createdAt).toLocaleDateString('pt-BR')}</TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="flex justify-end gap-2">
                           <Button
                             size="sm"
@@ -1850,105 +2239,28 @@ function SolicitacoesTab() {
 
       {/* Diálogo de Detalhes */}
       <Dialog open={detalhesDialogOpen} onOpenChange={setDetalhesDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Detalhes da Solicitação</DialogTitle>
+            <DialogTitle className="flex items-center gap-2 text-xl">
+              {solicitacaoSelecionada?.tipoCredenciado === "medico" ? (
+                <Stethoscope className="h-5 w-5" style={{ color: VITAL_COLORS.turquoise }} />
+              ) : (
+                <Building2 className="h-5 w-5" style={{ color: VITAL_COLORS.turquoise }} />
+              )}
+              Solicitação de Parceria
+            </DialogTitle>
           </DialogHeader>
           {solicitacaoSelecionada && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-muted-foreground">Estabelecimento</Label>
-                  <p className="font-medium">{solicitacaoSelecionada.nomeEstabelecimento}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Responsável</Label>
-                  <p className="font-medium">{solicitacaoSelecionada.nomeResponsavel}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Categoria</Label>
-                  <p className="font-medium">{getCategoriaLabel(solicitacaoSelecionada.categoria)}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Cidade</Label>
-                  <p className="font-medium">{solicitacaoSelecionada.cidade}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Telefone</Label>
-                  <p className="font-medium">{solicitacaoSelecionada.telefone}</p>
-                </div>
-                <div>
-                  <Label className="text-muted-foreground">Desconto Oferecido</Label>
-                  <p className="font-medium">{solicitacaoSelecionada.descontoPercentual}%</p>
-                </div>
-                <div className="col-span-2">
-                  <Label className="text-muted-foreground">Endereço</Label>
-                  <p className="font-medium">{solicitacaoSelecionada.endereco}</p>
-                </div>
-              </div>
-
-              {/* Logo e Foto */}
-              <div className="grid grid-cols-2 gap-4">
-                {solicitacaoSelecionada.logoUrl && (
-                  <div>
-                    <Label className="text-muted-foreground">Logo do Estabelecimento</Label>
-                    <div className="mt-2 aspect-square bg-gray-100 rounded-lg border flex items-center justify-center overflow-hidden">
-                      <img 
-                        src={solicitacaoSelecionada.logoUrl} 
-                        alt="Logo" 
-                        className="max-w-full max-h-full object-contain p-2"
-                      />
-                    </div>
-                  </div>
-                )}
-                {solicitacaoSelecionada.fotoUrl && (
-                  <div>
-                    <Label className="text-muted-foreground">{solicitacaoSelecionada.tipoCredenciado === "medico" ? "Foto do Médico" : "Foto do Estabelecimento"}</Label>
-                    <div className="mt-2 aspect-square bg-gray-100 rounded-lg border overflow-hidden">
-                      <img 
-                        src={solicitacaoSelecionada.fotoUrl} 
-                        alt="Foto" 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Procedimentos / Serviços */}
-              <ProcedimentosSolicitacaoSection solicitacaoId={solicitacaoSelecionada.id} />
-
-              <div className="border-t pt-4">
-                <Label htmlFor="motivoRejeicao">Motivo da Rejeição (opcional)</Label>
-                <Textarea
-                  id="motivoRejeicao"
-                  value={motivoRejeicao}
-                  onChange={(e) => setMotivoRejeicao(e.target.value)}
-                  placeholder="Descreva o motivo caso vá rejeitar..."
-                  rows={3}
-                  className="mt-2"
-                />
-              </div>
-
-              <DialogFooter className="gap-2">
-                <Button
-                  variant="destructive"
-                  onClick={() => handleRejeitar(solicitacaoSelecionada.id)}
-                  disabled={rejeitarMutation.isPending}
-                >
-                  <XCircle className="h-4 w-4 mr-2" />
-                  Rejeitar
-                </Button>
-                <Button
-                  variant="default"
-                  onClick={() => handleAprovar(solicitacaoSelecionada.id)}
-                  disabled={aprovarMutation.isPending}
-                >
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  Aprovar e Adicionar à Rede
-                </Button>
-              </DialogFooter>
-            </div>
+            <SolicitacaoDetalhes
+              sol={solicitacaoSelecionada}
+              motivoRejeicao={motivoRejeicao}
+              onMotivoRejeicaoChange={setMotivoRejeicao}
+              onAprovar={() => handleAprovar(solicitacaoSelecionada.id)}
+              onRejeitar={() => handleRejeitar(solicitacaoSelecionada.id)}
+              aprovando={aprovarMutation.isPending}
+              rejeitando={rejeitarMutation.isPending}
+              getCategoriaLabel={getCategoriaLabel}
+            />
           )}
         </DialogContent>
       </Dialog>
